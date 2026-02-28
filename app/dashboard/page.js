@@ -1,50 +1,45 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function Dashboard() {
+  const router = useRouter();
   const [user,setUser]=useState(null);
   const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
 
   useEffect(()=>{
-    getUser();
+    checkUser();
   },[]);
 
-  async function getUser(){
-    const {data:{user}} = await supabase.auth.getUser();
-    if(!user) return;
+  async function checkUser(){
+    const { data: { user } } = await supabase.auth.getUser();
 
-    setUser(user);
-
-    // check profile exists
-    const {data:profile} = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id",user.id)
-      .single();
-
-    if(!profile){
-      // create profile first time
-      await supabase.from("profiles").insert({
-        id:user.id,
-        email:user.email,
-      });
-    } else {
-      setUsername(profile.username || "");
+    if(!user){
+      router.push("/signup");
+    }else{
+      setUser(user);
     }
   }
 
   async function saveUsername(){
     if(!username) return;
 
-    const {error} = await supabase
+    const { error } = await supabase
       .from("profiles")
-      .update({username})
-      .eq("id",user.id);
+      .update({ username: username })
+      .eq("id", user.id);
 
-    if(error) setMsg(error.message);
-    else setMsg("Username saved ✔");
+    if(error){
+      setMsg(error.message);
+    }else{
+      setMsg("Username saved 🎉");
+    }
+  }
+
+  if(!user){
+    return <div style={{color:"white",padding:40}}>Loading...</div>;
   }
 
   return (
@@ -52,32 +47,43 @@ export default function Dashboard() {
       minHeight:"100vh",
       background:"#0b0b12",
       color:"white",
-      padding:"40px"
+      padding:40
     }}>
-      <h1>Dashboard</h1>
+      <h1>Welcome to dashboard</h1>
 
-      <p>Your email: {user?.email}</p>
+      <p style={{marginTop:20}}>Choose your username</p>
+
+      <input
+        placeholder="username"
+        value={username}
+        onChange={(e)=>setUsername(e.target.value.toLowerCase())}
+        style={{
+          padding:12,
+          marginTop:10,
+          width:260,
+          background:"#111",
+          border:"1px solid #222",
+          color:"white"
+        }}
+      />
 
       <br/>
 
-      <input
-        placeholder="choose username"
-        value={username}
-        onChange={(e)=>setUsername(e.target.value.toLowerCase())}
-        style={{padding:12,width:260,color:"black"}}
-      />
-
-      <button onClick={saveUsername} style={{padding:12,marginLeft:10}}>
+      <button
+        onClick={saveUsername}
+        style={{
+          marginTop:20,
+          padding:12,
+          background:"white",
+          color:"black",
+          border:"none",
+          borderRadius:8
+        }}
+      >
         Save username
       </button>
 
       <p>{msg}</p>
-
-      <br/><br/>
-      <p>
-        Your public page:<br/>
-        👉 linkarsha-next.vercel.app/{username}
-      </p>
     </div>
   );
 }
