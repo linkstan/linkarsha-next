@@ -1,46 +1,86 @@
 "use client";
-import { useState } from "react";
-import { supabase } from "../lib/supabase";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "./lib/supabase";
 
-export default function Signup() {
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  const [msg,setMsg]=useState("");
+export default function Home() {
+  const [username, setUsername] = useState("");
+  const router = useRouter();
 
-  async function handleSignup(){
-    const {error} = await supabase.auth.signUp({
-      email:email,
-      password:password,
+  // 🔥 auto login check
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        router.push("/dashboard");
+      }
     });
+  }, []);
 
-    if(error) setMsg(error.message);
-    else setMsg("Signup success. Check email.");
+  function handleContinue() {
+    if (!username) return;
+    router.push(`/signup?username=${username}`);
   }
 
   return (
-    <div style={{padding:40,color:"white",background:"#0b0b12",height:"100vh"}}>
-      <h1>Create account</h1>
+    <div style={{
+      minHeight: "100vh",
+      background: "#0b0b12",
+      color: "white",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+      fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+    }}>
+      
+      <h1 style={{
+        fontSize: "48px",
+        fontWeight: "700",
+        marginBottom: "20px",
+        letterSpacing: "-1px"
+      }}>
+        Claim your Linkarsha
+      </h1>
 
-      <input 
-        placeholder="Email"
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        style={{display:"block",margin:"10px 0",padding:10,width:300}}
-      />
+      <p style={{
+        color: "#888",
+        marginBottom: "40px",
+        fontSize: "18px"
+      }}>
+        linkarsha.vercel.app/
+      </p>
 
-      <input 
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-        style={{display:"block",margin:"10px 0",padding:10,width:300}}
-      />
+      <div style={{ display: "flex", gap: "10px" }}>
+        <input
+          placeholder="yourname"
+          value={username}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          style={{
+            padding: "14px 16px",
+            background: "#111",
+            border: "1px solid #222",
+            borderRadius: "10px",
+            color: "white",
+            width: "220px",
+            fontSize: "16px"
+          }}
+        />
 
-      <button onClick={handleSignup} style={{padding:12}}>
-        Create account
-      </button>
-
-      <p>{msg}</p>
+        <button
+          onClick={handleContinue}
+          style={{
+            padding: "14px 20px",
+            background: "white",
+            color: "black",
+            border: "none",
+            borderRadius: "10px",
+            fontWeight: "600",
+            cursor: "pointer"
+          }}
+        >
+          Continue
+        </button>
+      </div>
     </div>
   );
 }
