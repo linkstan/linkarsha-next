@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../lib/supabase";   // ⭐ FIXED PATH
 
 export default function Home() {
   const [username, setUsername] = useState("");
   const router = useRouter();
 
-  // 🔥 auto login check
+  // auto login check
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) {
