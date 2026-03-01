@@ -1,21 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
+  const params = useSearchParams();
+  const router = useRouter();
+
+  const [username,setUsername]=useState("");
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
-  const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
 
-  // 🔵 SIGNUP
+  useEffect(()=>{
+    const u = params.get("username");
+    if(u) setUsername(u.toLowerCase());
+  },[]);
+
   async function handleSignup(){
-    if(!email || !password || !username){
+    if(!username || !email || !password){
       setMsg("Fill all fields");
       return;
     }
 
-    // check username availability
+    // check username uniqueness
     const { data: existing } = await supabase
       .from("profiles")
       .select("id")
@@ -23,16 +32,13 @@ export default function Signup() {
       .single();
 
     if(existing){
-      setMsg("Username already taken");
+      setMsg("Username not available. Choose another.");
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options:{
-        emailRedirectTo:"https://linkarsha-next.vercel.app/login"
-      }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password
     });
 
     if(error){
@@ -40,45 +46,14 @@ export default function Signup() {
       return;
     }
 
-    setMsg("📩 Check your email to confirm, then login.");
-  }
-
-  // 🟢 LOGIN
-  async function handleLogin(){
-    if(!email || !password){
-      setMsg("Enter email & password");
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
+    // insert profile manually
+    await supabase.from("profiles").insert({
+      id:data.user.id,
+      email:data.user.email,
+      username:username
     });
 
-    if(error){
-      setMsg(error.message);
-      return;
-    }
-
-    const user = data.user;
-
-    // check profile exists
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("id", user.id)
-      .single();
-
-    // if not exists → create profile
-    if(!profile){
-      await supabase.from("profiles").insert({
-        id: user.id,
-        email: user.email,
-        username: username
-      });
-    }
-
-    window.location.href="/dashboard";
+    router.push("/dashboard");
   }
 
   return (
@@ -87,28 +62,29 @@ export default function Signup() {
       background:"#0b0b12",
       color:"white",
       display:"flex",
+      flexDirection:"column",
       alignItems:"center",
       justifyContent:"center",
-      flexDirection:"column",
       fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
     }}>
-      <h1>Create account</h1>
 
-      <input 
+      <h1>Create Account</h1>
+
+      <input
         placeholder="Username"
         value={username}
-        onChange={(e)=>setUsername(e.target.value)}
+        onChange={(e)=>setUsername(e.target.value.toLowerCase())}
         style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
-      <input 
+      <input
         placeholder="Email"
         value={email}
         onChange={(e)=>setEmail(e.target.value)}
         style={{marginTop:10,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
-      <input 
+      <input
         type="password"
         placeholder="Password"
         value={password}
@@ -116,23 +92,22 @@ export default function Signup() {
         style={{marginTop:10,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
-      {/* SIGNUP */}
-      <button 
+      <button
         onClick={handleSignup}
-        style={{marginTop:20,padding:12,background:"white",color:"black",width:280}}
+        style={{marginTop:20,padding:12,width:280,background:"white",color:"black"}}
       >
-        Create account
+        Create Account
       </button>
 
-      {/* LOGIN */}
-      <button 
-        onClick={handleLogin}
-        style={{marginTop:10,padding:12,background:"#222",color:"white",width:280}}
+      <button
+        onClick={()=>router.push("/login")}
+        style={{marginTop:15,background:"transparent",color:"#aaa",border:"none"}}
       >
-        Already confirmed? Login
+        Already have an account? Login
       </button>
 
       <p style={{marginTop:20,color:"#aaa"}}>{msg}</p>
+
     </div>
   );
 }
