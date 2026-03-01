@@ -31,7 +31,7 @@ export default function Signup() {
       email: email,
       password: password,
       options:{
-        emailRedirectTo:"https://linkarsha-next.vercel.app/signup"
+        emailRedirectTo:"https://linkarsha-next.vercel.app/login"
       }
     });
 
