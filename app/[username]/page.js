@@ -2,13 +2,13 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   "https://kgsunydafbgnivstjhcs.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtnc3VueWRhZmJnbml2c3RqaGNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNzk3MTEsImV4cCI6MjA4Nzc1NTcxMX0.oTvJcbbsnXPdSq0wc7rSyjJIezCZUxTz1Xe6FoC6ybs"
+  "PASTE_ANON_KEY_HERE"
 );
 
 export default async function PublicProfile({ params }) {
   const username = params.username;
 
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from("profiles")
     .select("*")
     .eq("username", username)
@@ -38,20 +38,10 @@ export default async function PublicProfile({ params }) {
       display:"flex",
       alignItems:"center",
       justifyContent:"center",
-      flexDirection:"column",
-      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+      flexDirection:"column"
     }}>
-      <h1 style={{fontSize:"42px"}}>
-        @{profile.username}
-      </h1>
-
-      <p style={{opacity:0.7, marginTop:10}}>
-        Welcome to Linkarsha 🚀
-      </p>
-
-      <div style={{marginTop:40, opacity:0.5}}>
-        Creator page coming soon
-      </div>
+      <h1>@{profile.username}</h1>
+      <p>Welcome to Linkarsha 🚀</p>
     </div>
   );
 }
