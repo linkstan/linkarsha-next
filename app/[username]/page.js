@@ -23,15 +23,16 @@ export default async function PublicProfile({ params }) {
         color:"white",
         display:"flex",
         alignItems:"center",
-        justifyContent:"center",
-        fontSize:"24px"
+        justifyContent:"center"
       }}>
         User not found
       </div>
     );
   }
 
-  // get links
+  // IMPORTANT: use profile.id ONLY if profiles.id == auth.users.id
+  // If your profiles.id equals auth.users.id (which is correct setup), this works:
+
   const { data: links } = await supabase
     .from("links")
     .select("*")
@@ -59,26 +60,30 @@ export default async function PublicProfile({ params }) {
       </p>
 
       <div style={{marginTop:40,width:320}}>
-        {links?.map(link=>(
-          <a 
-            key={link.id}
-            href={link.url}
-            target="_blank"
-            style={{
-              display:"block",
-              background:"#111",
-              padding:"16px",
-              marginTop:"12px",
-              borderRadius:"12px",
-              textAlign:"center",
-              textDecoration:"none",
-              color:"white",
-              fontWeight:"600"
-            }}
-          >
-            {link.title}
-          </a>
-        ))}
+        {links?.length > 0 ? (
+          links.map(link=>(
+            <a 
+              key={link.id}
+              href={link.url}
+              target="_blank"
+              style={{
+                display:"block",
+                background:"#111",
+                padding:"16px",
+                marginTop:"12px",
+                borderRadius:"12px",
+                textAlign:"center",
+                textDecoration:"none",
+                color:"white",
+                fontWeight:"600"
+              }}
+            >
+              {link.title}
+            </a>
+          ))
+        ) : (
+          <div style={{opacity:0.5}}>No links yet</div>
+        )}
       </div>
 
     </div>
