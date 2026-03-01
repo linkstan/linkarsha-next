@@ -8,7 +8,6 @@ const supabase = createClient(
 export default async function PublicProfile({ params }) {
   const username = params.username;
 
-  // get profile
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
@@ -29,9 +28,6 @@ export default async function PublicProfile({ params }) {
       </div>
     );
   }
-
-  // IMPORTANT: use profile.id ONLY if profiles.id == auth.users.id
-  // If your profiles.id equals auth.users.id (which is correct setup), this works:
 
   const { data: links } = await supabase
     .from("links")
