@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [title,setTitle]=useState("");
   const [url,setUrl]=useState("");
   const [links,setLinks]=useState([]);
+  const [username,setUsername]=useState("");
 
   useEffect(()=>{
     async function loadSession(){
@@ -16,6 +17,15 @@ export default function Dashboard() {
       if(session?.user){
         setUser(session.user);
         loadLinks(session.user.id);
+
+        // get username
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("id", session.user.id)
+          .single();
+
+        if(profile) setUsername(profile.username);
       }
 
       setLoading(false);
@@ -77,6 +87,14 @@ export default function Dashboard() {
     }}>
       <h1>Creator Dashboard 🚀</h1>
       <p style={{opacity:0.6}}>{user?.email}</p>
+
+      {username && (
+        <p style={{marginTop:10,opacity:0.7}}>
+          Your public page:  
+          <br/>
+          <b>linkarsha-next.vercel.app/{username}</b>
+        </p>
+      )}
 
       <h3 style={{marginTop:40}}>Add new link</h3>
 
