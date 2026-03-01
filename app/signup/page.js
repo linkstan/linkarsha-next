@@ -1,18 +1,29 @@
 "use client";
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
-import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
+  const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
-  const router = useRouter();
 
   // 🔵 SIGNUP
   async function handleSignup(){
-    if(!email || !password){
-      setMsg("Enter email & password");
+    if(!email || !password || !username){
+      setMsg("Fill all fields");
+      return;
+    }
+
+    // check username availability
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("username", username)
+      .single();
+
+    if(existing){
+      setMsg("Username already taken");
       return;
     }
 
@@ -39,16 +50,35 @@ export default function Signup() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password
     });
 
     if(error){
       setMsg(error.message);
-    } else {
-      window.location.href="/dashboard";
+      return;
     }
+
+    const user = data.user;
+
+    // check profile exists
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .single();
+
+    // if not exists → create profile
+    if(!profile){
+      await supabase.from("profiles").insert({
+        id: user.id,
+        email: user.email,
+        username: username
+      });
+    }
+
+    window.location.href="/dashboard";
   }
 
   return (
@@ -65,10 +95,17 @@ export default function Signup() {
       <h1>Create account</h1>
 
       <input 
+        placeholder="Username"
+        value={username}
+        onChange={(e)=>setUsername(e.target.value)}
+        style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
+      />
+
+      <input 
         placeholder="Email"
         value={email}
         onChange={(e)=>setEmail(e.target.value)}
-        style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
+        style={{marginTop:10,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
       <input 
@@ -79,7 +116,7 @@ export default function Signup() {
         style={{marginTop:10,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
-      {/* SIGNUP BUTTON */}
+      {/* SIGNUP */}
       <button 
         onClick={handleSignup}
         style={{marginTop:20,padding:12,background:"white",color:"black",width:280}}
@@ -87,7 +124,7 @@ export default function Signup() {
         Create account
       </button>
 
-      {/* LOGIN BUTTON */}
+      {/* LOGIN */}
       <button 
         onClick={handleLogin}
         style={{marginTop:10,padding:12,background:"#222",color:"white",width:280}}
