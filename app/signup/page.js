@@ -1,86 +1,66 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
-import { supabase } from "../lib/supabase";   // ⭐ FIXED PATH
 
-export default function Home() {
-  const [username, setUsername] = useState("");
+export default function Signup() {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  const [msg,setMsg]=useState("");
   const router = useRouter();
 
-  // auto login check
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
-        router.push("/dashboard");
+  async function handleSignup(){
+    const { error } = await supabase.auth.signUp({
+      email:email,
+      password:password,
+      options:{
+        emailRedirectTo:"https://linkarsha-next.vercel.app/dashboard"
       }
     });
-  }, []);
 
-  function handleContinue() {
-    if (!username) return;
-    router.push(`/signup?username=${username}`);
+    if(error){
+      setMsg(error.message);
+    }else{
+      setMsg("Signup success. Check your email.");
+    }
   }
 
   return (
     <div style={{
-      minHeight: "100vh",
-      background: "#0b0b12",
-      color: "white",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "column",
-      fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+      minHeight:"100vh",
+      background:"#0b0b12",
+      color:"white",
+      display:"flex",
+      alignItems:"center",
+      justifyContent:"center",
+      flexDirection:"column",
+      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
     }}>
-      
-      <h1 style={{
-        fontSize: "48px",
-        fontWeight: "700",
-        marginBottom: "20px",
-        letterSpacing: "-1px"
-      }}>
-        Claim your Linkarsha
-      </h1>
+      <h1>Create account</h1>
 
-      <p style={{
-        color: "#888",
-        marginBottom: "40px",
-        fontSize: "18px"
-      }}>
-        linkarsha.vercel.app/
-      </p>
+      <input 
+        placeholder="Email"
+        value={email}
+        onChange={(e)=>setEmail(e.target.value)}
+        style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
+      />
 
-      <div style={{ display: "flex", gap: "10px" }}>
-        <input
-          placeholder="yourname"
-          value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
-          style={{
-            padding: "14px 16px",
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "10px",
-            color: "white",
-            width: "220px",
-            fontSize: "16px"
-          }}
-        />
+      <input 
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e)=>setPassword(e.target.value)}
+        style={{marginTop:10,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
+      />
 
-        <button
-          onClick={handleContinue}
-          style={{
-            padding: "14px 20px",
-            background: "white",
-            color: "black",
-            border: "none",
-            borderRadius: "10px",
-            fontWeight: "600",
-            cursor: "pointer"
-          }}
-        >
-          Continue
-        </button>
-      </div>
+      <button 
+        onClick={handleSignup}
+        style={{marginTop:20,padding:12,background:"white",color:"black"}}
+      >
+        Create account
+      </button>
+
+      <p style={{marginTop:20}}>{msg}</p>
     </div>
   );
 }
