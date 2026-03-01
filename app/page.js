@@ -3,77 +3,75 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [username, setUsername] = useState("");
+  const [username,setUsername] = useState("");
   const router = useRouter();
 
-  function handleContinue() {
-    if (!username) return;
+  function handleClaim(){
+    if(!username) return;
     router.push(`/signup?username=${username}`);
+  }
+
+  function goLogin(){
+    router.push("/login");
   }
 
   return (
     <div style={{
-      minHeight: "100vh",
-      background: "#0b0b12",
-      color: "white",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "column",
-      fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+      minHeight:"100vh",
+      background:"#0b0b12",
+      color:"white",
+      display:"flex",
+      flexDirection:"column",
+      alignItems:"center",
+      justifyContent:"center",
+      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
     }}>
-      
-      <h1 style={{
-        fontSize: "48px",
-        fontWeight: "700",
-        marginBottom: "20px",
-        letterSpacing: "-1px"
-      }}>
+
+      <h1 style={{fontSize:48,fontWeight:700}}>
         Claim your Linkarsha
       </h1>
 
-      <p style={{
-        color: "#888",
-        marginBottom: "40px",
-        fontSize: "18px"
-      }}>
-        linkarsha.vercel.app/
-      </p>
-
-      <div style={{
-        display: "flex",
-        gap: "10px"
-      }}>
+      <div style={{marginTop:30,display:"flex",gap:10}}>
         <input
           placeholder="yourname"
           value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          onChange={(e)=>setUsername(e.target.value.toLowerCase())}
           style={{
-            padding: "14px 16px",
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "10px",
-            color: "white",
-            width: "220px",
-            fontSize: "16px"
+            padding:14,
+            width:220,
+            background:"#111",
+            border:"1px solid #222",
+            color:"white",
+            borderRadius:10
           }}
         />
 
         <button
-          onClick={handleContinue}
+          onClick={handleClaim}
           style={{
-            padding: "14px 20px",
-            background: "white",
-            color: "black",
-            border: "none",
-            borderRadius: "10px",
-            fontWeight: "600",
-            cursor: "pointer"
+            padding:14,
+            background:"white",
+            color:"black",
+            borderRadius:10,
+            fontWeight:600
           }}
         >
-          Continue
+          Get Started
         </button>
       </div>
+
+      <button
+        onClick={goLogin}
+        style={{
+          marginTop:25,
+          background:"transparent",
+          color:"#aaa",
+          border:"none",
+          cursor:"pointer"
+        }}
+      >
+        Sign In
+      </button>
 
     </div>
   );
