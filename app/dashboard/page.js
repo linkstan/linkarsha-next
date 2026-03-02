@@ -1,49 +1,47 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { useRouter } from "next/navigation";
 
-export default function Dashboard(){
+export default function Dashboard() {
   const [user,setUser]=useState(null);
-  const [username,setUsername]=useState("");
-  const [links,setLinks]=useState([]);
+  const [profile,setProfile]=useState(null);
+  const [loading,setLoading]=useState(true);
   const [title,setTitle]=useState("");
   const [url,setUrl]=useState("");
-  const router = useRouter();
+  const [links,setLinks]=useState([]);
 
   useEffect(()=>{
-    loadUser();
+    load();
   },[]);
 
-  async function loadUser(){
-    const { data:{session} } = await supabase.auth.getSession();
+  async function load(){
+    const { data:{ session } } = await supabase.auth.getSession();
 
     if(!session){
-      router.push("/login");
+      window.location.href="/login";
       return;
     }
 
     setUser(session.user);
 
-    // ✅ get username from profiles table
-    const { data: profile } = await supabase
+    // get profile
+    const { data: prof } = await supabase
       .from("profiles")
-      .select("username")
-      .eq("id", session.user.id)
+      .select("*")
+      .eq("id",session.user.id)
       .single();
 
-    if(profile){
-      setUsername(profile.username);
-    }
+    setProfile(prof);
 
     loadLinks(session.user.id);
+    setLoading(false);
   }
 
   async function loadLinks(uid){
     const { data } = await supabase
       .from("links")
       .select("*")
-      .eq("user_id", uid)
+      .eq("user_id",uid)
       .order("created_at",{ascending:false});
 
     if(data) setLinks(data);
@@ -63,69 +61,42 @@ export default function Dashboard(){
     loadLinks(user.id);
   }
 
-  // ✅ SIGN OUT
-  async function handleLogout(){
+  async function signout(){
     await supabase.auth.signOut();
-    router.push("/login");
+    window.location.href="/login";
+  }
+
+  if(loading){
+    return <div style={{color:"white",background:"#0b0b12",height:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>Loading...</div>
   }
 
   return (
-    <div style={{
-      minHeight:"100vh",
-      background:"#0b0b12",
-      color:"white",
-      padding:40
-    }}>
+    <div style={{background:"#0b0b12",minHeight:"100vh",color:"white",padding:40}}>
       <h1>Dashboard</h1>
 
-      {username && (
-        <p style={{opacity:0.6}}>
-          Public page: linkarsha-next.vercel.app/{username}
-        </p>
-      )}
+      <p>@{profile?.username}</p>
+      <p style={{opacity:0.6}}>{user?.email}</p>
 
-      <button
-        onClick={handleLogout}
-        style={{
-          marginTop:10,
-          padding:8,
-          background:"#222",
-          color:"white",
-          border:"1px solid #333"
-        }}
-      >
-        Sign Out
-      </button>
+      <p style={{marginTop:10}}>
+        Public page:  
+        <a href={`/${profile?.username}`} target="_blank" style={{color:"cyan"}}>
+          linkarsha-next.vercel.app/{profile?.username}
+        </a>
+      </p>
 
-      <h3 style={{marginTop:30}}>Add Link</h3>
+      <button onClick={signout} style={{marginTop:10}}>Sign out</button>
 
-      <input
-        placeholder="Title"
-        value={title}
-        onChange={(e)=>setTitle(e.target.value)}
-        style={{marginTop:10,padding:12,width:300,background:"#111",border:"1px solid #222",color:"white"}}
-      />
+      <h3 style={{marginTop:40}}>Add link</h3>
 
-      <input
-        placeholder="URL"
-        value={url}
-        onChange={(e)=>setUrl(e.target.value)}
-        style={{marginTop:10,padding:12,width:300,background:"#111",border:"1px solid #222",color:"white"}}
-      />
+      <input placeholder="Title" value={title} onChange={(e)=>setTitle(e.target.value)} />
+      <input placeholder="URL" value={url} onChange={(e)=>setUrl(e.target.value)} />
 
-      <button
-        onClick={addLink}
-        style={{marginTop:15,padding:12,background:"white",color:"black"}}
-      >
-        Add
-      </button>
+      <button onClick={addLink}>Add</button>
 
-      <h3 style={{marginTop:40}}>Your Links</h3>
+      <h3 style={{marginTop:40}}>Your links</h3>
 
-      {links.map(link=>(
-        <div key={link.id} style={{marginTop:10}}>
-          {link.title}
-        </div>
+      {links.map(l=>(
+        <div key={l.id}>{l.title}</div>
       ))}
     </div>
   );
