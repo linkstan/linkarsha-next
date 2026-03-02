@@ -10,34 +10,22 @@ export default function Login(){
   const router = useRouter();
 
   async function handleLogin(){
+    if(!email || !password){
+      setMsg("Enter email & password");
+      return;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
     if(error){
-      setMsg("Invalid credentials");
+      setMsg("Wrong email or password");
       return;
     }
 
-    const user = data.user;
-
-    // Check if profile exists
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    // If not exists → create profile
-    if(!profile){
-      await supabase.from("profiles").insert({
-        id:user.id,
-        email:user.email,
-        username:email.split("@")[0] // temporary fallback
-      });
-    }
-
+    // after login → go dashboard
     router.push("/dashboard");
   }
 
@@ -49,7 +37,8 @@ export default function Login(){
       display:"flex",
       flexDirection:"column",
       alignItems:"center",
-      justifyContent:"center"
+      justifyContent:"center",
+      fontFamily:"-apple-system"
     }}>
       <h1>Login</h1>
 
