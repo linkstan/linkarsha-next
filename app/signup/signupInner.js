@@ -24,19 +24,19 @@ export default function SignupInner() {
       return;
     }
 
-    // check username
+    // Check username availability
     const { data: existing } = await supabase
       .from("profiles")
       .select("id")
       .eq("username", username)
-      .single();
+      .maybeSingle();
 
     if(existing){
-      setMsg("Username not available");
+      setMsg("Username already taken");
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options:{
@@ -48,13 +48,6 @@ export default function SignupInner() {
       setMsg(error.message);
       return;
     }
-
-    // create profile row
-    await supabase.from("profiles").insert({
-      id:data.user.id,
-      email:data.user.email,
-      username:username
-    });
 
     setMsg("Check email → confirm → then login");
   }
@@ -105,7 +98,7 @@ export default function SignupInner() {
         onClick={()=>router.push("/login")}
         style={{marginTop:15,background:"transparent",color:"#aaa",border:"none"}}
       >
-        Already have account? Login
+        Already have an account? Login
       </button>
 
       <p style={{marginTop:20,color:"#aaa"}}>{msg}</p>
