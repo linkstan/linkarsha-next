@@ -8,47 +8,90 @@ export default function SignupInner() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  const [username,setUsername]=useState("");
-  const [msg,setMsg]=useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [username,setUsername] = useState("");
+  const [msg,setMsg] = useState("");
+  const [usernameAvailable,setUsernameAvailable] = useState(null); 
+  const [loading,setLoading] = useState(false);
 
-  // get username from homepage
+  // -----------------------------
+  // USERNAME CHECK FUNCTION
+  // -----------------------------
+  async function checkUsername(u){
+    if(!u){
+      setUsernameAvailable(null);
+      setMsg("");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("username",u)
+      .maybeSingle();
+
+    if(error){
+      setMsg("Error checking username");
+      setUsernameAvailable(false);
+      return;
+    }
+
+    if(data){
+      setUsernameAvailable(false);
+      setMsg("❌ Username already taken");
+    } else {
+      setUsernameAvailable(true);
+      setMsg("✅ Username available");
+    }
+  }
+
+  // -----------------------------
+  // GET USERNAME FROM HOMEPAGE
+  // -----------------------------
   useEffect(()=>{
     const u = params.get("username");
-    if(u) setUsername(u.toLowerCase());
+    if(u){
+      const clean = u.toLowerCase();
+      setUsername(clean);
+      checkUsername(clean);
+    }
   },[params]);
 
-  // LIVE username check (instant green/red)
+  // -----------------------------
+  // LIVE CHECK WHEN TYPING
+  // -----------------------------
   useEffect(()=>{
-    if(!username) return;
-
-    const check = async()=>{
-      const { data } = await supabase
-        .from("profiles")
-        .select("username")
-        .eq("username",username)
-        .maybeSingle();
-
-      if(data){
-        setMsg("❌ Username already taken");
-      } else {
-        setMsg("✅ Username available");
+    const timeout = setTimeout(()=>{
+      if(username){
+        checkUsername(username);
       }
-    };
+    },400);
 
-    const t=setTimeout(check,400);
-    return ()=>clearTimeout(t);
-
+    return ()=>clearTimeout(timeout);
   },[username]);
 
+  // -----------------------------
   // SIGNUP
+  // -----------------------------
   async function handleSignup(){
-    if(!email || !password || !username){
+
+    if(!username || !email || !password){
       setMsg("Fill all fields");
       return;
     }
 
+    if(usernameAvailable === false){
+      setMsg("Choose another username");
+      return;
+    }
+
+    if(usernameAvailable === null){
+      setMsg("Checking username...");
+      return;
+    }
+
+    setLoading(true);
     setMsg("Creating account...");
 
     const { data, error } = await supabase.auth.signUp({
@@ -60,22 +103,31 @@ export default function SignupInner() {
     });
 
     if(error){
+      setLoading(false);
       setMsg(error.message);
       return;
     }
 
-    const user=data.user;
+    const user = data.user;
 
-    // create profile row
     if(user){
-      await supabase.from("profiles").insert({
-        id:user.id,
-        email:email,
-        username:username
-      });
+      const { error:profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id:user.id,
+          email:email,
+          username:username
+        });
+
+      if(profileError){
+        setLoading(false);
+        setMsg("Error saving profile");
+        return;
+      }
     }
 
-    setMsg("📩 Confirmation email sent. Check inbox then login.");
+    setLoading(false);
+    setMsg("📩 Confirmation email sent. Check inbox & spam.");
   }
 
   function goLogin(){
@@ -119,9 +171,17 @@ export default function SignupInner() {
 
       <button
         onClick={handleSignup}
-        style={{marginTop:20,padding:12,width:280,background:"white",color:"black"}}
+        disabled={loading}
+        style={{
+          marginTop:20,
+          padding:12,
+          width:280,
+          background: loading ? "#444" : "white",
+          color: loading ? "#aaa" : "black",
+          cursor: loading ? "not-allowed" : "pointer"
+        }}
       >
-        Create account
+        {loading ? "Please wait..." : "Create account"}
       </button>
 
       <button
