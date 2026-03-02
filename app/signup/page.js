@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -11,8 +11,19 @@ export default function Signup() {
   const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
 
-  // 🔵 CHECK USERNAME LIVE
-  async function checkUsername(u){
+  // 🟢 AUTO FILL USERNAME FROM HOMEPAGE URL
+  useEffect(()=>{
+    const params = new URLSearchParams(window.location.search);
+    const u = params.get("username");
+
+    if(u){
+      setUsername(u.toLowerCase());
+      checkUsername(u.toLowerCase(), true); // auto check
+    }
+  },[]);
+
+  // 🟢 CHECK USERNAME
+  async function checkUsername(u, auto=false){
     if(!u) return true;
 
     const { data } = await supabase
@@ -25,7 +36,7 @@ export default function Signup() {
       setMsg("❌ Username already taken");
       return false;
     }else{
-      setMsg("✅ Username available");
+      if(auto) setMsg("✅ Username available");
       return true;
     }
   }
@@ -39,6 +50,8 @@ export default function Signup() {
 
     const ok = await checkUsername(username);
     if(!ok) return;
+
+    setMsg("Creating account...");
 
     const { data, error } = await supabase.auth.signUp({
       email: email,
@@ -55,23 +68,15 @@ export default function Signup() {
 
     const user = data.user;
 
-    // create profile row with username
     if(user){
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert({
-          id:user.id,
-          email:email,
-          username:username
-        });
-
-      if(profileError){
-        setMsg(profileError.message);
-        return;
-      }
+      await supabase.from("profiles").insert({
+        id:user.id,
+        email:email,
+        username:username
+      });
     }
 
-    setMsg("📩 Check email → confirm → then LOGIN");
+    setMsg("📩 Confirmation email sent. Check inbox → then login.");
   }
 
   function goLogin(){
@@ -95,8 +100,9 @@ export default function Signup() {
         placeholder="Username (unique)"
         value={username}
         onChange={(e)=>{
-          setUsername(e.target.value.toLowerCase());
-          checkUsername(e.target.value.toLowerCase());
+          const val=e.target.value.toLowerCase();
+          setUsername(val);
+          checkUsername(val,true);
         }}
         style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
