@@ -1,32 +1,25 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "../lib/supabase";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const router = useRouter();
-  const params = useSearchParams();
 
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
 
-  // if came from homepage with username
-  useEffect(()=>{
-    const u = params.get("username");
-    if(u) setUsername(u);
-  },[]);
-
   // 🔵 CHECK USERNAME LIVE
   async function checkUsername(u){
-    if(!u) return;
+    if(!u) return true;
 
     const { data } = await supabase
       .from("profiles")
       .select("username")
       .eq("username",u)
-      .single();
+      .maybeSingle();
 
     if(data){
       setMsg("❌ Username already taken");
@@ -48,8 +41,8 @@ export default function Signup() {
     if(!ok) return;
 
     const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
+      email: email,
+      password: password,
       options:{
         emailRedirectTo:"https://linkarsha-next.vercel.app/login"
       }
@@ -60,20 +53,27 @@ export default function Signup() {
       return;
     }
 
-    // create profile row
     const user = data.user;
+
+    // create profile row with username
     if(user){
-      await supabase.from("profiles").insert({
-        id:user.id,
-        email:email,
-        username:username
-      });
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id:user.id,
+          email:email,
+          username:username
+        });
+
+      if(profileError){
+        setMsg(profileError.message);
+        return;
+      }
     }
 
     setMsg("📩 Check email → confirm → then LOGIN");
   }
 
-  // 🟢 LOGIN BUTTON
   function goLogin(){
     router.push("/login");
   }
@@ -92,11 +92,11 @@ export default function Signup() {
       <h1>Create account</h1>
 
       <input
-        placeholder="Username"
+        placeholder="Username (unique)"
         value={username}
         onChange={(e)=>{
-          setUsername(e.target.value);
-          checkUsername(e.target.value);
+          setUsername(e.target.value.toLowerCase());
+          checkUsername(e.target.value.toLowerCase());
         }}
         style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
