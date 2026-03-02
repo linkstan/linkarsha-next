@@ -1,45 +1,50 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Signup() {
   const router = useRouter();
+  const params = useSearchParams();
 
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const [username,setUsername]=useState("");
   const [msg,setMsg]=useState("");
+  const [checking,setChecking]=useState(false);
 
-  // 🟢 AUTO FILL USERNAME FROM HOMEPAGE URL
+  // username from homepage
   useEffect(()=>{
-    const params = new URLSearchParams(window.location.search);
     const u = params.get("username");
-
-    if(u){
-      setUsername(u.toLowerCase());
-      checkUsername(u.toLowerCase(), true); // auto check
-    }
+    if(u) setUsername(u.toLowerCase());
   },[]);
 
-  // 🟢 CHECK USERNAME
-  async function checkUsername(u, auto=false){
-    if(!u) return true;
+  // live username check
+  useEffect(()=>{
+    if(!username) return;
 
-    const { data } = await supabase
-      .from("profiles")
-      .select("username")
-      .eq("username",u)
-      .maybeSingle();
+    const check = async()=>{
+      setChecking(true);
 
-    if(data){
-      setMsg("❌ Username already taken");
-      return false;
-    }else{
-      if(auto) setMsg("✅ Username available");
-      return true;
-    }
-  }
+      const { data } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("username",username)
+        .maybeSingle();
+
+      if(data){
+        setMsg("❌ Username already taken");
+      }else{
+        setMsg("✅ Username available");
+      }
+
+      setChecking(false);
+    };
+
+    const t = setTimeout(check,500);
+    return ()=>clearTimeout(t);
+
+  },[username]);
 
   // 🔵 SIGNUP
   async function handleSignup(){
@@ -48,14 +53,11 @@ export default function Signup() {
       return;
     }
 
-    const ok = await checkUsername(username);
-    if(!ok) return;
-
     setMsg("Creating account...");
 
     const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
       options:{
         emailRedirectTo:"https://linkarsha-next.vercel.app/login"
       }
@@ -69,14 +71,21 @@ export default function Signup() {
     const user = data.user;
 
     if(user){
-      await supabase.from("profiles").insert({
-        id:user.id,
-        email:email,
-        username:username
-      });
+      const { error:profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id:user.id,
+          email:email,
+          username:username
+        });
+
+      if(profileError){
+        setMsg("Error saving username");
+        return;
+      }
     }
 
-    setMsg("📩 Confirmation email sent. Check inbox → then login.");
+    setMsg("📩 Confirmation email sent. Check inbox.");
   }
 
   function goLogin(){
@@ -97,13 +106,9 @@ export default function Signup() {
       <h1>Create account</h1>
 
       <input
-        placeholder="Username (unique)"
+        placeholder="Username"
         value={username}
-        onChange={(e)=>{
-          const val=e.target.value.toLowerCase();
-          setUsername(val);
-          checkUsername(val,true);
-        }}
+        onChange={(e)=>setUsername(e.target.value.toLowerCase())}
         style={{marginTop:20,padding:12,width:280,background:"#111",border:"1px solid #222",color:"white"}}
       />
 
