@@ -24,7 +24,6 @@ export default function Dashboard() {
 
     setUser(session.user);
 
-    // get profile
     const { data: prof } = await supabase
       .from("profiles")
       .select("*")
@@ -32,7 +31,6 @@ export default function Dashboard() {
       .single();
 
     setProfile(prof);
-
     loadLinks(session.user.id);
     setLoading(false);
   }
@@ -67,37 +65,183 @@ export default function Dashboard() {
   }
 
   if(loading){
-    return <div style={{color:"white",background:"#0b0b12",height:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>Loading...</div>
+    return (
+      <div style={{
+        background:"#0b0b12",
+        color:"white",
+        height:"100vh",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center"
+      }}>
+        Loading...
+      </div>
+    );
   }
 
   return (
-    <div style={{background:"#0b0b12",minHeight:"100vh",color:"white",padding:40}}>
-      <h1>Dashboard</h1>
+    <div style={{
+      display:"flex",
+      minHeight:"100vh",
+      background:"#0b0b12",
+      color:"white",
+      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+    }}>
 
-      <p>@{profile?.username}</p>
-      <p style={{opacity:0.6}}>{user?.email}</p>
+      {/* SIDEBAR (Desktop only) */}
+      <div style={{
+        width:260,
+        padding:30,
+        borderRight:"1px solid #1c1c25",
+        display:"none"
+      }} className="sidebar-desktop">
 
-      <p style={{marginTop:10}}>
-        Public page:  
-        <a href={`/${profile?.username}`} target="_blank" style={{color:"cyan"}}>
-          linkarsha-next.vercel.app/{profile?.username}
-        </a>
-      </p>
+        <div style={{marginBottom:20}}>
+          <div style={{
+            width:60,
+            height:60,
+            borderRadius:"50%",
+            background:"#222",
+            marginBottom:10
+          }} />
+          <strong>@{profile?.username}</strong>
+        </div>
 
-      <button onClick={signout} style={{marginTop:10}}>Sign out</button>
+        <hr style={{opacity:0.2}}/>
 
-      <h3 style={{marginTop:40}}>Add link</h3>
+        <div style={{marginTop:20,lineHeight:2}}>
+          <div>My Linkarsh</div>
+          <div>Analytics</div>
+          <div>Tools</div>
+          <div>Get Verified</div>
+        </div>
 
-      <input placeholder="Title" value={title} onChange={(e)=>setTitle(e.target.value)} />
-      <input placeholder="URL" value={url} onChange={(e)=>setUrl(e.target.value)} />
+        <hr style={{opacity:0.2,marginTop:20}}/>
 
-      <button onClick={addLink}>Add</button>
+        <div style={{marginTop:20,lineHeight:2}}>
+          <div>Referrals</div>
+          <div>Settings</div>
+          <div style={{cursor:"pointer"}} onClick={signout}>Logout</div>
+        </div>
 
-      <h3 style={{marginTop:40}}>Your links</h3>
+      </div>
 
-      {links.map(l=>(
-        <div key={l.id}>{l.title}</div>
-      ))}
+      {/* CENTER SECTION */}
+      <div style={{
+        flex:1,
+        padding:40,
+        maxWidth:600,
+        margin:"0 auto"
+      }}>
+
+        <h2>@{profile?.username}</h2>
+        <p style={{opacity:0.6}}>{user?.email}</p>
+
+        <p style={{marginTop:10}}>
+          Public page:  
+          <a 
+            href={`/${profile?.username}`} 
+            target="_blank"
+            style={{color:"cyan",marginLeft:5}}
+          >
+            linkarsha-next.vercel.app/{profile?.username}
+          </a>
+        </p>
+
+        <h3 style={{marginTop:40}}>Add link</h3>
+
+        <input
+          placeholder="Title"
+          value={title}
+          onChange={(e)=>setTitle(e.target.value)}
+          style={{
+            width:"100%",
+            padding:12,
+            marginTop:10,
+            background:"#111",
+            border:"1px solid #222",
+            color:"white"
+          }}
+        />
+
+        <input
+          placeholder="URL"
+          value={url}
+          onChange={(e)=>setUrl(e.target.value)}
+          style={{
+            width:"100%",
+            padding:12,
+            marginTop:10,
+            background:"#111",
+            border:"1px solid #222",
+            color:"white"
+          }}
+        />
+
+        <button
+          onClick={addLink}
+          style={{
+            marginTop:15,
+            padding:12,
+            background:"white",
+            color:"black",
+            width:"100%"
+          }}
+        >
+          Add
+        </button>
+
+        <h3 style={{marginTop:40}}>Your links</h3>
+
+        {links.map(l=>(
+          <div key={l.id} style={{
+            background:"#111",
+            padding:15,
+            borderRadius:10,
+            marginTop:10
+          }}>
+            {l.title}
+          </div>
+        ))}
+
+      </div>
+
+      {/* PHONE PREVIEW (Desktop only) */}
+      <div style={{
+        width:350,
+        padding:40,
+        borderLeft:"1px solid #1c1c25",
+        display:"none"
+      }} className="preview-desktop">
+
+        <div style={{
+          width:260,
+          height:520,
+          borderRadius:30,
+          background:"#111",
+          margin:"0 auto",
+          padding:20,
+          overflowY:"auto"
+        }}>
+
+          <h3 style={{textAlign:"center"}}>@{profile?.username}</h3>
+
+          {links.map(l=>(
+            <div key={l.id} style={{
+              background:"#1a1a25",
+              padding:12,
+              borderRadius:10,
+              marginTop:10,
+              textAlign:"center"
+            }}>
+              {l.title}
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
