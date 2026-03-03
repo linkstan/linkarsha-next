@@ -60,7 +60,12 @@ export default async function PublicProfile({ params }) {
           links.map(link=>(
             <a
   key={link.id}
-  href={link.url.startsWith("http") ? link.url : `https://${link.url}`}
+  href={
+    link.url.startsWith("http://") ||
+    link.url.startsWith("https://")
+      ? link.url
+      : `https://${link.url}`
+  }
   target="_blank"
   rel="noopener noreferrer"
   style={{
