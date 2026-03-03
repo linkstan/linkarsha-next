@@ -110,14 +110,7 @@ export default function SignupInner() {
 
     const user = data.user;
 
-    if(user){
-      const { error:profileError } = await supabase
-        .from("profiles")
-        .insert({
-          id:user.id,
-          email:email,
-          username:username
-        });
+    setMsg("📩 Confirmation email sent. After confirming, login to continue.");
 
       if(profileError){
         setLoading(false);
