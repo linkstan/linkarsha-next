@@ -176,12 +176,36 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* MOBILE NAV */}
+      {/* MOBILE NAV WITH REAL SVG ICONS */}
       <div className="mobile-nav">
-        <div>🏠</div>
-        <div>📊</div>
-        <div>🛠</div>
-        <div onClick={signout}>☰</div>
+
+        <div className="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <path d="M3 12l9-9 9 9"/>
+            <path d="M9 21V9h6v12"/>
+          </svg>
+        </div>
+
+        <div className="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <path d="M3 3v18h18"/>
+            <path d="M7 13l4-4 4 4 4-6"/>
+          </svg>
+        </div>
+
+        <div className="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+
+        <div className="nav-item logout-icon" onClick={signout}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" strokeWidth="2">
+            <path d="M16 17l5-5-5-5"/>
+            <path d="M21 12H9"/>
+          </svg>
+        </div>
+
       </div>
 
       <style jsx>{`
@@ -236,6 +260,7 @@ export default function Dashboard() {
 
         .menu-item:hover{
           opacity:1;
+          transform:translateX(4px);
         }
 
         .menu-item.active{
@@ -278,6 +303,12 @@ export default function Dashboard() {
           padding:25px;
           border-radius:16px;
           margin-bottom:30px;
+          transition:0.3s;
+        }
+
+        .card:hover{
+          transform:translateY(-3px);
+          box-shadow:0 10px 25px rgba(0,0,0,0.4);
         }
 
         .input{
@@ -298,6 +329,11 @@ export default function Dashboard() {
           width:100%;
           border-radius:8px;
           font-weight:600;
+          transition:0.2s;
+        }
+
+        .primary-btn:hover{
+          transform:translateY(-2px);
         }
 
         .link-card{
@@ -315,7 +351,6 @@ export default function Dashboard() {
           border:none;
           color:#ff4d4d;
           cursor:pointer;
-          font-size:16px;
         }
 
         .preview{
@@ -357,8 +392,23 @@ export default function Dashboard() {
           background:#111;
           display:flex;
           justify-content:space-around;
-          padding:12px 0;
+          padding:14px 0;
           border-top:1px solid #1c1c25;
+        }
+
+        .nav-item{
+          width:28px;
+          height:28px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          opacity:0.8;
+          transition:0.2s;
+        }
+
+        .nav-item:hover{
+          opacity:1;
+          transform:translateY(-2px);
         }
 
         @media(min-width:1024px){
