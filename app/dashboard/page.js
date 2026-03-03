@@ -10,13 +10,10 @@ export default function Dashboard() {
   const [url,setUrl]=useState("");
   const [links,setLinks]=useState([]);
 
-  useEffect(()=>{
-    load();
-  },[]);
+  useEffect(()=>{ load(); },[]);
 
   async function load(){
     const { data:{ session } } = await supabase.auth.getSession();
-
     if(!session){
       window.location.href="/login";
       return;
@@ -41,7 +38,6 @@ export default function Dashboard() {
       .select("*")
       .eq("user_id",uid)
       .order("created_at",{ascending:false});
-
     if(data) setLinks(data);
   }
 
@@ -80,36 +76,21 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{
-      display:"flex",
-      minHeight:"100vh",
-      background:"#0b0b12",
-      color:"white",
-      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
-    }}>
+    <div className="dashboard-wrapper">
 
-      {/* SIDEBAR (Desktop only) */}
-      <div style={{
-        width:260,
-        padding:30,
-        borderRight:"1px solid #1c1c25",
-        display:"none"
-      }} className="sidebar-desktop">
-
-        <div style={{marginBottom:20}}>
+      {/* SIDEBAR */}
+      <div className="sidebar">
+        <div style={{marginBottom:30}}>
           <div style={{
-            width:60,
-            height:60,
-            borderRadius:"50%",
-            background:"#222",
-            marginBottom:10
+            width:60,height:60,borderRadius:"50%",
+            background:"#222",marginBottom:10
           }} />
           <strong>@{profile?.username}</strong>
         </div>
 
         <hr style={{opacity:0.2}}/>
 
-        <div style={{marginTop:20,lineHeight:2}}>
+        <div className="menu">
           <div>My Linkarsh</div>
           <div>Analytics</div>
           <div>Tools</div>
@@ -118,29 +99,23 @@ export default function Dashboard() {
 
         <hr style={{opacity:0.2,marginTop:20}}/>
 
-        <div style={{marginTop:20,lineHeight:2}}>
+        <div className="menu">
           <div>Referrals</div>
           <div>Settings</div>
           <div style={{cursor:"pointer"}} onClick={signout}>Logout</div>
         </div>
-
       </div>
 
-      {/* CENTER SECTION */}
-      <div style={{
-        flex:1,
-        padding:40,
-        maxWidth:600,
-        margin:"0 auto"
-      }}>
+      {/* CENTER */}
+      <div className="center">
 
         <h2>@{profile?.username}</h2>
         <p style={{opacity:0.6}}>{user?.email}</p>
 
         <p style={{marginTop:10}}>
-          Public page:  
+          Public page:
           <a 
-            href={`/${profile?.username}`} 
+            href={`/${profile?.username}`}
             target="_blank"
             style={{color:"cyan",marginLeft:5}}
           >
@@ -154,93 +129,124 @@ export default function Dashboard() {
           placeholder="Title"
           value={title}
           onChange={(e)=>setTitle(e.target.value)}
-          style={{
-            width:"100%",
-            padding:12,
-            marginTop:10,
-            background:"#111",
-            border:"1px solid #222",
-            color:"white"
-          }}
+          className="input"
         />
 
         <input
           placeholder="URL"
           value={url}
           onChange={(e)=>setUrl(e.target.value)}
-          style={{
-            width:"100%",
-            padding:12,
-            marginTop:10,
-            background:"#111",
-            border:"1px solid #222",
-            color:"white"
-          }}
+          className="input"
         />
 
-        <button
-          onClick={addLink}
-          style={{
-            marginTop:15,
-            padding:12,
-            background:"white",
-            color:"black",
-            width:"100%"
-          }}
-        >
+        <button onClick={addLink} className="primary-btn">
           Add
         </button>
 
         <h3 style={{marginTop:40}}>Your links</h3>
 
         {links.map(l=>(
-          <div key={l.id} style={{
-            background:"#111",
-            padding:15,
-            borderRadius:10,
-            marginTop:10
-          }}>
+          <div key={l.id} className="link-card">
             {l.title}
           </div>
         ))}
-
       </div>
 
-      {/* PHONE PREVIEW (Desktop only) */}
-      <div style={{
-        width:350,
-        padding:40,
-        borderLeft:"1px solid #1c1c25",
-        display:"none"
-      }} className="preview-desktop">
-
-        <div style={{
-          width:260,
-          height:520,
-          borderRadius:30,
-          background:"#111",
-          margin:"0 auto",
-          padding:20,
-          overflowY:"auto"
-        }}>
-
+      {/* PREVIEW */}
+      <div className="preview">
+        <div className="phone">
           <h3 style={{textAlign:"center"}}>@{profile?.username}</h3>
 
           {links.map(l=>(
-            <div key={l.id} style={{
-              background:"#1a1a25",
-              padding:12,
-              borderRadius:10,
-              marginTop:10,
-              textAlign:"center"
-            }}>
+            <div key={l.id} className="phone-link">
               {l.title}
             </div>
           ))}
-
         </div>
-
       </div>
+
+      <style jsx>{`
+        .dashboard-wrapper{
+          display:flex;
+          min-height:100vh;
+          background:#0b0b12;
+          color:white;
+          font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+        }
+
+        .sidebar{
+          width:260px;
+          padding:30px;
+          border-right:1px solid #1c1c25;
+          display:none;
+        }
+
+        .menu div{
+          margin-top:12px;
+          cursor:pointer;
+        }
+
+        .center{
+          flex:1;
+          padding:40px;
+          max-width:600px;
+          margin:0 auto;
+        }
+
+        .input{
+          width:100%;
+          padding:12px;
+          margin-top:10px;
+          background:#111;
+          border:1px solid #222;
+          color:white;
+        }
+
+        .primary-btn{
+          margin-top:15px;
+          padding:12px;
+          background:white;
+          color:black;
+          width:100%;
+        }
+
+        .link-card{
+          background:#111;
+          padding:15px;
+          border-radius:10px;
+          margin-top:10px;
+        }
+
+        .preview{
+          width:350px;
+          padding:40px;
+          border-left:1px solid #1c1c25;
+          display:none;
+        }
+
+        .phone{
+          width:260px;
+          height:520px;
+          border-radius:30px;
+          background:#111;
+          margin:0 auto;
+          padding:20px;
+          overflow-y:auto;
+        }
+
+        .phone-link{
+          background:#1a1a25;
+          padding:12px;
+          border-radius:10px;
+          margin-top:10px;
+          text-align:center;
+        }
+
+        @media(min-width:1024px){
+          .sidebar{ display:block; }
+          .preview{ display:block; }
+        }
+      `}</style>
 
     </div>
   );
