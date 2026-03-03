@@ -58,10 +58,25 @@ export default async function PublicProfile({ params }) {
       <div style={{marginTop:40,width:320}}>
         {links?.length > 0 ? (
           links.map(link=>(
-            <a 
-              key={link.id}
-              href={link.url}
-              target="_blank"
+            <a
+  key={link.id}
+  href={link.url.startsWith("http") ? link.url : `https://${link.url}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display:"block",
+    background:"#111",
+    padding:"16px",
+    marginTop:"12px",
+    borderRadius:"12px",
+    textAlign:"center",
+    textDecoration:"none",
+    color:"white",
+    fontWeight:"600"
+  }}
+>
+  {link.title}
+</a>
               style={{
                 display:"block",
                 background:"#111",
