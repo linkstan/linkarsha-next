@@ -4,16 +4,13 @@ import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function Login(){
+
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const [msg,setMsg]=useState("");
   const router = useRouter();
 
   async function handleLogin(){
-    if(!email || !password){
-      setMsg("Enter email & password");
-      return;
-    }
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -21,11 +18,31 @@ export default function Login(){
     });
 
     if(error){
-      setMsg("Wrong email or password");
+      setMsg("Invalid credentials");
       return;
     }
 
-    // after login → go dashboard
+    const user = data.user;
+
+    // Check if profile exists
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    // If profile does NOT exist → create it
+    if(!profile){
+
+      const usernameFromEmail = email.split("@")[0];
+
+      await supabase.from("profiles").insert({
+        id:user.id,
+        email:user.email,
+        username:usernameFromEmail
+      });
+    }
+
     router.push("/dashboard");
   }
 
@@ -37,8 +54,7 @@ export default function Login(){
       display:"flex",
       flexDirection:"column",
       alignItems:"center",
-      justifyContent:"center",
-      fontFamily:"-apple-system"
+      justifyContent:"center"
     }}>
       <h1>Login</h1>
 
