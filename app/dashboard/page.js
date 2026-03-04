@@ -340,10 +340,15 @@ border-radius:50%;
 background:#222;
 overflow:hidden;
 margin:auto;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .avatar img{
 width:100%;
+height:100%;
+object-fit:cover;
 }
 
 .avatar.big{
