@@ -103,7 +103,7 @@ const file=e.target.files[0];
 
 if(!file) return;
 
-const path=`avatars/${user.id}`;
+const path=`${user.id}`;
 
 await supabase.storage
 .from("avatars")
@@ -119,6 +119,16 @@ await supabase
 .eq("id",user.id);
 
 setProfile({...profile,avatar:data.publicUrl});
+}
+
+async function removeAvatar(){
+
+await supabase
+.from("profiles")
+.update({avatar:null})
+.eq("id",user.id);
+
+setProfile({...profile,avatar:null});
 }
 
 async function signout(){
@@ -151,15 +161,36 @@ return(
 
 <div className="sidebar-profile">
 
+<div className="avatar-wrapper">
+
 <div className="avatar">
-{profile?.avatar ?
-<img src={profile.avatar}/> :
-null}
+
+<img src={profile?.avatar || "/default-avatar.png"} />
+
+<label className="avatar-upload">
+
++
+
+<input
+type="file"
+accept="image/*"
+onChange={uploadAvatar}
+hidden
+/>
+
+</label>
+
 </div>
 
-<div>@{profile?.username}</div>
+</div>
 
-<input type="file" onChange={uploadAvatar}/>
+{profile?.avatar && (
+<div className="remove-avatar" onClick={removeAvatar}>
+Remove current picture
+</div>
+)}
+
+<div>@{profile?.username}</div>
 
 </div>
 
@@ -192,17 +223,22 @@ Logout
 <div className="mobile-header">
 
 <div className="avatar big">
-{profile?.avatar && (
-<img
-src={profile.avatar}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover",
-borderRadius:"50%"
-}}
+
+<img src={profile?.avatar || "/default-avatar.png"} />
+
+<label className="avatar-upload big">
+
++
+
+<input
+type="file"
+accept="image/*"
+onChange={uploadAvatar}
+hidden
 />
-)}
+
+</label>
+
 </div>
 
 <div className="username">@{profile?.username}</div>
@@ -276,7 +312,13 @@ Delete
 <div className="phone">
 
 <div className="phone-user">
+
+<div className="avatar preview-avatar">
+<img src={profile?.avatar || "/default-avatar.png"} />
+</div>
+
 @{profile?.username}
+
 </div>
 
 {links.map(l=>(
@@ -323,7 +365,7 @@ font-family:-apple-system;
 
 .sidebar{
 width:260px;
-padding:30px;
+padding:20px 20px 20px 5px;
 border-right:1px solid #1c1c25;
 display:none;
 }
@@ -333,16 +375,21 @@ text-align:center;
 margin-bottom:20px;
 }
 
+/* avatar */
+
+.avatar-wrapper{
+position:relative;
+width:70px;
+height:70px;
+margin:auto;
+}
+
 .avatar{
 width:70px;
 height:70px;
 border-radius:50%;
 background:#222;
 overflow:hidden;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:center;
 }
 
 .avatar img{
@@ -355,7 +402,38 @@ object-fit:cover;
 width:100px;
 height:100px;
 margin:auto;
+position:relative;
 }
+
+.avatar-upload{
+position:absolute;
+top:-5px;
+right:-5px;
+width:26px;
+height:26px;
+border-radius:50%;
+background:white;
+color:black;
+font-weight:bold;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.avatar-upload.big{
+top:5px;
+right:5px;
+}
+
+.remove-avatar{
+color:#ff4d4d;
+font-size:12px;
+margin-top:6px;
+cursor:pointer;
+}
+
+/* menu */
 
 .menu div{
 margin:10px 0;
@@ -448,6 +526,18 @@ border-radius:30px;
 padding:20px;
 overflow:auto;
 margin:auto;
+}
+
+.phone-user{
+text-align:center;
+margin-bottom:15px;
+}
+
+.preview-avatar{
+width:70px;
+height:70px;
+margin:auto;
+margin-bottom:10px;
 }
 
 .phone-link{
