@@ -226,16 +226,7 @@ Logout
 
 <img src={profile?.avatar || "/default-avatar.png"} />
 
-<label className="avatar-upload big">
-
-+
-
-<input
-type="file"
-accept="image/*"
-onChange={uploadAvatar}
-hidden
-/>
+</div>
 
 </label>
 
