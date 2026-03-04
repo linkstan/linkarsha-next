@@ -192,9 +192,17 @@ Logout
 <div className="mobile-header">
 
 <div className="avatar big">
-{profile?.avatar ?
-<img src={profile.avatar}/> :
-null}
+{profile?.avatar && (
+<img
+src={profile.avatar}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover",
+borderRadius:"50%"
+}}
+/>
+)}
 </div>
 
 <div className="username">@{profile?.username}</div>
