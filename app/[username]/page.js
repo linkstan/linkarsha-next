@@ -6,6 +6,7 @@ const supabase = createClient(
 );
 
 export default async function PublicProfile({ params }) {
+
   const username = params.username;
 
   const { data: profile } = await supabase
@@ -46,7 +47,27 @@ export default async function PublicProfile({ params }) {
       flexDirection:"column",
       fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
     }}>
-      
+
+      {/* AVATAR */}
+
+      <div style={{
+        width:110,
+        height:110,
+        borderRadius:"50%",
+        overflow:"hidden",
+        background:"#222",
+        marginBottom:20
+      }}>
+        <img
+          src={profile.avatar || "/default-avatar.png"}
+          style={{
+            width:"100%",
+            height:"100%",
+            objectFit:"cover"
+          }}
+        />
+      </div>
+
       <h1 style={{fontSize:"42px"}}>
         @{profile.username}
       </h1>
@@ -56,8 +77,11 @@ export default async function PublicProfile({ params }) {
       </p>
 
       <div style={{marginTop:40,width:320}}>
+
         {links?.length > 0 ? (
+
           links.map(link => (
+
             <a
               key={link.id}
               href={
@@ -82,12 +106,18 @@ export default async function PublicProfile({ params }) {
             >
               {link.title}
             </a>
+
           ))
+
         ) : (
+
           <div style={{opacity:0.5}}>No links yet</div>
+
         )}
+
       </div>
 
     </div>
   );
+
 }
