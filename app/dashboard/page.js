@@ -14,6 +14,7 @@ export default function Dashboard() {
 
   async function load(){
     const { data:{ session } } = await supabase.auth.getSession();
+
     if(!session){
       window.location.href="/login";
       return;
@@ -38,6 +39,7 @@ export default function Dashboard() {
       .select("*")
       .eq("user_id",uid)
       .order("created_at",{ascending:false});
+
     if(data) setLinks(data);
   }
 
@@ -176,7 +178,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* MOBILE NAV WITH REAL SVG ICONS */}
+      {/* MOBILE NAV */}
       <div className="mobile-nav">
 
         <div className="nav-item">
@@ -209,6 +211,7 @@ export default function Dashboard() {
       </div>
 
       <style jsx>{`
+
         .dashboard-wrapper{
           display:flex;
           min-height:100vh;
@@ -275,6 +278,7 @@ export default function Dashboard() {
         .center{
           flex:1;
           padding:40px;
+          padding-bottom:100px;
           max-width:700px;
           margin:0 auto;
         }
@@ -303,12 +307,6 @@ export default function Dashboard() {
           padding:25px;
           border-radius:16px;
           margin-bottom:30px;
-          transition:0.3s;
-        }
-
-        .card:hover{
-          transform:translateY(-3px);
-          box-shadow:0 10px 25px rgba(0,0,0,0.4);
         }
 
         .input{
@@ -329,11 +327,6 @@ export default function Dashboard() {
           width:100%;
           border-radius:8px;
           font-weight:600;
-          transition:0.2s;
-        }
-
-        .primary-btn:hover{
-          transform:translateY(-2px);
         }
 
         .link-card{
@@ -389,11 +382,15 @@ export default function Dashboard() {
           bottom:0;
           left:0;
           right:0;
-          background:#111;
+          height:70px;
+          background:rgba(17,17,25,0.95);
+          backdrop-filter:blur(10px);
           display:flex;
           justify-content:space-around;
-          padding:14px 0;
+          align-items:center;
           border-top:1px solid #1c1c25;
+          z-index:9999;
+          padding-bottom:env(safe-area-inset-bottom);
         }
 
         .nav-item{
@@ -403,12 +400,6 @@ export default function Dashboard() {
           align-items:center;
           justify-content:center;
           opacity:0.8;
-          transition:0.2s;
-        }
-
-        .nav-item:hover{
-          opacity:1;
-          transform:translateY(-2px);
         }
 
         @media(min-width:1024px){
@@ -416,6 +407,7 @@ export default function Dashboard() {
           .preview{ display:block; }
           .mobile-nav{ display:none; }
         }
+
       `}</style>
 
     </div>
