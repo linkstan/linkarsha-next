@@ -378,20 +378,20 @@ export default function Dashboard() {
         }
 
         .mobile-nav{
-          position:fixed;
-          bottom:0;
-          left:0;
-          right:0;
-          height:70px;
-          background:rgba(17,17,25,0.95);
-          backdrop-filter:blur(10px);
-          display:flex;
-          justify-content:space-around;
-          align-items:center;
-          border-top:1px solid #1c1c25;
-          z-index:9999;
-          padding-bottom:env(safe-area-inset-bottom);
-        }
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:rgba(17,17,25,0.95);
+  backdrop-filter:blur(10px);
+  display:none;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #1c1c25;
+  z-index:9999;
+  padding-bottom:env(safe-area-inset-bottom);
+}
 
         .nav-item{
           width:28px;
@@ -403,10 +403,13 @@ export default function Dashboard() {
         }
 
         @media(min-width:1024px){
-          .sidebar{ display:block; }
-          .preview{ display:block; }
-          .mobile-nav{ display:none; }
-        }
+  .sidebar{ display:block; }
+  .preview{ display:block; }
+}
+
+@media(max-width:1023px){
+  .mobile-nav{ display:flex; }
+}
 
       `}</style>
 
