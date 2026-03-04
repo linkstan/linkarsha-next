@@ -12,6 +12,7 @@ const [loading,setLoading]=useState(true);
 const [title,setTitle]=useState("");
 const [url,setUrl]=useState("");
 const [editing,setEditing]=useState(null);
+const [menuOpen,setMenuOpen]=useState(false);
 
 useEffect(()=>{ init(); },[]);
 
@@ -100,7 +101,6 @@ loadLinks(user.id);
 async function uploadAvatar(e){
 
 const file=e.target.files[0];
-
 if(!file) return;
 
 const path=`${user.id}`;
@@ -121,19 +121,25 @@ await supabase
 setProfile({...profile,avatar:data.publicUrl});
 }
 
-async function removeAvatar(){
-
-await supabase
-.from("profiles")
-.update({avatar:null})
-.eq("id",user.id);
-
-setProfile({...profile,avatar:null});
-}
-
 async function signout(){
 await supabase.auth.signOut();
 window.location="/login";
+}
+
+function shareProfile(){
+
+const url=`https://linkarsha-next.vercel.app/${profile.username}`;
+
+if(navigator.share){
+navigator.share({
+title:`@${profile.username}`,
+url:url
+});
+}else{
+navigator.clipboard.writeText(url);
+alert("Link copied");
+}
+
 }
 
 if(loading){
@@ -183,12 +189,6 @@ hidden
 </div>
 
 </div>
-
-{profile?.avatar && (
-<div className="remove-avatar" onClick={removeAvatar}>
-Remove current picture
-</div>
-)}
 
 <div>@{profile?.username}</div>
 
@@ -244,7 +244,13 @@ hidden
 <div className="username">@{profile?.username}</div>
 
 <div className="public-url">
+
 linkarsha-next.vercel.app/{profile?.username}
+
+<button className="share-btn" onClick={shareProfile}>
+Share
+</button>
+
 </div>
 
 </div>
@@ -347,9 +353,21 @@ target="_blank"
 <div>🏠</div>
 <div>📊</div>
 <div>🧰</div>
-<div onClick={signout}>☰</div>
+<div onClick={()=>setMenuOpen(true)}>☰</div>
 
 </div>
+
+{menuOpen && (
+<div className="mobile-menu">
+
+<div onClick={()=>setMenuOpen(false)}>Close</div>
+
+<div className="logout" onClick={signout}>
+Sign out
+</div>
+
+</div>
+)}
 
 <style jsx>{`
 
@@ -426,13 +444,6 @@ top:5px;
 right:5px;
 }
 
-.remove-avatar{
-color:#ff4d4d;
-font-size:12px;
-margin-top:6px;
-cursor:pointer;
-}
-
 /* menu */
 
 .menu div{
@@ -466,6 +477,16 @@ padding:8px 14px;
 border-radius:8px;
 display:inline-block;
 margin-top:10px;
+}
+
+.share-btn{
+margin-left:10px;
+background:#1a1a25;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:8px;
+cursor:pointer;
 }
 
 /* cards */
@@ -564,6 +585,16 @@ display:flex;
 justify-content:space-around;
 align-items:center;
 border-top:1px solid #1c1c25;
+}
+
+.mobile-menu{
+position:fixed;
+bottom:80px;
+right:20px;
+background:#111;
+padding:20px;
+border-radius:10px;
+border:1px solid #1c1c25;
 }
 
 /* desktop */
