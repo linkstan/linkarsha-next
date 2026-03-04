@@ -223,13 +223,7 @@ Logout
 <div className="mobile-header">
 
 <div className="avatar big">
-
 <img src={profile?.avatar || "/default-avatar.png"} />
-
-</div>
-
-</label>
-
 </div>
 
 <div className="username">@{profile?.username}</div>
