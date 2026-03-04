@@ -14,6 +14,8 @@ const [url,setUrl]=useState("");
 const [editing,setEditing]=useState(null);
 const [menuOpen,setMenuOpen]=useState(false);
 
+const [dragIndex,setDragIndex]=useState(null);
+
 useEffect(()=>{ init(); },[]);
 
 async function init(){
@@ -46,7 +48,7 @@ const {data}=await supabase
 .from("links")
 .select("*")
 .eq("user_id",uid)
-.order("created_at",{ascending:true});
+.order("position",{ascending:true});
 
 if(data) setLinks(data);
 }
@@ -58,7 +60,8 @@ if(!title||!url) return;
 await supabase.from("links").insert({
 user_id:user.id,
 title,
-url
+url,
+position:links.length
 });
 
 setTitle("");
@@ -140,6 +143,40 @@ navigator.clipboard.writeText(url);
 alert("Link copied");
 }
 
+}
+
+/* DRAG START */
+
+function handleDragStart(index){
+setDragIndex(index);
+}
+
+/* DROP */
+
+async function handleDrop(index){
+
+if(dragIndex===null) return;
+
+const updated=[...links];
+const dragged=updated[dragIndex];
+
+updated.splice(dragIndex,1);
+updated.splice(index,0,dragged);
+
+setLinks(updated);
+
+/* update positions */
+
+for(let i=0;i<updated.length;i++){
+
+await supabase
+.from("links")
+.update({position:i})
+.eq("id",updated[i].id);
+
+}
+
+setDragIndex(null);
 }
 
 if(loading){
@@ -270,9 +307,16 @@ onChange={(e)=>setUrl(e.target.value)}
 
 <h3>Your links</h3>
 
-{links.map(l=>(
+{links.map((l,index)=>(
 
-<div key={l.id} className="link-row">
+<div
+key={l.id}
+className="link-row"
+draggable
+onDragStart={()=>handleDragStart(index)}
+onDragOver={(e)=>e.preventDefault()}
+onDrop={()=>handleDrop(index)}
+>
 
 <span>{l.title}</span>
 
@@ -424,11 +468,6 @@ justify-content:center;
 cursor:pointer;
 }
 
-.avatar-upload.big{
-top:5px;
-right:5px;
-}
-
 /* menu */
 
 .menu div{
@@ -509,6 +548,7 @@ padding:10px;
 margin-top:10px;
 background:#0f0f15;
 border-radius:10px;
+cursor:grab;
 }
 
 .actions button{
