@@ -6,9 +6,23 @@ export default function Analytics({links,clicks}){
 
 const [liveClicks,setLiveClicks]=useState(clicks);
 
+/* update when props change */
+
 useEffect(()=>{
 setLiveClicks(clicks);
 },[clicks]);
+
+/* live refresh every 15 seconds */
+
+useEffect(()=>{
+
+const interval=setInterval(()=>{
+location.reload();
+},15000);
+
+return()=>clearInterval(interval);
+
+},[]);
 
 function totalClicks(){
 return Object.values(liveClicks).reduce((a,b)=>a+b,0);
@@ -27,13 +41,14 @@ name=l.title;
 });
 
 return name;
+
 }
 
-/* attention score */
+/* audience attention score */
 
 function attentionScore(id){
 
-const total = totalClicks();
+const total=totalClicks();
 
 if(total===0) return 0;
 
@@ -129,23 +144,39 @@ gap:20px;
 margin-bottom:30px;
 }
 
+/* STRIPE STYLE GLASS CARDS */
+
 .analytics-card{
-background:rgba(255,255,255,0.04);
-backdrop-filter:blur(10px);
-padding:20px;
-border-radius:14px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+padding:24px;
+border-radius:16px;
 flex:1;
 text-align:center;
-border:1px solid rgba(255,255,255,0.05);
-transition:all .25s;
+transition:all .25s ease;
+position:relative;
+overflow:hidden;
 }
 
 .analytics-card:hover{
-transform:translateY(-5px);
+transform:translateY(-6px);
+border-color:#7c5cff;
+}
+
+.analytics-card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+height:2px;
+background:linear-gradient(90deg,#7c5cff,#9f7cff,#7c5cff);
+opacity:.8;
 }
 
 .glow{
-box-shadow:0 0 20px rgba(124,92,255,0.15);
+box-shadow:0 0 25px rgba(124,92,255,0.18);
 }
 
 .big{
