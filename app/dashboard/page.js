@@ -458,6 +458,12 @@ animation:floatPhone 6s ease-in-out infinite;
 100%{transform:translateY(0px)}
 }
 
+@keyframes floatPhone{
+0%{transform:translateY(0px)}
+50%{transform:translateY(-12px)}
+100%{transform:translateY(0px)}
+}
+
 .phone-link{
 display:block;
 background:#1a1a25;
