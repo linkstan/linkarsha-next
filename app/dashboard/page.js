@@ -76,6 +76,9 @@ setClicks(counts);
 }
 
 }
+
+}   // ✅ THIS WAS THE MISSING BRACKET
+
 async function addLink(){
 
 if(!title||!url) return;
