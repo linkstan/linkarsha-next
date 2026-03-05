@@ -1,62 +1,58 @@
 "use client";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import Chart from "./chart";
 
-export default function Analytics({links = [], clicks = {}}){
+export default function Analytics({ links = [], clicks = {} }) {
 
-const [liveClicks,setLiveClicks]=useState(clicks || {});
+const [liveClicks, setLiveClicks] = useState(clicks || {});
 
 /* update when props change */
-
-useEffect(()=>{
-setLiveClicks(clicks);
-},[clicks]);
+useEffect(() => {
+setLiveClicks(clicks || {});
+}, [clicks]);
 
 /* live refresh every 15 seconds */
-
-useEffect(()=>{
-
-const interval=setInterval(()=>{
+useEffect(() => {
+const interval = setInterval(() => {
 location.reload();
-},15000);
+}, 15000);
 
-return()=>clearInterval(interval);
+return () => clearInterval(interval);
+}, []);
 
-},[]);
-
-function totalClicks(){
-return Object.values(liveClicks).reduce((a,b)=>a+b,0);
+function totalClicks() {
+return Object.values(liveClicks || {}).reduce((a, b) => a + b, 0);
 }
 
-function topLink(){
+function topLink() {
 
-let max=0;
-let name="None";
+if (!links || links.length === 0) return "None";
 
-links.forEach(l=>{
-if((liveClicks[l.id]||0)>max){
-max=liveClicks[l.id];
-name=l.title;
+let max = 0;
+let name = "None";
+
+links.forEach(l => {
+if ((liveClicks[l.id] || 0) > max) {
+max = liveClicks[l.id];
+name = l.title;
 }
 });
 
 return name;
-
 }
 
 /* audience attention score */
-
-function engagementScore(id){
+function engagementScore(id) {
 
 const total = totalClicks();
 
-if(total===0) return 0;
+if (total === 0) return 0;
 
-return Math.round(((liveClicks[id]||0)/total)*100);
+return Math.round(((liveClicks[id] || 0) / total) * 100);
 
 }
 
-return(
+return (
 
 <>
 
@@ -65,27 +61,18 @@ return(
 <div className="analytics-cards">
 
 <div className="analytics-card glow">
-
 <h4>Total Clicks</h4>
-
 <div className="big">{totalClicks()}</div>
-
 </div>
 
 <div className="analytics-card glow">
-
 <h4>Top Link</h4>
-
 <div className="big">{topLink()}</div>
-
 </div>
 
 <div className="analytics-card glow">
-
 <h4>Links Created</h4>
-
-<div className="big">{links.length}</div>
-
+<div className="big">{links?.length || 0}</div>
 </div>
 
 </div>
@@ -96,7 +83,7 @@ return(
 
 <h3>Click Activity</h3>
 
-<Chart links={links} clicks={liveClicks}/>
+<Chart links={links || []} clicks={liveClicks || {}} />
 
 </div>
 
@@ -106,28 +93,22 @@ return(
 
 <h3>Audience Attention</h3>
 
-{[...links]
-.sort((a,b)=>(liveClicks[b.id]||0)-(liveClicks[a.id]||0))
-.map(l=>(
+{(links || [])
+.slice()
+.sort((a, b) => (liveClicks[b.id] || 0) - (liveClicks[a.id] || 0))
+.map(l => (
 
 <div key={l.id} className="link-row">
 
 <div>
-
 <div>{l.title}</div>
-
 <div className="attention">
-
 {engagementScore(l.id)}% audience attention
-
 </div>
-
 </div>
 
 <div>
-
-{liveClicks[l.id]||0} clicks
-
+{liveClicks[l.id] || 0} clicks
 </div>
 
 </div>
@@ -143,8 +124,6 @@ display:flex;
 gap:20px;
 margin-bottom:30px;
 }
-
-/* STRIPE STYLE GLASS CARDS */
 
 .analytics-card{
 background:rgba(255,255,255,0.05);
@@ -217,6 +196,6 @@ margin-top:4px;
 
 </>
 
-)
+);
 
 }
