@@ -10,37 +10,56 @@ Tooltip,
 CartesianGrid
 } from "recharts";
 
-export default function Chart({clickEvents}){
+export default function Chart({ links = [], clicks = {} }) {
 
-const hours = new Array(24).fill(0);
+if (!links || links.length === 0) {
+return (
+<div style={{
+background:"#111",
+padding:"25px",
+borderRadius:"16px"
+}}>
+No analytics data yet
+</div>
+);
+}
 
-clickEvents.forEach(c=>{
-const hour = new Date(c.created_at).getHours();
-hours[hour]++;
-});
-
-const data = hours.map((v,i)=>({
-hour: i+":00",
-clicks: v
+const data = links.map(link => ({
+name: link.title || "Link",
+clicks: clicks?.[link.id] || 0
 }));
 
-return(
+return (
 
-<div className="chart-wrapper">
+<div style={{
+background:"rgba(255,255,255,0.04)",
+border:"1px solid rgba(255,255,255,0.08)",
+borderRadius:"16px",
+padding:"25px",
+backdropFilter:"blur(10px)"
+}}>
 
-<h3>Clicks by Hour</h3>
+<h3 style={{marginBottom:20}}>
+Clicks per Link
+</h3>
 
-<ResponsiveContainer width="100%" height={320}>
+<ResponsiveContainer width="100%" height={300}>
 
 <BarChart data={data}>
 
 <CartesianGrid strokeDasharray="3 3" stroke="#1c1c25"/>
 
-<XAxis dataKey="hour" stroke="#aaa"/>
+<XAxis dataKey="name" stroke="#aaa"/>
 
 <YAxis stroke="#aaa"/>
 
-<Tooltip/>
+<Tooltip
+contentStyle={{
+background:"#111",
+border:"1px solid #333",
+borderRadius:8
+}}
+/>
 
 <Bar
 dataKey="clicks"
@@ -54,6 +73,6 @@ radius={[6,6,0,0]}
 
 </div>
 
-)
+);
 
 }
