@@ -48,7 +48,7 @@ const {data}=await supabase
 .from("links")
 .select("*")
 .eq("user_id",uid)
-.order("position",{ascending:true,nullsFirst:true});
+.order("position",{ascending:true});
 
 if(data) setLinks(data);
 }
