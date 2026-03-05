@@ -6,6 +6,7 @@ export default function Home(){
 
 const [username,setUsername]=useState("");
 const [previewName,setPreviewName]=useState("creator");
+const [count,setCount]=useState(0);
 const router=useRouter();
 
 function handleClaim(){
@@ -17,7 +18,7 @@ function goLogin(){
 router.push("/login");
 }
 
-/* LIVE PREVIEW USERNAME */
+/* live preview username */
 
 useEffect(()=>{
 if(!username){
@@ -26,6 +27,21 @@ return;
 }
 setPreviewName(username);
 },[username]);
+
+/* animated counter */
+
+useEffect(()=>{
+let i=0;
+const interval=setInterval(()=>{
+i+=5;
+if(i>=1200){
+i=1200;
+clearInterval(interval);
+}
+setCount(i);
+},10);
+return ()=>clearInterval(interval);
+},[]);
 
 return(
 
@@ -102,23 +118,23 @@ Claim
 </div>
 
 
-{/* FEATURES */}
+{/* STATS */}
 
-<div className="features">
+<div className="stats">
 
-<div className="feature">
-<h3>⚡ Fast Setup</h3>
-<p>Create your page in seconds.</p>
+<div className="stat">
+<h2>{count}+</h2>
+<p>Creators</p>
 </div>
 
-<div className="feature">
-<h3>🎨 Custom Design</h3>
-<p>Customize your creator page.</p>
+<div className="stat">
+<h2>2M+</h2>
+<p>Clicks</p>
 </div>
 
-<div className="feature">
-<h3>📊 Analytics</h3>
-<p>Track clicks and engagement.</p>
+<div className="stat">
+<h2>50+</h2>
+<p>Themes</p>
 </div>
 
 </div>
@@ -152,13 +168,28 @@ Claim
 </div>
 
 
+{/* THEME PREVIEWS */}
+
+<div className="themes">
+
+<h2>Beautiful Themes</h2>
+
+<div className="theme-grid">
+
+<div className="theme-card dark"></div>
+<div className="theme-card purple"></div>
+<div className="theme-card light"></div>
+
+</div>
+
+</div>
+
+
 {/* CTA */}
 
 <div className="cta-section">
 
-<h2>
-Start building your creator page
-</h2>
+<h2>Start building your creator page</h2>
 
 <button onClick={handleClaim} className="cta-btn">
 Create your Linkarsha
@@ -176,7 +207,6 @@ font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 background:linear-gradient(135deg,#0b0b12,#151520,#0b0b12);
 overflow:hidden;
 }
-
 
 /* NAVBAR */
 
@@ -199,7 +229,6 @@ color:#aaa;
 cursor:pointer;
 font-size:14px;
 }
-
 
 /* HERO */
 
@@ -227,8 +256,7 @@ opacity:.7;
 margin-bottom:30px;
 }
 
-
-/* CLAIM INPUT */
+/* CLAIM */
 
 .claim-box{
 display:flex;
@@ -253,7 +281,6 @@ cursor:pointer;
 background:linear-gradient(45deg,#6a5cff,#9c8cff);
 color:white;
 }
-
 
 /* PHONE */
 
@@ -300,30 +327,27 @@ margin-top:10px;
 text-align:center;
 }
 
+/* FLOAT */
 
-/* FEATURES */
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(0px);}
+}
 
-.features{
+/* STATS */
+
+.stats{
 display:flex;
 justify-content:center;
-gap:40px;
-padding:60px 40px;
-flex-wrap:wrap;
-}
-
-.feature{
-background:#111;
-padding:30px;
-border-radius:16px;
-width:220px;
+gap:60px;
+padding:60px 20px;
 text-align:center;
-border:1px solid #1c1c25;
 }
 
-.feature p{
-opacity:.7;
+.stat h2{
+font-size:36px;
 }
-
 
 /* CREATOR EXAMPLES */
 
@@ -356,6 +380,38 @@ margin:auto;
 margin-bottom:10px;
 }
 
+/* THEMES */
+
+.themes{
+text-align:center;
+padding:80px 20px;
+}
+
+.theme-grid{
+display:flex;
+justify-content:center;
+gap:30px;
+margin-top:40px;
+flex-wrap:wrap;
+}
+
+.theme-card{
+width:160px;
+height:220px;
+border-radius:20px;
+}
+
+.theme-card.dark{
+background:#111;
+}
+
+.theme-card.purple{
+background:linear-gradient(135deg,#6a5cff,#9c8cff);
+}
+
+.theme-card.light{
+background:#eee;
+}
 
 /* CTA */
 
@@ -374,18 +430,6 @@ background:linear-gradient(45deg,#6a5cff,#9c8cff);
 color:white;
 }
 
-
-/* FLOAT */
-
-@keyframes float{
-0%{transform:translateY(0px);}
-50%{transform:translateY(-15px);}
-100%{transform:translateY(0px);}
-}
-
-
-/* MOBILE */
-
 @media(max-width:768px){
 
 .hero-left h1{
@@ -402,6 +446,11 @@ flex-direction:column;
 
 .claim-box input{
 width:100%;
+}
+
+.stats{
+flex-direction:column;
+gap:20px;
 }
 
 }
