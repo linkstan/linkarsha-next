@@ -52,7 +52,7 @@ const total = totalClicks();
 
 if(total===0) return 0;
 
-return ((liveClicks[id]||0)/total)*100;
+return Math.round(((liveClicks[id]||0)/total)*100);
 
 }
 
@@ -118,7 +118,7 @@ return(
 
 <div className="attention">
 
-{attentionScore(l.id)}% audience attention
+{engagementScore(l.id)}% audience attention
 
 </div>
 
