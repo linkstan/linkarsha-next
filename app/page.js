@@ -28,18 +28,14 @@ return (
 Linkarsha
 </div>
 
-<div className="nav-right">
-
 <button className="login-btn" onClick={goLogin}>
 Login
 </button>
 
 </div>
 
-</div>
 
-
-{/* HERO SECTION */}
+{/* HERO */}
 
 <div className="hero">
 
@@ -75,6 +71,8 @@ Claim
 {/* PHONE PREVIEW */}
 
 <div className="hero-right">
+
+<div className="glow"></div>
 
 <div className="phone">
 
@@ -115,7 +113,7 @@ Claim
 </div>
 
 
-{/* FINAL CTA */}
+{/* CTA */}
 
 <div className="cta-section">
 
@@ -134,10 +132,14 @@ Create your Linkarsha
 
 .home{
 min-height:100vh;
-background:#0b0b12;
 color:white;
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:linear-gradient(135deg,#0b0b12,#151520,#0b0b12);
+overflow:hidden;
 }
+
+
+/* NAVBAR */
 
 .navbar{
 display:flex;
@@ -158,6 +160,9 @@ color:#aaa;
 cursor:pointer;
 font-size:14px;
 }
+
+
+/* HERO */
 
 .hero{
 display:flex;
@@ -183,6 +188,9 @@ opacity:.7;
 margin-bottom:30px;
 }
 
+
+/* CLAIM */
+
 .claim-box{
 display:flex;
 gap:10px;
@@ -207,8 +215,22 @@ border:none;
 cursor:pointer;
 }
 
+
+/* PHONE */
+
 .hero-right{
 position:relative;
+}
+
+.glow{
+position:absolute;
+width:300px;
+height:300px;
+background:radial-gradient(circle,rgba(120,120,255,0.4),transparent 70%);
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+filter:blur(60px);
 }
 
 .phone{
@@ -219,6 +241,8 @@ border-radius:30px;
 padding:20px;
 box-shadow:0 0 60px rgba(120,120,255,0.25);
 animation:float 6s ease-in-out infinite;
+position:relative;
+z-index:2;
 }
 
 .phone-user{
@@ -234,6 +258,9 @@ border-radius:10px;
 margin-top:10px;
 text-align:center;
 }
+
+
+/* FEATURES */
 
 .features{
 display:flex;
@@ -256,6 +283,9 @@ border:1px solid #1c1c25;
 opacity:.7;
 }
 
+
+/* CTA */
+
 .cta-section{
 text-align:center;
 padding:80px 20px;
@@ -272,11 +302,17 @@ border:none;
 cursor:pointer;
 }
 
+
+/* FLOAT */
+
 @keyframes float{
 0%{transform:translateY(0px);}
-50%{transform:translateY(-12px);}
+50%{transform:translateY(-15px);}
 100%{transform:translateY(0px);}
 }
+
+
+/* MOBILE */
 
 @media(max-width:768px){
 
