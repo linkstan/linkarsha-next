@@ -50,7 +50,7 @@ return(
 
 <h3>Click Activity</h3>
 
-<Chart clicks={clicks}/>
+<Chart links={links} clicks={clicks}/>
 
 </div>
 
