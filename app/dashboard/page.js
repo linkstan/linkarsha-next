@@ -15,9 +15,10 @@ const [url,setUrl]=useState("");
 const [editing,setEditing]=useState(null);
 
 const [dragIndex,setDragIndex]=useState(null);
-
 const [openMenu,setOpenMenu]=useState(null);
 const [section,setSection]=useState("");
+
+const [filter,setFilter]=useState("week");
 
 useEffect(()=>{ init(); },[]);
 
@@ -60,7 +61,7 @@ const ids = data.map(l => l.id);
 
 const { data: clickData } = await supabase
 .from("clicks")
-.select("link_id")
+.select("link_id,created_at")
 .in("link_id", ids);
 
 if(clickData){
@@ -191,6 +192,25 @@ alert("Link copied");
 
 }
 
+function totalClicks(){
+return Object.values(clicks).reduce((a,b)=>a+b,0);
+}
+
+function topLink(){
+
+let max=0;
+let name="None";
+
+links.forEach(l=>{
+if((clicks[l.id]||0)>max){
+max=clicks[l.id];
+name=l.title;
+}
+});
+
+return name;
+}
+
 if(loading){
 return(
 <div style={{
@@ -210,8 +230,6 @@ return(
 
 <div className="app">
 
-{/* SIDEBAR */}
-
 <div className="sidebar">
 
 <div className="sidebar-profile">
@@ -219,7 +237,6 @@ return(
 <div className="avatar-wrapper">
 
 <div className="avatar">
-
 <img src={profile?.avatar || "/default-avatar.png"} />
 
 <label className="avatar-upload">
@@ -274,11 +291,7 @@ Get Verified ▼
 
 </div>
 
-{/* MAIN */}
-
 <div className="main">
-
-{/* MOBILE HEADER */}
 
 <div className="mobile-header">
 
@@ -372,25 +385,60 @@ Delete
 
 {section==="analytics" && (
 
-<div className="card">
+<>
 
-<h2>Analytics</h2>
+<div className="analytics-cards">
 
-<p>Total Links: {links.length}</p>
+<div className="analytics-card">
+<h4>Total Clicks</h4>
+<div className="big">{totalClicks()}</div>
+</div>
 
-<p>
-Total Clicks: {
-Object.values(clicks).reduce((a,b)=>a+b,0)
-}
-</p>
+<div className="analytics-card">
+<h4>Top Link</h4>
+<div className="big">{topLink()}</div>
+</div>
+
+<div className="analytics-card">
+<h4>Links Created</h4>
+<div className="big">{links.length}</div>
+</div>
 
 </div>
+
+<div className="filters">
+
+<button onClick={()=>setFilter("today")}>Today</button>
+<button onClick={()=>setFilter("week")}>Week</button>
+<button onClick={()=>setFilter("month")}>Month</button>
+
+</div>
+
+<div className="card">
+
+<h3>Top Performing Links</h3>
+
+{links
+.sort((a,b)=>(clicks[b.id]||0)-(clicks[a.id]||0))
+.map(l=>(
+
+<div key={l.id} className="link-row">
+
+<span>{l.title}</span>
+
+<span>{clicks[l.id]||0} clicks</span>
+
+</div>
+
+))}
+
+</div>
+
+</>
 
 )}
 
 </div>
-
-{/* PHONE PREVIEW */}
 
 <div className="preview">
 
@@ -483,11 +531,6 @@ height:100px;
 margin:auto;
 }
 
-.submenu{
-margin-left:15px;
-opacity:.8;
-}
-
 .main{
 flex:1;
 padding:40px;
@@ -495,26 +538,37 @@ max-width:700px;
 margin:auto;
 }
 
-.mobile-header{
-text-align:center;
-margin-bottom:40px;
+.analytics-cards{
+display:flex;
+gap:20px;
+margin-bottom:30px;
 }
 
-.public-url{
+.analytics-card{
 background:#111;
-padding:8px 14px;
-border-radius:8px;
-display:inline-block;
+padding:20px;
+border-radius:14px;
+flex:1;
+text-align:center;
+transition:transform .2s;
+}
+
+.analytics-card:hover{
+transform:translateY(-5px);
+}
+
+.analytics-card .big{
+font-size:28px;
 margin-top:10px;
 }
 
-.share-btn{
-margin-left:10px;
+.filters button{
+margin-right:10px;
 background:#1a1a25;
 border:none;
 color:white;
-padding:6px 10px;
-border-radius:8px;
+padding:6px 12px;
+border-radius:6px;
 cursor:pointer;
 }
 
@@ -548,13 +602,6 @@ border-radius:30px;
 padding:20px;
 overflow:auto;
 margin:auto;
-}
-
-.preview-avatar{
-width:70px;
-height:70px;
-margin:auto;
-margin-bottom:10px;
 }
 
 .phone-link{
