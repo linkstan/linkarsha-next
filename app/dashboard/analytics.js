@@ -46,13 +46,13 @@ return name;
 
 /* audience attention score */
 
-function attentionScore(id){
+function engagementScore(id){
 
-const total=totalClicks();
+const total = totalClicks();
 
 if(total===0) return 0;
 
-return Math.round(((liveClicks[id]||0)/total)*100);
+return ((liveClicks[id]||0)/total)*100;
 
 }
 
