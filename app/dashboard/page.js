@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
+import Links from "./links";
+import Analytics from "./analytics";
+import ThemeEditor from "./theme-editor";
+
 export default function Dashboard(){
 
 const [user,setUser]=useState(null);
@@ -17,8 +21,6 @@ const [editing,setEditing]=useState(null);
 const [dragIndex,setDragIndex]=useState(null);
 const [openMenu,setOpenMenu]=useState(null);
 const [section,setSection]=useState("");
-
-const [filter,setFilter]=useState("week");
 
 useEffect(()=>{ init(); },[]);
 
@@ -55,18 +57,19 @@ const {data}=await supabase
 .order("position",{ascending:true});
 
 if(data){
+
 setLinks(data);
 
-const ids = data.map(l => l.id);
+const ids=data.map(l=>l.id);
 
-const { data: clickData } = await supabase
+const {data:clickData}=await supabase
 .from("clicks")
-.select("link_id,created_at")
-.in("link_id", ids);
+.select("link_id")
+.in("link_id",ids);
 
 if(clickData){
 
-const counts = {};
+const counts={};
 
 clickData.forEach(c=>{
 counts[c.link_id]=(counts[c.link_id]||0)+1;
@@ -95,6 +98,7 @@ setTitle("");
 setUrl("");
 
 loadLinks(user.id);
+
 }
 
 async function deleteLink(id){
@@ -102,6 +106,7 @@ async function deleteLink(id){
 await supabase.from("links").delete().eq("id",id);
 
 loadLinks(user.id);
+
 }
 
 async function startEdit(link){
@@ -109,6 +114,7 @@ async function startEdit(link){
 setEditing(link.id);
 setTitle(link.title);
 setUrl(link.url);
+
 }
 
 async function updateLink(){
@@ -123,6 +129,7 @@ setTitle("");
 setUrl("");
 
 loadLinks(user.id);
+
 }
 
 async function uploadAvatar(e){
@@ -146,6 +153,7 @@ await supabase
 .eq("id",user.id);
 
 setProfile({...profile,avatar:data.publicUrl});
+
 }
 
 function handleDragStart(index){
@@ -174,45 +182,22 @@ await supabase
 }
 
 setDragIndex(null);
+
 }
 
 function shareProfile(){
 
 const url=`https://linkarsha-next.vercel.app/${profile.username}`;
 
-if(navigator.share){
-navigator.share({
-title:`@${profile.username}`,
-url:url
-});
-}else{
 navigator.clipboard.writeText(url);
 alert("Link copied");
-}
 
-}
-
-function totalClicks(){
-return Object.values(clicks).reduce((a,b)=>a+b,0);
-}
-
-function topLink(){
-
-let max=0;
-let name="None";
-
-links.forEach(l=>{
-if((clicks[l.id]||0)>max){
-max=clicks[l.id];
-name=l.title;
-}
-});
-
-return name;
 }
 
 if(loading){
+
 return(
+
 <div style={{
 background:"#0b0b12",
 height:"100vh",
@@ -223,7 +208,9 @@ color:"white"
 }}>
 Loading...
 </div>
+
 )
+
 }
 
 return(
@@ -237,16 +224,20 @@ return(
 <div className="avatar-wrapper">
 
 <div className="avatar">
+
 <img src={profile?.avatar || "/default-avatar.png"} />
 
 <label className="avatar-upload">
+
 +
+
 <input
 type="file"
 accept="image/*"
 onChange={uploadAvatar}
 hidden
 />
+
 </label>
 
 </div>
@@ -279,13 +270,15 @@ Analytics ▼
 </div>
 )}
 
-<div onClick={()=>setOpenMenu(openMenu==="tools"?null:"tools")}>
-Tools ▼
+<div onClick={()=>setOpenMenu(openMenu==="theme"?null:"theme")}>
+Theme Editor ▼
 </div>
 
-<div onClick={()=>setOpenMenu(openMenu==="verify"?null:"verify")}>
-Get Verified ▼
+{openMenu==="theme" && (
+<div className="submenu">
+<div onClick={()=>setSection("theme")}>Themes</div>
 </div>
+)}
 
 </div>
 
@@ -315,126 +308,36 @@ Share
 
 {section==="links" && (
 
-<>
-
-<div className="card">
-
-<h3>{editing ? "Edit link" : "Add link"}</h3>
-
-<input
-placeholder="Title"
-value={title}
-onChange={(e)=>setTitle(e.target.value)}
+<Links
+links={links}
+clicks={clicks}
+title={title}
+url={url}
+editing={editing}
+setTitle={setTitle}
+setUrl={setUrl}
+addLink={addLink}
+updateLink={updateLink}
+deleteLink={deleteLink}
+startEdit={startEdit}
+handleDragStart={handleDragStart}
+handleDrop={handleDrop}
 />
-
-<input
-placeholder="URL"
-value={url}
-onChange={(e)=>setUrl(e.target.value)}
-/>
-
-<button onClick={editing ? updateLink : addLink}>
-{editing ? "Update" : "Add"}
-</button>
-
-</div>
-
-<div className="card">
-
-<h3>Your links</h3>
-
-{links.map((l,index)=>(
-
-<div
-key={l.id}
-className="link-row"
-draggable
-onDragStart={()=>handleDragStart(index)}
-onDragOver={(e)=>e.preventDefault()}
-onDrop={()=>handleDrop(index)}
->
-
-<div>
-<div>{l.title}</div>
-<div style={{fontSize:12,opacity:0.6}}>
-{clicks[l.id]||0} clicks
-</div>
-</div>
-
-<div className="actions">
-
-<button onClick={()=>startEdit(l)}>
-Edit
-</button>
-
-<button onClick={()=>deleteLink(l.id)}>
-Delete
-</button>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</>
 
 )}
 
 {section==="analytics" && (
 
-<>
+<Analytics
+links={links}
+clicks={clicks}
+/>
 
-<div className="analytics-cards">
+)}
 
-<div className="analytics-card">
-<h4>Total Clicks</h4>
-<div className="big">{totalClicks()}</div>
-</div>
+{section==="theme" && (
 
-<div className="analytics-card">
-<h4>Top Link</h4>
-<div className="big">{topLink()}</div>
-</div>
-
-<div className="analytics-card">
-<h4>Links Created</h4>
-<div className="big">{links.length}</div>
-</div>
-
-</div>
-
-<div className="filters">
-
-<button onClick={()=>setFilter("today")}>Today</button>
-<button onClick={()=>setFilter("week")}>Week</button>
-<button onClick={()=>setFilter("month")}>Month</button>
-
-</div>
-
-<div className="card">
-
-<h3>Top Performing Links</h3>
-
-{links
-.sort((a,b)=>(clicks[b.id]||0)-(clicks[a.id]||0))
-.map(l=>(
-
-<div key={l.id} className="link-row">
-
-<span>{l.title}</span>
-
-<span>{clicks[l.id]||0} clicks</span>
-
-</div>
-
-))}
-
-</div>
-
-</>
+<ThemeEditor/>
 
 )}
 
@@ -525,67 +428,11 @@ justify-content:center;
 cursor:pointer;
 }
 
-.avatar.big{
-width:100px;
-height:100px;
-margin:auto;
-}
-
 .main{
 flex:1;
 padding:40px;
 max-width:700px;
 margin:auto;
-}
-
-.analytics-cards{
-display:flex;
-gap:20px;
-margin-bottom:30px;
-}
-
-.analytics-card{
-background:#111;
-padding:20px;
-border-radius:14px;
-flex:1;
-text-align:center;
-transition:transform .2s;
-}
-
-.analytics-card:hover{
-transform:translateY(-5px);
-}
-
-.analytics-card .big{
-font-size:28px;
-margin-top:10px;
-}
-
-.filters button{
-margin-right:10px;
-background:#1a1a25;
-border:none;
-color:white;
-padding:6px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.card{
-background:#111;
-padding:25px;
-border-radius:16px;
-margin-bottom:30px;
-}
-
-.link-row{
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin-top:10px;
-background:#0f0f15;
-border-radius:10px;
 }
 
 .preview{
