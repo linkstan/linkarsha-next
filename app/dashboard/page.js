@@ -16,8 +16,6 @@ const [editing,setEditing]=useState(null);
 
 const [dragIndex,setDragIndex]=useState(null);
 
-/* NEW STATES */
-
 const [openMenu,setOpenMenu]=useState(null);
 const [section,setSection]=useState("");
 
@@ -57,8 +55,6 @@ const {data}=await supabase
 
 if(data){
 setLinks(data);
-
-/* load click counts */
 
 const ids = data.map(l => l.id);
 
@@ -128,6 +124,29 @@ setUrl("");
 loadLinks(user.id);
 }
 
+async function uploadAvatar(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const path=`${user.id}`;
+
+await supabase.storage
+.from("avatars")
+.upload(path,file,{upsert:true});
+
+const {data}=supabase.storage
+.from("avatars")
+.getPublicUrl(path);
+
+await supabase
+.from("profiles")
+.update({avatar:data.publicUrl})
+.eq("id",user.id);
+
+setProfile({...profile,avatar:data.publicUrl});
+}
+
 function handleDragStart(index){
 setDragIndex(index);
 }
@@ -156,6 +175,22 @@ await supabase
 setDragIndex(null);
 }
 
+function shareProfile(){
+
+const url=`https://linkarsha-next.vercel.app/${profile.username}`;
+
+if(navigator.share){
+navigator.share({
+title:`@${profile.username}`,
+url:url
+});
+}else{
+navigator.clipboard.writeText(url);
+alert("Link copied");
+}
+
+}
+
 if(loading){
 return(
 <div style={{
@@ -175,18 +210,34 @@ return(
 
 <div className="app">
 
+{/* SIDEBAR */}
+
 <div className="sidebar">
 
 <div className="sidebar-profile">
+
 <div className="avatar-wrapper">
 
 <div className="avatar">
+
 <img src={profile?.avatar || "/default-avatar.png"} />
+
+<label className="avatar-upload">
++
+<input
+type="file"
+accept="image/*"
+onChange={uploadAvatar}
+hidden
+/>
+</label>
+
 </div>
 
 </div>
 
 <div>@{profile?.username}</div>
+
 </div>
 
 <div className="menu">
@@ -197,9 +248,7 @@ My Linkarsh ▼
 
 {openMenu==="links" && (
 <div className="submenu">
-<div onClick={()=>setSection("links")}>
-My Links
-</div>
+<div onClick={()=>setSection("links")}>My Links</div>
 </div>
 )}
 
@@ -209,9 +258,7 @@ Analytics ▼
 
 {openMenu==="analytics" && (
 <div className="submenu">
-<div onClick={()=>setSection("analytics")}>
-Overview
-</div>
+<div onClick={()=>setSection("analytics")}>Overview</div>
 </div>
 )}
 
@@ -227,7 +274,31 @@ Get Verified ▼
 
 </div>
 
+{/* MAIN */}
+
 <div className="main">
+
+{/* MOBILE HEADER */}
+
+<div className="mobile-header">
+
+<div className="avatar big">
+<img src={profile?.avatar || "/default-avatar.png"} />
+</div>
+
+<div className="username">@{profile?.username}</div>
+
+<div className="public-url">
+
+linkarsha-next.vercel.app/{profile?.username}
+
+<button className="share-btn" onClick={shareProfile}>
+Share
+</button>
+
+</div>
+
+</div>
 
 {section==="links" && (
 
@@ -319,6 +390,8 @@ Object.values(clicks).reduce((a,b)=>a+b,0)
 
 </div>
 
+{/* PHONE PREVIEW */}
+
 <div className="preview">
 
 <div className="phone">
@@ -368,6 +441,48 @@ padding:20px;
 border-right:1px solid #1c1c25;
 }
 
+.avatar-wrapper{
+position:relative;
+width:70px;
+height:70px;
+margin:auto;
+}
+
+.avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+background:#222;
+overflow:hidden;
+}
+
+.avatar img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.avatar-upload{
+position:absolute;
+top:-5px;
+right:-5px;
+width:26px;
+height:26px;
+border-radius:50%;
+background:white;
+color:black;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.avatar.big{
+width:100px;
+height:100px;
+margin:auto;
+}
+
 .submenu{
 margin-left:15px;
 opacity:.8;
@@ -378,6 +493,29 @@ flex:1;
 padding:40px;
 max-width:700px;
 margin:auto;
+}
+
+.mobile-header{
+text-align:center;
+margin-bottom:40px;
+}
+
+.public-url{
+background:#111;
+padding:8px 14px;
+border-radius:8px;
+display:inline-block;
+margin-top:10px;
+}
+
+.share-btn{
+margin-left:10px;
+background:#1a1a25;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:8px;
+cursor:pointer;
 }
 
 .card{
@@ -410,6 +548,13 @@ border-radius:30px;
 padding:20px;
 overflow:auto;
 margin:auto;
+}
+
+.preview-avatar{
+width:70px;
+height:70px;
+margin:auto;
+margin-bottom:10px;
 }
 
 .phone-link{
