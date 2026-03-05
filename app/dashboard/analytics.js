@@ -15,14 +15,11 @@ useEffect(() => {
 setLiveClicks(clicks || {});
 }, [clicks]);
 
-/* live refresh every 15 seconds */
-useEffect(() => {
-const interval = setInterval(() => {
-location.reload();
-}, 15000);
+/* manual refresh */
 
-return () => clearInterval(interval);
-}, []);
+function refreshAnalytics(){
+location.reload();
+}
 
 function totalClicks() {
 return Object.values(liveClicks || {}).reduce((a, b) => a + b, 0);
@@ -71,28 +68,42 @@ return "Viral growth";
 
 }
 
-/* traffic sources */
+/* ADVANCED TRAFFIC SOURCES */
 
 function trafficSources(){
 
 const sources = {
 Instagram:0,
+TikTok:0,
+YouTube:0,
+Facebook:0,
 Twitter:0,
-Direct:0
+Direct:0,
+Other:{}
 };
 
 (clickEvents || []).forEach(e=>{
 
 const ref = (e.referrer || "").toLowerCase();
 
-if(ref.includes("instagram")){
-sources.Instagram++;
-}
-else if(ref.includes("twitter")){
-sources.Twitter++;
-}
+if(ref.includes("instagram")) sources.Instagram++;
+
+else if(ref.includes("tiktok")) sources.TikTok++;
+
+else if(ref.includes("youtube")) sources.YouTube++;
+
+else if(ref.includes("facebook")) sources.Facebook++;
+
+else if(ref.includes("twitter")) sources.Twitter++;
+
+else if(ref==="") sources.Direct++;
+
 else{
-sources.Direct++;
+
+const domain = ref.split("/")[2] || "unknown";
+
+sources.Other[domain] = (sources.Other[domain] || 0) + 1;
+
 }
 
 });
@@ -123,6 +134,18 @@ const hourly = clicksByHour();
 return (
 
 <>
+
+{/* refresh button */}
+
+<div className="refresh-bar">
+
+<button onClick={refreshAnalytics} className="refresh-btn">
+
+🔁 Refresh Analytics
+
+</button>
+
+</div>
 
 {/* analytics cards */}
 
@@ -192,10 +215,25 @@ return (
 <div className="sources">
 
 <div>Instagram: {sources.Instagram}</div>
+<div>TikTok: {sources.TikTok}</div>
+<div>YouTube: {sources.YouTube}</div>
+<div>Facebook: {sources.Facebook}</div>
 <div>Twitter: {sources.Twitter}</div>
 <div>Direct: {sources.Direct}</div>
 
 </div>
+
+{/* other domains */}
+
+{Object.entries(sources.Other).map(([domain,count])=>(
+
+<div key={domain} className="other-source">
+
+{domain} — {count}
+
+</div>
+
+))}
 
 </div>
 
@@ -243,6 +281,21 @@ return (
 
 <style jsx>{`
 
+.refresh-bar{
+display:flex;
+justify-content:flex-end;
+margin-bottom:20px;
+}
+
+.refresh-btn{
+background:#1a1a25;
+border:none;
+padding:8px 14px;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
 .analytics-cards{
 display:flex;
 gap:20px;
@@ -286,6 +339,13 @@ margin-bottom:30px;
 display:flex;
 gap:20px;
 margin-top:10px;
+flex-wrap:wrap;
+}
+
+.other-source{
+margin-top:6px;
+opacity:.7;
+font-size:13px;
 }
 
 .hour-grid{
