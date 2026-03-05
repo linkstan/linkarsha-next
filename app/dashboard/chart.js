@@ -10,74 +10,50 @@ Tooltip,
 CartesianGrid
 } from "recharts";
 
-export default function Chart({links, clicks}){
+export default function Chart({clickEvents}){
 
-const data = links.map(l => ({
-name: l.title,
-clicks: clicks[l.id] || 0
+const hours = new Array(24).fill(0);
+
+clickEvents.forEach(c=>{
+const hour = new Date(c.created_at).getHours();
+hours[hour]++;
+});
+
+const data = hours.map((v,i)=>({
+hour: i+":00",
+clicks: v
 }));
 
 return(
 
 <div className="chart-wrapper">
 
-<h3>Clicks per Link</h3>
+<h3>Clicks by Hour</h3>
 
 <ResponsiveContainer width="100%" height={320}>
 
-<BarChart
-data={data}
-margin={{top:20,right:20,left:0,bottom:5}}
->
+<BarChart data={data}>
 
-<CartesianGrid strokeDasharray="3 3" stroke="#1e1e28"/>
+<CartesianGrid strokeDasharray="3 3" stroke="#1c1c25"/>
 
-<XAxis
-dataKey="name"
-stroke="#aaa"
-/>
+<XAxis dataKey="hour" stroke="#aaa"/>
 
 <YAxis stroke="#aaa"/>
 
-<Tooltip
-cursor={{fill:"rgba(255,255,255,0.05)"}}
-contentStyle={{
-background:"#0f0f15",
-border:"1px solid #2a2a35",
-borderRadius:10
-}}
-/>
+<Tooltip/>
 
 <Bar
 dataKey="clicks"
 fill="#7c5cff"
 radius={[6,6,0,0]}
-animationDuration={900}
 />
 
 </BarChart>
 
 </ResponsiveContainer>
 
-<style jsx>{`
-
-.chart-wrapper{
-background:rgba(255,255,255,0.04);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-padding:30px;
-border-radius:18px;
-margin-bottom:30px;
-}
-
-h3{
-margin-bottom:20px;
-}
-
-`}</style>
-
 </div>
 
-);
+)
 
 }
