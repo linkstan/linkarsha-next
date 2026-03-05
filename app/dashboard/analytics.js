@@ -58,9 +58,9 @@ return(
 
 <h3>Top Performing Links</h3>
 
-{links
+[...links]
 .sort((a,b)=>(clicks[b.id]||0)-(clicks[a.id]||0))
-.map(l=>(
+.map(l=>
 
 <div key={l.id} className="link-row">
 
