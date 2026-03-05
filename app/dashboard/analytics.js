@@ -52,6 +52,36 @@ return Math.round(((liveClicks[id] || 0) / total) * 100);
 
 }
 
+/* creator intelligence */
+
+function creatorInsight(){
+
+if(!links || links.length === 0) return null;
+
+let max = 0;
+let best = null;
+
+links.forEach(l=>{
+const c = liveClicks[l.id] || 0;
+
+if(c > max){
+max = c;
+best = l;
+}
+});
+
+if(!best) return null;
+
+return {
+title: best.title,
+clicks: max,
+score: engagementScore(best.id)
+};
+
+}
+
+const insight = creatorInsight();
+
 return (
 
 <>
@@ -86,6 +116,42 @@ return (
 <Chart links={links || []} clicks={liveClicks || {}} />
 
 </div>
+
+{/* creator intelligence panel */}
+
+{insight && (
+
+<div className="card intelligence">
+
+<h3>Creator Intelligence</h3>
+
+<div className="insight-row">
+
+<div className="insight-title">
+🔥 Most Engaging Link
+</div>
+
+<div className="insight-value">
+{insight.title}
+</div>
+
+</div>
+
+<div className="insight-row">
+
+<div>
+{insight.clicks} clicks
+</div>
+
+<div className="score">
+{insight.score}% audience attention
+</div>
+
+</div>
+
+</div>
+
+)}
 
 {/* attention analytics */}
 
@@ -169,6 +235,31 @@ background:#111;
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+}
+
+.intelligence{
+border:1px solid rgba(124,92,255,0.25);
+box-shadow:0 0 30px rgba(124,92,255,0.15);
+}
+
+.insight-row{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+.insight-title{
+opacity:.7;
+}
+
+.insight-value{
+font-size:18px;
+font-weight:600;
+}
+
+.score{
+color:#7c5cff;
+font-weight:600;
 }
 
 .link-row{
