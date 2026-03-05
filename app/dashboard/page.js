@@ -7,6 +7,7 @@ export default function Dashboard(){
 const [user,setUser]=useState(null);
 const [profile,setProfile]=useState(null);
 const [links,setLinks]=useState([]);
+const [clicks,setClicks]=useState({});
 const [loading,setLoading]=useState(true);
 
 const [title,setTitle]=useState("");
@@ -50,9 +51,31 @@ const {data}=await supabase
 .eq("user_id",uid)
 .order("position",{ascending:true});
 
-if(data) setLinks(data);
+if(data){
+setLinks(data);
+
+/* load click counts */
+
+const ids = data.map(l => l.id);
+
+const { data: clickData } = await supabase
+.from("clicks")
+.select("link_id")
+.in("link_id", ids);
+
+if(clickData){
+
+const counts = {};
+
+clickData.forEach(c=>{
+counts[c.link_id] = (counts[c.link_id] || 0) + 1;
+});
+
+setClicks(counts);
+
 }
 
+}
 async function addLink(){
 
 if(!title||!url) return;
@@ -318,7 +341,12 @@ onDragOver={(e)=>e.preventDefault()}
 onDrop={()=>handleDrop(index)}
 >
 
-<span>{l.title}</span>
+<div>
+<div>{l.title}</div>
+<div style={{fontSize:12,opacity:0.6}}>
+{clicks[l.id] || 0} clicks
+</div>
+</div>
 
 <div className="actions">
 
