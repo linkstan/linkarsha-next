@@ -23,15 +23,16 @@ const { data: link } = await supabase
 await supabase
 .from("clicks")
 .insert({
-link_id:id
-});
+link_id: id
+})
+.select();
 
 /* redirect */
 
 let url = link.url;
 
 if(!url.startsWith("http")){
-url=`https://${url}`;
+url = "https://" + url;
 }
 
 return NextResponse.redirect(url);
