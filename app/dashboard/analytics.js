@@ -2,9 +2,9 @@
 import { useEffect,useState } from "react";
 import Chart from "./chart";
 
-export default function Analytics({links,clicks}){
+export default function Analytics({links = [], clicks = {}}){
 
-const [liveClicks,setLiveClicks]=useState(clicks);
+const [liveClicks,setLiveClicks]=useState(clicks || {});
 
 /* update when props change */
 
