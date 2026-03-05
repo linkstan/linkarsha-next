@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import Chart from "./chart";
 import Heatmap from "./heatmap";
+import AIInsights from "./ai-insights";
+import Funnel from "./funnel";
+import GeoMap from "./geo-map";
 
 export default function Analytics({ links = [], clicks = {}, clickEvents = [] }) {
 
@@ -61,9 +64,7 @@ function growthRate(){
 const total = totalClicks();
 
 if(total < 10) return "Early stage";
-
 if(total < 50) return "Growing";
-
 if(total < 200) return "Strong traction";
 
 return "Viral growth";
@@ -197,6 +198,18 @@ return (
 </div>
 
 </div>
+
+{/* AI Creator Insights */}
+
+<AIInsights clickEvents={clickEvents || []} />
+
+{/* Click Funnel */}
+
+<Funnel links={links || []} clicks={liveClicks || {}} />
+
+{/* Geographic Map */}
+
+<GeoMap clickEvents={clickEvents || []} />
 
 {/* attention analytics */}
 
