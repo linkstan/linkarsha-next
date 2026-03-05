@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Chart from "./chart";
+import Heatmap from "./heatmap";
 
-export default function Analytics({ links = [], clicks = {} }) {
+export default function Analytics({ links = [], clicks = {}, clickEvents = [] }) {
 
 const [liveClicks, setLiveClicks] = useState(clicks || {});
 
@@ -42,6 +43,7 @@ return name;
 }
 
 /* audience attention score */
+
 function engagementScore(id) {
 
 const total = totalClicks();
@@ -52,35 +54,70 @@ return Math.round(((liveClicks[id] || 0) / total) * 100);
 
 }
 
-/* creator intelligence */
+/* creator growth analytics */
 
-function creatorInsight(){
+function growthRate(){
 
-if(!links || links.length === 0) return null;
+const total = totalClicks();
 
-let max = 0;
-let best = null;
+if(total < 10) return "Early stage";
 
-links.forEach(l=>{
-const c = liveClicks[l.id] || 0;
+if(total < 50) return "Growing";
 
-if(c > max){
-max = c;
-best = l;
+if(total < 200) return "Strong traction";
+
+return "Viral growth";
+
 }
-});
 
-if(!best) return null;
+/* traffic sources */
 
-return {
-title: best.title,
-clicks: max,
-score: engagementScore(best.id)
+function trafficSources(){
+
+const sources = {
+Instagram:0,
+Twitter:0,
+Direct:0
 };
 
+(clickEvents || []).forEach(e=>{
+
+const ref = (e.referrer || "").toLowerCase();
+
+if(ref.includes("instagram")){
+sources.Instagram++;
+}
+else if(ref.includes("twitter")){
+sources.Twitter++;
+}
+else{
+sources.Direct++;
 }
 
-const insight = creatorInsight();
+});
+
+return sources;
+
+}
+
+const sources = trafficSources();
+
+/* clicks by hour */
+
+function clicksByHour(){
+
+const hours = new Array(24).fill(0);
+
+(clickEvents || []).forEach(c=>{
+const hour = new Date(c.created_at).getHours();
+hours[hour]++;
+});
+
+return hours;
+
+}
+
+const hourly = clicksByHour();
 
 return (
 
@@ -101,8 +138,8 @@ return (
 </div>
 
 <div className="analytics-card glow">
-<h4>Links Created</h4>
-<div className="big">{links?.length || 0}</div>
+<h4>Growth</h4>
+<div className="big">{growthRate()}</div>
 </div>
 
 </div>
@@ -111,47 +148,55 @@ return (
 
 <div className="card">
 
-<h3>Click Activity</h3>
+<h3>Clicks per Link</h3>
 
 <Chart links={links || []} clicks={liveClicks || {}} />
 
 </div>
 
-{/* creator intelligence panel */}
+{/* clicks by hour */}
 
-{insight && (
+<div className="card">
 
-<div className="card intelligence">
+<h3>Clicks by Hour</h3>
 
-<h3>Creator Intelligence</h3>
+<div className="hour-grid">
 
-<div className="insight-row">
+{hourly.map((v,i)=>(
 
-<div className="insight-title">
-🔥 Most Engaging Link
-</div>
+<div key={i} className="hour">
 
-<div className="insight-value">
-{insight.title}
-</div>
+<div className="bar" style={{height:(v*6)+10}}></div>
+
+<div className="label">{i}</div>
 
 </div>
 
-<div className="insight-row">
-
-<div>
-{insight.clicks} clicks
-</div>
-
-<div className="score">
-{insight.score}% audience attention
-</div>
+))}
 
 </div>
 
 </div>
 
-)}
+{/* heatmap */}
+
+<Heatmap clickEvents={clickEvents || []} />
+
+{/* traffic sources */}
+
+<div className="card">
+
+<h3>Traffic Sources</h3>
+
+<div className="sources">
+
+<div>Instagram: {sources.Instagram}</div>
+<div>Twitter: {sources.Twitter}</div>
+<div>Direct: {sources.Direct}</div>
+
+</div>
+
+</div>
 
 {/* attention analytics */}
 
@@ -200,24 +245,11 @@ border-radius:16px;
 flex:1;
 text-align:center;
 transition:all .25s ease;
-position:relative;
-overflow:hidden;
 }
 
 .analytics-card:hover{
 transform:translateY(-6px);
 border-color:#7c5cff;
-}
-
-.analytics-card::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-right:0;
-height:2px;
-background:linear-gradient(90deg,#7c5cff,#9f7cff,#7c5cff);
-opacity:.8;
 }
 
 .glow{
@@ -237,44 +269,46 @@ border-radius:16px;
 margin-bottom:30px;
 }
 
-.intelligence{
-border:1px solid rgba(124,92,255,0.25);
-box-shadow:0 0 30px rgba(124,92,255,0.15);
-}
-
-.insight-row{
+.sources{
 display:flex;
-justify-content:space-between;
+gap:20px;
 margin-top:10px;
 }
 
-.insight-title{
-opacity:.7;
+.hour-grid{
+display:flex;
+align-items:flex-end;
+gap:6px;
+margin-top:20px;
+height:120px;
 }
 
-.insight-value{
-font-size:18px;
-font-weight:600;
+.hour{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
-.score{
-color:#7c5cff;
-font-weight:600;
+.bar{
+width:100%;
+background:#7c5cff;
+border-radius:4px 4px 0 0;
+}
+
+.label{
+font-size:10px;
+opacity:.6;
+margin-top:4px;
 }
 
 .link-row{
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:12px;
 margin-top:10px;
 background:#0f0f15;
 border-radius:10px;
-transition:.2s;
-}
-
-.link-row:hover{
-background:#15151f;
 }
 
 .attention{
