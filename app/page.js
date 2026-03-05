@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Home(){
 
-const [username,setUsername] = useState("");
-const router = useRouter();
+const [username,setUsername]=useState("");
+const [previewName,setPreviewName]=useState("creator");
+const router=useRouter();
 
 function handleClaim(){
 if(!username) return;
@@ -16,7 +17,17 @@ function goLogin(){
 router.push("/login");
 }
 
-return (
+/* LIVE PREVIEW USERNAME */
+
+useEffect(()=>{
+if(!username){
+setPreviewName("creator");
+return;
+}
+setPreviewName(username);
+},[username]);
+
+return(
 
 <div className="home">
 
@@ -77,7 +88,7 @@ Claim
 <div className="phone">
 
 <div className="phone-user">
-@creator
+@{previewName}
 </div>
 
 <div className="phone-link">Instagram</div>
@@ -108,6 +119,34 @@ Claim
 <div className="feature">
 <h3>📊 Analytics</h3>
 <p>Track clicks and engagement.</p>
+</div>
+
+</div>
+
+
+{/* CREATOR EXAMPLES */}
+
+<div className="examples">
+
+<h2>Creators using Linkarsha</h2>
+
+<div className="example-grid">
+
+<div className="example">
+<div className="avatar"></div>
+<div>@fitnesscoach</div>
+</div>
+
+<div className="example">
+<div className="avatar"></div>
+<div>@musicartist</div>
+</div>
+
+<div className="example">
+<div className="avatar"></div>
+<div>@photographer</div>
+</div>
+
 </div>
 
 </div>
@@ -189,7 +228,7 @@ margin-bottom:30px;
 }
 
 
-/* CLAIM */
+/* CLAIM INPUT */
 
 .claim-box{
 display:flex;
@@ -207,12 +246,12 @@ border-radius:10px;
 
 .claim-box button{
 padding:14px;
-background:white;
-color:black;
 border-radius:10px;
 font-weight:600;
 border:none;
 cursor:pointer;
+background:linear-gradient(45deg,#6a5cff,#9c8cff);
+color:white;
 }
 
 
@@ -224,8 +263,8 @@ position:relative;
 
 .glow{
 position:absolute;
-width:300px;
-height:300px;
+width:320px;
+height:320px;
 background:radial-gradient(circle,rgba(120,120,255,0.4),transparent 70%);
 top:50%;
 left:50%;
@@ -236,9 +275,11 @@ filter:blur(60px);
 .phone{
 width:260px;
 height:480px;
-background:#111;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
 border-radius:30px;
 padding:20px;
+border:1px solid rgba(255,255,255,0.08);
 box-shadow:0 0 60px rgba(120,120,255,0.25);
 animation:float 6s ease-in-out infinite;
 position:relative;
@@ -284,6 +325,38 @@ opacity:.7;
 }
 
 
+/* CREATOR EXAMPLES */
+
+.examples{
+text-align:center;
+padding:80px 20px;
+}
+
+.example-grid{
+display:flex;
+justify-content:center;
+gap:30px;
+margin-top:40px;
+flex-wrap:wrap;
+}
+
+.example{
+background:#111;
+padding:20px;
+border-radius:14px;
+width:150px;
+}
+
+.avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#222;
+margin:auto;
+margin-bottom:10px;
+}
+
+
 /* CTA */
 
 .cta-section{
@@ -292,14 +365,13 @@ padding:80px 20px;
 }
 
 .cta-btn{
-background:white;
-color:black;
-padding:16px 26px;
+padding:16px 28px;
 border-radius:12px;
-font-size:18px;
-font-weight:600;
 border:none;
 cursor:pointer;
+font-weight:600;
+background:linear-gradient(45deg,#6a5cff,#9c8cff);
+color:white;
 }
 
 
