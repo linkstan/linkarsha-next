@@ -3,31 +3,47 @@
 export default function ThemeEditor(){
 
 const themes = [
+
 {
 name:"Midnight",
 bg:"#0b0b12",
-card:"#1a1a25"
+card:"#1a1a25",
+accent:"#7c5cff"
 },
+
 {
 name:"Sunset",
 bg:"#1a0d0d",
-card:"#2b1414"
+card:"#2b1414",
+accent:"#ff7b54"
 },
+
 {
 name:"Ocean",
 bg:"#071a2b",
-card:"#0e2c44"
+card:"#0e2c44",
+accent:"#2ec4ff"
+},
+
+{
+name:"Emerald",
+bg:"#041a13",
+card:"#0b2e24",
+accent:"#00ffa3"
 }
+
 ];
 
 function applyTheme(t){
 
 document.body.style.background = t.bg;
 
-const links = document.querySelectorAll(".phone-link");
+document.querySelectorAll(".phone-link").forEach(el=>{
+el.style.background = t.card;
+});
 
-links.forEach(l=>{
-l.style.background = t.card;
+document.querySelectorAll(".analytics-card").forEach(el=>{
+el.style.borderColor = t.accent;
 });
 
 }
@@ -36,34 +52,30 @@ return(
 
 <div className="card">
 
-<h2>Theme Marketplace</h2>
+<h3>Theme Marketplace</h3>
 
-<p style={{opacity:.6,marginBottom:20}}>
-Choose a theme for your link page
-</p>
+<div className="themes">
 
 {themes.map(t=>(
 
-<button
+<div
 key={t.name}
+className="theme"
 onClick={()=>applyTheme(t)}
-style={{
-marginRight:10,
-marginBottom:10,
-padding:"10px 16px",
-borderRadius:8,
-background:"#1a1a25",
-border:"1px solid #2a2a35",
-color:"white",
-cursor:"pointer"
-}}
 >
 
-{t.name}
+<div
+className="preview"
+style={{background:t.card}}
+/>
 
-</button>
+<div>{t.name}</div>
+
+</div>
 
 ))}
+
+</div>
 
 <style jsx>{`
 
@@ -71,6 +83,24 @@ cursor:"pointer"
 background:#111;
 padding:25px;
 border-radius:16px;
+}
+
+.themes{
+display:flex;
+gap:20px;
+margin-top:20px;
+}
+
+.theme{
+cursor:pointer;
+text-align:center;
+}
+
+.preview{
+width:60px;
+height:60px;
+border-radius:12px;
+margin-bottom:6px;
 }
 
 `}</style>
