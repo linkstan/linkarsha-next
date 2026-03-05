@@ -1,57 +1,64 @@
 "use client";
 
-export default function Chart({ clicks }){
+import {
+BarChart,
+Bar,
+XAxis,
+YAxis,
+Tooltip,
+ResponsiveContainer,
+CartesianGrid
+} from "recharts";
 
-const data = Object.values(clicks);
+export default function Chart({ links, clicks }) {
 
-const max = Math.max(...data,1);
+const data = links.map(link => ({
+name: link.title,
+clicks: clicks[link.id] || 0
+}));
 
-return(
+return (
 
-<div className="chart">
+<div className="chart-wrapper">
 
-{data.map((v,i)=>{
+<ResponsiveContainer width="100%" height={260}>
 
-const height = (v/max)*120;
+<BarChart data={data}>
 
-return(
-<div key={i} className="bar-wrapper">
+<CartesianGrid strokeDasharray="3 3" stroke="#1c1c25"/>
 
-<div
-className="bar"
-style={{height:height}}
+<XAxis
+dataKey="name"
+stroke="#aaa"
 />
 
-</div>
-)
+<YAxis stroke="#aaa"/>
 
-})}
+<Tooltip
+contentStyle={{
+background:"#111",
+border:"1px solid #333",
+borderRadius:8
+}}
+/>
+
+<Bar
+dataKey="clicks"
+fill="#7c5cff"
+radius={[6,6,0,0]}
+/>
+
+</BarChart>
+
+</ResponsiveContainer>
 
 <style jsx>{`
 
-.chart{
-display:flex;
-align-items:flex-end;
-height:140px;
-gap:10px;
-padding-top:20px;
-}
-
-.bar-wrapper{
-flex:1;
-display:flex;
-align-items:flex-end;
-}
-
-.bar{
-width:100%;
-background:linear-gradient(180deg,#7c5cff,#4b32ff);
-border-radius:6px;
-transition:all .3s;
-}
-
-.bar:hover{
-transform:scaleY(1.05);
+.chart-wrapper{
+background:#111;
+padding:25px;
+border-radius:16px;
+margin-bottom:30px;
 }
 
 `}</style>
