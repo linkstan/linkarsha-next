@@ -1,31 +1,36 @@
 "use client";
 
 import {
+ResponsiveContainer,
 BarChart,
 Bar,
 XAxis,
 YAxis,
 Tooltip,
-ResponsiveContainer,
 CartesianGrid
 } from "recharts";
 
-export default function Chart({ links, clicks }) {
+export default function Chart({links, clicks}){
 
-const data = links.map(link => ({
-name: link.title,
-clicks: clicks[link.id] || 0
+const data = links.map(l => ({
+name: l.title,
+clicks: clicks[l.id] || 0
 }));
 
-return (
+return(
 
 <div className="chart-wrapper">
 
-<ResponsiveContainer width="100%" height={260}>
+<h3>Clicks per Link</h3>
 
-<BarChart data={data}>
+<ResponsiveContainer width="100%" height={320}>
 
-<CartesianGrid strokeDasharray="3 3" stroke="#1c1c25"/>
+<BarChart
+data={data}
+margin={{top:20,right:20,left:0,bottom:5}}
+>
+
+<CartesianGrid strokeDasharray="3 3" stroke="#1e1e28"/>
 
 <XAxis
 dataKey="name"
@@ -35,10 +40,11 @@ stroke="#aaa"
 <YAxis stroke="#aaa"/>
 
 <Tooltip
+cursor={{fill:"rgba(255,255,255,0.05)"}}
 contentStyle={{
-background:"#111",
-border:"1px solid #333",
-borderRadius:8
+background:"#0f0f15",
+border:"1px solid #2a2a35",
+borderRadius:10
 }}
 />
 
@@ -46,6 +52,7 @@ borderRadius:8
 dataKey="clicks"
 fill="#7c5cff"
 radius={[6,6,0,0]}
+animationDuration={900}
 />
 
 </BarChart>
@@ -55,16 +62,22 @@ radius={[6,6,0,0]}
 <style jsx>{`
 
 .chart-wrapper{
-background:#111;
-padding:25px;
-border-radius:16px;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+padding:30px;
+border-radius:18px;
 margin-bottom:30px;
+}
+
+h3{
+margin-bottom:20px;
 }
 
 `}</style>
 
 </div>
 
-)
+);
 
 }
