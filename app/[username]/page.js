@@ -7,7 +7,7 @@ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export default async function PublicProfile({ params }) {
 
-const username = params.username;
+const username = params?.username;
 
 const { data: profile } = await supabase
 .from("profiles")
