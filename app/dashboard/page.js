@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabase";
 import Links from "./links";
 import Analytics from "./analytics";
 import ThemeEditor from "./theme-editor";
+import Blocks from "./blocks";
 
 export default function Dashboard(){
 
@@ -275,6 +276,7 @@ My Linkarsh ▼
 {openMenu==="links" && (
 <div className="submenu">
 <div onClick={()=>setSection("links")}>My Links</div>
+<div onClick={()=>setSection("blocks")}>Blocks</div>
 </div>
 )}
 
@@ -363,6 +365,12 @@ startEdit={startEdit}
 handleDragStart={handleDragStart}
 handleDrop={handleDrop}
 />
+
+)}
+
+{section==="blocks" && (
+
+<Blocks user={user} />
 
 )}
 
