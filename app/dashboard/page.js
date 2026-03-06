@@ -44,6 +44,12 @@ const {data:prof}=await supabase
 
 setProfile(prof);
 
+/* redirect new users to setup */
+if(!prof.user_type || !prof.industry){
+window.location="/setup";
+return;
+}
+
 loadLinks(session.user.id);
 
 setLoading(false);
