@@ -20,7 +20,7 @@ const {data}=await supabase
 .from("blocks")
 .select("*")
 .eq("user_id",user.id)
-.order("created_at",{ascending:true});
+.order("position",{ascending:true});
 
 if(data){
 setBlocks(data);
