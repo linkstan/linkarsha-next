@@ -13,8 +13,6 @@ export default function Analytics({ links = [], clicks = {}, clickEvents = [] })
 const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
 
-const [range,setRange] = useState("7d");
-
 const [startDate,setStartDate] = useState("");
 const [endDate,setEndDate] = useState("");
 
@@ -36,15 +34,7 @@ end = new Date(endDate);
 
 }else{
 
-const now = new Date();
-let limit = new Date();
-
-if(range==="24h") limit.setHours(now.getHours()-24);
-if(range==="7d") limit.setDate(now.getDate()-7);
-if(range==="30d") limit.setDate(now.getDate()-30);
-
-start = limit;
-end = now;
+return events;
 
 }
 
@@ -77,7 +67,7 @@ setLiveClicks(counts);
 
 useEffect(()=>{
 buildClickCounts();
-},[events,range,startDate,endDate]);
+},[events,startDate,endDate]);
 
 /* REFRESH ANALYTICS */
 
@@ -198,25 +188,16 @@ return(
 
 <div className="topbar">
 
-<select
-value={range}
-onChange={(e)=>setRange(e.target.value)}
->
-
-<option value="24h">Last 24h</option>
-<option value="7d">Last 7 days</option>
-<option value="30d">Last 30 days</option>
-
-</select>
-
 <input
 type="datetime-local"
+placeholder="Start date & time"
 value={startDate}
 onChange={(e)=>setStartDate(e.target.value)}
 />
 
 <input
 type="datetime-local"
+placeholder="Till date & time"
 value={endDate}
 onChange={(e)=>setEndDate(e.target.value)}
 />
