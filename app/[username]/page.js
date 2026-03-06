@@ -30,11 +30,21 @@ User not found
 );
 }
 
-const { data: links } = await supabase
-.from("links")
+/* LOAD BLOCKS INSTEAD OF LINKS */
+
+const { data: blocks } = await supabase
+.from("blocks")
 .select("*")
 .eq("user_id", profile.id)
 .order("created_at",{ascending:true});
+
+/* CONVERT BLOCK DATA → LINKS FORMAT (to keep existing UI working) */
+
+const links = (blocks || []).map(b => ({
+id: b.id,
+title: b.data_json?.title,
+url: b.data_json?.url
+}));
 
 return (
 <div style={{
