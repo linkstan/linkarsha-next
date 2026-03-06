@@ -32,7 +32,7 @@ export default async function PublicProfile({ params }) {
     );
   }
 
-  /* GET BLOCKS USING PROFILE RELATION */
+  /* GET BLOCKS */
 
   const { data: blocks } = await supabase
     .from("blocks")
@@ -82,6 +82,10 @@ export default async function PublicProfile({ params }) {
       <p style={{opacity:0.7, marginTop:10}}>
         Welcome to Linkarsha 🚀
       </p>
+
+      {/* LINKS */}
+
+      <div style={{marginTop:40,width:320}}>
 
         {userBlocks.length > 0 ? (
 
