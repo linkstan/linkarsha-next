@@ -13,6 +13,8 @@ export default function Analytics({ links = [], clicks = {}, clickEvents = [] })
 const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
 
+const [mode,setMode] = useState("7d");
+
 const [startDate,setStartDate] = useState("");
 const [endDate,setEndDate] = useState("");
 
@@ -25,24 +27,45 @@ function filterEvents(){
 if(!events.length) return [];
 
 let start=null;
-let end=null;
+let end=new Date();
 
-if(startDate && endDate){
+if(mode==="today"){
+start = new Date();
+start.setHours(0,0,0,0);
+}
 
+else if(mode==="yesterday"){
+start = new Date();
+start.setDate(start.getDate()-1);
+start.setHours(0,0,0,0);
+
+end = new Date();
+end.setDate(end.getDate()-1);
+end.setHours(23,59,59,999);
+}
+
+else if(mode==="7d"){
+start = new Date();
+start.setDate(start.getDate()-7);
+}
+
+else if(mode==="30d"){
+start = new Date();
+start.setDate(start.getDate()-30);
+}
+
+else if(mode==="custom" && startDate && endDate){
 start = new Date(startDate);
 end = new Date(endDate);
+}
 
-}else{
-
+else{
 return events;
-
 }
 
 return events.filter(e=>{
-
 const t = new Date(e.created_at);
 return t >= start && t <= end;
-
 });
 
 }
@@ -67,7 +90,7 @@ setLiveClicks(counts);
 
 useEffect(()=>{
 buildClickCounts();
-},[events,startDate,endDate]);
+},[events,mode,startDate,endDate]);
 
 /* REFRESH ANALYTICS */
 
@@ -82,6 +105,8 @@ const { data } = await supabase
 if(data){
 setEvents(data);
 }
+
+setMode("today");
 
 setLoading(false);
 
@@ -188,19 +213,37 @@ return(
 
 <div className="topbar">
 
+<div className="filters">
+
+<button onClick={()=>setMode("today")}>Today</button>
+<button onClick={()=>setMode("yesterday")}>Yesterday</button>
+<button onClick={()=>setMode("7d")}>7 Days</button>
+<button onClick={()=>setMode("30d")}>30 Days</button>
+<button onClick={()=>setMode("custom")}>Custom</button>
+
+</div>
+
+{mode==="custom" && (
+
+<div className="custom">
+
 <input
 type="datetime-local"
-placeholder="Start date & time"
 value={startDate}
 onChange={(e)=>setStartDate(e.target.value)}
+placeholder="From date"
 />
 
 <input
 type="datetime-local"
-placeholder="Till date & time"
 value={endDate}
 onChange={(e)=>setEndDate(e.target.value)}
+placeholder="Till date"
 />
+
+</div>
+
+)}
 
 <button onClick={refreshAnalytics}>
 {loading ? "Refreshing..." : "🔁 Refresh"}
@@ -285,18 +328,31 @@ style={{height:(v*6)+10}}
 </div>
 
 <AIInsights clickEvents={filtered}/>
-
 <Funnel links={links} clicks={liveClicks}/>
-
 <GeoMap clickEvents={filtered}/>
 
 <style jsx>{`
 
 .topbar{
 display:flex;
-gap:10px;
 align-items:center;
+gap:12px;
 margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.filters button{
+background:#1a1a25;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.custom{
+display:flex;
+gap:10px;
 }
 
 .analytics-cards{
