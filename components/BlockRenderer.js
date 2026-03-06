@@ -6,7 +6,7 @@ if (block.type === "link") {
 
 return (
 <a
-href={data.url}
+href={data.url || "#"}
 target="_blank"
 rel="noopener noreferrer"
 style={{
@@ -21,7 +21,7 @@ color:"white",
 fontWeight:"600"
 }}
 >
-{data.title}
+{data.title || "Link"}
 </a>
 );
 
@@ -32,12 +32,13 @@ if (block.type === "video") {
 return (
 <div style={{marginTop:20}}>
 <iframe
-width="320"
-height="180"
-src={data.url}
+width="100%"
+height="200"
+src={data.url || ""}
 title="video"
 frameBorder="0"
 allowFullScreen
+style={{borderRadius:"12px"}}
 />
 </div>
 );
@@ -49,12 +50,13 @@ if (block.type === "music") {
 return (
 <div style={{marginTop:20}}>
 <iframe
-src={data.url}
-width="320"
+src={data.url || ""}
+width="100%"
 height="80"
 frameBorder="0"
 allow="autoplay; clipboard-write; encrypted-media"
 loading="lazy"
+style={{borderRadius:"12px"}}
 />
 </div>
 );
@@ -65,7 +67,7 @@ if (block.type === "image") {
 
 return (
 <img
-src={data.url}
+src={data.url || ""}
 style={{
 width:"100%",
 marginTop:"16px",
@@ -84,7 +86,7 @@ marginTop:"16px",
 lineHeight:"1.6",
 opacity:"0.9"
 }}>
-{data.text}
+{data.text || ""}
 </p>
 );
 
@@ -99,8 +101,9 @@ padding:"16px",
 marginTop:"16px",
 borderRadius:"12px"
 }}>
+
 <img
-src={data.image}
+src={data.image || ""}
 style={{
 width:"100%",
 borderRadius:"8px"
@@ -108,15 +111,15 @@ borderRadius:"8px"
 />
 
 <h3 style={{marginTop:10}}>
-{data.title}
+{data.title || "Product"}
 </h3>
 
 <p style={{opacity:0.7}}>
-${data.price}
+${data.price || ""}
 </p>
 
 <a
-href={data.url}
+href={data.url || "#"}
 target="_blank"
 style={{
 display:"block",
