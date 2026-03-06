@@ -194,6 +194,24 @@ alert("Link copied");
 
 }
 
+async function createBlock(type){
+
+await fetch("/api/blocks/create",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+user_id:user.id,
+type:type,
+data_json:{title:type,url:""}
+})
+});
+
+alert(type+" block created");
+
+}
+
 if(loading){
 
 return(
@@ -301,6 +319,28 @@ linkarsha-next.vercel.app/{profile?.username}
 <button className="share-btn" onClick={shareProfile}>
 Share
 </button>
+
+</div>
+
+</div>
+
+<div style={{marginBottom:40}}>
+
+<h2>Add Block</h2>
+
+<div style={{
+display:"flex",
+gap:"10px",
+flexWrap:"wrap",
+marginTop:"10px"
+}}>
+
+<button onClick={()=>createBlock("link")}>Link</button>
+<button onClick={()=>createBlock("video")}>Video</button>
+<button onClick={()=>createBlock("music")}>Music</button>
+<button onClick={()=>createBlock("image")}>Image</button>
+<button onClick={()=>createBlock("text")}>Text</button>
+<button onClick={()=>createBlock("product")}>Product</button>
 
 </div>
 
@@ -450,12 +490,6 @@ padding:20px;
 overflow:auto;
 margin:auto;
 animation:floatPhone 6s ease-in-out infinite;
-}
-
-@keyframes floatPhone{
-0%{transform:translateY(0px)}
-50%{transform:translateY(-12px)}
-100%{transform:translateY(0px)}
 }
 
 @keyframes floatPhone{
