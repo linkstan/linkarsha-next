@@ -17,8 +17,10 @@ setLiveClicks(clicks || {});
 
 /* manual refresh */
 
-function refreshAnalytics(){
-location.reload();
+async function refreshAnalytics(){
+
+setLiveClicks({ ...clicks });
+
 }
 
 function totalClicks() {
@@ -140,9 +142,7 @@ return (
 <div className="refresh-bar">
 
 <button onClick={refreshAnalytics} className="refresh-btn">
-
-🔁 Refresh Analytics
-
+🔁 Refresh
 </button>
 
 </div>
