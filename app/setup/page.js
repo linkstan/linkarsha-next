@@ -8,7 +8,6 @@ export default function Setup(){
 const [user,setUser]=useState(null);
 const [step,setStep]=useState(1);
 const [userType,setUserType]=useState("");
-const [industry,setIndustry]=useState("");
 
 useEffect(()=>{
 init();
@@ -27,13 +26,13 @@ setUser(session.user);
 
 }
 
-async function saveProfile(){
+async function saveProfile(type, field){
 
 await supabase
 .from("profiles")
 .update({
-user_type:userType,
-industry:industry
+user_type:type,
+industry:field
 })
 .eq("id",user.id);
 
@@ -97,43 +96,43 @@ gridTemplateColumns:"1fr 1fr",
 gap:"10px"
 }}>
 
-<button onClick={()=>{setIndustry("artist");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"artist")}>
 Artist
 </button>
 
-<button onClick={()=>{setIndustry("athlete");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"athlete")}>
 Athlete
 </button>
 
-<button onClick={()=>{setIndustry("youtuber");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"youtuber")}>
 YouTuber
 </button>
 
-<button onClick={()=>{setIndustry("musician");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"musician")}>
 Musician
 </button>
 
-<button onClick={()=>{setIndustry("restaurant");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"restaurant")}>
 Restaurant
 </button>
 
-<button onClick={()=>{setIndustry("cafe");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"cafe")}>
 Cafe
 </button>
 
-<button onClick={()=>{setIndustry("store");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"store")}>
 Online Store
 </button>
 
-<button onClick={()=>{setIndustry("healthcare");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"healthcare")}>
 Healthcare
 </button>
 
-<button onClick={()=>{setIndustry("photographer");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"photographer")}>
 Photographer
 </button>
 
-<button onClick={()=>{setIndustry("coach");saveProfile();}}>
+<button onClick={()=>saveProfile(userType,"coach")}>
 Coach
 </button>
 
