@@ -6,6 +6,9 @@ export default function Blocks({ user }) {
 
 const [blocks,setBlocks]=useState([]);
 const [loading,setLoading]=useState(true);
+const [editing,setEditing]=useState(null);
+const [title,setTitle]=useState("");
+const [url,setUrl]=useState("");
 
 useEffect(()=>{
 loadBlocks();
@@ -27,6 +30,37 @@ setLoading(false);
 
 }
 
+function startEdit(block){
+
+setEditing(block.id);
+
+const data=block.data_json || {};
+
+setTitle(data.title || "");
+setUrl(data.url || "");
+
+}
+
+async function saveEdit(){
+
+await supabase
+.from("blocks")
+.update({
+data_json:{
+title:title,
+url:url
+}
+})
+.eq("id",editing);
+
+setEditing(null);
+setTitle("");
+setUrl("");
+
+loadBlocks();
+
+}
+
 async function deleteBlock(id){
 
 await supabase
@@ -39,11 +73,7 @@ loadBlocks();
 }
 
 if(loading){
-
-return(
-<div style={{opacity:0.6}}>Loading blocks...</div>
-)
-
+return <div style={{opacity:0.6}}>Loading blocks...</div>
 }
 
 return(
@@ -59,7 +89,7 @@ return(
 {blocks.map(block=>{
 
 const data=block.data_json || {};
-const title=data.title || block.type;
+const titleText=data.title || block.type;
 
 return(
 
@@ -69,44 +99,74 @@ style={{
 background:"#15151f",
 padding:"14px",
 borderRadius:"10px",
-marginTop:"10px",
-display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
+marginTop:"10px"
 }}
 >
 
-<div>
-
 <div style={{fontWeight:"600"}}>
-{title}
+{titleText}
 </div>
 
 <div style={{opacity:0.5,fontSize:"12px"}}>
 Type: {block.type}
 </div>
 
-</div>
+<div style={{marginTop:"10px",display:"flex",gap:"10px"}}>
+
+<button onClick={()=>startEdit(block)}>
+Edit
+</button>
 
 <button
 onClick={()=>deleteBlock(block.id)}
-style={{
-background:"#ff4d4d",
-border:"none",
-color:"white",
-padding:"6px 10px",
-borderRadius:"6px",
-cursor:"pointer"
-}}
+style={{background:"#ff4d4d",color:"white"}}
 >
 Delete
 </button>
 
 </div>
 
+</div>
+
 )
 
 })}
+
+{editing && (
+
+<div style={{
+marginTop:"30px",
+padding:"20px",
+background:"#111",
+borderRadius:"10px"
+}}>
+
+<h3>Edit Block</h3>
+
+<input
+placeholder="Title"
+value={title}
+onChange={(e)=>setTitle(e.target.value)}
+style={{display:"block",marginTop:"10px",padding:"8px"}}
+/>
+
+<input
+placeholder="URL"
+value={url}
+onChange={(e)=>setUrl(e.target.value)}
+style={{display:"block",marginTop:"10px",padding:"8px"}}
+/>
+
+<button
+onClick={saveEdit}
+style={{marginTop:"10px"}}
+>
+Save
+</button>
+
+</div>
+
+)}
 
 </div>
 
