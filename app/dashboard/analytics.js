@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+
 import Chart from "./chart";
 import Heatmap from "./heatmap";
 import AIInsights from "./ai-insights";
@@ -8,73 +10,112 @@ import GeoMap from "./geo-map";
 
 export default function Analytics({ links = [], clicks = {}, clickEvents = [] }) {
 
-const [liveClicks, setLiveClicks] = useState(clicks || {});
+const [liveClicks,setLiveClicks] = useState(clicks || {});
+const [events,setEvents] = useState(clickEvents || []);
+const [range,setRange] = useState("7d");
+const [loading,setLoading] = useState(false);
 
-/* update when props change */
-useEffect(() => {
-setLiveClicks(clicks || {});
-}, [clicks]);
+/* ----------------------------
+DATE FILTER
+-----------------------------*/
 
-/* manual refresh */
+function filterEvents(){
+
+if(!events.length) return [];
+
+const now = new Date();
+
+let limit = new Date();
+
+if(range==="24h") limit.setHours(now.getHours()-24);
+
+if(range==="7d") limit.setDate(now.getDate()-7);
+
+if(range==="30d") limit.setDate(now.getDate()-30);
+
+return events.filter(e=> new Date(e.created_at) >= limit);
+
+}
+
+const filtered = filterEvents();
+
+/* ----------------------------
+CLICK COUNTS
+-----------------------------*/
+
+function buildClickCounts(){
+
+const counts={};
+
+links.forEach(l=>counts[l.id]=0);
+
+filtered.forEach(e=>{
+counts[e.link_id]=(counts[e.link_id]||0)+1;
+});
+
+setLiveClicks(counts);
+
+}
+
+useEffect(()=>{
+buildClickCounts();
+},[events,range]);
+
+/* ----------------------------
+REFRESH DATA
+-----------------------------*/
 
 async function refreshAnalytics(){
 
-setLiveClicks({ ...clicks });
+setLoading(true);
+
+const { data } = await supabase
+.from("clicks")
+.select("*");
+
+if(data){
+setEvents(data);
+}
+
+setLoading(false);
 
 }
 
-function totalClicks() {
-return Object.values(liveClicks || {}).reduce((a, b) => a + b, 0);
+/* ----------------------------
+TOTAL CLICKS
+-----------------------------*/
+
+function totalClicks(){
+return Object.values(liveClicks).reduce((a,b)=>a+b,0);
 }
 
-function topLink() {
+/* ----------------------------
+TOP LINK
+-----------------------------*/
 
-if (!links || links.length === 0) return "None";
+function topLink(){
 
-let max = 0;
-let name = "None";
+let max=0;
+let name="None";
 
-links.forEach(l => {
-if ((liveClicks[l.id] || 0) > max) {
-max = liveClicks[l.id];
-name = l.title;
+links.forEach(l=>{
+if((liveClicks[l.id]||0)>max){
+max=liveClicks[l.id];
+name=l.title;
 }
 });
 
 return name;
-}
-
-/* audience attention score */
-
-function engagementScore(id) {
-
-const total = totalClicks();
-
-if (total === 0) return 0;
-
-return Math.round(((liveClicks[id] || 0) / total) * 100);
 
 }
 
-/* creator growth analytics */
-
-function growthRate(){
-
-const total = totalClicks();
-
-if(total < 10) return "Early stage";
-if(total < 50) return "Growing";
-if(total < 200) return "Strong traction";
-
-return "Viral growth";
-
-}
-
-/* ADVANCED TRAFFIC SOURCES */
+/* ----------------------------
+TRAFFIC SOURCES
+-----------------------------*/
 
 function trafficSources(){
 
-const sources = {
+const sources={
 Instagram:0,
 TikTok:0,
 YouTube:0,
@@ -84,27 +125,22 @@ Direct:0,
 Other:{}
 };
 
-(clickEvents || []).forEach(e=>{
+filtered.forEach(e=>{
 
-const ref = (e.referrer || "").toLowerCase();
+const ref=(e.referrer||"").toLowerCase();
 
 if(ref.includes("instagram")) sources.Instagram++;
-
 else if(ref.includes("tiktok")) sources.TikTok++;
-
 else if(ref.includes("youtube")) sources.YouTube++;
-
 else if(ref.includes("facebook")) sources.Facebook++;
-
 else if(ref.includes("twitter")) sources.Twitter++;
-
 else if(ref==="") sources.Direct++;
 
 else{
 
-const domain = ref.split("/")[2] || "unknown";
+const domain=ref.split("/")[2] || "unknown";
 
-sources.Other[domain] = (sources.Other[domain] || 0) + 1;
+sources.Other[domain]=(sources.Other[domain]||0)+1;
 
 }
 
@@ -116,13 +152,15 @@ return sources;
 
 const sources = trafficSources();
 
-/* clicks by hour */
+/* ----------------------------
+CLICKS BY HOUR
+-----------------------------*/
 
 function clicksByHour(){
 
 const hours = new Array(24).fill(0);
 
-(clickEvents || []).forEach(c=>{
+filtered.forEach(c=>{
 const hour = new Date(c.created_at).getHours();
 hours[hour]++;
 });
@@ -133,21 +171,50 @@ return hours;
 
 const hourly = clicksByHour();
 
-return (
+/* ----------------------------
+GROWTH
+-----------------------------*/
+
+function growthRate(){
+
+const total = totalClicks();
+
+if(total<10) return "Early stage";
+if(total<50) return "Growing";
+if(total<200) return "Strong traction";
+
+return "Viral growth";
+
+}
+
+return(
 
 <>
 
-{/* refresh button */}
+{/* TOP BAR */}
 
-<div className="refresh-bar">
+<div className="topbar">
 
-<button onClick={refreshAnalytics} className="refresh-btn">
-🔁 Refresh
+<select
+value={range}
+onChange={(e)=>setRange(e.target.value)}
+>
+
+<option value="24h">Last 24h</option>
+<option value="7d">Last 7 days</option>
+<option value="30d">Last 30 days</option>
+
+</select>
+
+<button onClick={refreshAnalytics}>
+
+{loading ? "Refreshing..." : "🔁 Refresh"}
+
 </button>
 
 </div>
 
-{/* analytics cards */}
+{/* ANALYTICS CARDS */}
 
 <div className="analytics-cards">
 
@@ -168,17 +235,17 @@ return (
 
 </div>
 
-{/* click graph */}
+{/* LINK CHART */}
 
 <div className="card">
 
 <h3>Clicks per Link</h3>
 
-<Chart links={links || []} clicks={liveClicks || {}} />
+<Chart links={links} clicks={liveClicks}/>
 
 </div>
 
-{/* clicks by hour */}
+{/* HOURLY CHART */}
 
 <div className="card">
 
@@ -190,7 +257,10 @@ return (
 
 <div key={i} className="hour">
 
-<div className="bar" style={{height:(v*6)+10}}></div>
+<div
+className="bar"
+style={{height:(v*6)+10}}
+/>
 
 <div className="label">{i}</div>
 
@@ -202,11 +272,11 @@ return (
 
 </div>
 
-{/* heatmap */}
+{/* HEATMAP */}
 
-<Heatmap clickEvents={clickEvents || []} />
+<Heatmap clickEvents={filtered}/>
 
-{/* traffic sources */}
+{/* TRAFFIC SOURCES */}
 
 <div className="card">
 
@@ -223,13 +293,11 @@ return (
 
 </div>
 
-{/* other domains */}
+{Object.entries(sources.Other).map(([d,v])=>(
 
-{Object.entries(sources.Other).map(([domain,count])=>(
+<div key={d} className="other">
 
-<div key={domain} className="other-source">
-
-{domain} — {count}
+{d} — {v}
 
 </div>
 
@@ -237,63 +305,24 @@ return (
 
 </div>
 
-{/* AI Creator Insights */}
+{/* AI INSIGHTS */}
 
-<AIInsights clickEvents={clickEvents || []} />
+<AIInsights clickEvents={filtered}/>
 
-{/* Click Funnel */}
+{/* FUNNEL */}
 
-<Funnel links={links || []} clicks={liveClicks || {}} />
+<Funnel links={links} clicks={liveClicks}/>
 
-{/* Geographic Map */}
+{/* GEO */}
 
-<GeoMap clickEvents={clickEvents || []} />
-
-{/* attention analytics */}
-
-<div className="card">
-
-<h3>Audience Attention</h3>
-
-{(links || [])
-.slice()
-.sort((a, b) => (liveClicks[b.id] || 0) - (liveClicks[a.id] || 0))
-.map(l => (
-
-<div key={l.id} className="link-row">
-
-<div>
-<div>{l.title}</div>
-<div className="attention">
-{engagementScore(l.id)}% audience attention
-</div>
-</div>
-
-<div>
-{liveClicks[l.id] || 0} clicks
-</div>
-
-</div>
-
-))}
-
-</div>
+<GeoMap clickEvents={filtered}/>
 
 <style jsx>{`
 
-.refresh-bar{
+.topbar{
 display:flex;
-justify-content:flex-end;
+justify-content:space-between;
 margin-bottom:20px;
-}
-
-.refresh-btn{
-background:#1a1a25;
-border:none;
-padding:8px 14px;
-border-radius:8px;
-color:white;
-cursor:pointer;
 }
 
 .analytics-cards{
@@ -310,22 +339,11 @@ padding:24px;
 border-radius:16px;
 flex:1;
 text-align:center;
-transition:all .25s ease;
-}
-
-.analytics-card:hover{
-transform:translateY(-6px);
-border-color:#7c5cff;
-}
-
-.glow{
-box-shadow:0 0 25px rgba(124,92,255,0.18);
 }
 
 .big{
 font-size:30px;
 margin-top:10px;
-font-weight:600;
 }
 
 .card{
@@ -335,25 +353,12 @@ border-radius:16px;
 margin-bottom:30px;
 }
 
-.sources{
-display:flex;
-gap:20px;
-margin-top:10px;
-flex-wrap:wrap;
-}
-
-.other-source{
-margin-top:6px;
-opacity:.7;
-font-size:13px;
-}
-
 .hour-grid{
 display:flex;
 align-items:flex-end;
 gap:6px;
-margin-top:20px;
 height:120px;
+margin-top:20px;
 }
 
 .hour{
@@ -375,19 +380,16 @@ opacity:.6;
 margin-top:4px;
 }
 
-.link-row{
+.sources{
 display:flex;
-justify-content:space-between;
-padding:12px;
-margin-top:10px;
-background:#0f0f15;
-border-radius:10px;
+gap:20px;
+flex-wrap:wrap;
 }
 
-.attention{
-font-size:12px;
-opacity:.6;
-margin-top:4px;
+.other{
+margin-top:6px;
+font-size:13px;
+opacity:.7;
 }
 
 `}</style>
