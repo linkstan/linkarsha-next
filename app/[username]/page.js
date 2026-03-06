@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import BlockRenderer from "../../components/block-renderer";
+import BlockRenderer from "../../components/BlockRenderer";
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
