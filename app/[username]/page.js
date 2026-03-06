@@ -9,6 +9,8 @@ export default async function PublicProfile({ params }) {
 
 const username = params?.username;
 
+/* GET PROFILE */
+
 const { data: profile } = await supabase
 .from("profiles")
 .select("*")
@@ -30,19 +32,15 @@ User not found
 );
 }
 
-/* LOAD BLOCKS */
+/* GET BLOCKS (NEW SYSTEM) */
 
 const { data: blocks } = await supabase
 .from("blocks")
-.select("*");
+.select("*")
+.eq("user_id", profile.id)
+.order("created_at",{ascending:true});
 
-/* CONVERT BLOCK DATA */
-
-const links = (blocks || []).map(b => ({
-id: b.id,
-title: b.data_json?.title,
-url: b.data_json?.url
-}));
+/* PAGE */
 
 return (
 <div style={{
@@ -55,6 +53,8 @@ justifyContent:"center",
 flexDirection:"column",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
+
+{/* AVATAR */}
 
 <div style={{
 width:110,
@@ -84,13 +84,19 @@ Welcome to Linkarsha 🚀
 
 <div style={{marginTop:40,width:320}}>
 
-{links?.length > 0 ? (
+{blocks?.length > 0 ? (
 
-links.map(link => (
+blocks.map(block => {
+
+const data = block.data_json || {};
+const title = data.title || "Link";
+const url = data.url || "#";
+
+return (
 
 <a
-key={link.id}
-href={`/api/click/${link.id}`}
+key={block.id}
+href={url}
 target="_blank"
 rel="noopener noreferrer"
 style={{
@@ -105,10 +111,14 @@ color:"white",
 fontWeight:"600"
 }}
 >
-{link.title}
+
+{title}
+
 </a>
 
-))
+);
+
+})
 
 ) : (
 
