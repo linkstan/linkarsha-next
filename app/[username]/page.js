@@ -41,13 +41,13 @@ const { data: links } = await supabase
 .eq("user_id", profile.id)
 .order("created_at",{ascending:true});
 
-/* GET BLOCKS */
+/* GET BLOCKS (ORDERED BY POSITION) */
 
 const { data: blocks } = await supabase
 .from("blocks")
 .select("*")
 .eq("user_id", profile.id)
-.order("created_at",{ascending:true});
+.order("position",{ascending:true});
 
 return (
 <div style={{
