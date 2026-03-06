@@ -12,36 +12,54 @@ export default function Analytics({ links = [], clicks = {}, clickEvents = [] })
 
 const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
+
 const [range,setRange] = useState("7d");
+
+const [startDate,setStartDate] = useState("");
+const [endDate,setEndDate] = useState("");
+
 const [loading,setLoading] = useState(false);
 
-/* ----------------------------
-DATE FILTER
------------------------------*/
+/* DATE FILTER */
 
 function filterEvents(){
 
 if(!events.length) return [];
 
-const now = new Date();
+let start=null;
+let end=null;
 
+if(startDate && endDate){
+
+start = new Date(startDate);
+end = new Date(endDate);
+
+}else{
+
+const now = new Date();
 let limit = new Date();
 
 if(range==="24h") limit.setHours(now.getHours()-24);
-
 if(range==="7d") limit.setDate(now.getDate()-7);
-
 if(range==="30d") limit.setDate(now.getDate()-30);
 
-return events.filter(e=> new Date(e.created_at) >= limit);
+start = limit;
+end = now;
+
+}
+
+return events.filter(e=>{
+
+const t = new Date(e.created_at);
+return t >= start && t <= end;
+
+});
 
 }
 
 const filtered = filterEvents();
 
-/* ----------------------------
-CLICK COUNTS
------------------------------*/
+/* CLICK COUNTS */
 
 function buildClickCounts(){
 
@@ -59,11 +77,9 @@ setLiveClicks(counts);
 
 useEffect(()=>{
 buildClickCounts();
-},[events,range]);
+},[events,range,startDate,endDate]);
 
-/* ----------------------------
-REFRESH DATA
------------------------------*/
+/* REFRESH ANALYTICS */
 
 async function refreshAnalytics(){
 
@@ -81,17 +97,13 @@ setLoading(false);
 
 }
 
-/* ----------------------------
-TOTAL CLICKS
------------------------------*/
+/* TOTAL CLICKS */
 
 function totalClicks(){
 return Object.values(liveClicks).reduce((a,b)=>a+b,0);
 }
 
-/* ----------------------------
-TOP LINK
------------------------------*/
+/* TOP LINK */
 
 function topLink(){
 
@@ -109,9 +121,7 @@ return name;
 
 }
 
-/* ----------------------------
-TRAFFIC SOURCES
------------------------------*/
+/* TRAFFIC SOURCES */
 
 function trafficSources(){
 
@@ -139,7 +149,6 @@ else if(ref==="") sources.Direct++;
 else{
 
 const domain=ref.split("/")[2] || "unknown";
-
 sources.Other[domain]=(sources.Other[domain]||0)+1;
 
 }
@@ -152,9 +161,7 @@ return sources;
 
 const sources = trafficSources();
 
-/* ----------------------------
-CLICKS BY HOUR
------------------------------*/
+/* CLICKS BY HOUR */
 
 function clicksByHour(){
 
@@ -171,9 +178,7 @@ return hours;
 
 const hourly = clicksByHour();
 
-/* ----------------------------
-GROWTH
------------------------------*/
+/* GROWTH */
 
 function growthRate(){
 
@@ -191,8 +196,6 @@ return(
 
 <>
 
-{/* TOP BAR */}
-
 <div className="topbar">
 
 <select
@@ -206,15 +209,23 @@ onChange={(e)=>setRange(e.target.value)}
 
 </select>
 
+<input
+type="datetime-local"
+value={startDate}
+onChange={(e)=>setStartDate(e.target.value)}
+/>
+
+<input
+type="datetime-local"
+value={endDate}
+onChange={(e)=>setEndDate(e.target.value)}
+/>
+
 <button onClick={refreshAnalytics}>
-
 {loading ? "Refreshing..." : "🔁 Refresh"}
-
 </button>
 
 </div>
-
-{/* ANALYTICS CARDS */}
 
 <div className="analytics-cards">
 
@@ -235,17 +246,10 @@ onChange={(e)=>setRange(e.target.value)}
 
 </div>
 
-{/* LINK CHART */}
-
 <div className="card">
-
 <h3>Clicks per Link</h3>
-
 <Chart links={links} clicks={liveClicks}/>
-
 </div>
-
-{/* HOURLY CHART */}
 
 <div className="card">
 
@@ -272,11 +276,7 @@ style={{height:(v*6)+10}}
 
 </div>
 
-{/* HEATMAP */}
-
 <Heatmap clickEvents={filtered}/>
-
-{/* TRAFFIC SOURCES */}
 
 <div className="card">
 
@@ -296,24 +296,16 @@ style={{height:(v*6)+10}}
 {Object.entries(sources.Other).map(([d,v])=>(
 
 <div key={d} className="other">
-
 {d} — {v}
-
 </div>
 
 ))}
 
 </div>
 
-{/* AI INSIGHTS */}
-
 <AIInsights clickEvents={filtered}/>
 
-{/* FUNNEL */}
-
 <Funnel links={links} clicks={liveClicks}/>
-
-{/* GEO */}
 
 <GeoMap clickEvents={filtered}/>
 
@@ -321,7 +313,8 @@ style={{height:(v*6)+10}}
 
 .topbar{
 display:flex;
-justify-content:space-between;
+gap:10px;
+align-items:center;
 margin-bottom:20px;
 }
 
