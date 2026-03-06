@@ -7,17 +7,17 @@ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export default async function PublicProfile({ params }) {
 
-const username = params?.username;
+const username = params.username;
 
 /* GET PROFILE */
 
-const { data: profile } = await supabase
+const { data: profile, error: profileError } = await supabase
 .from("profiles")
 .select("*")
 .eq("username", username)
 .single();
 
-if (!profile) {
+if (profileError || !profile) {
 return (
 <div style={{
 minHeight:"100vh",
@@ -32,15 +32,21 @@ User not found
 );
 }
 
+/* DEBUG PROFILE */
+
+console.log("PROFILE:", profile);
+
 /* GET BLOCKS */
 
-const { data: blocks, error } = await supabase
+const { data: blocks, error: blocksError } = await supabase
 .from("blocks")
 .select("*")
 .eq("user_id", profile.id);
 
-console.log("BLOCKS RESULT:", blocks);
-console.log("BLOCKS ERROR:", error);
+/* DEBUG BLOCKS */
+
+console.log("BLOCKS:", blocks);
+console.log("BLOCKS ERROR:", blocksError);
 
 /* PAGE */
 
@@ -88,7 +94,7 @@ Welcome to Linkarsha 🚀
 DEBUG blocks count: {blocks?.length || 0}
 </div>
 
-{blocks?.length > 0 ? (
+{blocks && blocks.length > 0 ? (
 
 blocks.map(block => {
 
@@ -97,7 +103,6 @@ const title = data.title || "Link";
 const url = data.url || "#";
 
 return (
-
 <a
 key={block.id}
 href={url}
@@ -117,7 +122,6 @@ fontWeight:"600"
 >
 {title}
 </a>
-
 );
 
 })
