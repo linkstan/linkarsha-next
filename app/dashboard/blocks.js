@@ -48,6 +48,25 @@ setPrice(data.price || "");
 
 }
 
+async function uploadImage(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const path=`${user.id}/${Date.now()}-${file.name}`;
+
+await supabase.storage
+.from("media")
+.upload(path,file);
+
+const {data}=supabase.storage
+.from("media")
+.getPublicUrl(path);
+
+setImage(data.publicUrl);
+
+}
+
 async function saveEdit(){
 
 await supabase
@@ -185,13 +204,8 @@ style={{background:"#ff4d4d",color:"white"}}
 Delete
 </button>
 
-<button onClick={()=>moveUp(index)}>
-⬆
-</button>
-
-<button onClick={()=>moveDown(index)}>
-⬇
-</button>
+<button onClick={()=>moveUp(index)}>⬆</button>
+<button onClick={()=>moveDown(index)}>⬇</button>
 
 </div>
 
@@ -234,18 +248,22 @@ style={{display:"block",marginTop:"10px",padding:"8px"}}
 />
 
 <input
-placeholder="Image URL"
-value={image}
-onChange={(e)=>setImage(e.target.value)}
-style={{display:"block",marginTop:"10px",padding:"8px"}}
-/>
-
-<input
 placeholder="Price"
 value={price}
 onChange={(e)=>setPrice(e.target.value)}
 style={{display:"block",marginTop:"10px",padding:"8px"}}
 />
+
+<div style={{marginTop:"10px"}}>
+<input type="file" onChange={uploadImage}/>
+</div>
+
+{image && (
+<img
+src={image}
+style={{width:"120px",marginTop:"10px",borderRadius:"8px"}}
+/>
+)}
 
 <button
 onClick={saveEdit}
