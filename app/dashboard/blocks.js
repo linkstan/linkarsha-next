@@ -72,6 +72,48 @@ loadBlocks();
 
 }
 
+async function moveUp(index){
+
+if(index===0) return;
+
+const current=blocks[index];
+const above=blocks[index-1];
+
+await supabase
+.from("blocks")
+.update({position:above.position})
+.eq("id",current.id);
+
+await supabase
+.from("blocks")
+.update({position:current.position})
+.eq("id",above.id);
+
+loadBlocks();
+
+}
+
+async function moveDown(index){
+
+if(index===blocks.length-1) return;
+
+const current=blocks[index];
+const below=blocks[index+1];
+
+await supabase
+.from("blocks")
+.update({position:below.position})
+.eq("id",current.id);
+
+await supabase
+.from("blocks")
+.update({position:current.position})
+.eq("id",below.id);
+
+loadBlocks();
+
+}
+
 if(loading){
 return <div style={{opacity:0.6}}>Loading blocks...</div>
 }
@@ -86,7 +128,7 @@ return(
 <div style={{opacity:0.5}}>No blocks yet</div>
 )}
 
-{blocks.map(block=>{
+{blocks.map((block,index)=>{
 
 const data=block.data_json || {};
 const titleText=data.title || block.type;
@@ -111,7 +153,12 @@ marginTop:"10px"
 Type: {block.type}
 </div>
 
-<div style={{marginTop:"10px",display:"flex",gap:"10px"}}>
+<div style={{
+marginTop:"10px",
+display:"flex",
+gap:"10px",
+flexWrap:"wrap"
+}}>
 
 <button onClick={()=>startEdit(block)}>
 Edit
@@ -122,6 +169,14 @@ onClick={()=>deleteBlock(block.id)}
 style={{background:"#ff4d4d",color:"white"}}
 >
 Delete
+</button>
+
+<button onClick={()=>moveUp(index)}>
+⬆
+</button>
+
+<button onClick={()=>moveDown(index)}>
+⬇
 </button>
 
 </div>
