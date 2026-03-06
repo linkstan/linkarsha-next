@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { blockSuggestions } from "../lib/blockSuggestions";
 
 import Links from "./links";
 import Analytics from "./analytics";
@@ -331,6 +332,35 @@ Share
 </div>
 
 </div>
+
+{/* Recommended Blocks */}
+
+{profile && blockSuggestions[profile.industry] && (
+
+<div style={{marginBottom:30}}>
+
+<h3>Recommended for you</h3>
+
+<div style={{
+display:"flex",
+gap:"10px",
+flexWrap:"wrap",
+marginTop:"10px"
+}}>
+
+{blockSuggestions[profile.industry].map((b,i)=>(
+
+<button key={i} onClick={()=>createBlock(b.type)}>
+{b.label}
+</button>
+
+))}
+
+</div>
+
+</div>
+
+)}
 
 <div style={{marginBottom:40}}>
 
