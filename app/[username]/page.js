@@ -83,12 +83,6 @@ export default async function PublicProfile({ params }) {
         Welcome to Linkarsha 🚀
       </p>
 
-      <div style={{marginTop:40,width:320}}>
-
-        <div style={{opacity:0.6,fontSize:12,marginBottom:20}}>
-          DEBUG blocks count: {userBlocks.length}
-        </div>
-
         {userBlocks.length > 0 ? (
 
           userBlocks.map(block => {
