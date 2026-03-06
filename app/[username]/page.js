@@ -32,18 +32,13 @@ User not found
 );
 }
 
-/* GET ALL BLOCKS */
+/* GET LINKS FROM DASHBOARD */
 
-const { data: blocks } = await supabase
-.from("blocks")
+const { data: links } = await supabase
+.from("links")
 .select("*")
+.eq("user_id", profile.id)
 .order("created_at",{ascending:true});
-
-/* FILTER USER BLOCKS */
-
-const userBlocks = blocks?.filter(
-block => block.user_id === profile.id
-) || [];
 
 return (
 <div style={{
@@ -85,19 +80,13 @@ Welcome to Linkarsha 🚀
 
 <div style={{marginTop:40,width:320}}>
 
-{userBlocks.length > 0 ? (
+{links?.length > 0 ? (
 
-userBlocks.map(block => {
-
-const data = block.data_json || {};
-const title = data.title || "Link";
-const url = data.url || "#";
-
-return (
+links.map(link => (
 
 <a
-key={block.id}
-href={url}
+key={link.id}
+href={`/api/click/${link.id}`}
 target="_blank"
 rel="noopener noreferrer"
 style={{
@@ -112,12 +101,10 @@ color:"white",
 fontWeight:"600"
 }}
 >
-{title}
+{link.title}
 </a>
 
-);
-
-})
+))
 
 ) : (
 
