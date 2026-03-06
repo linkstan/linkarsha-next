@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import BlockRenderer from "../../components/BlockRenderer";
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -32,10 +33,18 @@ User not found
 );
 }
 
-/* GET LINKS FROM DASHBOARD */
+/* GET LINKS */
 
 const { data: links } = await supabase
 .from("links")
+.select("*")
+.eq("user_id", profile.id)
+.order("created_at",{ascending:true});
+
+/* GET BLOCKS */
+
+const { data: blocks } = await supabase
+.from("blocks")
 .select("*")
 .eq("user_id", profile.id)
 .order("created_at",{ascending:true});
@@ -80,9 +89,9 @@ Welcome to Linkarsha 🚀
 
 <div style={{marginTop:40,width:320}}>
 
-{links?.length > 0 ? (
+{/* LINKS */}
 
-links.map(link => (
+{links?.map(link => (
 
 <a
 key={link.id}
@@ -104,13 +113,13 @@ fontWeight:"600"
 {link.title}
 </a>
 
-))
+))}
 
-) : (
+{/* BLOCKS */}
 
-<div style={{opacity:0.5}}>No links yet</div>
-
-)}
+{blocks?.map(block => (
+<BlockRenderer key={block.id} block={block} />
+))}
 
 </div>
 
