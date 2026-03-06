@@ -32,13 +32,15 @@ User not found
 );
 }
 
-/* GET BLOCKS (NEW SYSTEM) */
+/* GET BLOCKS */
 
-const { data: blocks } = await supabase
+const { data: blocks, error } = await supabase
 .from("blocks")
 .select("*")
-.eq("user_id", profile.id)
-.order("created_at",{ascending:true});
+.eq("user_id", profile.id);
+
+console.log("BLOCKS RESULT:", blocks);
+console.log("BLOCKS ERROR:", error);
 
 /* PAGE */
 
@@ -53,8 +55,6 @@ justifyContent:"center",
 flexDirection:"column",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
-
-{/* AVATAR */}
 
 <div style={{
 width:110,
@@ -84,6 +84,10 @@ Welcome to Linkarsha 🚀
 
 <div style={{marginTop:40,width:320}}>
 
+<div style={{opacity:0.6,fontSize:12,marginBottom:20}}>
+DEBUG blocks count: {blocks?.length || 0}
+</div>
+
 {blocks?.length > 0 ? (
 
 blocks.map(block => {
@@ -111,9 +115,7 @@ color:"white",
 fontWeight:"600"
 }}
 >
-
 {title}
-
 </a>
 
 );
