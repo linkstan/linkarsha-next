@@ -11,13 +11,13 @@ const username = params.username;
 
 /* GET PROFILE */
 
-const { data: profile, error: profileError } = await supabase
+const { data: profile } = await supabase
 .from("profiles")
 .select("*")
 .eq("username", username)
 .single();
 
-if (profileError || !profile) {
+if (!profile) {
 return (
 <div style={{
 minHeight:"100vh",
@@ -32,13 +32,18 @@ User not found
 );
 }
 
-/* GET BLOCKS ONLY FOR THIS USER */
+/* GET ALL BLOCKS */
 
 const { data: blocks } = await supabase
 .from("blocks")
 .select("*")
-.eq("user_id", profile.id)
 .order("created_at",{ascending:true});
+
+/* FILTER USER BLOCKS */
+
+const userBlocks = blocks?.filter(
+block => block.user_id === profile.id
+) || [];
 
 return (
 <div style={{
@@ -80,9 +85,9 @@ Welcome to Linkarsha 🚀
 
 <div style={{marginTop:40,width:320}}>
 
-{blocks?.length > 0 ? (
+{userBlocks.length > 0 ? (
 
-blocks.map(block => {
+userBlocks.map(block => {
 
 const data = block.data_json || {};
 const title = data.title || "Link";
