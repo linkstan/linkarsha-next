@@ -34,10 +34,9 @@ User not found
 
 const { data: blocks } = await supabase
 .from("blocks")
-.select("*")
-.eq("user_id", profile.id);
+.select("*");
 
-/* CONVERT BLOCK DATA → LINKS FORMAT */
+/* CONVERT BLOCK DATA */
 
 const links = (blocks || []).map(b => ({
 id: b.id,
@@ -56,8 +55,6 @@ justifyContent:"center",
 flexDirection:"column",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
-
-{/* AVATAR */}
 
 <div style={{
 width:110,
