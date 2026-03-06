@@ -7,8 +7,12 @@ export default function Blocks({ user }) {
 const [blocks,setBlocks]=useState([]);
 const [loading,setLoading]=useState(true);
 const [editing,setEditing]=useState(null);
+
 const [title,setTitle]=useState("");
 const [url,setUrl]=useState("");
+const [text,setText]=useState("");
+const [image,setImage]=useState("");
+const [price,setPrice]=useState("");
 
 useEffect(()=>{
 loadBlocks();
@@ -38,6 +42,9 @@ const data=block.data_json || {};
 
 setTitle(data.title || "");
 setUrl(data.url || "");
+setText(data.text || "");
+setImage(data.image || "");
+setPrice(data.price || "");
 
 }
 
@@ -47,15 +54,22 @@ await supabase
 .from("blocks")
 .update({
 data_json:{
-title:title,
-url:url
+title,
+url,
+text,
+image,
+price
 }
 })
 .eq("id",editing);
 
 setEditing(null);
+
 setTitle("");
 setUrl("");
+setText("");
+setImage("");
+setPrice("");
 
 loadBlocks();
 
@@ -209,6 +223,27 @@ style={{display:"block",marginTop:"10px",padding:"8px"}}
 placeholder="URL"
 value={url}
 onChange={(e)=>setUrl(e.target.value)}
+style={{display:"block",marginTop:"10px",padding:"8px"}}
+/>
+
+<input
+placeholder="Text"
+value={text}
+onChange={(e)=>setText(e.target.value)}
+style={{display:"block",marginTop:"10px",padding:"8px"}}
+/>
+
+<input
+placeholder="Image URL"
+value={image}
+onChange={(e)=>setImage(e.target.value)}
+style={{display:"block",marginTop:"10px",padding:"8px"}}
+/>
+
+<input
+placeholder="Price"
+value={price}
+onChange={(e)=>setPrice(e.target.value)}
 style={{display:"block",marginTop:"10px",padding:"8px"}}
 />
 
