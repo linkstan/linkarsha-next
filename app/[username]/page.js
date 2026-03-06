@@ -1,135 +1,128 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+process.env.NEXT_PUBLIC_SUPABASE_URL,
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
 export default async function PublicProfile({ params }) {
 
-  const username = params.username;
+const username = params.username;
 
-  /* GET PROFILE */
+/* GET PROFILE */
 
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("username", username)
-    .single();
+const { data: profile, error: profileError } = await supabase
+.from("profiles")
+.select("*")
+.eq("username", username)
+.single();
 
-  if (profileError || !profile) {
-    return (
-      <div style={{
-        minHeight:"100vh",
-        background:"#0b0b12",
-        color:"white",
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"center"
-      }}>
-        User not found
-      </div>
-    );
-  }
+if (profileError || !profile) {
+return (
+<div style={{
+minHeight:"100vh",
+background:"#0b0b12",
+color:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+User not found
+</div>
+);
+}
 
-  /* GET BLOCKS */
+/* GET BLOCKS ONLY FOR THIS USER */
 
-  const { data: blocks } = await supabase
-    .from("blocks")
-    .select("*")
-    .order("created_at", { ascending: true });
+const { data: blocks } = await supabase
+.from("blocks")
+.select("*")
+.eq("user_id", profile.id)
+.order("created_at",{ascending:true});
 
-  /* FILTER BLOCKS FOR THIS USER */
+return (
+<div style={{
+minHeight:"100vh",
+background:"#0b0b12",
+color:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+flexDirection:"column",
+fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+}}>
 
-  const userBlocks = blocks?.filter(b => b.user_id === profile.id) || [];
+<div style={{
+width:110,
+height:110,
+borderRadius:"50%",
+overflow:"hidden",
+background:"#222",
+marginBottom:20
+}}>
+<img
+src={profile.avatar || "/default-avatar.png"}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+</div>
 
-  return (
-    <div style={{
-      minHeight:"100vh",
-      background:"#0b0b12",
-      color:"white",
-      display:"flex",
-      alignItems:"center",
-      justifyContent:"center",
-      flexDirection:"column",
-      fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
-    }}>
+<h1 style={{fontSize:"42px"}}>
+@{profile.username}
+</h1>
 
-      {/* AVATAR */}
+<p style={{opacity:0.7, marginTop:10}}>
+Welcome to Linkarsha 🚀
+</p>
 
-      <div style={{
-        width:110,
-        height:110,
-        borderRadius:"50%",
-        overflow:"hidden",
-        background:"#222",
-        marginBottom:20
-      }}>
-        <img
-          src={profile.avatar || "/default-avatar.png"}
-          style={{
-            width:"100%",
-            height:"100%",
-            objectFit:"cover"
-          }}
-        />
-      </div>
+<div style={{marginTop:40,width:320}}>
 
-      <h1 style={{fontSize:"42px"}}>
-        @{profile.username}
-      </h1>
+{blocks?.length > 0 ? (
 
-      <p style={{opacity:0.7, marginTop:10}}>
-        Welcome to Linkarsha 🚀
-      </p>
+blocks.map(block => {
 
-      {/* LINKS */}
+const data = block.data_json || {};
+const title = data.title || "Link";
+const url = data.url || "#";
 
-      <div style={{marginTop:40,width:320}}>
+return (
 
-        {userBlocks.length > 0 ? (
+<a
+key={block.id}
+href={url}
+target="_blank"
+rel="noopener noreferrer"
+style={{
+display:"block",
+background:"#111",
+padding:"16px",
+marginTop:"12px",
+borderRadius:"12px",
+textAlign:"center",
+textDecoration:"none",
+color:"white",
+fontWeight:"600"
+}}
+>
+{title}
+</a>
 
-          userBlocks.map(block => {
+);
 
-            const data = block.data_json || {};
-            const title = data.title || "Link";
-            const url = data.url || "#";
+})
 
-            return (
+) : (
 
-              <a
-                key={block.id}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display:"block",
-                  background:"#111",
-                  padding:"16px",
-                  marginTop:"12px",
-                  borderRadius:"12px",
-                  textAlign:"center",
-                  textDecoration:"none",
-                  color:"white",
-                  fontWeight:"600"
-                }}
-              >
-                {title}
-              </a>
+<div style={{opacity:0.5}}>No links yet</div>
 
-            );
+)}
 
-          })
+</div>
 
-        ) : (
-
-          <div style={{opacity:0.5}}>No links yet</div>
-
-        )}
-
-      </div>
-
-    </div>
-  );
+</div>
+);
 
 }
