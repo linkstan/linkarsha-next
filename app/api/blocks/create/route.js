@@ -1,17 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-process.env.NEXT_PUBLIC_SUPABASE_URL,
-process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-export async function POST(req) {
+export async function POST(req){
 
 const body = await req.json();
 
+const supabase = createClient(
+process.env.NEXT_PUBLIC_SUPABASE_URL,
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 const { user_id, type, data_json } = body;
 
-const { data, error } = await supabase
+const { error } = await supabase
 .from("blocks")
 .insert([
 {
@@ -21,10 +21,18 @@ data_json
 }
 ]);
 
-if (error) {
-return new Response(JSON.stringify({ error }), { status: 500 });
+if(error){
+
+return new Response(
+JSON.stringify({error:error.message}),
+{status:500}
+);
+
 }
 
-return new Response(JSON.stringify({ success: true }), { status: 200 });
+return new Response(
+JSON.stringify({success:true}),
+{status:200}
+);
 
 }
