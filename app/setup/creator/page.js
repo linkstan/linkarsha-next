@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function CreatorSetup(){
+
+const router = useRouter();
 
 const [step,setStep] = useState(1);
 
@@ -11,6 +15,10 @@ const [platform,setPlatform] = useState("");
 
 const [username,setUsername] = useState("");
 const [multiLinks,setMultiLinks] = useState(["","",""]);
+
+const [avatar,setAvatar] = useState("");
+const [displayName,setDisplayName] = useState("");
+const [bio,setBio] = useState("");
 
 function continueStep(){
 
@@ -41,6 +49,11 @@ return;
 
 }
 
+if(step===4 && !displayName){
+alert("Enter display name");
+return;
+}
+
 setStep(step+1);
 
 }
@@ -61,6 +74,28 @@ return;
 }
 
 setMultiLinks([...multiLinks,""]);
+
+}
+
+async function uploadAvatar(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const {data:{session}} = await supabase.auth.getSession();
+const user=session.user;
+
+const path=user.id;
+
+await supabase.storage
+.from("avatars")
+.upload(path,file,{upsert:true});
+
+const {data}=supabase.storage
+.from("avatars")
+.getPublicUrl(path);
+
+setAvatar(data.publicUrl+"?t="+Date.now());
 
 }
 
@@ -197,7 +232,7 @@ Continue
 
 )}
 
-{/* STEP 3 USERNAME INPUT */}
+{/* STEP 3 LINKS */}
 
 {step===3 &&(
 
@@ -246,10 +281,7 @@ color:"white"
 
 ))}
 
-<button
-onClick={addMultiLink}
-style={{marginTop:10}}
->
+<button onClick={addMultiLink} style={{marginTop:10}}>
 + Add link
 </button>
 
@@ -276,13 +308,113 @@ Continue
 
 )}
 
-{/* STEP 4 NEXT */}
+{/* STEP 4 PROFILE INFO */}
 
 {step===4 &&(
 
+<div style={{width:340,textAlign:"center"}}>
+
+<h2>Profile Info</h2>
+
+<div style={{marginTop:20}}>
+
+<div style={{
+width:90,
+height:90,
+borderRadius:"50%",
+overflow:"hidden",
+background:"#222",
+margin:"auto",
+position:"relative"
+}}>
+
+<img
+src={avatar||"/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+<label style={{
+position:"absolute",
+bottom:0,
+right:0,
+background:"#00d26a",
+color:"#fff",
+borderRadius:"50%",
+width:28,
+height:28,
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer",
+fontWeight:"bold"
+}}>
++
+<input type="file" hidden accept="image/*" onChange={uploadAvatar}/>
+</label>
+
+</div>
+
+</div>
+
+<input
+placeholder="Display Name"
+value={displayName}
+onChange={(e)=>setDisplayName(e.target.value)}
+style={{
+marginTop:20,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
+/>
+
+<textarea
+placeholder="Bio"
+value={bio}
+maxLength={160}
+onChange={(e)=>setBio(e.target.value)}
+style={{
+marginTop:10,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
+/>
+
+<div style={{fontSize:12,opacity:0.6}}>
+{bio.length}/160
+</div>
+
+<button
+onClick={continueStep}
+style={{
+marginTop:20,
+padding:"14px 40px",
+borderRadius:10,
+border:"none",
+background:"#00d26a",
+color:"white",
+fontWeight:600
+}}
+>
+Continue
+</button>
+
+</div>
+
+)}
+
+{/* STEP 5 PREVIEW */}
+
+{step===5 &&(
+
 <div style={{textAlign:"center"}}>
 
-<h2>Profile info coming next</h2>
+<h2>Preview coming next</h2>
 
 </div>
 
