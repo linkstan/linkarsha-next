@@ -7,7 +7,17 @@ export default function Setup(){
 
 const [user,setUser]=useState(null);
 const [step,setStep]=useState(1);
+
 const [userType,setUserType]=useState("");
+const [industry,setIndustry]=useState("");
+const [theme,setTheme]=useState("");
+
+const [displayName,setDisplayName]=useState("");
+const [bio,setBio]=useState("");
+
+const [link1,setLink1]=useState("");
+const [link2,setLink2]=useState("");
+const [link3,setLink3]=useState("");
 
 useEffect(()=>{
 init();
@@ -26,15 +36,46 @@ setUser(session.user);
 
 }
 
-async function saveProfile(type, field){
+async function saveProfile(){
 
 await supabase
 .from("profiles")
 .update({
-user_type:type,
-industry:field
+user_type:userType,
+industry:industry,
+display_name:displayName,
+bio:bio,
+theme:theme
 })
 .eq("id",user.id);
+
+}
+
+async function createBlocks(){
+
+const links=[link1,link2,link3];
+
+for(let i=0;i<links.length;i++){
+
+if(!links[i]) continue;
+
+await supabase.from("blocks").insert({
+user_id:user.id,
+type:"link",
+data_json:{
+title:"Link",
+url:links[i]
+}
+});
+
+}
+
+}
+
+async function finishSetup(){
+
+await saveProfile();
+await createBlocks();
 
 window.location="/dashboard";
 
@@ -57,13 +98,13 @@ fontFamily:"-apple-system"
 Setup your Linkarsha
 </h1>
 
-{step===1 && (
+{step===1 &&(
 
 <div>
 
 <h2>Who are you?</h2>
 
-<div style={{marginTop:"20px",display:"flex",flexDirection:"column",gap:"10px"}}>
+<div style={{marginTop:20,display:"flex",flexDirection:"column",gap:"10px"}}>
 
 <button onClick={()=>{setUserType("creator");setStep(2);}}>
 Creator
@@ -73,7 +114,7 @@ Creator
 Business
 </button>
 
-<button onClick={()=>{setUserType("personal");setStep(2);}}>
+<button onClick={()=>{setUserType("personal");setStep(3);}}>
 Personal
 </button>
 
@@ -83,57 +124,41 @@ Personal
 
 )}
 
-{step===2 && (
+{step===2 &&(
 
 <div>
 
 <h2>Select your field</h2>
 
 <div style={{
-marginTop:"20px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
-gap:"10px"
+gap:"10px",
+marginTop:"20px"
 }}>
 
-<button onClick={()=>saveProfile(userType,"artist")}>
-Artist
+<button onClick={()=>{setIndustry("instagram");setStep(3);}}>
+Instagram
 </button>
 
-<button onClick={()=>saveProfile(userType,"athlete")}>
-Athlete
+<button onClick={()=>{setIndustry("youtube");setStep(3);}}>
+YouTube
 </button>
 
-<button onClick={()=>saveProfile(userType,"youtuber")}>
-YouTuber
+<button onClick={()=>{setIndustry("tiktok");setStep(3);}}>
+TikTok
 </button>
 
-<button onClick={()=>saveProfile(userType,"musician")}>
-Musician
-</button>
-
-<button onClick={()=>saveProfile(userType,"restaurant")}>
+<button onClick={()=>{setIndustry("restaurant");setStep(3);}}>
 Restaurant
 </button>
 
-<button onClick={()=>saveProfile(userType,"cafe")}>
+<button onClick={()=>{setIndustry("cafe");setStep(3);}}>
 Cafe
 </button>
 
-<button onClick={()=>saveProfile(userType,"store")}>
+<button onClick={()=>{setIndustry("store");setStep(3);}}>
 Online Store
-</button>
-
-<button onClick={()=>saveProfile(userType,"healthcare")}>
-Healthcare
-</button>
-
-<button onClick={()=>saveProfile(userType,"photographer")}>
-Photographer
-</button>
-
-<button onClick={()=>saveProfile(userType,"coach")}>
-Coach
 </button>
 
 </div>
@@ -142,8 +167,130 @@ Coach
 
 )}
 
+{step===3 &&(
+
+<div style={{width:"320px"}}>
+
+<h2>Add your links</h2>
+
+<input
+placeholder="Link 1"
+value={link1}
+onChange={(e)=>setLink1(e.target.value)}
+style={{marginTop:10,padding:10,width:"100%"}}
+/>
+
+<input
+placeholder="Link 2"
+value={link2}
+onChange={(e)=>setLink2(e.target.value)}
+style={{marginTop:10,padding:10,width:"100%"}}
+/>
+
+<input
+placeholder="Link 3"
+value={link3}
+onChange={(e)=>setLink3(e.target.value)}
+style={{marginTop:10,padding:10,width:"100%"}}
+/>
+
+<button
+style={{marginTop:20,width:"100%"}}
+onClick={()=>setStep(4)}
+>
+Continue
+</button>
+
 </div>
 
-)
+)}
+
+{step===4 &&(
+
+<div style={{width:"320px"}}>
+
+<h2>Profile Info</h2>
+
+<input
+placeholder="Display Name"
+value={displayName}
+onChange={(e)=>setDisplayName(e.target.value)}
+style={{marginTop:10,padding:10,width:"100%"}}
+/>
+
+<textarea
+placeholder="Bio"
+value={bio}
+onChange={(e)=>setBio(e.target.value)}
+style={{marginTop:10,padding:10,width:"100%"}}
+/>
+
+<button
+style={{marginTop:20,width:"100%"}}
+onClick={()=>setStep(5)}
+>
+Continue
+</button>
+
+</div>
+
+)}
+
+{step===5 &&(
+
+<div style={{textAlign:"center"}}>
+
+<h2>Preview</h2>
+
+<div style={{
+marginTop:20,
+background:"#111",
+padding:"30px",
+borderRadius:"20px",
+width:"260px"
+}}>
+
+<div style={{fontSize:"20px",fontWeight:"600"}}>
+@{displayName || "username"}
+</div>
+
+<p style={{opacity:0.7}}>
+{bio}
+</p>
+
+{link1 &&(
+<div style={{marginTop:10,background:"#222",padding:"10px",borderRadius:"8px"}}>
+{link1}
+</div>
+)}
+
+{link2 &&(
+<div style={{marginTop:10,background:"#222",padding:"10px",borderRadius:"8px"}}>
+{link2}
+</div>
+)}
+
+{link3 &&(
+<div style={{marginTop:10,background:"#222",padding:"10px",borderRadius:"8px"}}>
+{link3}
+</div>
+)}
+
+</div>
+
+<button
+style={{marginTop:30,padding:"12px 30px"}}
+onClick={finishSetup}
+>
+🎉 Finish Setup
+</button>
+
+</div>
+
+)}
+
+</div>
+
+);
 
 }
