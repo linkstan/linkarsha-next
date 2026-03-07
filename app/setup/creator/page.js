@@ -1,19 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function CreatorSetup(){
 
-const router = useRouter();
-
 const [step,setStep] = useState(1);
 const [theme,setTheme] = useState("");
+const [platform,setPlatform] = useState("");
 
 function continueStep(){
 
 if(step===1 && !theme){
 alert("Select a theme");
+return;
+}
+
+if(step===2 && !platform){
+alert("Select a platform");
 return;
 }
 
@@ -100,9 +103,7 @@ cursor:theme?"pointer":"not-allowed",
 opacity:theme?1:0.6
 }}
 >
-
 Continue
-
 </button>
 
 </div>
@@ -113,11 +114,50 @@ Continue
 
 <div style={{textAlign:"center"}}>
 
-<h2>Select Platform</h2>
+<h2>Where is your audience?</h2>
 
-<p style={{opacity:0.6}}>
-Platform selection coming next step
-</p>
+<div style={{
+marginTop:30,
+display:"grid",
+gridTemplateColumns:"repeat(2,160px)",
+gap:15
+}}>
+
+<button onClick={()=>setPlatform("instagram")}>Instagram</button>
+<button onClick={()=>setPlatform("vk")}>VK</button>
+<button onClick={()=>setPlatform("facebook")}>Facebook</button>
+<button onClick={()=>setPlatform("youtube")}>YouTube</button>
+<button onClick={()=>setPlatform("tiktok")}>TikTok</button>
+<button onClick={()=>setPlatform("multi")}>Multiple Platforms</button>
+
+</div>
+
+<button
+onClick={continueStep}
+style={{
+marginTop:40,
+padding:"14px 40px",
+borderRadius:10,
+border:"none",
+background:platform?"#00d26a":"#333",
+color:"white",
+fontWeight:600,
+cursor:platform?"pointer":"not-allowed",
+opacity:platform?1:0.6
+}}
+>
+Continue
+</button>
+
+</div>
+
+)}
+
+{step===3 && (
+
+<div style={{textAlign:"center"}}>
+
+<h2>Platform input coming next step</h2>
 
 </div>
 
