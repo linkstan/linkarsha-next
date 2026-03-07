@@ -293,4 +293,206 @@ After finish:
 
 User redirected to:
 
-/
+/dashboard
+
+
+
+
+}
+## Creator Setup Flow
+
+Route:
+/setup/creator
+
+Steps:
+
+1. Theme Selection  
+User selects a theme for their public profile.
+
+Themes examples:
+Minimal Dark  
+Gradient Creator  
+Clean Light  
+
+Saved in:
+profiles.theme
+
+---
+
+2. Platform Selection
+
+User chooses where their audience is.
+
+Options:
+
+Instagram  
+VK  
+Facebook  
+YouTube  
+TikTok  
+Multiple Platforms
+
+Saved in:
+profiles.industry
+
+---
+
+3. Username / Profile URL
+
+If single platform:
+
+User enters:
+
+username OR full profile URL
+
+Example:
+@username
+instagram.com/username
+
+System converts it into full URL.
+
+---
+
+If Multiple Platforms selected:
+
+User gets 3 URL boxes.
+
+System auto detects platform from URL.
+
+Example:
+
+reddit.com/user/name  
+twitter.com/name  
+github.com/name
+
+---
+
+4. Profile Info
+
+User adds:
+
+Avatar  
+Display Name (required)  
+Bio (max 160 characters)
+
+Saved in:
+
+profiles.avatar  
+profiles.display_name  
+profiles.bio
+
+---
+
+5. Preview
+
+Mobile preview of public profile.
+
+Shows:
+
+Avatar  
+Display name  
+Bio  
+Links
+
+Then user clicks:
+
+Finish Setup
+
+Redirect to:
+
+/dashboard
+
+
+
+
+
+
+## Creator Platform Handling
+
+When user selects a platform during creator onboarding, the system creates link blocks automatically.
+
+### Single Platform Mode
+
+If user selects one platform:
+
+Instagram  
+VK  
+Facebook  
+YouTube  
+TikTok  
+
+User enters:
+
+username OR profile URL
+
+Example:
+
+@username  
+instagram.com/username  
+
+System converts into full URL.
+
+Example stored:
+
+https://instagram.com/username
+
+Then a block is created automatically in:
+
+blocks table
+
+Example block:
+
+type: link
+
+data_json:
+{
+"title": "Instagram",
+"url": "https://instagram.com/username"
+}
+
+---
+
+### Multiple Platform Mode
+
+User receives 3 input fields.
+
+Example:
+
+https://reddit.com/user/name  
+https://twitter.com/name  
+https://github.com/name  
+
+System auto detects platform name.
+
+Example detection rules:
+
+instagram → Instagram  
+vk → VK  
+youtube → YouTube  
+tiktok → TikTok  
+facebook → Facebook  
+
+If unknown:
+
+Platform name becomes:
+
+Website
+
+---
+
+### Block Creation
+
+For every valid link entered:
+
+A block is inserted into database.
+
+Example:
+
+user_id: uuid  
+type: link  
+
+data_json:
+{
+"title": "Instagram",
+"url": "https://instagram.com/username"
+}
