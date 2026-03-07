@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect,useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export default function Setup(){
@@ -23,7 +23,7 @@ init();
 
 async function init(){
 
-const {data:{session}} = await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
 
 if(!session){
 window.location="/login";
@@ -50,6 +50,30 @@ return;
 }
 
 setLinks([...links,""]);
+
+}
+
+function detectPlatform(link){
+
+const l=link.toLowerCase();
+
+if(l.includes("instagram")) return "Instagram";
+if(l.includes("vk")) return "VK";
+if(l.includes("youtube")) return "YouTube";
+if(l.includes("tiktok")) return "TikTok";
+if(l.includes("facebook")) return "Facebook";
+
+return "Website";
+
+}
+
+function normalizeLink(link){
+
+if(link.startsWith("http")) return link;
+
+if(link.startsWith("@")) link=link.replace("@","");
+
+return "https://"+link;
 
 }
 
@@ -81,7 +105,7 @@ const {data}=supabase.storage
 .from("avatars")
 .getPublicUrl(path);
 
-setAvatar(data.publicUrl);
+setAvatar(data.publicUrl+"?t="+Date.now());
 
 }
 
@@ -106,19 +130,18 @@ for(const link of links){
 
 if(link.trim()==="") continue;
 
-let url=link;
-
-if(!link.startsWith("http")){
-url="https://"+link;
-}
+const url=normalizeLink(link);
+const title=detectPlatform(url);
 
 await supabase.from("blocks").insert({
+
 user_id:user.id,
 type:"link",
 data_json:{
-title:url,
+title:title,
 url:url
 }
+
 });
 
 }
@@ -162,12 +185,7 @@ fontFamily:"-apple-system"
 
 <h2>Who are you?</h2>
 
-<div style={{
-marginTop:20,
-display:"flex",
-flexDirection:"column",
-gap:10
-}}>
+<div style={{marginTop:20,display:"flex",flexDirection:"column",gap:10}}>
 
 <button onClick={()=>{setUserType("creator");setStep(2);}}>
 Creator
@@ -193,36 +211,27 @@ Personal
 
 <h2>Select category</h2>
 
-<div style={{
-marginTop:20,
-display:"grid",
-gridTemplateColumns:"1fr 1fr",
-gap:10
-}}>
+<div style={{marginTop:20,display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
 
-{userType==="creator" &&(
+{userType==="creator"&&(
 <>
-
 <button onClick={()=>{setIndustry("instagram");setStep(3);}}>Instagram</button>
 <button onClick={()=>{setIndustry("vk");setStep(3);}}>VK</button>
 <button onClick={()=>{setIndustry("facebook");setStep(3);}}>Facebook</button>
 <button onClick={()=>{setIndustry("youtube");setStep(3);}}>YouTube</button>
 <button onClick={()=>{setIndustry("tiktok");setStep(3);}}>TikTok</button>
 <button onClick={()=>{setIndustry("multi");setStep(3);}}>Multiple Platforms</button>
-
 </>
 )}
 
-{userType==="business" &&(
+{userType==="business"&&(
 <>
-
 <button onClick={()=>{setIndustry("restaurant");setStep(3);}}>Restaurant / Cafe</button>
 <button onClick={()=>{setIndustry("store");setStep(3);}}>Online Store</button>
 <button onClick={()=>{setIndustry("healthcare");setStep(3);}}>Healthcare</button>
 <button onClick={()=>{setIndustry("salon");setStep(3);}}>Salon / Beauty</button>
 <button onClick={()=>{setIndustry("gym");setStep(3);}}>Gym / Fitness</button>
 <button onClick={()=>{setIndustry("agency");setStep(3);}}>Agency / Services</button>
-
 </>
 )}
 
@@ -305,22 +314,24 @@ position:"relative"
 }}>
 
 <img
-src={avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
+src={avatar||"/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
 <label style={{
 position:"absolute",
 bottom:0,
 right:0,
-background:"#000",
+background:"#00d26a",
+color:"#fff",
 borderRadius:"50%",
-padding:"4px 8px",
-cursor:"pointer"
+width:28,
+height:28,
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer",
+fontWeight:"bold"
 }}>
 +
 <input type="file" hidden accept="image/*" onChange={uploadAvatar}/>
@@ -334,14 +345,7 @@ cursor:"pointer"
 placeholder="Display Name"
 value={displayName}
 onChange={(e)=>setDisplayName(e.target.value)}
-style={{
-marginTop:20,
-padding:12,
-width:"100%",
-background:"#111",
-border:"1px solid #333",
-color:"white"
-}}
+style={{marginTop:20,padding:12,width:"100%",background:"#111",border:"1px solid #333",color:"white"}}
 />
 
 <textarea
@@ -349,14 +353,7 @@ placeholder="Bio"
 value={bio}
 maxLength={120}
 onChange={(e)=>setBio(e.target.value)}
-style={{
-marginTop:10,
-padding:12,
-width:"100%",
-background:"#111",
-border:"1px solid #333",
-color:"white"
-}}
+style={{marginTop:10,padding:12,width:"100%",background:"#111",border:"1px solid #333",color:"white"}}
 />
 
 <div style={{fontSize:12,opacity:0.6}}>
@@ -385,30 +382,13 @@ Continue
 
 <h2>Preview</h2>
 
-<div style={{
-marginTop:20,
-background:"#111",
-padding:30,
-borderRadius:20,
-width:260
-}}>
+<div style={{marginTop:20,background:"#111",padding:30,borderRadius:20,width:260}}>
 
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden",
-background:"#222",
-margin:"auto"
-}}>
+<div style={{width:70,height:70,borderRadius:"50%",overflow:"hidden",background:"#222",margin:"auto"}}>
 
 <img
-src={avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
+src={avatar||"/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
 </div>
