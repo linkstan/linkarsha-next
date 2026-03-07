@@ -49,11 +49,27 @@ if(data) setBlocks(data);
 
 }
 
+/* SMART LINK DETECTION ADDED HERE */
+
 async function addLink(){
 
-if(!title || !url){
-alert("Enter title and URL");
+if(!url){
+alert("Enter URL");
 return;
+}
+
+let finalUrl = url;
+
+if(!finalUrl.startsWith("http")){
+finalUrl = "https://" + finalUrl;
+}
+
+let finalTitle = title;
+
+/* if title empty → detect platform automatically */
+
+if(!finalTitle){
+finalTitle = detectPlatform(finalUrl);
 }
 
 await supabase.from("blocks").insert({
@@ -61,8 +77,8 @@ user_id:user.id,
 type:"link",
 position:Date.now(),
 data_json:{
-title:title,
-url:url.startsWith("http") ? url : "https://"+url
+title:finalTitle,
+url:finalUrl
 }
 });
 
@@ -124,7 +140,7 @@ return(
 <div style={{marginTop:20}}>
 
 <input
-placeholder="Title (Instagram, Website)"
+placeholder="Optional title (leave empty for auto detection)"
 value={title}
 onChange={(e)=>setTitle(e.target.value)}
 style={{
@@ -137,7 +153,7 @@ color:"white"
 />
 
 <input
-placeholder="URL"
+placeholder="Paste your link (Instagram, YouTube, Website...)"
 value={url}
 onChange={(e)=>setUrl(e.target.value)}
 style={{
