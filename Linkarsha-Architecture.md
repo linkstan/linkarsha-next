@@ -567,3 +567,29 @@ profiles.bio
 Bio shows character counter:
 
 0 / 160
+
+
+
+
+
+
+  ## Dashboard Links Module
+
+Route:
+/dashboard/links
+
+Purpose:
+Manage social links and profile buttons.
+
+Features:
+
+Add link
+Delete link
+Edit link
+Live mobile preview
+
+Future upgrades:
+
+Drag & drop ordering
+Auto platform detection
+Analytics per link
