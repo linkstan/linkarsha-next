@@ -33,6 +33,13 @@ User not found
 );
 }
 
+/* TRACK PROFILE VIEW */
+
+await supabase.from("events").insert({
+user_id: profile.id,
+event: "view"
+});
+
 /* GET LINKS */
 
 const { data: links } = await supabase
