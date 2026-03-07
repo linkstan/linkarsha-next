@@ -535,3 +535,35 @@ At least 1 link required.
 Links are stored temporarily during onboarding.
 
 Later these links are converted into blocks in the database.
+
+
+
+
+
+
+
+  ### Creator Step 4 — Profile Information
+
+User adds personal profile details.
+
+Fields:
+
+Avatar  
+Display Name (required)  
+Bio (maximum 160 characters)
+
+Avatar uploaded to:
+
+Supabase storage bucket
+
+avatars
+
+Saved in:
+
+profiles.avatar  
+profiles.display_name  
+profiles.bio
+
+Bio shows character counter:
+
+0 / 160
