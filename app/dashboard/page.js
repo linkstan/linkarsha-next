@@ -46,7 +46,7 @@ const {data:prof}=await supabase
 setProfile(prof);
 
 /* redirect new users to setup */
-if(!prof.user_type || !prof.industry){
+if(!prof.user_type){
 window.location="/setup";
 return;
 }
