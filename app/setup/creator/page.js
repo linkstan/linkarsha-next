@@ -9,54 +9,52 @@ export default function CreatorSetup(){
 const router = useRouter();
 
 const [step,setStep] = useState(1);
-
 const [theme,setTheme] = useState("");
-
 const [selected,setSelected] = useState([]);
-
 const [urls,setUrls] = useState({});
 const [others,setOthers] = useState([{name:"",url:""}]);
-
 const [avatar,setAvatar] = useState("");
 const [displayName,setDisplayName] = useState("");
 const [bio,setBio] = useState("");
 
 const platforms = [
-"Instagram","Facebook","VK",
-"YouTube","TikTok","WhatsApp",
-"Website","X","Pinterest",
-"Threads","Snapchat","Twitch",
-"SoundCloud","Spotify","Other"
+{name:"Instagram",icon:"/icons/instagram.png"},
+{name:"Facebook",icon:"/icons/facebook.png"},
+{name:"VK",icon:"/icons/vk.png"},
+{name:"YouTube",icon:"/icons/youtube.png"},
+{name:"TikTok",icon:"/icons/tiktok.png"},
+{name:"WhatsApp",icon:"/icons/whatsapp.png"},
+{name:"Website",icon:"/icons/website.png"},
+{name:"X",icon:"/icons/x.png"},
+{name:"Pinterest",icon:"/icons/pinterest.png"},
+{name:"Threads",icon:"/icons/threads.png"},
+{name:"Snapchat",icon:"/icons/snapchat.png"},
+{name:"Twitch",icon:"/icons/twitch.png"},
+{name:"SoundCloud",icon:"/icons/soundcloud.png"},
+{name:"Spotify",icon:"/icons/spotify.png"},
+{name:"Other",icon:"/icons/other.png"}
 ];
 
 function togglePlatform(p){
-
 if(selected.includes(p)){
 setSelected(selected.filter(x=>x!==p));
 }else{
 setSelected([...selected,p]);
 }
-
 }
 
 function updateUrl(platform,val){
-
 setUrls({...urls,[platform]:val});
-
 }
 
 function updateOther(i,key,val){
-
 const arr=[...others];
 arr[i][key]=val;
 setOthers(arr);
-
 }
 
 function addOther(){
-
 setOthers([...others,{name:"",url:""}]);
-
 }
 
 function continueStep(){
@@ -122,11 +120,8 @@ setAvatar(data.publicUrl+"?t="+Date.now());
 }
 
 function normalize(url){
-
 if(url.startsWith("http")) return url;
-
 return "https://"+url;
-
 }
 
 async function finishSetup(){
@@ -135,13 +130,11 @@ const {data:{session}} = await supabase.auth.getSession();
 const user=session.user;
 
 await supabase.from("profiles").update({
-
 user_type:"creator",
 display_name:displayName,
 bio:bio,
 avatar:avatar,
 theme:theme
-
 }).eq("id",user.id);
 
 for(const p of selected){
@@ -152,14 +145,12 @@ const u=urls[p];
 if(!u) continue;
 
 await supabase.from("blocks").insert({
-
 user_id:user.id,
 type:"link",
 data_json:{
 title:p,
 url:normalize(u)
 }
-
 });
 
 }
@@ -169,14 +160,12 @@ for(const o of others){
 if(!o.name || !o.url) continue;
 
 await supabase.from("blocks").insert({
-
 user_id:user.id,
 type:"link",
 data_json:{
 title:o.name,
 url:normalize(o.url)
 }
-
 });
 
 }
@@ -200,27 +189,28 @@ fontFamily:"-apple-system"
 
 <h1>Creator Setup</h1>
 
-{/* STEP 1 THEME */}
-
 {step===1 &&(
 
 <div>
 
 <h2>Select Theme</h2>
 
+<div style={{display:"flex",gap:10}}>
 <button onClick={()=>setTheme("dark")}>Dark</button>
 <button onClick={()=>setTheme("gradient")}>Gradient</button>
 <button onClick={()=>setTheme("light")}>Light</button>
+</div>
 
-<button onClick={continueStep} style={{marginTop:20}}>
+<button
+onClick={continueStep}
+style={{marginTop:20,opacity:theme?1:0.4}}
+>
 Continue
 </button>
 
 </div>
 
 )}
-
-{/* STEP 2 PLATFORM GRID */}
 
 {step===2 &&(
 
@@ -238,18 +228,31 @@ marginTop:20
 {platforms.map(p=>(
 
 <div
-key={p}
-onClick={()=>togglePlatform(p)}
+key={p.name}
+onClick={()=>togglePlatform(p.name)}
 style={{
-padding:20,
+padding:18,
 borderRadius:12,
 cursor:"pointer",
-border:selected.includes(p)?"2px solid #00d26a":"1px solid #333",
+border:selected.includes(p.name)?"2px solid #00d26a":"1px solid #333",
+background:selected.includes(p.name)?"#0f1f16":"#111",
 textAlign:"center"
 }}
 >
 
-{p}
+<img
+src={p.icon}
+style={{
+width:36,
+height:36,
+objectFit:"contain",
+margin:"auto"
+}}
+/>
+
+<div style={{marginTop:8,fontSize:14}}>
+{p.name}
+</div>
 
 </div>
 
@@ -257,15 +260,16 @@ textAlign:"center"
 
 </div>
 
-<button onClick={continueStep} style={{marginTop:20}}>
+<button
+onClick={continueStep}
+style={{marginTop:20,opacity:selected.length?1:0.4}}
+>
 Continue
 </button>
 
 </div>
 
 )}
-
-{/* STEP 3 URL INPUT */}
 
 {step===3 &&(
 
@@ -286,7 +290,13 @@ return(
 <input
 value={urls[p]||""}
 onChange={(e)=>updateUrl(p,e.target.value)}
-style={{width:"100%"}}
+style={{
+width:"100%",
+padding:10,
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
 />
 
 </div>
@@ -338,8 +348,6 @@ Continue
 </div>
 
 )}
-
-{/* STEP 4 PROFILE */}
 
 {step===4 &&(
 
@@ -406,8 +414,6 @@ Continue
 
 )}
 
-{/* STEP 5 PREVIEW */}
-
 {step===5 &&(
 
 <div style={{textAlign:"center"}}>
@@ -446,7 +452,6 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 </div>
 
 {selected.map(p=>{
-
 if(p==="Other") return null;
 
 return(
@@ -459,11 +464,9 @@ borderRadius:10
 {p}
 </div>
 );
-
 })}
 
 {others.map((o,i)=>{
-
 if(!o.name) return null;
 
 return(
@@ -476,7 +479,6 @@ borderRadius:10
 {o.name}
 </div>
 );
-
 })}
 
 </div>
