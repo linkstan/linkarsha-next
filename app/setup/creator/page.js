@@ -5,8 +5,12 @@ import { useState } from "react";
 export default function CreatorSetup(){
 
 const [step,setStep] = useState(1);
+
 const [theme,setTheme] = useState("");
 const [platform,setPlatform] = useState("");
+
+const [username,setUsername] = useState("");
+const [multiLinks,setMultiLinks] = useState(["","",""]);
 
 function continueStep(){
 
@@ -20,7 +24,43 @@ alert("Select a platform");
 return;
 }
 
+if(step===3){
+
+if(platform!=="multi" && username.trim()===""){
+alert("Enter username or profile URL");
+return;
+}
+
+if(platform==="multi"){
+const valid = multiLinks.filter(l=>l.trim()!=="");
+if(valid.length===0){
+alert("Add at least one link");
+return;
+}
+}
+
+}
+
 setStep(step+1);
+
+}
+
+function updateMultiLink(i,val){
+
+const arr=[...multiLinks];
+arr[i]=val;
+setMultiLinks(arr);
+
+}
+
+function addMultiLink(){
+
+if(multiLinks.length>=7){
+alert("Maximum 7 links allowed");
+return;
+}
+
+setMultiLinks([...multiLinks,""]);
 
 }
 
@@ -41,7 +81,9 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 Creator Setup
 </h1>
 
-{step===1 && (
+{/* STEP 1 THEME */}
+
+{step===1 &&(
 
 <div style={{textAlign:"center"}}>
 
@@ -110,7 +152,9 @@ Continue
 
 )}
 
-{step===2 && (
+{/* STEP 2 PLATFORM */}
+
+{step===2 &&(
 
 <div style={{textAlign:"center"}}>
 
@@ -153,11 +197,92 @@ Continue
 
 )}
 
-{step===3 && (
+{/* STEP 3 USERNAME INPUT */}
+
+{step===3 &&(
+
+<div style={{width:340,textAlign:"center"}}>
+
+<h2>Add your profile</h2>
+
+{platform!=="multi" &&(
+
+<input
+placeholder="@username or profile URL"
+value={username}
+onChange={(e)=>setUsername(e.target.value)}
+style={{
+marginTop:20,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
+/>
+
+)}
+
+{platform==="multi" &&(
+
+<div>
+
+{multiLinks.map((l,i)=>(
+
+<input
+key={i}
+placeholder="https://profile-link"
+value={l}
+onChange={(e)=>updateMultiLink(i,e.target.value)}
+style={{
+marginTop:10,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
+/>
+
+))}
+
+<button
+onClick={addMultiLink}
+style={{marginTop:10}}
+>
++ Add link
+</button>
+
+</div>
+
+)}
+
+<button
+onClick={continueStep}
+style={{
+marginTop:30,
+padding:"14px 40px",
+borderRadius:10,
+border:"none",
+background:"#00d26a",
+color:"white",
+fontWeight:600
+}}
+>
+Continue
+</button>
+
+</div>
+
+)}
+
+{/* STEP 4 NEXT */}
+
+{step===4 &&(
 
 <div style={{textAlign:"center"}}>
 
-<h2>Platform input coming next step</h2>
+<h2>Profile info coming next</h2>
 
 </div>
 
