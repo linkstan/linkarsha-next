@@ -11,40 +11,81 @@ const router = useRouter();
 const [step,setStep] = useState(1);
 
 const [theme,setTheme] = useState("");
-const [platform,setPlatform] = useState("");
 
-const [username,setUsername] = useState("");
-const [multiLinks,setMultiLinks] = useState(["","",""]);
+const [selected,setSelected] = useState([]);
+
+const [urls,setUrls] = useState({});
+const [others,setOthers] = useState([{name:"",url:""}]);
 
 const [avatar,setAvatar] = useState("");
 const [displayName,setDisplayName] = useState("");
 const [bio,setBio] = useState("");
 
+const platforms = [
+"Instagram","Facebook","VK",
+"YouTube","TikTok","WhatsApp",
+"Website","X","Pinterest",
+"Threads","Snapchat","Twitch",
+"SoundCloud","Spotify","Other"
+];
+
+function togglePlatform(p){
+
+if(selected.includes(p)){
+setSelected(selected.filter(x=>x!==p));
+}else{
+setSelected([...selected,p]);
+}
+
+}
+
+function updateUrl(platform,val){
+
+setUrls({...urls,[platform]:val});
+
+}
+
+function updateOther(i,key,val){
+
+const arr=[...others];
+arr[i][key]=val;
+setOthers(arr);
+
+}
+
+function addOther(){
+
+setOthers([...others,{name:"",url:""}]);
+
+}
+
 function continueStep(){
 
 if(step===1 && !theme){
-alert("Select a theme");
+alert("Select theme");
 return;
 }
 
-if(step===2 && !platform){
-alert("Select a platform");
+if(step===2 && selected.length===0){
+alert("Select at least one platform");
 return;
 }
 
 if(step===3){
 
-if(platform!=="multi" && username.trim()===""){
-alert("Enter username or profile URL");
-return;
+let valid=false;
+
+for(const p of selected){
+if(p!=="Other" && urls[p]?.trim()) valid=true;
 }
 
-if(platform==="multi"){
-const valid = multiLinks.filter(l=>l.trim()!=="");
-if(valid.length===0){
-alert("Add at least one link");
-return;
+for(const o of others){
+if(o.name && o.url) valid=true;
 }
+
+if(!valid){
+alert("Enter at least one URL");
+return;
 }
 
 }
@@ -55,25 +96,6 @@ return;
 }
 
 setStep(step+1);
-
-}
-
-function updateMultiLink(i,val){
-
-const arr=[...multiLinks];
-arr[i]=val;
-setMultiLinks(arr);
-
-}
-
-function addMultiLink(){
-
-if(multiLinks.length>=7){
-alert("Maximum 7 links allowed");
-return;
-}
-
-setMultiLinks([...multiLinks,""]);
 
 }
 
@@ -99,27 +121,11 @@ setAvatar(data.publicUrl+"?t="+Date.now());
 
 }
 
-function normalizeLink(link){
+function normalize(url){
 
-if(link.startsWith("http")) return link;
+if(url.startsWith("http")) return url;
 
-if(link.startsWith("@")) link=link.replace("@","");
-
-return "https://"+link;
-
-}
-
-function detectPlatform(link){
-
-const l=link.toLowerCase();
-
-if(l.includes("instagram")) return "Instagram";
-if(l.includes("vk")) return "VK";
-if(l.includes("youtube")) return "YouTube";
-if(l.includes("tiktok")) return "TikTok";
-if(l.includes("facebook")) return "Facebook";
-
-return "Website";
+return "https://"+url;
 
 }
 
@@ -128,40 +134,47 @@ async function finishSetup(){
 const {data:{session}} = await supabase.auth.getSession();
 const user=session.user;
 
-await supabase
-.from("profiles")
-.update({
+await supabase.from("profiles").update({
+
 user_type:"creator",
-industry:platform,
 display_name:displayName,
 bio:bio,
 avatar:avatar,
 theme:theme
-})
-.eq("id",user.id);
 
-let links=[];
+}).eq("id",user.id);
 
-if(platform!=="multi"){
-links=[username];
-}else{
-links=multiLinks;
-}
+for(const p of selected){
 
-for(const link of links){
+if(p==="Other") continue;
 
-if(link.trim()==="") continue;
-
-const url=normalizeLink(link);
-const title=detectPlatform(url);
+const u=urls[p];
+if(!u) continue;
 
 await supabase.from("blocks").insert({
 
 user_id:user.id,
 type:"link",
 data_json:{
-title:title,
-url:url
+title:p,
+url:normalize(u)
+}
+
+});
+
+}
+
+for(const o of others){
+
+if(!o.name || !o.url) continue;
+
+await supabase.from("blocks").insert({
+
+user_id:user.id,
+type:"link",
+data_json:{
+title:o.name,
+url:normalize(o.url)
 }
 
 });
@@ -182,12 +195,10 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 justifyContent:"center",
-fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+fontFamily:"-apple-system"
 }}>
 
-<h1 style={{marginBottom:30}}>
-Creator Setup
-</h1>
+<h1>Creator Setup</h1>
 
 {/* STEP 1 THEME */}
 
@@ -209,7 +220,7 @@ Continue
 
 )}
 
-{/* STEP 2 PLATFORM */}
+{/* STEP 2 PLATFORM GRID */}
 
 {step===2 &&(
 
@@ -217,12 +228,34 @@ Continue
 
 <h2>Where is your audience?</h2>
 
-<button onClick={()=>setPlatform("instagram")}>Instagram</button>
-<button onClick={()=>setPlatform("vk")}>VK</button>
-<button onClick={()=>setPlatform("facebook")}>Facebook</button>
-<button onClick={()=>setPlatform("youtube")}>YouTube</button>
-<button onClick={()=>setPlatform("tiktok")}>TikTok</button>
-<button onClick={()=>setPlatform("multi")}>Multiple Platforms</button>
+<div style={{
+display:"grid",
+gridTemplateColumns:"repeat(3,120px)",
+gap:15,
+marginTop:20
+}}>
+
+{platforms.map(p=>(
+
+<div
+key={p}
+onClick={()=>togglePlatform(p)}
+style={{
+padding:20,
+borderRadius:12,
+cursor:"pointer",
+border:selected.includes(p)?"2px solid #00d26a":"1px solid #333",
+textAlign:"center"
+}}
+>
+
+{p}
+
+</div>
+
+))}
+
+</div>
 
 <button onClick={continueStep} style={{marginTop:20}}>
 Continue
@@ -232,43 +265,66 @@ Continue
 
 )}
 
-{/* STEP 3 LINKS */}
+{/* STEP 3 URL INPUT */}
 
 {step===3 &&(
 
 <div style={{width:320}}>
 
-<h2>Add your profile</h2>
+<h2>Add your profiles</h2>
 
-{platform!=="multi" &&(
+{selected.map(p=>{
+
+if(p==="Other") return null;
+
+return(
+
+<div key={p} style={{marginTop:10}}>
+
+<div>{p} URL</div>
 
 <input
-placeholder="@username or profile URL"
-value={username}
-onChange={(e)=>setUsername(e.target.value)}
-style={{marginTop:10,width:"100%"}}
+value={urls[p]||""}
+onChange={(e)=>updateUrl(p,e.target.value)}
+style={{width:"100%"}}
 />
 
-)}
+</div>
 
-{platform==="multi" &&(
+);
+
+})}
+
+{selected.includes("Other") &&(
 
 <div>
 
-{multiLinks.map((l,i)=>(
+<h3>Other Platforms</h3>
+
+{others.map((o,i)=>(
+
+<div key={i} style={{marginTop:10}}>
 
 <input
-key={i}
-placeholder="https://profile-link"
-value={l}
-onChange={(e)=>updateMultiLink(i,e.target.value)}
-style={{marginTop:10,width:"100%"}}
+placeholder="Platform Name"
+value={o.name}
+onChange={(e)=>updateOther(i,"name",e.target.value)}
+style={{width:"100%"}}
 />
+
+<input
+placeholder="Platform URL"
+value={o.url}
+onChange={(e)=>updateOther(i,"url",e.target.value)}
+style={{width:"100%",marginTop:5}}
+/>
+
+</div>
 
 ))}
 
-<button onClick={addMultiLink}>
-+ Add link
+<button onClick={addOther} style={{marginTop:10}}>
++ Add platform
 </button>
 
 </div>
@@ -291,11 +347,45 @@ Continue
 
 <h2>Profile Info</h2>
 
+<div style={{
+width:90,
+height:90,
+borderRadius:"50%",
+overflow:"hidden",
+background:"#222",
+margin:"auto",
+position:"relative"
+}}>
+
+<img
+src={avatar||"/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+<label style={{
+position:"absolute",
+bottom:0,
+right:0,
+background:"#00d26a",
+borderRadius:"50%",
+width:30,
+height:30,
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer"
+}}>
++
+<input type="file" hidden accept="image/*" onChange={uploadAvatar}/>
+</label>
+
+</div>
+
 <input
 placeholder="Display Name"
 value={displayName}
 onChange={(e)=>setDisplayName(e.target.value)}
-style={{marginTop:10,width:"100%"}}
+style={{marginTop:20,width:"100%"}}
 />
 
 <textarea
@@ -320,15 +410,79 @@ Continue
 
 {step===5 &&(
 
-<div>
+<div style={{textAlign:"center"}}>
 
 <h2>Preview</h2>
 
-<div>{displayName}</div>
-<div>{bio}</div>
+<div style={{
+background:"#111",
+padding:30,
+borderRadius:20,
+width:260
+}}>
+
+<div style={{
+width:70,
+height:70,
+borderRadius:"50%",
+overflow:"hidden",
+background:"#222",
+margin:"auto"
+}}>
+
+<img
+src={avatar||"/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+</div>
+
+<div style={{marginTop:10,fontWeight:600}}>
+{displayName}
+</div>
+
+<div style={{opacity:0.7}}>
+{bio}
+</div>
+
+{selected.map(p=>{
+
+if(p==="Other") return null;
+
+return(
+<div key={p} style={{
+marginTop:10,
+background:"#1a1a25",
+padding:10,
+borderRadius:10
+}}>
+{p}
+</div>
+);
+
+})}
+
+{others.map((o,i)=>{
+
+if(!o.name) return null;
+
+return(
+<div key={i} style={{
+marginTop:10,
+background:"#1a1a25",
+padding:10,
+borderRadius:10
+}}>
+{o.name}
+</div>
+);
+
+})}
+
+</div>
 
 <button onClick={finishSetup} style={{marginTop:20}}>
-🎉 Finish Setup
+Finish Setup
 </button>
 
 </div>
