@@ -15,10 +15,7 @@ const [avatar,setAvatar]=useState("");
 const [displayName,setDisplayName]=useState("");
 const [bio,setBio]=useState("");
 
-const [instagram,setInstagram]=useState("");
-const [youtube,setYoutube]=useState("");
-const [website,setWebsite]=useState("");
-const [twitter,setTwitter]=useState("");
+const [links,setLinks]=useState([""]);
 
 useEffect(()=>{
 init();
@@ -37,12 +34,44 @@ setUser(session.user);
 
 }
 
+function updateLink(i,val){
+
+const arr=[...links];
+arr[i]=val;
+setLinks(arr);
+
+}
+
+function addLink(){
+
+if(links.length>=7){
+alert("Maximum 7 links allowed");
+return;
+}
+
+setLinks([...links,""]);
+
+}
+
+function validateLinks(){
+
+const valid=links.filter(l=>l.trim()!=="");
+
+if(valid.length===0){
+alert("Add at least 1 link");
+return false;
+}
+
+return true;
+
+}
+
 async function uploadAvatar(e){
 
 const file=e.target.files[0];
 if(!file) return;
 
-const path=`${user.id}`;
+const path=user.id;
 
 await supabase.storage
 .from("avatars")
@@ -73,59 +102,22 @@ avatar:avatar
 
 async function createBlocks(){
 
-if(instagram){
+for(const link of links){
+
+if(link.trim()==="") continue;
+
+let url=link;
+
+if(!link.startsWith("http")){
+url="https://"+link;
+}
 
 await supabase.from("blocks").insert({
 user_id:user.id,
 type:"link",
 data_json:{
-title:"Instagram",
-url:instagram.startsWith("http")
-? instagram
-: `https://instagram.com/${instagram}`
-}
-});
-
-}
-
-if(youtube){
-
-await supabase.from("blocks").insert({
-user_id:user.id,
-type:"link",
-data_json:{
-title:"YouTube",
-url:youtube
-}
-});
-
-}
-
-if(website){
-
-await supabase.from("blocks").insert({
-user_id:user.id,
-type:"link",
-data_json:{
-title:"Website",
-url:website.startsWith("http")
-? website
-: `https://${website}`
-}
-});
-
-}
-
-if(twitter){
-
-await supabase.from("blocks").insert({
-user_id:user.id,
-type:"link",
-data_json:{
-title:"Twitter",
-url:twitter.startsWith("http")
-? twitter
-: `https://twitter.com/${twitter}`
+title:url,
+url:url
 }
 });
 
@@ -139,6 +131,8 @@ if(!displayName){
 alert("Enter display name");
 return;
 }
+
+if(!validateLinks()) return;
 
 await saveProfile();
 await createBlocks();
@@ -157,7 +151,7 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center",
 flexDirection:"column",
-fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+fontFamily:"-apple-system"
 }}>
 
 <h1 style={{marginBottom:20}}>Setup your Linkarsha</h1>
@@ -197,30 +191,38 @@ Personal
 
 <div>
 
-<h2>Select your category</h2>
+<h2>Select category</h2>
 
 <div style={{
+marginTop:20,
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
-gap:10,
-marginTop:20
+gap:10
 }}>
 
-{userType==="creator" && (
+{userType==="creator" &&(
 <>
-<button onClick={()=>{setIndustry("instagram");setStep(3);}}>Instagram Creator</button>
-<button onClick={()=>{setIndustry("youtube");setStep(3);}}>YouTube Creator</button>
-<button onClick={()=>{setIndustry("tiktok");setStep(3);}}>TikTok Creator</button>
+
+<button onClick={()=>{setIndustry("instagram");setStep(3);}}>Instagram</button>
+<button onClick={()=>{setIndustry("vk");setStep(3);}}>VK</button>
+<button onClick={()=>{setIndustry("facebook");setStep(3);}}>Facebook</button>
+<button onClick={()=>{setIndustry("youtube");setStep(3);}}>YouTube</button>
+<button onClick={()=>{setIndustry("tiktok");setStep(3);}}>TikTok</button>
 <button onClick={()=>{setIndustry("multi");setStep(3);}}>Multiple Platforms</button>
+
 </>
 )}
 
-{userType==="business" && (
+{userType==="business" &&(
 <>
-<button onClick={()=>{setIndustry("restaurant");setStep(3);}}>Restaurant</button>
-<button onClick={()=>{setIndustry("cafe");setStep(3);}}>Cafe</button>
+
+<button onClick={()=>{setIndustry("restaurant");setStep(3);}}>Restaurant / Cafe</button>
 <button onClick={()=>{setIndustry("store");setStep(3);}}>Online Store</button>
 <button onClick={()=>{setIndustry("healthcare");setStep(3);}}>Healthcare</button>
+<button onClick={()=>{setIndustry("salon");setStep(3);}}>Salon / Beauty</button>
+<button onClick={()=>{setIndustry("gym");setStep(3);}}>Gym / Fitness</button>
+<button onClick={()=>{setIndustry("agency");setStep(3);}}>Agency / Services</button>
+
 </>
 )}
 
@@ -236,43 +238,45 @@ marginTop:20
 
 {step===3 &&(
 
-<div style={{width:320}}>
+<div style={{width:340}}>
 
 <h2>Add your links</h2>
 
-<input
-placeholder="Instagram username / URL"
-value={instagram}
-onChange={(e)=>setInstagram(e.target.value)}
-style={{marginTop:10,padding:10,width:"100%"}}
-/>
+{links.map((l,i)=>(
 
 <input
-placeholder="YouTube channel / URL"
-value={youtube}
-onChange={(e)=>setYoutube(e.target.value)}
-style={{marginTop:10,padding:10,width:"100%"}}
+key={i}
+placeholder="@username or https://link"
+value={l}
+onChange={(e)=>updateLink(i,e.target.value)}
+style={{
+marginTop:10,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
 />
 
-<input
-placeholder="Website"
-value={website}
-onChange={(e)=>setWebsite(e.target.value)}
-style={{marginTop:10,padding:10,width:"100%"}}
-/>
+))}
 
-<input
-placeholder="Twitter username / URL"
-value={twitter}
-onChange={(e)=>setTwitter(e.target.value)}
-style={{marginTop:10,padding:10,width:"100%"}}
-/>
+<div style={{marginTop:10}}>
+
+<button onClick={addLink}>+ Add link</button>
+
+</div>
 
 <div style={{marginTop:20,display:"flex",gap:10}}>
 
-<button onClick={()=>setStep(2)}>Back</button>
+<button onClick={()=>setStep(userType==="personal"?1:2)}>
+Back
+</button>
 
-<button onClick={()=>setStep(4)}>
+<button onClick={()=>{
+if(!validateLinks()) return;
+setStep(4);
+}}>
 Continue
 </button>
 
@@ -284,7 +288,7 @@ Continue
 
 {step===4 &&(
 
-<div style={{width:320,textAlign:"center"}}>
+<div style={{width:340,textAlign:"center"}}>
 
 <h2>Profile Info</h2>
 
@@ -296,7 +300,8 @@ height:90,
 borderRadius:"50%",
 overflow:"hidden",
 background:"#222",
-margin:"auto"
+margin:"auto",
+position:"relative"
 }}>
 
 <img
@@ -308,12 +313,20 @@ objectFit:"cover"
 }}
 />
 
-</div>
-
-<label style={{marginTop:10,display:"block",cursor:"pointer"}}>
-Upload photo
+<label style={{
+position:"absolute",
+bottom:0,
+right:0,
+background:"#000",
+borderRadius:"50%",
+padding:"4px 8px",
+cursor:"pointer"
+}}>
++
 <input type="file" hidden accept="image/*" onChange={uploadAvatar}/>
 </label>
+
+</div>
 
 </div>
 
@@ -321,7 +334,14 @@ Upload photo
 placeholder="Display Name"
 value={displayName}
 onChange={(e)=>setDisplayName(e.target.value)}
-style={{marginTop:15,padding:10,width:"100%"}}
+style={{
+marginTop:20,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
 />
 
 <textarea
@@ -329,7 +349,14 @@ placeholder="Bio"
 value={bio}
 maxLength={120}
 onChange={(e)=>setBio(e.target.value)}
-style={{marginTop:10,padding:10,width:"100%"}}
+style={{
+marginTop:10,
+padding:12,
+width:"100%",
+background:"#111",
+border:"1px solid #333",
+color:"white"
+}}
 />
 
 <div style={{fontSize:12,opacity:0.6}}>
@@ -338,7 +365,9 @@ style={{marginTop:10,padding:10,width:"100%"}}
 
 <div style={{marginTop:20,display:"flex",gap:10}}>
 
-<button onClick={()=>setStep(3)}>Back</button>
+<button onClick={()=>setStep(3)}>
+Back
+</button>
 
 <button onClick={()=>setStep(5)}>
 Continue
@@ -384,7 +413,7 @@ objectFit:"cover"
 
 </div>
 
-<div style={{marginTop:10,fontWeight:"600"}}>
+<div style={{marginTop:10,fontWeight:600}}>
 {displayName}
 </div>
 
@@ -392,10 +421,11 @@ objectFit:"cover"
 {bio}
 </div>
 
-{instagram && <div style={{marginTop:10}}>Instagram</div>}
-{youtube && <div style={{marginTop:10}}>YouTube</div>}
-{website && <div style={{marginTop:10}}>Website</div>}
-{twitter && <div style={{marginTop:10}}>Twitter</div>}
+{links.filter(l=>l.trim()!=="").map((l,i)=>(
+<div key={i} style={{marginTop:10}}>
+{l}
+</div>
+))}
 
 </div>
 
