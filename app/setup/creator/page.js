@@ -189,92 +189,147 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 Creator Setup
 </h1>
 
-{step===5 &&(
+{/* STEP 1 THEME */}
 
-<div style={{textAlign:"center"}}>
+{step===1 &&(
 
-<h2>Preview</h2>
+<div>
 
-<div style={{
-marginTop:20,
-background:"#111",
-padding:30,
-borderRadius:20,
-width:260
-}}>
+<h2>Select Theme</h2>
 
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden",
-background:"#222",
-margin:"auto"
-}}>
+<button onClick={()=>setTheme("dark")}>Dark</button>
+<button onClick={()=>setTheme("gradient")}>Gradient</button>
+<button onClick={()=>setTheme("light")}>Light</button>
 
-<img
-src={avatar||"/default-avatar.png"}
-style={{width:"100%",height:"100%",objectFit:"cover"}}
-/>
+<button onClick={continueStep} style={{marginTop:20}}>
+Continue
+</button>
 
-</div>
-
-<div style={{marginTop:10,fontWeight:600}}>
-{displayName}
-</div>
-
-<div style={{opacity:0.7,fontSize:14}}>
-{bio}
-</div>
-
-{platform!=="multi" && username &&(
-
-<div style={{
-marginTop:12,
-background:"#1a1a25",
-padding:10,
-borderRadius:10
-}}>
-{detectPlatform(username)}
 </div>
 
 )}
 
-{platform==="multi" && multiLinks.filter(l=>l.trim()!=="").map((l,i)=>(
+{/* STEP 2 PLATFORM */}
 
-<div
-key={i}
-style={{
-marginTop:10,
-background:"#1a1a25",
-padding:10,
-borderRadius:10
-}}
->
-{detectPlatform(l)}
-</div>
+{step===2 &&(
 
-))}
+<div>
 
-</div>
+<h2>Where is your audience?</h2>
 
-<div style={{marginTop:20}}>
+<button onClick={()=>setPlatform("instagram")}>Instagram</button>
+<button onClick={()=>setPlatform("vk")}>VK</button>
+<button onClick={()=>setPlatform("facebook")}>Facebook</button>
+<button onClick={()=>setPlatform("youtube")}>YouTube</button>
+<button onClick={()=>setPlatform("tiktok")}>TikTok</button>
+<button onClick={()=>setPlatform("multi")}>Multiple Platforms</button>
 
-<button
-onClick={finishSetup}
-style={{
-padding:"14px 40px",
-borderRadius:10,
-border:"none",
-background:"#00d26a",
-color:"white",
-fontWeight:600
-}}
->
-🎉 Finish Setup
+<button onClick={continueStep} style={{marginTop:20}}>
+Continue
 </button>
 
 </div>
+
+)}
+
+{/* STEP 3 LINKS */}
+
+{step===3 &&(
+
+<div style={{width:320}}>
+
+<h2>Add your profile</h2>
+
+{platform!=="multi" &&(
+
+<input
+placeholder="@username or profile URL"
+value={username}
+onChange={(e)=>setUsername(e.target.value)}
+style={{marginTop:10,width:"100%"}}
+/>
+
+)}
+
+{platform==="multi" &&(
+
+<div>
+
+{multiLinks.map((l,i)=>(
+
+<input
+key={i}
+placeholder="https://profile-link"
+value={l}
+onChange={(e)=>updateMultiLink(i,e.target.value)}
+style={{marginTop:10,width:"100%"}}
+/>
+
+))}
+
+<button onClick={addMultiLink}>
++ Add link
+</button>
+
+</div>
+
+)}
+
+<button onClick={continueStep} style={{marginTop:20}}>
+Continue
+</button>
+
+</div>
+
+)}
+
+{/* STEP 4 PROFILE */}
+
+{step===4 &&(
+
+<div style={{width:320}}>
+
+<h2>Profile Info</h2>
+
+<input
+placeholder="Display Name"
+value={displayName}
+onChange={(e)=>setDisplayName(e.target.value)}
+style={{marginTop:10,width:"100%"}}
+/>
+
+<textarea
+placeholder="Bio"
+value={bio}
+maxLength={160}
+onChange={(e)=>setBio(e.target.value)}
+style={{marginTop:10,width:"100%"}}
+/>
+
+<div>{bio.length}/160</div>
+
+<button onClick={continueStep} style={{marginTop:20}}>
+Continue
+</button>
+
+</div>
+
+)}
+
+{/* STEP 5 PREVIEW */}
+
+{step===5 &&(
+
+<div>
+
+<h2>Preview</h2>
+
+<div>{displayName}</div>
+<div>{bio}</div>
+
+<button onClick={finishSetup} style={{marginTop:20}}>
+🎉 Finish Setup
+</button>
 
 </div>
 
