@@ -421,19 +421,31 @@ Continue
 <h2>Preview</h2>
 
 <div style={{
-background:"#111",
-padding:30,
-borderRadius:20,
-width:260
+width:280,
+height:520,
+background:"#000",
+borderRadius:30,
+padding:18,
+marginTop:20,
+boxShadow:"0 0 30px rgba(0,0,0,0.6)"
 }}>
 
 <div style={{
-width:70,
-height:70,
+width:"100%",
+height:"100%",
+background:"#0b0b12",
+borderRadius:20,
+padding:20,
+overflow:"auto"
+}}>
+
+<div style={{
+width:80,
+height:80,
 borderRadius:"50%",
 overflow:"hidden",
-background:"#222",
-margin:"auto"
+margin:"auto",
+background:"#222"
 }}>
 
 <img
@@ -443,23 +455,36 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 
 </div>
 
-<div style={{marginTop:10,fontWeight:600}}>
+<div style={{
+marginTop:12,
+fontWeight:600,
+textAlign:"center",
+fontSize:18
+}}>
 {displayName}
 </div>
 
-<div style={{opacity:0.7}}>
+<div style={{
+opacity:0.7,
+textAlign:"center",
+fontSize:14,
+marginTop:4
+}}>
 {bio}
 </div>
+
+<div style={{marginTop:20}}>
 
 {selected.map(p=>{
 if(p==="Other") return null;
 
 return(
 <div key={p} style={{
-marginTop:10,
 background:"#1a1a25",
-padding:10,
-borderRadius:10
+padding:"12px",
+borderRadius:12,
+textAlign:"center",
+marginTop:10
 }}>
 {p}
 </div>
@@ -471,10 +496,11 @@ if(!o.name) return null;
 
 return(
 <div key={i} style={{
-marginTop:10,
 background:"#1a1a25",
-padding:10,
-borderRadius:10
+padding:"12px",
+borderRadius:12,
+textAlign:"center",
+marginTop:10
 }}>
 {o.name}
 </div>
@@ -483,7 +509,22 @@ borderRadius:10
 
 </div>
 
-<button onClick={finishSetup} style={{marginTop:20}}>
+</div>
+
+</div>
+
+<button
+onClick={finishSetup}
+style={{
+marginTop:20,
+padding:"12px 20px",
+background:"#00d26a",
+borderRadius:10,
+color:"#fff",
+border:"none",
+cursor:"pointer"
+}}
+>
 Finish Setup
 </button>
 
