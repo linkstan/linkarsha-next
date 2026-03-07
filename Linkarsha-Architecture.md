@@ -496,3 +496,42 @@ data_json:
 "title": "Instagram",
 "url": "https://instagram.com/username"
 }
+
+
+
+
+
+
+
+  ### Creator Step 3 — Platform Input
+
+If single platform selected:
+
+Input field:
+username OR profile URL
+
+Example:
+@username
+instagram.com/username
+
+System converts it into full URL.
+
+---
+
+If Multiple Platforms selected:
+
+User receives 3 input fields.
+
+User can add more links with "+ Add link".
+
+Maximum allowed:
+
+7 links
+
+At least 1 link required.
+
+---
+
+Links are stored temporarily during onboarding.
+
+Later these links are converted into blocks in the database.
