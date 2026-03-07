@@ -10,6 +10,7 @@ const [profile,setProfile]=useState(null);
 const [blocks,setBlocks]=useState([]);
 const [title,setTitle]=useState("");
 const [url,setUrl]=useState("");
+const [dragIndex,setDragIndex]=useState(null);
 
 useEffect(()=>{
 init();
@@ -18,7 +19,6 @@ init();
 async function init(){
 
 const {data:{session}} = await supabase.auth.getSession();
-
 if(!session) return;
 
 setUser(session.user);
@@ -56,14 +56,13 @@ return;
 }
 
 await supabase.from("blocks").insert({
-
 user_id:user.id,
 type:"link",
+position:Date.now(),
 data_json:{
 title:title,
 url:url.startsWith("http") ? url : "https://"+url
 }
-
 });
 
 setTitle("");
@@ -84,11 +83,38 @@ loadBlocks(user.id);
 
 }
 
+function handleDragStart(index){
+setDragIndex(index);
+}
+
+async function handleDrop(index){
+
+if(dragIndex===null) return;
+
+const updated=[...blocks];
+const dragged=updated[dragIndex];
+
+updated.splice(dragIndex,1);
+updated.splice(index,0,dragged);
+
+setBlocks(updated);
+
+for(let i=0;i<updated.length;i++){
+
+await supabase
+.from("blocks")
+.update({position:i})
+.eq("id",updated[i].id);
+
+}
+
+setDragIndex(null);
+
+}
+
 return(
 
 <div style={{display:"flex",gap:40}}>
-
-{/* LEFT SIDE EDITOR */}
 
 <div style={{width:360}}>
 
@@ -133,19 +159,21 @@ borderRadius:8,
 border:"none"
 }}
 >
-
 Add Link
-
 </button>
 
 </div>
 
 <div style={{marginTop:30}}>
 
-{blocks.map(block=>(
+{blocks.map((block,index)=>(
 
 <div
 key={block.id}
+draggable
+onDragStart={()=>handleDragStart(index)}
+onDragOver={(e)=>e.preventDefault()}
+onDrop={()=>handleDrop(index)}
 style={{
 background:"#15151f",
 padding:14,
@@ -153,7 +181,8 @@ borderRadius:10,
 marginTop:10,
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center"
+alignItems:"center",
+cursor:"grab"
 }}
 >
 
@@ -189,8 +218,6 @@ Delete
 </div>
 
 </div>
-
-{/* RIGHT SIDE PREVIEW */}
 
 <div style={{flex:1,display:"flex",justifyContent:"center"}}>
 
