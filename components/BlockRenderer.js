@@ -2,63 +2,62 @@ export default function BlockRenderer({ block }) {
 
 const data = block.data_json || {};
 
+const icons = {
+Instagram:"/icons/instagram.png",
+Facebook:"/icons/facebook.png",
+VK:"/icons/vk.png",
+YouTube:"/icons/youtube.png",
+TikTok:"/icons/tiktok.png",
+WhatsApp:"/icons/whatsapp.png",
+Website:"/icons/website.png",
+X:"/icons/x.png",
+Pinterest:"/icons/pinterest.png",
+Threads:"/icons/threads.png",
+Snapchat:"/icons/snapchat.png",
+Twitch:"/icons/twitch.png",
+SoundCloud:"/icons/soundcloud.png",
+Spotify:"/icons/spotify.png"
+};
+
 if (block.type === "link") {
+
+const icon = icons[data.title];
 
 return (
 <a
-href={data.url || "#"}
+href={data.url}
 target="_blank"
 rel="noopener noreferrer"
 style={{
-display:"block",
-background:"#111",
-padding:"16px",
+display:"flex",
+alignItems:"center",
+gap:"12px",
+background:"#1a1a25",
+padding:"14px",
 marginTop:"12px",
 borderRadius:"12px",
-textAlign:"center",
 textDecoration:"none",
 color:"white",
 fontWeight:"600"
 }}
 >
-{data.title || "Link"}
+
+{icon && (
+
+<img
+src={icon}
+style={{
+width:22,
+height:22,
+objectFit:"contain"
+}}
+/>
+
+)}
+
+<span>{data.title}</span>
+
 </a>
-);
-
-}
-
-if (block.type === "video") {
-
-return (
-<div style={{marginTop:20}}>
-<iframe
-width="100%"
-height="200"
-src={data.url || ""}
-title="video"
-frameBorder="0"
-allowFullScreen
-style={{borderRadius:"12px"}}
-/>
-</div>
-);
-
-}
-
-if (block.type === "music") {
-
-return (
-<div style={{marginTop:20}}>
-<iframe
-src={data.url || ""}
-width="100%"
-height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media"
-loading="lazy"
-style={{borderRadius:"12px"}}
-/>
-</div>
 );
 
 }
@@ -67,7 +66,7 @@ if (block.type === "image") {
 
 return (
 <img
-src={data.url || ""}
+src={data.url}
 style={{
 width:"100%",
 marginTop:"16px",
@@ -86,56 +85,8 @@ marginTop:"16px",
 lineHeight:"1.6",
 opacity:"0.9"
 }}>
-{data.text || ""}
+{data.text}
 </p>
-);
-
-}
-
-if (block.type === "product") {
-
-return (
-<div style={{
-background:"#111",
-padding:"16px",
-marginTop:"16px",
-borderRadius:"12px"
-}}>
-
-<img
-src={data.image || ""}
-style={{
-width:"100%",
-borderRadius:"8px"
-}}
-/>
-
-<h3 style={{marginTop:10}}>
-{data.title || "Product"}
-</h3>
-
-<p style={{opacity:0.7}}>
-${data.price || ""}
-</p>
-
-<a
-href={data.url || "#"}
-target="_blank"
-style={{
-display:"block",
-background:"#222",
-padding:"10px",
-marginTop:"10px",
-borderRadius:"8px",
-textAlign:"center",
-textDecoration:"none",
-color:"white"
-}}
->
-Buy
-</a>
-
-</div>
 );
 
 }
