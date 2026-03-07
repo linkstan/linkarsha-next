@@ -1,12 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../lib/supabase";
 
 export default function Setup(){
 
 const router = useRouter();
 const [role,setRole] = useState("");
+
+useEffect(()=>{
+checkUser();
+},[]);
+
+async function checkUser(){
+
+const {data:{session}} = await supabase.auth.getSession();
+
+if(!session){
+router.push("/login");
+return;
+}
+
+const {data:prof} = await supabase
+.from("profiles")
+.select("user_type")
+.eq("id",session.user.id)
+.single();
+
+if(prof?.user_type){
+router.push("/dashboard");
+}
+
+}
 
 function continueSetup(){
 
