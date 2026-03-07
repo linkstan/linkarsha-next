@@ -99,6 +99,79 @@ setAvatar(data.publicUrl+"?t="+Date.now());
 
 }
 
+function normalizeLink(link){
+
+if(link.startsWith("http")) return link;
+
+if(link.startsWith("@")) link=link.replace("@","");
+
+return "https://"+link;
+
+}
+
+function detectPlatform(link){
+
+const l=link.toLowerCase();
+
+if(l.includes("instagram")) return "Instagram";
+if(l.includes("vk")) return "VK";
+if(l.includes("youtube")) return "YouTube";
+if(l.includes("tiktok")) return "TikTok";
+if(l.includes("facebook")) return "Facebook";
+
+return "Website";
+
+}
+
+async function finishSetup(){
+
+const {data:{session}} = await supabase.auth.getSession();
+const user=session.user;
+
+await supabase
+.from("profiles")
+.update({
+user_type:"creator",
+industry:platform,
+display_name:displayName,
+bio:bio,
+avatar:avatar,
+theme:theme
+})
+.eq("id",user.id);
+
+let links=[];
+
+if(platform!=="multi"){
+links=[username];
+}else{
+links=multiLinks;
+}
+
+for(const link of links){
+
+if(link.trim()==="") continue;
+
+const url=normalizeLink(link);
+const title=detectPlatform(url);
+
+await supabase.from("blocks").insert({
+
+user_id:user.id,
+type:"link",
+data_json:{
+title:title,
+url:url
+}
+
+});
+
+}
+
+router.push("/dashboard");
+
+}
+
 return(
 
 <div style={{
@@ -116,216 +189,27 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 Creator Setup
 </h1>
 
-{/* STEP 1 THEME */}
-
-{step===1 &&(
+{step===5 &&(
 
 <div style={{textAlign:"center"}}>
 
-<h2>Select a Theme</h2>
+<h2>Preview</h2>
 
 <div style={{
-marginTop:30,
-display:"grid",
-gridTemplateColumns:"repeat(3,120px)",
-gap:20
-}}>
-
-<div
-onClick={()=>setTheme("dark")}
-style={{
-height:180,
-borderRadius:20,
-cursor:"pointer",
-background:"#111",
-border:theme==="dark"?"2px solid #00d26a":"1px solid #333"
-}}
-></div>
-
-<div
-onClick={()=>setTheme("gradient")}
-style={{
-height:180,
-borderRadius:20,
-cursor:"pointer",
-background:"linear-gradient(180deg,#4f46e5,#9333ea)",
-border:theme==="gradient"?"2px solid #00d26a":"1px solid #333"
-}}
-></div>
-
-<div
-onClick={()=>setTheme("light")}
-style={{
-height:180,
-borderRadius:20,
-cursor:"pointer",
-background:"#ddd",
-border:theme==="light"?"2px solid #00d26a":"1px solid #333"
-}}
-></div>
-
-</div>
-
-<button
-onClick={continueStep}
-style={{
-marginTop:40,
-padding:"14px 40px",
-borderRadius:10,
-border:"none",
-background:theme?"#00d26a":"#333",
-color:"white",
-fontWeight:600,
-cursor:theme?"pointer":"not-allowed",
-opacity:theme?1:0.6
-}}
->
-Continue
-</button>
-
-</div>
-
-)}
-
-{/* STEP 2 PLATFORM */}
-
-{step===2 &&(
-
-<div style={{textAlign:"center"}}>
-
-<h2>Where is your audience?</h2>
-
-<div style={{
-marginTop:30,
-display:"grid",
-gridTemplateColumns:"repeat(2,160px)",
-gap:15
-}}>
-
-<button onClick={()=>setPlatform("instagram")}>Instagram</button>
-<button onClick={()=>setPlatform("vk")}>VK</button>
-<button onClick={()=>setPlatform("facebook")}>Facebook</button>
-<button onClick={()=>setPlatform("youtube")}>YouTube</button>
-<button onClick={()=>setPlatform("tiktok")}>TikTok</button>
-<button onClick={()=>setPlatform("multi")}>Multiple Platforms</button>
-
-</div>
-
-<button
-onClick={continueStep}
-style={{
-marginTop:40,
-padding:"14px 40px",
-borderRadius:10,
-border:"none",
-background:platform?"#00d26a":"#333",
-color:"white",
-fontWeight:600,
-cursor:platform?"pointer":"not-allowed",
-opacity:platform?1:0.6
-}}
->
-Continue
-</button>
-
-</div>
-
-)}
-
-{/* STEP 3 LINKS */}
-
-{step===3 &&(
-
-<div style={{width:340,textAlign:"center"}}>
-
-<h2>Add your profile</h2>
-
-{platform!=="multi" &&(
-
-<input
-placeholder="@username or profile URL"
-value={username}
-onChange={(e)=>setUsername(e.target.value)}
-style={{
 marginTop:20,
-padding:12,
-width:"100%",
 background:"#111",
-border:"1px solid #333",
-color:"white"
-}}
-/>
-
-)}
-
-{platform==="multi" &&(
-
-<div>
-
-{multiLinks.map((l,i)=>(
-
-<input
-key={i}
-placeholder="https://profile-link"
-value={l}
-onChange={(e)=>updateMultiLink(i,e.target.value)}
-style={{
-marginTop:10,
-padding:12,
-width:"100%",
-background:"#111",
-border:"1px solid #333",
-color:"white"
-}}
-/>
-
-))}
-
-<button onClick={addMultiLink} style={{marginTop:10}}>
-+ Add link
-</button>
-
-</div>
-
-)}
-
-<button
-onClick={continueStep}
-style={{
-marginTop:30,
-padding:"14px 40px",
-borderRadius:10,
-border:"none",
-background:"#00d26a",
-color:"white",
-fontWeight:600
-}}
->
-Continue
-</button>
-
-</div>
-
-)}
-
-{/* STEP 4 PROFILE INFO */}
-
-{step===4 &&(
-
-<div style={{width:340,textAlign:"center"}}>
-
-<h2>Profile Info</h2>
-
-<div style={{marginTop:20}}>
+padding:30,
+borderRadius:20,
+width:260
+}}>
 
 <div style={{
-width:90,
-height:90,
+width:70,
+height:70,
 borderRadius:"50%",
 overflow:"hidden",
 background:"#222",
-margin:"auto",
-position:"relative"
+margin:"auto"
 }}>
 
 <img
@@ -333,66 +217,52 @@ src={avatar||"/default-avatar.png"}
 style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
-<label style={{
-position:"absolute",
-bottom:0,
-right:0,
-background:"#00d26a",
-color:"#fff",
-borderRadius:"50%",
-width:28,
-height:28,
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-cursor:"pointer",
-fontWeight:"bold"
+</div>
+
+<div style={{marginTop:10,fontWeight:600}}>
+{displayName}
+</div>
+
+<div style={{opacity:0.7,fontSize:14}}>
+{bio}
+</div>
+
+{platform!=="multi" && username &&(
+
+<div style={{
+marginTop:12,
+background:"#1a1a25",
+padding:10,
+borderRadius:10
 }}>
-+
-<input type="file" hidden accept="image/*" onChange={uploadAvatar}/>
-</label>
-
+{detectPlatform(username)}
 </div>
 
-</div>
+)}
 
-<input
-placeholder="Display Name"
-value={displayName}
-onChange={(e)=>setDisplayName(e.target.value)}
-style={{
-marginTop:20,
-padding:12,
-width:"100%",
-background:"#111",
-border:"1px solid #333",
-color:"white"
-}}
-/>
+{platform==="multi" && multiLinks.filter(l=>l.trim()!=="").map((l,i)=>(
 
-<textarea
-placeholder="Bio"
-value={bio}
-maxLength={160}
-onChange={(e)=>setBio(e.target.value)}
+<div
+key={i}
 style={{
 marginTop:10,
-padding:12,
-width:"100%",
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"#1a1a25",
+padding:10,
+borderRadius:10
 }}
-/>
-
-<div style={{fontSize:12,opacity:0.6}}>
-{bio.length}/160
+>
+{detectPlatform(l)}
 </div>
 
+))}
+
+</div>
+
+<div style={{marginTop:20}}>
+
 <button
-onClick={continueStep}
+onClick={finishSetup}
 style={{
-marginTop:20,
 padding:"14px 40px",
 borderRadius:10,
 border:"none",
@@ -401,20 +271,10 @@ color:"white",
 fontWeight:600
 }}
 >
-Continue
+🎉 Finish Setup
 </button>
 
 </div>
-
-)}
-
-{/* STEP 5 PREVIEW */}
-
-{step===5 &&(
-
-<div style={{textAlign:"center"}}>
-
-<h2>Preview coming next</h2>
 
 </div>
 
