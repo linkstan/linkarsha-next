@@ -1,444 +1,133 @@
 # Linkarsha Architecture
 
 ## Core Concept
-Linkarsha is a link-in-bio operating system for:
 
-Creators
-Businesses
-Personal users
+Linkarsha is a **Link-in-Bio Operating System** for:
 
-Each user type has different layouts and dashboards.
+• Creators  
+• Businesses  
+• Personal users  
+
+Each user type has **different public layouts and dashboards** but shares the same backend system.
 
 ---
 
-## User Types
+# User Types
 
-### Creator
-Focus: audience & content
+## Creator
+
+Focus: **audience & content**
 
 Public profile layout:
-Vertical buttons
+
+Vertical social buttons.
 
 Example:
 
-Instagram
-YouTube
-VK
-TikTok
+Instagram  
+YouTube  
+VK  
+TikTok  
 
-Dashboard tools:
-Links
-Blocks
-Analytics
-Themes
+Dashboard modules:
+
+Links  
+Blocks  
+Analytics  
+Appearance  
 
 ---
 
-### Business
-Focus: customers & services
+## Business
+
+Focus: **customers & services**
 
 Public profile layout:
 
-Avatar
-Social icons row
-Products
-Location
-Booking
+Avatar  
+Social icons row  
+Products  
+Location  
+Bookings  
 
 Example icons:
 
-[IG] [FB] [WA] [Website]
+IG • FB • WA • Website
 
-Dashboard tools:
-Products
-Menu
-Location
-Bookings
-Analytics
+Dashboard modules:
+
+Products  
+Menu  
+Bookings  
+Analytics  
+Appearance  
 
 ---
 
-### Personal
-Focus: sharing links
+## Personal
+
+Focus: **simple link sharing**
 
 Public profile layout:
 
-Same as Creator but simpler.
+Similar to Creator but simpler.
+
+Example:
+
+Instagram  
+Website  
+YouTube  
 
 ---
 
-## Database
+# Database Structure
 
 Tables:
 
-profiles
-blocks
-links
-events
-themes
+profiles  
+blocks  
+links  
+clicks  
+events  
+themes  
 
 ---
 
-### profiles
+# profiles table
 
-Stores:
+Stores user account and public profile data.
 
-id
-username
-avatar
-bio
-display_name
-user_type
-industry
-theme
+Columns:
 
----
-
-### blocks
-
-Stores all profile blocks:
-
-link
-video
-music
-image
-text
-product
-
----
-
-### events
-
-Used for analytics:
-
-clicks
-views
-referrer
-country
-device
-
----
-
-## Storage
-
-Supabase buckets:
-
-avatars
-media
-
----
-
-## Public Profile
-
-Route:
-
-/[username]
-
-Renders blocks from database.
-
-Different layout based on:
-
-profiles.user_type
-
----
-
-## Dashboard
-
-Route:
-
-/dashboard
-
-Different UI based on:
-
-profiles.user_type
-
-Creator dashboard
-Business dashboard
-Personal dashboard
-
----
-
-## Onboarding
-
-Route:
-
-/setup
-
-Flow:
-
-choose role
-creator onboarding
-business onboarding
-personal onboarding
-
----
-
-## Analytics
-
-Tracks:
-
-clicks
-referrer
-device
-country
-time
-
-## Creator Onboarding Flow
-
-Route:
-/setup/creator
-
-Steps:
-
-1️⃣ Theme Selection
-
-User selects visual style for public profile.
-
-Example:
-Minimal  
-Dark Creator  
-Gradient  
-
-Theme saved in:
-
-profiles.theme
-
----
-
-2️⃣ Platform Selection
-
-User chooses primary platform.
-
-Options:
-
-Instagram  
-VK  
-Facebook  
-YouTube  
-TikTok  
-Multiple Platforms
-
-Saved in:
-
-profiles.industry
-
----
-
-3️⃣ Username / Profile URL
-
-If user selected a single platform:
-
-Input:
-username OR profile URL
+id  
+username  
+avatar  
+display_name  
+bio  
+user_type  
+industry  
+theme  
 
 Example:
 
-@username
-instagram.com/username
-
-System converts to full URL.
-
----
-
-If user selected "Multiple Platforms":
-
-User gets 3 URL inputs.
-
-System auto detects platform.
-
-Example:
-
-reddit.com/user/name  
-twitter.com/name  
-github.com/name
+username: pradeep
+user_type: creator
+theme: dark
 
 ---
 
-4️⃣ Profile Info
+# blocks table
 
-User uploads avatar.
+Stores **all public profile blocks**.
 
-Fields:
+Block types:
 
-Display Name (required)
-
-Bio (max 160 characters)
-
-Stored in:
-
-profiles.display_name
-profiles.bio
-profiles.avatar
-
----
-
-5️⃣ Preview Screen
-
-Shows mobile preview of profile.
-
-User sees:
-
-Avatar
-Display name
-Bio
-Links
-
-Button:
-
-Finish Setup
-
----
-
-After finish:
-
-User redirected to:
-
-/dashboard
-
-
-
-
-}
-## Creator Setup Flow
-
-Route:
-/setup/creator
-
-Steps:
-
-1. Theme Selection  
-User selects a theme for their public profile.
-
-Themes examples:
-Minimal Dark  
-Gradient Creator  
-Clean Light  
-
-Saved in:
-profiles.theme
-
----
-
-2. Platform Selection
-
-User chooses where their audience is.
-
-Options:
-
-Instagram  
-VK  
-Facebook  
-YouTube  
-TikTok  
-Multiple Platforms
-
-Saved in:
-profiles.industry
-
----
-
-3. Username / Profile URL
-
-If single platform:
-
-User enters:
-
-username OR full profile URL
-
-Example:
-@username
-instagram.com/username
-
-System converts it into full URL.
-
----
-
-If Multiple Platforms selected:
-
-User gets 3 URL boxes.
-
-System auto detects platform from URL.
-
-Example:
-
-reddit.com/user/name  
-twitter.com/name  
-github.com/name
-
----
-
-4. Profile Info
-
-User adds:
-
-Avatar  
-Display Name (required)  
-Bio (max 160 characters)
-
-Saved in:
-
-profiles.avatar  
-profiles.display_name  
-profiles.bio
-
----
-
-5. Preview
-
-Mobile preview of public profile.
-
-Shows:
-
-Avatar  
-Display name  
-Bio  
-Links
-
-Then user clicks:
-
-Finish Setup
-
-Redirect to:
-
-/dashboard
-
-
-
-
-
-
-## Creator Platform Handling
-
-When user selects a platform during creator onboarding, the system creates link blocks automatically.
-
-### Single Platform Mode
-
-If user selects one platform:
-
-Instagram  
-VK  
-Facebook  
-YouTube  
-TikTok  
-
-User enters:
-
-username OR profile URL
-
-Example:
-
-@username  
-instagram.com/username  
-
-System converts into full URL.
-
-Example stored:
-
-https://instagram.com/username
-
-Then a block is created automatically in:
-
-blocks table
+link  
+video  
+music  
+image  
+text  
+product  
 
 Example block:
 
@@ -446,150 +135,362 @@ type: link
 
 data_json:
 {
-"title": "Instagram",
-"url": "https://instagram.com/username"
+“title”:“Instagram”,
+“url”:“https://instagram.com/pradeep”
 }
 
----
+Blocks are displayed on:
 
-### Multiple Platform Mode
+/[username]
 
-User receives 3 input fields.
+Blocks support **drag-drop ordering** using:
 
-Example:
-
-https://reddit.com/user/name  
-https://twitter.com/name  
-https://github.com/name  
-
-System auto detects platform name.
-
-Example detection rules:
-
-instagram → Instagram  
-vk → VK  
-youtube → YouTube  
-tiktok → TikTok  
-facebook → Facebook  
-
-If unknown:
-
-Platform name becomes:
-
-Website
+position column
 
 ---
 
-### Block Creation
+# links table
 
-For every valid link entered:
+Legacy link system used in older modules.
 
-A block is inserted into database.
+Stores:
 
-Example:
+title  
+url  
+position  
 
-user_id: uuid  
-type: link  
-
-data_json:
-{
-"title": "Instagram",
-"url": "https://instagram.com/username"
-}
-
-
-
-
-
-
-
-  ### Creator Step 3 — Platform Input
-
-If single platform selected:
-
-Input field:
-username OR profile URL
-
-Example:
-@username
-instagram.com/username
-
-System converts it into full URL.
+Links are gradually migrating into **blocks**.
 
 ---
 
-If Multiple Platforms selected:
+# clicks table
 
-User receives 3 input fields.
+Stores **detailed link click analytics**.
 
-User can add more links with "+ Add link".
+Columns:
 
-Maximum allowed:
+link_id  
+referrer  
+device  
+browser  
+os  
+created_at  
 
-7 links
+Used by:
 
-At least 1 link required.
+Dashboard analytics charts.
 
 ---
 
-Links are stored temporarily during onboarding.
+# events table
 
-Later these links are converted into blocks in the database.
+Stores **general analytics events**.
 
+Used for:
 
+profile views  
+future activity tracking  
 
+Columns:
 
+id  
+user_id  
+link_id  
+event  
+referrer  
+country  
+device  
+created_at  
 
+Example event:
 
+event: view
+user_id: uuid
 
-  ### Creator Step 4 — Profile Information
+---
 
-User adds personal profile details.
+# Storage
 
-Fields:
+Supabase storage buckets:
 
-Avatar  
-Display Name (required)  
-Bio (maximum 160 characters)
+avatars  
+media  
 
-Avatar uploaded to:
+avatars → profile pictures  
+media → images / future uploads
 
-Supabase storage bucket
+---
 
-avatars
+# Public Profile System
+
+Route:
+
+/[username]
+
+Loads:
+
+profile  
+blocks  
+links (legacy)
+
+Profile view tracking:
+
+events table
+event = view
+
+Link click tracking:
+
+/api/click/[id]
+
+Which stores click data in:
+
+clicks table
+
+Then redirects user to destination URL.
+
+---
+
+# Dashboard System
+
+Route:
+
+/dashboard
+
+Dashboard modules:
+
+/dashboard/links
+/dashboard/appearance
+/dashboard/analytics
+
+Creator dashboard includes:
+
+Link manager  
+Drag-drop ordering  
+Analytics charts  
+Theme editor  
+
+Business dashboards will later include:
+
+Products  
+Menu  
+Location  
+Bookings  
+
+---
+
+# Onboarding System
+
+Route:
+
+/setup
+
+User chooses role:
+
+Creator  
+Business  
+Personal  
+
+Redirects to:
+
+/setup/creator
+/setup/business
+/setup/personal
+
+---
+
+# Creator Onboarding Flow
+
+Route:
+
+/setup/creator
+
+Steps:
+
+### 1 Theme Selection
+
+User chooses theme:
+
+Minimal  
+Dark Creator  
+Gradient  
 
 Saved in:
 
-profiles.avatar  
-profiles.display_name  
+profiles.theme
+
+---
+
+### 2 Platform Selection
+
+User selects where their audience is.
+
+Examples:
+
+Instagram  
+VK  
+Facebook  
+YouTube  
+TikTok  
+Multiple Platforms  
+
+Saved in:
+
+profiles.industry
+
+---
+
+### 3 Platform Links
+
+If **single platform selected**:
+
+User enters:
+
+username OR profile URL
+
+Example:
+
+@username
+instagram.com/username
+
+System converts into:
+
+https://instagram.com/username
+
+---
+
+If **Multiple Platforms selected**:
+
+User gets 3 input fields.
+
+Example:
+
+reddit.com/user/name
+twitter.com/name
+github.com/name
+
+System auto detects platform name.
+
+---
+
+### 4 Profile Information
+
+User enters:
+
+Avatar  
+Display Name  
+Bio (max 160 characters)
+
+Stored in:
+
+profiles.avatar
+profiles.display_name
 profiles.bio
 
-Bio shows character counter:
+---
 
-0 / 160
+### 5 Preview Screen
 
+Mobile preview shows:
 
+Avatar  
+Display name  
+Bio  
+Link buttons
 
+User clicks:
 
+Finish Setup
 
+Then redirected to:
 
-  ## Dashboard Links Module
+/dashboard
+
+---
+
+# Dashboard Links Module
 
 Route:
-/dashboard/links
 
-Purpose:
-Manage social links and profile buttons.
+/dashboard/links
 
 Features:
 
-Add link
-Delete link
-Edit link
-Live mobile preview
+Add link  
+Delete link  
+Edit link  
+Live mobile preview  
 
-Future upgrades:
+Ordering system:
 
-Drag & drop ordering
-Auto platform detection
-Analytics per link
+drag-drop
+position column
+
+---
+
+# Analytics System
+
+Route:
+
+/dashboard/analytics
+
+Analytics features:
+
+Total clicks  
+Top link  
+Traffic sources  
+Hourly click activity  
+Heatmap  
+AI insights  
+Funnel analysis  
+Geo map  
+
+Data sources:
+
+clicks table
+events table
+
+---
+
+# Appearance / Themes System
+
+Route:
+
+/dashboard/appearance
+
+Users can change:
+
+Background  
+Button color  
+Font style  
+Profile layout  
+
+Theme stored in:
+
+profiles.theme
+
+---
+
+# Future Modules
+
+Smart Social Link Detection  
+Business Products System  
+Restaurant Menu Blocks  
+Booking System  
+Advanced Analytics  
+
+---
+
+# Long-Term Vision
+
+Linkarsha becomes a **Creator + Business operating system** rather than a simple link-in-bio tool.
+
+It combines:
+
+Profile links  
+Commerce  
+Analytics  
+Audience tools
+
+
+⸻
+
