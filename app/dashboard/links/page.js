@@ -42,7 +42,7 @@ const {data} = await supabase
 .select("*")
 .eq("user_id",uid)
 .eq("type","link")
-.order("created_at",{ascending:true});
+.order("position",{ascending:true});
 
 if(data) setBlocks(data);
 
