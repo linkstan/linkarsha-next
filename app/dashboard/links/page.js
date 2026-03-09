@@ -116,6 +116,23 @@ setDragIndex(null);
 
 }
 
+function getIcon(title){
+
+const t = title?.toLowerCase();
+
+if(t?.includes("instagram")) return "/icons/instagram.png";
+if(t?.includes("youtube")) return "/icons/youtube.png";
+if(t?.includes("vk")) return "/icons/vk.png";
+if(t?.includes("facebook")) return "/icons/facebook.png";
+if(t?.includes("tiktok")) return "/icons/tiktok.png";
+if(t?.includes("spotify")) return "/icons/spotify.png";
+if(t?.includes("soundcloud")) return "/icons/soundcloud.png";
+if(t?.includes("snapchat")) return "/icons/snapchat.png";
+
+return "/icons/website.png";
+
+}
+
 return(
 
 <div style={{width:420}}>
@@ -188,6 +205,13 @@ cursor:"grab"
 }}
 >
 
+<div style={{display:"flex",alignItems:"center",gap:10}}>
+
+<img
+src={getIcon(block.data_json?.title)}
+style={{width:18,height:18}}
+/>
+
 <div>
 
 <div style={{fontWeight:600}}>
@@ -196,6 +220,8 @@ cursor:"grab"
 
 <div style={{opacity:0.6,fontSize:12}}>
 {block.data_json?.url}
+</div>
+
 </div>
 
 </div>
