@@ -8,6 +8,7 @@ export default function Setup(){
 
 const router = useRouter();
 const [role,setRole] = useState("");
+const [loading,setLoading] = useState(true);
 
 useEffect(()=>{
 checkUser();
@@ -30,7 +31,10 @@ const {data:prof} = await supabase
 
 if(prof?.user_type){
 router.push("/dashboard");
+return;
 }
+
+setLoading(false);
 
 }
 
@@ -43,6 +47,10 @@ return;
 
 router.push(`/setup/${role}`);
 
+}
+
+if(loading){
+return null;
 }
 
 return(
