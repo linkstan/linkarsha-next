@@ -1,6 +1,7 @@
 export default function BlockRenderer({ block }) {
 
 const data = block.data_json || {};
+const url = data.url || "";
 
 const icons = {
 Instagram:"/icons/instagram.png",
@@ -19,11 +20,117 @@ SoundCloud:"/icons/soundcloud.png",
 Spotify:"/icons/spotify.png"
 };
 
-if (block.type === "link") {
+const title = data.title || "Website";
 
-const icon = icons[data.title];
+/* =========================
+   YOUTUBE EMBED
+========================= */
+
+if(url.includes("youtube.com") || url.includes("youtu.be")){
+
+let videoId="";
+
+if(url.includes("watch?v=")){
+videoId=url.split("watch?v=")[1].split("&")[0];
+}
+
+if(url.includes("youtu.be/")){
+videoId=url.split("youtu.be/")[1];
+}
 
 return (
+
+<div style={{marginTop:"16px"}}>
+
+<iframe
+width="100%"
+height="200"
+src={`https://www.youtube.com/embed/${videoId}`}
+title="YouTube video"
+frameBorder="0"
+allowFullScreen
+style={{borderRadius:"12px"}}
+/>
+
+</div>
+
+);
+
+}
+
+/* =========================
+   SPOTIFY EMBED
+========================= */
+
+if(url.includes("spotify.com")){
+
+let embedUrl=url.replace("open.spotify.com","open.spotify.com/embed");
+
+return (
+
+<div style={{marginTop:"16px"}}>
+
+<iframe
+src={embedUrl}
+width="100%"
+height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+loading="lazy"
+style={{borderRadius:"12px"}}
+/>
+
+</div>
+
+);
+
+}
+
+/* =========================
+   TWITTER / X EMBED
+========================= */
+
+if(url.includes("twitter.com") || url.includes("x.com")){
+
+return (
+
+<div style={{
+marginTop:"16px",
+background:"#1a1a25",
+padding:"16px",
+borderRadius:"12px"
+}}>
+
+<a
+href={url}
+target="_blank"
+rel="noopener noreferrer"
+style={{
+color:"white",
+textDecoration:"none"
+}}
+>
+
+View Tweet
+
+</a>
+
+</div>
+
+);
+
+}
+
+/* =========================
+   NORMAL LINK BUTTON
+========================= */
+
+if (block.type === "link") {
+
+const icon = icons[title];
+
+return (
+
 <a
 href={`/api/click/${block.id}`}
 target="_blank"
@@ -55,12 +162,17 @@ objectFit:"contain"
 
 )}
 
-<span>{data.title}</span>
+<span>{title}</span>
 
 </a>
+
 );
 
 }
+
+/* =========================
+   IMAGE BLOCK
+========================= */
 
 if (block.type === "image") {
 
@@ -76,6 +188,10 @@ borderRadius:"12px"
 );
 
 }
+
+/* =========================
+   TEXT BLOCK
+========================= */
 
 if (block.type === "text") {
 
