@@ -2,13 +2,17 @@
 
 ## Core Concept
 
-Linkarsha is a **Link-in-Bio Operating System** for:
+Linkarsha is a **Link-in-Bio Operating System** designed for:
 
 • Creators  
 • Businesses  
 • Personal users  
 
-Each user type has **different public layouts and dashboards** but shares the same backend system.
+All users share the **same backend architecture**, but their **public profile layouts and dashboards differ**.
+
+The platform is built around a **block-based system**.
+
+Everything shown on a profile is a **block**.
 
 ---
 
@@ -16,11 +20,11 @@ Each user type has **different public layouts and dashboards** but shares the sa
 
 ## Creator
 
-Focus: **audience & content**
+Focus: **audience growth and content distribution**
 
 Public profile layout:
 
-Vertical social buttons.
+Vertical buttons with platform icons.
 
 Example:
 
@@ -40,7 +44,7 @@ Appearance
 
 ## Business
 
-Focus: **customers & services**
+Focus: **customers and services**
 
 Public profile layout:
 
@@ -50,9 +54,9 @@ Products
 Location  
 Bookings  
 
-Example icons:
+Example:
 
-IG • FB • WA • Website
+IG • FB • WhatsApp • Website
 
 Dashboard modules:
 
@@ -70,7 +74,7 @@ Focus: **simple link sharing**
 
 Public profile layout:
 
-Similar to Creator but simpler.
+Minimal version of Creator layout.
 
 Example:
 
@@ -82,20 +86,23 @@ YouTube
 
 # Database Structure
 
-Tables:
+Primary tables:
 
 profiles  
 blocks  
-links  
-clicks  
 events  
 themes  
+
+Legacy tables (being phased out):
+
+links  
+clicks  
 
 ---
 
 # profiles table
 
-Stores user account and public profile data.
+Stores **user accounts and public profile data**
 
 Columns:
 
@@ -118,16 +125,18 @@ theme: dark
 
 # blocks table
 
-Stores **all public profile blocks**.
+This is the **core engine of Linkarsha**.
 
-Block types:
+Every piece of content on a profile is stored as a block.
 
-link  
-video  
-music  
-image  
-text  
-product  
+Columns:
+
+id  
+user_id  
+type  
+data_json  
+position  
+created_at  
 
 Example block:
 
@@ -139,73 +148,156 @@ data_json:
 “url”:“https://instagram.com/pradeep”
 }
 
-Blocks are displayed on:
-
-/[username]
-
-Blocks support **drag-drop ordering** using:
+Block ordering uses:
 
 position column
 
----
+Blocks are rendered on:
 
-# links table
-
-Legacy link system used in older modules.
-
-Stores:
-
-title  
-url  
-position  
-
-Links are gradually migrating into **blocks**.
+/[username]
 
 ---
 
-# clicks table
+# Block Types
 
-Stores **detailed link click analytics**.
+Supported blocks:
 
-Columns:
+link  
+video  
+music  
+image  
+text  
+product  
 
-link_id  
-referrer  
-device  
-browser  
-os  
-created_at  
+Future block types:
 
-Used by:
-
-Dashboard analytics charts.
+menu  
+booking  
+map  
+gallery  
 
 ---
 
-# events table
+# Smart Block Engine
 
-Stores **general analytics events**.
+Linkarsha automatically converts pasted URLs into smart blocks.
 
-Used for:
+Example:
 
-profile views  
-future activity tracking  
+YouTube link → video block
+Spotify link → music block
+Instagram link → profile link block
+Website → preview card
+Twitter/X → tweet embed
+
+This system uses:
+
+detectPlatform()
+
+from:
+
+app/lib/detectPlatform.js
+
+---
+
+# Smart Link Detection
+
+When a user pastes a link, Linkarsha detects the platform automatically.
+
+Example input:
+
+instagram.com/pradeep
+
+Detected platform:
+
+Instagram
+
+Supported platforms:
+
+Instagram  
+YouTube  
+TikTok  
+Facebook  
+VK  
+Twitter / X  
+Snapchat  
+Spotify  
+SoundCloud  
+Pinterest  
+Twitch  
+
+Unknown links default to:
+
+Website
+
+---
+
+# Universal Embed System
+
+Some platforms are rendered as **rich embeds instead of buttons**.
+
+Examples:
+
+YouTube → video player  
+Spotify → music player  
+Twitter/X → tweet card  
+Website → preview card  
+
+These are implemented inside:
+
+components/BlockRenderer.js
+
+---
+
+# Events Table
+
+Stores **analytics and activity events**.
 
 Columns:
 
 id  
 user_id  
-link_id  
+block_id  
 event  
 referrer  
-country  
 device  
+browser  
+os  
+country  
 created_at  
 
 Example event:
 
 event: view
 user_id: uuid
+
+Event types:
+
+view  
+click  
+
+---
+
+# Click Tracking System
+
+All link clicks go through:
+
+/api/click/[id]
+
+Flow:
+
+User clicks link  
+→ API records event  
+→ user redirected to destination  
+
+Data stored in:
+
+events table
+
+Example event:
+
+event: click
+block_id: uuid
 
 ---
 
@@ -216,8 +308,8 @@ Supabase storage buckets:
 avatars  
 media  
 
-avatars → profile pictures  
-media → images / future uploads
+avatars → profile images  
+media → uploaded images / future media
 
 ---
 
@@ -231,22 +323,15 @@ Loads:
 
 profile  
 blocks  
-links (legacy)
 
 Profile view tracking:
 
 events table
 event = view
 
-Link click tracking:
+Click tracking:
 
-/api/click/[id]
-
-Which stores click data in:
-
-clicks table
-
-Then redirects user to destination URL.
+/api/click/[blockId]
 
 ---
 
@@ -261,20 +346,77 @@ Dashboard modules:
 /dashboard/links
 /dashboard/appearance
 /dashboard/analytics
+/dashboard/settings
 
-Creator dashboard includes:
+Creator dashboard features:
 
 Link manager  
 Drag-drop ordering  
+Live preview  
 Analytics charts  
 Theme editor  
 
-Business dashboards will later include:
+---
 
-Products  
-Menu  
-Location  
-Bookings  
+# Dashboard Links Module
+
+Route:
+
+/dashboard/links
+
+Features:
+
+Add link  
+Delete link  
+Edit link  
+Drag-drop ordering  
+Auto platform detection  
+
+Ordering uses:
+
+blocks.position
+
+---
+
+# Analytics System
+
+Route:
+
+/dashboard/analytics
+
+Analytics features:
+
+Total clicks  
+Top links  
+Traffic sources  
+Hourly activity  
+Heatmap  
+AI insights  
+Funnel analysis  
+Geo map  
+
+Data sources:
+
+events table
+
+---
+
+# Appearance System
+
+Route:
+
+/dashboard/appearance
+
+Users can change:
+
+Background  
+Button color  
+Font style  
+Profile layout  
+
+Theme stored in:
+
+profiles.theme
 
 ---
 
@@ -284,7 +426,7 @@ Route:
 
 /setup
 
-User chooses role:
+User selects role:
 
 Creator  
 Business  
@@ -306,191 +448,42 @@ Route:
 
 Steps:
 
-### 1 Theme Selection
+1️⃣ Theme selection  
 
-User chooses theme:
+2️⃣ Platform selection  
 
-Minimal  
-Dark Creator  
-Gradient  
+3️⃣ Platform links  
 
-Saved in:
+4️⃣ Profile information  
 
-profiles.theme
+5️⃣ Preview screen  
 
----
-
-### 2 Platform Selection
-
-User selects where their audience is.
-
-Examples:
-
-Instagram  
-VK  
-Facebook  
-YouTube  
-TikTok  
-Multiple Platforms  
-
-Saved in:
-
-profiles.industry
-
----
-
-### 3 Platform Links
-
-If **single platform selected**:
-
-User enters:
-
-username OR profile URL
-
-Example:
-
-@username
-instagram.com/username
-
-System converts into:
-
-https://instagram.com/username
-
----
-
-If **Multiple Platforms selected**:
-
-User gets 3 input fields.
-
-Example:
-
-reddit.com/user/name
-twitter.com/name
-github.com/name
-
-System auto detects platform name.
-
----
-
-### 4 Profile Information
-
-User enters:
-
-Avatar  
-Display Name  
-Bio (max 160 characters)
-
-Stored in:
-
-profiles.avatar
-profiles.display_name
-profiles.bio
-
----
-
-### 5 Preview Screen
-
-Mobile preview shows:
-
-Avatar  
-Display name  
-Bio  
-Link buttons
-
-User clicks:
-
-Finish Setup
-
-Then redirected to:
+After completion:
 
 /dashboard
 
 ---
 
-# Dashboard Links Module
-
-Route:
-
-/dashboard/links
-
-Features:
-
-Add link  
-Delete link  
-Edit link  
-Live mobile preview  
-
-Ordering system:
-
-drag-drop
-position column
-
----
-
-# Analytics System
-
-Route:
-
-/dashboard/analytics
-
-Analytics features:
-
-Total clicks  
-Top link  
-Traffic sources  
-Hourly click activity  
-Heatmap  
-AI insights  
-Funnel analysis  
-Geo map  
-
-Data sources:
-
-clicks table
-events table
-
----
-
-# Appearance / Themes System
-
-Route:
-
-/dashboard/appearance
-
-Users can change:
-
-Background  
-Button color  
-Font style  
-Profile layout  
-
-Theme stored in:
-
-profiles.theme
-
----
-
 # Future Modules
 
-Smart Social Link Detection  
 Business Products System  
 Restaurant Menu Blocks  
 Booking System  
 Advanced Analytics  
+AI Creator Tools  
 
 ---
 
 # Long-Term Vision
 
-Linkarsha becomes a **Creator + Business operating system** rather than a simple link-in-bio tool.
+Linkarsha becomes a **Creator + Business operating system**.
 
-It combines:
+Combining:
 
 Profile links  
 Commerce  
 Analytics  
-Audience tools
+Audience tools  
+Automation  
 
-
-⸻
-
+Beyond a traditional **link-in-bio tool**.
