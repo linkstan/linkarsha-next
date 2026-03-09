@@ -23,17 +23,25 @@ router.push("/login");
 return;
 }
 
-const {data:prof} = await supabase
+const {data:prof,error} = await supabase
 .from("profiles")
-.select("user_type")
+.select("*")
 .eq("id",session.user.id)
 .single();
 
-if(prof?.user_type){
+/* If profile not created yet, allow onboarding */
+if(!prof){
+setLoading(false);
+return;
+}
+
+/* If onboarding already completed */
+if(prof.user_type){
 router.push("/dashboard");
 return;
 }
 
+/* Otherwise show onboarding */
 setLoading(false);
 
 }
