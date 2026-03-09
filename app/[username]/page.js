@@ -19,6 +19,7 @@ const { data: profile } = await supabase
 .single();
 
 if (!profile) {
+
 return (
 <div style={{
 minHeight:"100vh",
@@ -31,24 +32,10 @@ justifyContent:"center"
 User not found
 </div>
 );
+
 }
 
-/* TRACK PROFILE VIEW */
-
-await supabase.from("events").insert({
-user_id: profile.id,
-event: "view"
-});
-
-/* GET LINKS */
-
-const { data: links } = await supabase
-.from("links")
-.select("*")
-.eq("user_id", profile.id)
-.order("created_at",{ascending:true});
-
-/* GET BLOCKS (ORDERED BY POSITION) */
+/* GET BLOCKS */
 
 const { data: blocks } = await supabase
 .from("blocks")
@@ -57,6 +44,7 @@ const { data: blocks } = await supabase
 .order("position",{ascending:true});
 
 return (
+
 <div style={{
 minHeight:"100vh",
 background:"#0b0b12",
@@ -91,46 +79,21 @@ objectFit:"cover"
 </h1>
 
 <p style={{opacity:0.7, marginTop:10}}>
-Welcome to Linkarsha 🚀
+{profile.bio}
 </p>
 
 <div style={{marginTop:40,width:320}}>
 
-{/* LINKS */}
-
-{links?.map(link => (
-
-<a
-key={link.id}
-href={`/api/click/${link.id}`}
-target="_blank"
-rel="noopener noreferrer"
-style={{
-display:"block",
-background:"#111",
-padding:"16px",
-marginTop:"12px",
-borderRadius:"12px",
-textAlign:"center",
-textDecoration:"none",
-color:"white",
-fontWeight:"600"
-}}
->
-{link.title}
-</a>
-
-))}
-
-{/* BLOCKS */}
-
 {blocks?.map(block => (
+
 <BlockRenderer key={block.id} block={block} />
+
 ))}
 
 </div>
 
 </div>
+
 );
 
 }
