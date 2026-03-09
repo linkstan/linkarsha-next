@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { supabase } from "../lib/supabase";
 
 export default function DashboardLayout({ children }) {
 
@@ -12,6 +13,9 @@ const [openLinkarsha,setOpenLinkarsha] = useState(true);
 const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
 
+const [profile,setProfile] = useState(null);
+const [blocks,setBlocks] = useState([]);
+
 /* pages that need preview */
 
 const showPreview =
@@ -19,6 +23,36 @@ pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
+
+useEffect(()=>{
+loadPreview();
+},[]);
+
+async function loadPreview(){
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const uid=session.user.id;
+
+const {data:prof} = await supabase
+.from("profiles")
+.select("*")
+.eq("id",uid)
+.single();
+
+setProfile(prof);
+
+const {data:blockData} = await supabase
+.from("blocks")
+.select("*")
+.eq("user_id",uid)
+.eq("type","link")
+.order("position",{ascending:true});
+
+setBlocks(blockData || []);
+
+}
 
 return(
 
@@ -104,7 +138,7 @@ flex:1,
 display:"flex"
 }}>
 
-{/* EDITOR / CONTENT */}
+{/* EDITOR */}
 
 <div style={{
 flex:1,
@@ -139,23 +173,65 @@ width:"100%",
 height:"100%",
 background:"#0b0b12",
 borderRadius:20,
-padding:20
+padding:20,
+overflow:"auto"
 }}>
 
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
-background:"#222",
-margin:"auto"
-}}/>
+overflow:"hidden",
+margin:"auto",
+background:"#222"
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+</div>
 
 <div style={{
 marginTop:10,
-textAlign:"center"
+textAlign:"center",
+fontWeight:600
 }}>
-Preview
+{profile?.display_name}
 </div>
+
+<div style={{
+textAlign:"center",
+opacity:0.7,
+fontSize:14
+}}>
+{profile?.bio}
+</div>
+
+{blocks.map(block=>(
+
+<a
+key={block.id}
+href={block.data_json?.url}
+target="_blank"
+style={{
+display:"block",
+background:"#1a1a25",
+padding:12,
+borderRadius:10,
+marginTop:10,
+textAlign:"center",
+textDecoration:"none",
+color:"white"
+}}
+>
+
+{block.data_json?.title}
+
+</a>
+
+))}
 
 </div>
 
