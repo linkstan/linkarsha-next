@@ -3,26 +3,54 @@
 import { useEffect,useState } from "react";
 import { supabase } from "../lib/supabase";
 
-export default function DashboardHome(){
+export default function Dashboard(){
 
-const [profile,setProfile] = useState(null);
+const [loading,setLoading] = useState(true);
 
 useEffect(()=>{
-loadProfile();
+checkUser();
 },[]);
 
-async function loadProfile(){
+async function checkUser(){
 
 const {data:{session}} = await supabase.auth.getSession();
-if(!session) return;
+
+if(!session){
+window.location="/login";
+return;
+}
 
 const {data:prof} = await supabase
 .from("profiles")
-.select("*")
+.select("user_type")
 .eq("id",session.user.id)
 .single();
 
-setProfile(prof);
+/* IMPORTANT LOGIC */
+
+if(!prof || !prof.user_type){
+window.location="/setup";
+return;
+}
+
+setLoading(false);
+
+}
+
+if(loading){
+
+return(
+<div style={{
+background:"#0b0b12",
+height:"100vh",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+color:"white"
+}}>
+Loading...
+</div>
+)
 
 }
 
@@ -30,29 +58,13 @@ return(
 
 <div>
 
-<h1 style={{fontSize:28}}>Welcome to Linkarsha</h1>
+<h1 style={{fontSize:28}}>
+Welcome to Linkarsha
+</h1>
 
-<div style={{marginTop:10,opacity:0.7}}>
-Manage your profile, links and analytics from the sidebar.
-</div>
-
-<div style={{
-marginTop:30,
-background:"#15151f",
-padding:20,
-borderRadius:12,
-width:420
-}}>
-
-<div style={{fontWeight:600}}>
-Your Public Profile
-</div>
-
-<div style={{marginTop:8,opacity:0.7}}>
-linkarsha-next.vercel.app/{profile?.username}
-</div>
-
-</div>
+<p style={{opacity:0.7,marginTop:10}}>
+Use the sidebar to manage your links, blocks and analytics.
+</p>
 
 </div>
 
