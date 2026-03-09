@@ -25,7 +25,7 @@ const icon = icons[data.title];
 
 return (
 <a
-href={data.url}
+href={`/api/click/${block.id}`}
 target="_blank"
 rel="noopener noreferrer"
 style={{
