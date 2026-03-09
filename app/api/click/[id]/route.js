@@ -37,34 +37,37 @@ else if(ua.includes("Mac")) os="MacOS";
 else if(ua.includes("Android")) os="Android";
 else if(ua.includes("iPhone")) os="iOS";
 
-/* save click */
+/* save click event */
 
-await supabase.from("clicks").insert({
-link_id:id,
+await supabase.from("events").insert({
+block_id:id,
+event:"click",
 referrer,
 device,
 browser,
 os
 });
 
-/* get destination url */
+/* get destination URL from blocks */
 
-const { data: link } = await supabase
-.from("links")
-.select("url")
+const { data:block } = await supabase
+.from("blocks")
+.select("*")
 .eq("id", id)
 .single();
 
-if(!link){
-return NextResponse.json({error:"Link not found"},{status:404});
+if(!block){
+return NextResponse.json({error:"Block not found"},{status:404});
 }
 
-/* redirect */
+let url = block.data_json?.url;
 
-let url = link.url;
+if(!url){
+return NextResponse.json({error:"URL missing"},{status:404});
+}
 
 if(!url.startsWith("http")){
-url = "https://" + url;
+url="https://"+url;
 }
 
 return NextResponse.redirect(url);
