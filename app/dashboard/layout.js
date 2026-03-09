@@ -9,9 +9,13 @@ export default function DashboardLayout({ children }) {
 
 const pathname = usePathname();
 
-const [openLinkarsha,setOpenLinkarsha] = useState(true);
+/* ALL COLLAPSED BY DEFAULT */
+
+const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
+
+/* preview state */
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
@@ -78,6 +82,8 @@ flexDirection:"column"
 
 <Link href="/dashboard" style={itemStyle}>Home</Link>
 
+{/* MY LINKARSHA */}
+
 <div onClick={()=>setOpenLinkarsha(!openLinkarsha)} style={itemStyle}>
 My Linkarsha ▸
 </div>
@@ -90,7 +96,11 @@ My Linkarsha ▸
 </div>
 )}
 
+{/* BLOCKS */}
+
 <Link href="/dashboard/blocks" style={itemStyle}>Blocks</Link>
+
+{/* APPEARANCE */}
 
 <div onClick={()=>setOpenAppearance(!openAppearance)} style={itemStyle}>
 Appearance ▸
@@ -104,9 +114,13 @@ Appearance ▸
 </div>
 )}
 
+{/* ANALYTICS */}
+
 <Link href="/dashboard/analytics" style={itemStyle}>Analytics</Link>
 
 <hr style={{margin:"20px 0",borderColor:"#222"}}/>
+
+{/* TOOLS */}
 
 <div onClick={()=>setOpenTools(!openTools)} style={itemStyle}>
 Tools ▸
@@ -120,12 +134,15 @@ Tools ▸
 </div>
 )}
 
-<div style={{marginTop:20,opacity:0.7}}>
-Something exciting is coming.
-Invite friends soon and earn rewards.
-</div>
+{/* REFERRALS */}
 
-<Link href="/dashboard/settings" style={{...itemStyle,marginTop:20}}>
+<Link href="/dashboard/referrals" style={itemStyle}>
+Referrals
+</Link>
+
+{/* SETTINGS */}
+
+<Link href="/dashboard/settings" style={{...itemStyle,marginTop:10}}>
 Settings
 </Link>
 
@@ -138,7 +155,7 @@ flex:1,
 display:"flex"
 }}>
 
-{/* EDITOR */}
+{/* EDITOR / PAGE CONTENT */}
 
 <div style={{
 flex:1,
@@ -216,18 +233,19 @@ key={block.id}
 href={block.data_json?.url}
 target="_blank"
 style={{
-display:"block",
+display:"flex",
+alignItems:"center",
+gap:10,
 background:"#1a1a25",
 padding:12,
 borderRadius:10,
 marginTop:10,
-textAlign:"center",
 textDecoration:"none",
 color:"white"
 }}
 >
 
-{block.data_json?.title}
+<span>{block.data_json?.title}</span>
 
 </a>
 
