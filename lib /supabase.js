@@ -12,3 +12,4 @@ export const supabase = createClient(
     }
   }
 );
+app/lib/supabase.js
