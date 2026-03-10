@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { supabase } from "../app/lib/supabase";
 
-export default function AvatarUploader({open,onClose,onUploaded}){
+export default function AvatarUploader({ open, onClose, onUploaded }) {
 
 const [step,setStep]=useState("select");
 const [image,setImage]=useState(null);
+
 const [crop,setCrop]=useState({x:0,y:0});
 const [zoom,setZoom]=useState(1);
-const [uploading,setUploading]=useState(false);
+const [croppedAreaPixels,setCroppedAreaPixels]=useState(null);
+
 const [progress,setProgress]=useState(0);
 
 if(!open) return null;
 
-function handleFile(e){
+function onFileChange(e){
 
 const file=e.target.files[0];
 if(!file) return;
@@ -25,29 +27,63 @@ setStep("crop");
 
 }
 
+const onCropComplete=useCallback((_,croppedPixels)=>{
+setCroppedAreaPixels(croppedPixels);
+},[]);
+
 function reset(){
 setImage(null);
 setStep("select");
 }
 
+async function getCroppedBlob(){
+
+const img=new Image();
+img.src=image;
+
+await new Promise(res=>img.onload=res);
+
+const canvas=document.createElement("canvas");
+canvas.width=croppedAreaPixels.width;
+canvas.height=croppedAreaPixels.height;
+
+const ctx=canvas.getContext("2d");
+
+ctx.drawImage(
+img,
+croppedAreaPixels.x,
+croppedAreaPixels.y,
+croppedAreaPixels.width,
+croppedAreaPixels.height,
+0,
+0,
+croppedAreaPixels.width,
+croppedAreaPixels.height
+);
+
+return new Promise(resolve=>{
+canvas.toBlob(blob=>resolve(blob),"image/jpeg");
+});
+
+}
+
 async function upload(){
 
-setStep("uploading");
-setUploading(true);
+setStep("upload");
+
+const blob=await getCroppedBlob();
 
 const {data:{session}}=await supabase.auth.getSession();
 const uid=session.user.id;
 
-const response=await fetch(image);
-const blob=await response.blob();
-
-setProgress(30);
+for(let i=0;i<=100;i+=10){
+setProgress(i);
+await new Promise(r=>setTimeout(r,80));
+}
 
 await supabase.storage
 .from("avatars")
 .upload(uid,blob,{upsert:true});
-
-setProgress(70);
 
 const {data}=supabase.storage
 .from("avatars")
@@ -58,17 +94,14 @@ await supabase
 .update({avatar:data.publicUrl})
 .eq("id",uid);
 
-setProgress(100);
-
 onUploaded(data.publicUrl);
 
-setUploading(false);
-
 setTimeout(()=>{
-onClose();
 setStep("select");
+setProgress(0);
 setImage(null);
-},800);
+onClose();
+},500);
 
 }
 
@@ -80,7 +113,7 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:"rgba(0,0,0,0.7)",
+background:"rgba(0,0,0,0.75)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
@@ -103,25 +136,17 @@ marginBottom:20
 
 <h2>Upload Profile Image</h2>
 
-<div
-onClick={onClose}
-style={{
-cursor:"pointer",
-fontSize:22
-}}
->
+<div style={{cursor:"pointer"}} onClick={onClose}>
 ✕
 </div>
 
 </div>
 
-{/* STEP 1 SELECT */}
-
 {step==="select" && (
 
 <div style={{
 border:"2px dashed #ccc",
-borderRadius:12,
+borderRadius:14,
 padding:60,
 textAlign:"center"
 }}>
@@ -129,10 +154,10 @@ textAlign:"center"
 <input
 type="file"
 accept="image/*"
-onChange={handleFile}
+onChange={onFileChange}
 />
 
-<p style={{marginTop:12}}>
+<p style={{marginTop:14}}>
 Select file to upload, or drag-and-drop file
 </p>
 
@@ -146,8 +171,10 @@ justifyContent:"space-between",
 marginTop:30
 }}>
 
-<button style={{
-padding:"12px 30px",
+<button
+onClick={reset}
+style={{
+padding:"12px 28px",
 borderRadius:12,
 border:"1px solid #ddd",
 background:"#eee"
@@ -156,7 +183,7 @@ Clear
 </button>
 
 <button style={{
-padding:"12px 30px",
+padding:"12px 28px",
 borderRadius:12,
 border:"none",
 background:"#ddd"
@@ -169,8 +196,6 @@ Upload
 </div>
 
 )}
-
-{/* STEP 2 CROP */}
 
 {step==="crop" && (
 
@@ -190,6 +215,7 @@ zoom={zoom}
 aspect={1}
 onCropChange={setCrop}
 onZoomChange={setZoom}
+onCropComplete={onCropComplete}
 />
 
 </div>
@@ -207,8 +233,7 @@ padding:"12px 30px",
 borderRadius:12,
 border:"1px solid #ddd",
 background:"#eee"
-}}
->
+}}>
 Delete
 </button>
 
@@ -220,8 +245,7 @@ borderRadius:12,
 border:"none",
 background:"#7b2ff7",
 color:"#fff"
-}}
->
+}}>
 Crop
 </button>
 
@@ -231,22 +255,20 @@ Crop
 
 )}
 
-{/* STEP 3 UPLOADING */}
-
-{step==="uploading" && (
+{step==="upload" && (
 
 <div style={{
 textAlign:"center",
 padding:60
 }}>
 
-<div style={{fontSize:20}}>
+<div style={{fontSize:22}}>
 Uploading...
 </div>
 
 <div style={{
-marginTop:20,
-fontSize:28
+fontSize:32,
+marginTop:20
 }}>
 {progress}%
 </div>
@@ -254,8 +276,8 @@ fontSize:28
 <div style={{
 marginTop:30,
 padding:16,
-borderRadius:12,
-background:"#eee"
+background:"#eee",
+borderRadius:12
 }}>
 Cancel upload
 </div>
