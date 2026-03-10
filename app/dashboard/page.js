@@ -2,11 +2,15 @@
 
 import { useEffect,useState } from "react";
 import { supabase } from "../lib/supabase";
+import AvatarUploader from "../../components/AvatarUploader";
 
 export default function Dashboard(){
 
 const [loading,setLoading] = useState(true);
 const [profile,setProfile] = useState(null);
+
+/* avatar modal */
+const [avatarModal,setAvatarModal] = useState(false);
 
 useEffect(()=>{
 init();
@@ -50,36 +54,6 @@ const url=`https://linkarsha-next.vercel.app/${profile.username}`;
 navigator.clipboard.writeText(url);
 
 alert("Profile link copied");
-
-}
-
-/* upload avatar */
-
-async function uploadAvatar(e){
-
-const file=e.target.files[0];
-if(!file) return;
-
-const {data:{session}}=await supabase.auth.getSession();
-
-const uid=session.user.id;
-
-const path=`${uid}`;
-
-await supabase.storage
-.from("avatars")
-.upload(path,file,{upsert:true});
-
-const {data}=supabase.storage
-.from("avatars")
-.getPublicUrl(path);
-
-await supabase
-.from("profiles")
-.update({avatar:data.publicUrl})
-.eq("id",uid);
-
-setProfile({...profile,avatar:data.publicUrl});
 
 }
 
@@ -132,7 +106,9 @@ border:"4px solid #999"
 }}
 />
 
-<label style={{
+<div
+onClick={()=>setAvatarModal(true)}
+style={{
 position:"absolute",
 right:-6,
 bottom:-6,
@@ -144,19 +120,12 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center",
 fontSize:22,
-cursor:"pointer"
-}}>
-
+cursor:"pointer",
+color:"#000"
+}}
+>
 +
-
-<input
-type="file"
-accept="image/*"
-hidden
-onChange={uploadAvatar}
-/>
-
-</label>
+</div>
 
 </div>
 
@@ -215,6 +184,14 @@ textAlign:"center"
 Welcome to Linkarsha.  
 Use the sidebar to manage your links, blocks and analytics.
 </div>
+
+{/* AVATAR UPLOAD MODAL */}
+
+<AvatarUploader
+open={avatarModal}
+onClose={()=>setAvatarModal(false)}
+onUploaded={(url)=>setProfile({...profile,avatar:url})}
+/>
 
 </div>
 
