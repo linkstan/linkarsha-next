@@ -13,6 +13,10 @@ const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
 
+/* username dropdown */
+
+const [openUser,setOpenUser] = useState(false);
+
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 
@@ -21,10 +25,6 @@ pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
-
-function isActive(path){
-return pathname === path || pathname.startsWith(path+"/");
-}
 
 useEffect(()=>{
 loadPreview();
@@ -56,6 +56,15 @@ setBlocks(blockData || []);
 
 }
 
+/* logout */
+
+async function logout(){
+
+await supabase.auth.signOut();
+window.location="/login";
+
+}
+
 return(
 
 <div style={{
@@ -80,13 +89,18 @@ flexDirection:"column"
 
 {/* USER */}
 
-<div style={{
+<div style={{position:"relative"}}>
+
+<div
+onClick={()=>setOpenUser(!openUser)}
+style={{
 display:"flex",
 alignItems:"center",
 gap:10,
-marginBottom:30,
+marginBottom:10,
 cursor:"pointer"
-}}>
+}}
+>
 
 <img
 src={profile?.avatar || "/default-avatar.png"}
@@ -103,8 +117,39 @@ objectFit:"cover"
 </div>
 
 <div style={{opacity:0.7}}>
-v
+{openUser ? "v" : ">"}
 </div>
+
+</div>
+
+{/* USER DROPDOWN */}
+
+{openUser && (
+
+<div style={{
+background:"#1a1a25",
+borderRadius:8,
+padding:10,
+marginBottom:20
+}}>
+
+<div style={dropdownItem}>Ask Question</div>
+<div style={dropdownItem}>Help Center</div>
+<div style={dropdownItem}>Contact Support</div>
+
+<div
+onClick={logout}
+style={{
+...dropdownItem,
+color:"#ff6b6b"
+}}
+>
+Sign Out
+</div>
+
+</div>
+
+)}
 
 </div>
 
@@ -112,7 +157,7 @@ v
 
 <Link href="/dashboard" style={{
 ...item,
-background:isActive("/dashboard") ? "#2a2a2a" : "transparent"
+background: pathname === "/dashboard" ? "#2a2a2a" : "transparent"
 }}>
 Home
 </Link>
@@ -123,7 +168,7 @@ Home
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
 style={{
 ...item,
-background:isActive("/dashboard/links") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 }}
 >
 
@@ -150,7 +195,7 @@ My Links
 
 <Link href="/dashboard/blocks" style={{
 ...item,
-background:isActive("/dashboard/blocks") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/blocks") ? "#2a2a2a" : "transparent"
 }}>
 Blocks
 </Link>
@@ -161,7 +206,7 @@ Blocks
 onClick={()=>setOpenAppearance(!openAppearance)}
 style={{
 ...item,
-background:isActive("/dashboard/appearance") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
 }}
 >
 
@@ -188,7 +233,7 @@ My Theme
 
 <Link href="/dashboard/analytics" style={{
 ...item,
-background:isActive("/dashboard/analytics") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transparent"
 }}>
 Analytics
 </Link>
@@ -232,15 +277,9 @@ Settings
 
 {/* MAIN */}
 
-<div style={{
-flex:1,
-display:"flex"
-}}>
+<div style={{flex:1,display:"flex"}}>
 
-<div style={{
-flex:1,
-padding:40
-}}>
+<div style={{flex:1,padding:40}}>
 {children}
 </div>
 
@@ -320,9 +359,7 @@ textDecoration:"none",
 color:"white"
 }}
 >
-
 {block.data_json?.title}
-
 </a>
 
 ))}
@@ -367,4 +404,10 @@ opacity:0.8,
 cursor:"pointer",
 textDecoration:"none",
 color:"white"
+};
+
+const dropdownItem={
+padding:"8px 10px",
+cursor:"pointer",
+borderRadius:6
 };
