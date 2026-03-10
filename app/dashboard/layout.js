@@ -28,6 +28,12 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
+/* ACTIVE MENU */
+
+function active(path){
+return pathname.startsWith(path);
+}
+
 useEffect(()=>{
 loadPreview();
 },[]);
@@ -78,52 +84,161 @@ display:"flex",
 flexDirection:"column"
 }}>
 
-<h2 style={{marginBottom:30}}>Linkarsha</h2>
+<h2 style={{marginBottom:10}}>Linkarsha</h2>
 
-<Link href="/dashboard" style={itemStyle}>Home</Link>
+{/* USER ROW */}
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:30
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:28,
+height:28,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+<div style={{flex:1}}>
+{profile?.username}
+</div>
+
+<div style={{opacity:0.7}}>
+&gt;
+</div>
+
+</div>
+
+{/* HOME */}
+
+<Link
+href="/dashboard"
+style={{
+...itemStyle,
+background: pathname==="/dashboard" ? "#151520" : "transparent"
+}}
+>
+Home
+</Link>
 
 {/* MY LINKARSHA */}
 
-<div onClick={()=>setOpenLinkarsha(!openLinkarsha)} style={itemStyle}>
-My Linkarsha ▸
+<div
+onClick={()=>setOpenLinkarsha(!openLinkarsha)}
+style={{
+...itemStyle,
+background: active("/dashboard/links") ? "#151520" : "transparent"
+}}
+>
+
+My Linkarsha
+
+<span style={{
+transform:openLinkarsha?"rotate(90deg)":"rotate(0deg)",
+transition:"0.2s"
+}}>
+&gt;
+</span>
+
 </div>
 
 {openLinkarsha && (
 <div style={subMenu}>
-<Link href="/dashboard/links" style={subItem}>My Links</Link>
+
+<Link href="/dashboard/links" style={subItem}>
+My Links
+</Link>
+
 <div style={subItem}>Link History</div>
+
 <div style={subItem}>Get Verified</div>
+
 </div>
 )}
 
 {/* BLOCKS */}
 
-<Link href="/dashboard/blocks" style={itemStyle}>Blocks</Link>
+<Link
+href="/dashboard/blocks"
+style={{
+...itemStyle,
+background: active("/dashboard/blocks") ? "#151520" : "transparent"
+}}
+>
+Blocks
+</Link>
 
 {/* APPEARANCE */}
 
-<div onClick={()=>setOpenAppearance(!openAppearance)} style={itemStyle}>
-Appearance ▸
+<div
+onClick={()=>setOpenAppearance(!openAppearance)}
+style={{
+...itemStyle,
+background: active("/dashboard/appearance") ? "#151520" : "transparent"
+}}
+>
+
+Appearance
+
+<span style={{
+transform:openAppearance?"rotate(90deg)":"rotate(0deg)",
+transition:"0.2s"
+}}>
+&gt;
+</span>
+
 </div>
 
 {openAppearance && (
 <div style={subMenu}>
-<Link href="/dashboard/appearance" style={subItem}>My Theme</Link>
+
+<Link href="/dashboard/appearance" style={subItem}>
+My Theme
+</Link>
+
 <div style={subItem}>My Design</div>
+
 <div style={subItem}>Animations</div>
+
 </div>
 )}
 
 {/* ANALYTICS */}
 
-<Link href="/dashboard/analytics" style={itemStyle}>Analytics</Link>
+<Link
+href="/dashboard/analytics"
+style={{
+...itemStyle,
+background: active("/dashboard/analytics") ? "#151520" : "transparent"
+}}
+>
+Analytics
+</Link>
 
 <hr style={{margin:"20px 0",borderColor:"#222"}}/>
 
 {/* TOOLS */}
 
-<div onClick={()=>setOpenTools(!openTools)} style={itemStyle}>
-Tools ▸
+<div
+onClick={()=>setOpenTools(!openTools)}
+style={itemStyle}
+>
+
+Tools
+
+<span style={{
+transform:openTools?"rotate(90deg)":"rotate(0deg)",
+transition:"0.2s"
+}}>
+&gt;
+</span>
+
 </div>
 
 {openTools && (
@@ -273,7 +388,9 @@ cursor:"pointer",
 borderRadius:8,
 textDecoration:"none",
 color:"white",
-display:"block"
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
 };
 
 const subMenu={
