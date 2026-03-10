@@ -6,6 +6,7 @@ import { supabase } from "../app/lib/supabase";
 
 export default function AvatarUploader({open,onClose,onUploaded}){
 
+const [step,setStep]=useState("select");
 const [image,setImage]=useState(null);
 const [crop,setCrop]=useState({x:0,y:0});
 const [zoom,setZoom]=useState(1);
@@ -14,38 +15,39 @@ const [progress,setProgress]=useState(0);
 
 if(!open) return null;
 
-/* select file */
-
 function handleFile(e){
 
 const file=e.target.files[0];
 if(!file) return;
 
 setImage(URL.createObjectURL(file));
+setStep("crop");
 
 }
 
-/* upload avatar */
+function reset(){
+setImage(null);
+setStep("select");
+}
 
-async function uploadAvatar(){
+async function upload(){
 
+setStep("uploading");
 setUploading(true);
-setProgress(10);
 
 const {data:{session}}=await supabase.auth.getSession();
-
 const uid=session.user.id;
-
-setProgress(40);
 
 const response=await fetch(image);
 const blob=await response.blob();
 
-setProgress(70);
+setProgress(30);
 
 await supabase.storage
 .from("avatars")
 .upload(uid,blob,{upsert:true});
+
+setProgress(70);
 
 const {data}=supabase.storage
 .from("avatars")
@@ -61,7 +63,12 @@ setProgress(100);
 onUploaded(data.publicUrl);
 
 setUploading(false);
+
+setTimeout(()=>{
 onClose();
+setStep("select");
+setImage(null);
+},800);
 
 }
 
@@ -73,7 +80,7 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:"rgba(0,0,0,0.6)",
+background:"rgba(0,0,0,0.7)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
@@ -81,44 +88,100 @@ zIndex:999
 }}>
 
 <div style={{
-width:500,
+width:560,
 background:"#fff",
 borderRadius:20,
 padding:30
 }}>
 
-<h2 style={{textAlign:"center"}}>
-Upload Profile Image
-</h2>
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+marginBottom:20
+}}>
 
-{/* STEP 1 — SELECT FILE */}
+<h2>Upload Profile Image</h2>
 
-{!image && !uploading && (
+<div
+onClick={onClose}
+style={{
+cursor:"pointer",
+fontSize:22
+}}
+>
+✕
+</div>
+
+</div>
+
+{/* STEP 1 SELECT */}
+
+{step==="select" && (
 
 <div style={{
 border:"2px dashed #ccc",
-padding:40,
-textAlign:"center",
-marginTop:20
+borderRadius:12,
+padding:60,
+textAlign:"center"
 }}>
 
-<input type="file" accept="image/*" onChange={handleFile}/>
+<input
+type="file"
+accept="image/*"
+onChange={handleFile}
+/>
 
-<p style={{marginTop:10}}>
-Select file to upload or drag-and-drop
+<p style={{marginTop:12}}>
+Select file to upload, or drag-and-drop file
 </p>
+
+<p style={{opacity:0.6,fontSize:14}}>
+Allowed file types: JPEG, PNG, WEBP, GIF, SVG, BMP, AVIF
+</p>
+
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+marginTop:30
+}}>
+
+<button style={{
+padding:"12px 30px",
+borderRadius:12,
+border:"1px solid #ddd",
+background:"#eee"
+}}>
+Clear
+</button>
+
+<button style={{
+padding:"12px 30px",
+borderRadius:12,
+border:"none",
+background:"#ddd"
+}}>
+Upload
+</button>
+
+</div>
 
 </div>
 
 )}
 
-{/* STEP 2 — CROP */}
+{/* STEP 2 CROP */}
 
-{image && !uploading && (
+{step==="crop" && (
 
-<div style={{marginTop:20}}>
+<div>
 
-<div style={{position:"relative",height:300}}>
+<div style={{
+position:"relative",
+width:"100%",
+height:340,
+background:"#333"
+}}>
 
 <Cropper
 image={image}
@@ -131,32 +194,71 @@ onZoomChange={setZoom}
 
 </div>
 
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+marginTop:20
+}}>
+
 <button
-onClick={uploadAvatar}
+onClick={reset}
 style={{
-marginTop:20,
-width:"100%",
-background:"#7b2ff7",
-color:"#fff",
-padding:"14px",
-borderRadius:12
+padding:"12px 30px",
+borderRadius:12,
+border:"1px solid #ddd",
+background:"#eee"
 }}
 >
-Upload
+Delete
 </button>
+
+<button
+onClick={upload}
+style={{
+padding:"12px 30px",
+borderRadius:12,
+border:"none",
+background:"#7b2ff7",
+color:"#fff"
+}}
+>
+Crop
+</button>
+
+</div>
 
 </div>
 
 )}
 
-{/* STEP 3 — UPLOADING */}
+{/* STEP 3 UPLOADING */}
 
-{uploading && (
+{step==="uploading" && (
 
-<div style={{textAlign:"center",marginTop:40}}>
+<div style={{
+textAlign:"center",
+padding:60
+}}>
 
-<div>Uploading...</div>
-<div style={{marginTop:10}}>{progress}%</div>
+<div style={{fontSize:20}}>
+Uploading...
+</div>
+
+<div style={{
+marginTop:20,
+fontSize:28
+}}>
+{progress}%
+</div>
+
+<div style={{
+marginTop:30,
+padding:16,
+borderRadius:12,
+background:"#eee"
+}}>
+Cancel upload
+</div>
 
 </div>
 
