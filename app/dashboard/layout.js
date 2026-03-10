@@ -23,6 +23,13 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
+/* auto open parent menus when inside page */
+
+useEffect(()=>{
+if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
+if(pathname.startsWith("/dashboard/appearance")) setOpenAppearance(true);
+},[pathname]);
+
 useEffect(()=>{
 loadPreview();
 },[]);
@@ -167,11 +174,22 @@ background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 </div>
 
 {openLinkarsha && (
+
 <div style={submenu}>
-<Link href="/dashboard/links" style={subitem}>My Links</Link>
+
+<Link href="/dashboard/links" style={{
+...subitem,
+background: pathname === "/dashboard/links" ? "#2a2a2a" : "transparent"
+}}>
+My Links
+</Link>
+
 <div style={subitem}>Link History</div>
+
 <div style={subitem}>Get Verified</div>
+
 </div>
+
 )}
 
 {/* BLOCKS */}
@@ -197,11 +215,21 @@ background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transpar
 </div>
 
 {openAppearance && (
+
 <div style={submenu}>
-<Link href="/dashboard/appearance" style={subitem}>My Theme</Link>
+
+<Link href="/dashboard/appearance" style={{
+...subitem,
+background: pathname === "/dashboard/appearance" ? "#2a2a2a" : "transparent"
+}}>
+My Theme
+</Link>
+
 <div style={subitem}>My Design</div>
 <div style={subitem}>Animations</div>
+
 </div>
+
 )}
 
 {/* ANALYTICS */}
@@ -219,7 +247,10 @@ Analytics
 
 <div
 onClick={()=>setOpenTools(!openTools)}
-style={item}
+style={{
+...item,
+background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
+}}
 >
 <span>Tools</span>
 <span>{openTools ? "v" : ">"}</span>
