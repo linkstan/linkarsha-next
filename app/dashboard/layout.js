@@ -9,18 +9,12 @@ export default function DashboardLayout({ children }) {
 
 const pathname = usePathname();
 
-/* ALL COLLAPSED BY DEFAULT */
-
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
 
-/* preview state */
-
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
-
-/* pages that need preview */
 
 const showPreview =
 pathname === "/dashboard" ||
@@ -28,10 +22,8 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* ACTIVE MENU */
-
-function active(path){
-return pathname.startsWith(path);
+function isActive(path){
+return pathname === path || pathname.startsWith(path+"/");
 }
 
 useEffect(()=>{
@@ -78,21 +70,22 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 
 <div style={{
 width:260,
-background:"#111",
+background:"#0f0f10",
 padding:20,
 display:"flex",
 flexDirection:"column"
 }}>
 
-<h2 style={{marginBottom:10}}>Linkarsha</h2>
+<h2 style={{marginBottom:15}}>Linkarsha</h2>
 
-{/* USER ROW */}
+{/* USER */}
 
 <div style={{
 display:"flex",
 alignItems:"center",
 gap:10,
-marginBottom:30
+marginBottom:30,
+cursor:"pointer"
 }}>
 
 <img
@@ -110,20 +103,17 @@ objectFit:"cover"
 </div>
 
 <div style={{opacity:0.7}}>
-&gt;
+v
 </div>
 
 </div>
 
 {/* HOME */}
 
-<Link
-href="/dashboard"
-style={{
-...itemStyle,
-background: pathname==="/dashboard" ? "#151520" : "transparent"
-}}
->
+<Link href="/dashboard" style={{
+...item,
+background:isActive("/dashboard") ? "#2a2a2a" : "transparent"
+}}>
 Home
 </Link>
 
@@ -132,45 +122,36 @@ Home
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
 style={{
-...itemStyle,
-background: active("/dashboard/links") ? "#151520" : "transparent"
+...item,
+background:isActive("/dashboard/links") ? "#2a2a2a" : "transparent"
 }}
 >
 
-My Linkarsha
+<span>My Linkarsha</span>
 
-<span style={{
-transform:openLinkarsha?"rotate(90deg)":"rotate(0deg)",
-transition:"0.2s"
-}}>
-&gt;
-</span>
+<span>{openLinkarsha ? "v" : ">"}</span>
 
 </div>
 
 {openLinkarsha && (
-<div style={subMenu}>
+<div style={submenu}>
 
-<Link href="/dashboard/links" style={subItem}>
+<Link href="/dashboard/links" style={subitem}>
 My Links
 </Link>
 
-<div style={subItem}>Link History</div>
-
-<div style={subItem}>Get Verified</div>
+<div style={subitem}>Link History</div>
+<div style={subitem}>Get Verified</div>
 
 </div>
 )}
 
 {/* BLOCKS */}
 
-<Link
-href="/dashboard/blocks"
-style={{
-...itemStyle,
-background: active("/dashboard/blocks") ? "#151520" : "transparent"
-}}
->
+<Link href="/dashboard/blocks" style={{
+...item,
+background:isActive("/dashboard/blocks") ? "#2a2a2a" : "transparent"
+}}>
 Blocks
 </Link>
 
@@ -179,45 +160,36 @@ Blocks
 <div
 onClick={()=>setOpenAppearance(!openAppearance)}
 style={{
-...itemStyle,
-background: active("/dashboard/appearance") ? "#151520" : "transparent"
+...item,
+background:isActive("/dashboard/appearance") ? "#2a2a2a" : "transparent"
 }}
 >
 
-Appearance
+<span>Appearance</span>
 
-<span style={{
-transform:openAppearance?"rotate(90deg)":"rotate(0deg)",
-transition:"0.2s"
-}}>
-&gt;
-</span>
+<span>{openAppearance ? "v" : ">"}</span>
 
 </div>
 
 {openAppearance && (
-<div style={subMenu}>
+<div style={submenu}>
 
-<Link href="/dashboard/appearance" style={subItem}>
+<Link href="/dashboard/appearance" style={subitem}>
 My Theme
 </Link>
 
-<div style={subItem}>My Design</div>
-
-<div style={subItem}>Animations</div>
+<div style={subitem}>My Design</div>
+<div style={subitem}>Animations</div>
 
 </div>
 )}
 
 {/* ANALYTICS */}
 
-<Link
-href="/dashboard/analytics"
-style={{
-...itemStyle,
-background: active("/dashboard/analytics") ? "#151520" : "transparent"
-}}
->
+<Link href="/dashboard/analytics" style={{
+...item,
+background:isActive("/dashboard/analytics") ? "#2a2a2a" : "transparent"
+}}>
 Analytics
 </Link>
 
@@ -227,50 +199,43 @@ Analytics
 
 <div
 onClick={()=>setOpenTools(!openTools)}
-style={itemStyle}
+style={item}
 >
 
-Tools
+<span>Tools</span>
 
-<span style={{
-transform:openTools?"rotate(90deg)":"rotate(0deg)",
-transition:"0.2s"
-}}>
-&gt;
-</span>
+<span>{openTools ? "v" : ">"}</span>
 
 </div>
 
 {openTools && (
-<div style={subMenu}>
-<div style={subItem}>AI Bio Generator</div>
-<div style={subItem}>Smart Links</div>
-<div style={subItem}>Export Data</div>
+<div style={submenu}>
+<div style={subitem}>AI Bio Generator</div>
+<div style={subitem}>Smart Links</div>
+<div style={subitem}>Export Data</div>
 </div>
 )}
 
 {/* REFERRALS */}
 
-<Link href="/dashboard/referrals" style={itemStyle}>
+<Link href="/dashboard/referrals" style={item}>
 Referrals
 </Link>
 
 {/* SETTINGS */}
 
-<Link href="/dashboard/settings" style={{...itemStyle,marginTop:10}}>
+<Link href="/dashboard/settings" style={item}>
 Settings
 </Link>
 
 </div>
 
-{/* MAIN AREA */}
+{/* MAIN */}
 
 <div style={{
 flex:1,
 display:"flex"
 }}>
-
-{/* EDITOR / PAGE CONTENT */}
 
 <div style={{
 flex:1,
@@ -278,8 +243,6 @@ padding:40
 }}>
 {children}
 </div>
-
-{/* PHONE PREVIEW */}
 
 {showPreview && (
 
@@ -296,8 +259,7 @@ width:280,
 height:520,
 background:"#000",
 borderRadius:30,
-padding:18,
-boxShadow:"0 0 30px rgba(0,0,0,0.6)"
+padding:18
 }}>
 
 <div style={{
@@ -350,7 +312,6 @@ target="_blank"
 style={{
 display:"flex",
 alignItems:"center",
-gap:10,
 background:"#1a1a25",
 padding:12,
 borderRadius:10,
@@ -360,7 +321,7 @@ color:"white"
 }}
 >
 
-<span>{block.data_json?.title}</span>
+{block.data_json?.title}
 
 </a>
 
@@ -382,7 +343,7 @@ color:"white"
 
 }
 
-const itemStyle={
+const item={
 padding:"10px 12px",
 cursor:"pointer",
 borderRadius:8,
@@ -393,13 +354,13 @@ justifyContent:"space-between",
 alignItems:"center"
 };
 
-const subMenu={
+const submenu={
 marginLeft:10,
 marginTop:5,
 marginBottom:10
 };
 
-const subItem={
+const subitem={
 display:"block",
 padding:"8px 10px",
 opacity:0.8,
