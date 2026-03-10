@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import Cropper from "react-easy-crop";
+import dynamic from "next/dynamic";
+
+const Cropper = dynamic(() => import("react-easy-crop"), {
+  ssr: false
+});
 import { supabase } from "../lib/supabase";
 
 export default function AvatarUploader({ open, onClose, onUploaded }) {
