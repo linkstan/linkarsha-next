@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
-import { supabase } from "../app/lib/supabase";
+import { supabase } from "../lib/supabase";
 
 export default function AvatarUploader({ open, onClose, onUploaded }) {
 
