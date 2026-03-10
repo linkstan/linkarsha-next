@@ -8,6 +8,7 @@ export default function AvatarUploader({ open, onClose, onUploaded }) {
 
 const [step,setStep]=useState("select");
 const [image,setImage]=useState(null);
+const [file,setFile]=useState(null);
 
 const [crop,setCrop]=useState({x:0,y:0});
 const [zoom,setZoom]=useState(1);
@@ -17,33 +18,69 @@ const [progress,setProgress]=useState(0);
 
 if(!open) return null;
 
-function onFileChange(e){
+/* FILE SELECT */
 
-const file=e.target.files[0];
-if(!file) return;
+function handleFile(e){
 
-setImage(URL.createObjectURL(file));
-setStep("crop");
+const f=e.target.files[0];
+if(!f) return;
+
+setFile(f);
+setImage(URL.createObjectURL(f));
 
 }
+
+/* DRAG DROP */
+
+function handleDrop(e){
+e.preventDefault();
+
+const f=e.dataTransfer.files[0];
+if(!f) return;
+
+setFile(f);
+setImage(URL.createObjectURL(f));
+}
+
+/* CLEAR */
+
+function clearFile(){
+setFile(null);
+setImage(null);
+}
+
+/* START CROP */
+
+function startCrop(){
+if(!file) return;
+setStep("crop");
+}
+
+/* CROP COMPLETE */
 
 const onCropComplete=useCallback((_,croppedPixels)=>{
 setCroppedAreaPixels(croppedPixels);
 },[]);
 
+/* RESET */
+
 function reset(){
+setFile(null);
 setImage(null);
 setStep("select");
 }
+
+/* CREATE CROPPED IMAGE */
 
 async function getCroppedBlob(){
 
 const img=new Image();
 img.src=image;
 
-await new Promise(res=>img.onload=res);
+await new Promise(r=>img.onload=r);
 
 const canvas=document.createElement("canvas");
+
 canvas.width=croppedAreaPixels.width;
 canvas.height=croppedAreaPixels.height;
 
@@ -67,6 +104,8 @@ canvas.toBlob(blob=>resolve(blob),"image/jpeg");
 
 }
 
+/* UPLOAD */
+
 async function upload(){
 
 setStep("upload");
@@ -76,10 +115,14 @@ const blob=await getCroppedBlob();
 const {data:{session}}=await supabase.auth.getSession();
 const uid=session.user.id;
 
-for(let i=0;i<=100;i+=10){
+/* PROGRESS ANIMATION */
+
+for(let i=0;i<=100;i+=5){
 setProgress(i);
-await new Promise(r=>setTimeout(r,80));
+await new Promise(r=>setTimeout(r,70));
 }
+
+/* SUPABASE UPLOAD */
 
 await supabase.storage
 .from("avatars")
@@ -97,11 +140,12 @@ await supabase
 onUploaded(data.publicUrl);
 
 setTimeout(()=>{
-setStep("select");
 setProgress(0);
+setFile(null);
 setImage(null);
+setStep("select");
 onClose();
-},500);
+},600);
 
 }
 
@@ -121,7 +165,7 @@ zIndex:999
 }}>
 
 <div style={{
-width:560,
+width:600,
 background:"#fff",
 borderRadius:20,
 padding:30
@@ -136,34 +180,52 @@ marginBottom:20
 
 <h2>Upload Profile Image</h2>
 
-<div style={{cursor:"pointer"}} onClick={onClose}>
+<div
+onClick={onClose}
+style={{cursor:"pointer",fontSize:22}}
+>
 ✕
 </div>
 
 </div>
 
+{/* STEP 1 SELECT */}
+
 {step==="select" && (
 
-<div style={{
+<div>
+
+<div
+onDrop={handleDrop}
+onDragOver={(e)=>e.preventDefault()}
+style={{
 border:"2px dashed #ccc",
 borderRadius:14,
-padding:60,
-textAlign:"center"
-}}>
+padding:70,
+textAlign:"center",
+cursor:"pointer"
+}}
+>
 
 <input
 type="file"
 accept="image/*"
-onChange={onFileChange}
+onChange={handleFile}
 />
 
-<p style={{marginTop:14}}>
-Select file to upload, or drag-and-drop file
+<p style={{marginTop:14,fontSize:18}}>
+Select file to upload
 </p>
 
-<p style={{opacity:0.6,fontSize:14}}>
+<p style={{opacity:0.7}}>
+or drag-and-drop file
+</p>
+
+<p style={{opacity:0.6,fontSize:13}}>
 Allowed file types: JPEG, PNG, WEBP, GIF, SVG, BMP, AVIF
 </p>
+
+</div>
 
 <div style={{
 display:"flex",
@@ -172,22 +234,28 @@ marginTop:30
 }}>
 
 <button
-onClick={reset}
+onClick={clearFile}
 style={{
-padding:"12px 28px",
-borderRadius:12,
-border:"1px solid #ddd",
+padding:"12px 30px",
+borderRadius:14,
+border:"1px solid #ccc",
 background:"#eee"
-}}>
+}}
+>
 Clear
 </button>
 
-<button style={{
-padding:"12px 28px",
-borderRadius:12,
+<button
+onClick={startCrop}
+disabled={!file}
+style={{
+padding:"12px 30px",
+borderRadius:14,
 border:"none",
-background:"#ddd"
-}}>
+background:file ? "#6c3cf0" : "#ccc",
+color:"#fff"
+}}
+>
 Upload
 </button>
 
@@ -197,14 +265,28 @@ Upload
 
 )}
 
+{/* STEP 2 CROP */}
+
 {step==="crop" && (
 
 <div>
 
 <div style={{
+display:"flex",
+justifyContent:"flex-end",
+marginBottom:10
+}}>
+
+<button onClick={reset}>
+RESET
+</button>
+
+</div>
+
+<div style={{
 position:"relative",
 width:"100%",
-height:340,
+height:350,
 background:"#333"
 }}>
 
@@ -230,10 +312,11 @@ marginTop:20
 onClick={reset}
 style={{
 padding:"12px 30px",
-borderRadius:12,
-border:"1px solid #ddd",
+borderRadius:14,
+border:"1px solid #ccc",
 background:"#eee"
-}}>
+}}
+>
 Delete
 </button>
 
@@ -241,11 +324,12 @@ Delete
 onClick={upload}
 style={{
 padding:"12px 30px",
-borderRadius:12,
+borderRadius:14,
 border:"none",
-background:"#7b2ff7",
+background:"#6c3cf0",
 color:"#fff"
-}}>
+}}
+>
 Crop
 </button>
 
@@ -255,6 +339,8 @@ Crop
 
 )}
 
+{/* STEP 3 UPLOADING */}
+
 {step==="upload" && (
 
 <div style={{
@@ -262,25 +348,37 @@ textAlign:"center",
 padding:60
 }}>
 
-<div style={{fontSize:22}}>
-Uploading...
-</div>
+<h3>Uploading...</h3>
 
 <div style={{
-fontSize:32,
+height:10,
+background:"#ddd",
+borderRadius:20,
+overflow:"hidden",
 marginTop:20
 }}>
+
+<div style={{
+width:`${progress}%`,
+height:"100%",
+background:"#6c3cf0"
+}}/>
+
+</div>
+
+<div style={{marginTop:10}}>
 {progress}%
 </div>
 
-<div style={{
+<button style={{
 marginTop:30,
-padding:16,
-background:"#eee",
-borderRadius:12
+padding:"14px 30px",
+borderRadius:14,
+border:"none",
+background:"#eee"
 }}>
 Cancel upload
-</div>
+</button>
 
 </div>
 
