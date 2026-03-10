@@ -171,11 +171,8 @@ style={{
 background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 }}
 >
-
 <span>My Linkarsha</span>
-
 <span>{openLinkarsha ? "v" : ">"}</span>
-
 </div>
 
 {openLinkarsha && (
@@ -209,11 +206,8 @@ style={{
 background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
 }}
 >
-
 <span>Appearance</span>
-
 <span>{openAppearance ? "v" : ">"}</span>
-
 </div>
 
 {openAppearance && (
@@ -238,8 +232,6 @@ background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transpare
 Analytics
 </Link>
 
-<hr style={{margin:"20px 0",borderColor:"#222"}}/>
-
 {/* TOOLS */}
 
 <div
@@ -263,17 +255,21 @@ style={item}
 
 {/* REFERRALS */}
 
-<Link href="/dashboard/referrals" style={item}>
+<Link href="/dashboard/referrals" style={{
+...item,
+background: pathname.startsWith("/dashboard/referrals") ? "#2a2a2a" : "transparent"
+}}>
 Referrals
 </Link>
 
 {/* SETTINGS */}
 
-<Link href="/dashboard/settings" style={item}>
+<Link href="/dashboard/settings" style={{
+...item,
+background: pathname.startsWith("/dashboard/settings") ? "#2a2a2a" : "transparent"
+}}>
 Settings
 </Link>
-
-</div>
 
 {/* MAIN */}
 
