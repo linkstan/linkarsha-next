@@ -2,11 +2,9 @@
 
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { supabase } from "../lib/supabase";
 
-const Cropper = dynamic(() => import("react-easy-crop"), {
-  ssr: false
-});
-import { supabase } from "../app/lib/supabase";
+const Cropper = dynamic(() => import("react-easy-crop"), { ssr: false });
 
 export default function AvatarUploader({ open, onClose, onUploaded }) {
 
@@ -25,23 +23,18 @@ if(!open) return null;
 /* FILE SELECT */
 
 function handleFile(e){
-
 const f=e.target.files[0];
 if(!f) return;
-
 setFile(f);
 setImage(URL.createObjectURL(f));
-
 }
 
 /* DRAG DROP */
 
 function handleDrop(e){
 e.preventDefault();
-
 const f=e.dataTransfer.files[0];
 if(!f) return;
-
 setFile(f);
 setImage(URL.createObjectURL(f));
 }
@@ -77,6 +70,8 @@ setStep("select");
 /* CREATE CROPPED IMAGE */
 
 async function getCroppedBlob(){
+
+if(!croppedAreaPixels || !image) return null;
 
 const img=new Image();
 img.src=image;
@@ -115,6 +110,11 @@ async function upload(){
 setStep("upload");
 
 const blob=await getCroppedBlob();
+
+if(!blob){
+setStep("crop");
+return;
+}
 
 const {data:{session}}=await supabase.auth.getSession();
 const uid=session.user.id;
@@ -193,8 +193,6 @@ style={{cursor:"pointer",fontSize:22}}
 
 </div>
 
-{/* STEP 1 SELECT */}
-
 {step==="select" && (
 
 <div>
@@ -244,8 +242,7 @@ padding:"12px 30px",
 borderRadius:14,
 border:"1px solid #ccc",
 background:"#eee"
-}}
->
+}}>
 Clear
 </button>
 
@@ -258,8 +255,7 @@ borderRadius:14,
 border:"none",
 background:file ? "#6c3cf0" : "#ccc",
 color:"#fff"
-}}
->
+}}>
 Upload
 </button>
 
@@ -268,8 +264,6 @@ Upload
 </div>
 
 )}
-
-{/* STEP 2 CROP */}
 
 {step==="crop" && (
 
@@ -281,9 +275,7 @@ justifyContent:"flex-end",
 marginBottom:10
 }}>
 
-<button onClick={reset}>
-RESET
-</button>
+<button onClick={reset}>RESET</button>
 
 </div>
 
@@ -319,8 +311,7 @@ padding:"12px 30px",
 borderRadius:14,
 border:"1px solid #ccc",
 background:"#eee"
-}}
->
+}}>
 Delete
 </button>
 
@@ -332,8 +323,7 @@ borderRadius:14,
 border:"none",
 background:"#6c3cf0",
 color:"#fff"
-}}
->
+}}>
 Crop
 </button>
 
@@ -342,8 +332,6 @@ Crop
 </div>
 
 )}
-
-{/* STEP 3 UPLOADING */}
 
 {step==="upload" && (
 
