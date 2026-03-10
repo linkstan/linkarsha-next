@@ -116,9 +116,14 @@ setStep("crop");
 return;
 }
 
-const {data:{session}}=await supabase.auth.getSession();
-const uid=session.user.id;
+const { data } = await supabase.auth.getSession();
 
+if (!data || !data.session) {
+  alert("Session expired. Please login again.");
+  return;
+}
+
+const uid = data.session.user.id;
 /* PROGRESS ANIMATION */
 
 for(let i=0;i<=100;i+=5){
