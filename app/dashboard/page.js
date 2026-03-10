@@ -6,12 +6,13 @@ import { supabase } from "../lib/supabase";
 export default function Dashboard(){
 
 const [loading,setLoading] = useState(true);
+const [profile,setProfile] = useState(null);
 
 useEffect(()=>{
-checkUser();
+init();
 },[]);
 
-async function checkUser(){
+async function init(){
 
 const {data:{session}} = await supabase.auth.getSession();
 
@@ -20,20 +21,65 @@ window.location="/login";
 return;
 }
 
+const uid=session.user.id;
+
 const {data:prof} = await supabase
 .from("profiles")
-.select("user_type")
-.eq("id",session.user.id)
+.select("*")
+.eq("id",uid)
 .single();
 
-/* IMPORTANT LOGIC */
+/* onboarding protection */
 
 if(!prof || !prof.user_type){
 window.location="/setup";
 return;
 }
 
+setProfile(prof);
 setLoading(false);
+
+}
+
+/* share profile */
+
+function shareProfile(){
+
+const url=`https://linkarsha-next.vercel.app/${profile.username}`;
+
+navigator.clipboard.writeText(url);
+
+alert("Profile link copied");
+
+}
+
+/* upload avatar */
+
+async function uploadAvatar(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const {data:{session}}=await supabase.auth.getSession();
+
+const uid=session.user.id;
+
+const path=`${uid}`;
+
+await supabase.storage
+.from("avatars")
+.upload(path,file,{upsert:true});
+
+const {data}=supabase.storage
+.from("avatars")
+.getPublicUrl(path);
+
+await supabase
+.from("profiles")
+.update({avatar:data.publicUrl})
+.eq("id",uid);
+
+setProfile({...profile,avatar:data.publicUrl});
 
 }
 
@@ -58,13 +104,117 @@ return(
 
 <div>
 
-<h1 style={{fontSize:28}}>
-Welcome to Linkarsha
-</h1>
+{/* PROFILE HEADER */}
 
-<p style={{opacity:0.7,marginTop:10}}>
+<div style={{
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+marginTop:20
+}}>
+
+{/* avatar */}
+
+<div style={{
+position:"relative",
+width:120,
+height:120
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:120,
+height:120,
+borderRadius:"50%",
+objectFit:"cover",
+border:"4px solid #999"
+}}
+/>
+
+<label style={{
+position:"absolute",
+right:-6,
+bottom:-6,
+width:36,
+height:36,
+borderRadius:"50%",
+background:"#00d26a",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+fontSize:22,
+cursor:"pointer"
+}}>
+
++
+
+<input
+type="file"
+accept="image/*"
+hidden
+onChange={uploadAvatar}
+/>
+
+</label>
+
+</div>
+
+{/* username */}
+
+<div style={{
+fontSize:34,
+marginTop:20,
+fontWeight:700
+}}>
+@{profile?.username}
+</div>
+
+{/* public link */}
+
+<div style={{
+marginTop:20,
+display:"flex",
+borderRadius:14,
+overflow:"hidden",
+border:"1px solid #333"
+}}>
+
+<div style={{
+padding:"14px 20px",
+background:"#111",
+fontWeight:600
+}}>
+linkarsha-next.vercel.app/{profile?.username}
+</div>
+
+<button
+onClick={shareProfile}
+style={{
+padding:"14px 20px",
+background:"#1a1a25",
+border:"none",
+color:"white",
+cursor:"pointer"
+}}
+>
+Share
+</button>
+
+</div>
+
+</div>
+
+{/* dashboard text */}
+
+<div style={{
+marginTop:60,
+opacity:0.7,
+textAlign:"center"
+}}>
+Welcome to Linkarsha.  
 Use the sidebar to manage your links, blocks and analytics.
-</p>
+</div>
 
 </div>
 
