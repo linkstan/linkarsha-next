@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 const Cropper = dynamic(() => import("react-easy-crop"), {
   ssr: false
 });
-import { supabase } from "../lib/supabase";
+import { supabase } from "../app/lib/supabase";
 
 export default function AvatarUploader({ open, onClose, onUploaded }) {
 
