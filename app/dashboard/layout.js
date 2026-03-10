@@ -12,9 +12,6 @@ const pathname = usePathname();
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
-
-/* username dropdown */
-
 const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
@@ -56,13 +53,9 @@ setBlocks(blockData || []);
 
 }
 
-/* logout */
-
 async function logout(){
-
 await supabase.auth.signOut();
 window.location="/login";
-
 }
 
 return(
@@ -122,8 +115,6 @@ objectFit:"cover"
 
 </div>
 
-{/* USER DROPDOWN */}
-
 {openUser && (
 
 <div style={{
@@ -177,14 +168,9 @@ background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 
 {openLinkarsha && (
 <div style={submenu}>
-
-<Link href="/dashboard/links" style={subitem}>
-My Links
-</Link>
-
+<Link href="/dashboard/links" style={subitem}>My Links</Link>
 <div style={subitem}>Link History</div>
 <div style={subitem}>Get Verified</div>
-
 </div>
 )}
 
@@ -212,14 +198,9 @@ background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transpar
 
 {openAppearance && (
 <div style={submenu}>
-
-<Link href="/dashboard/appearance" style={subitem}>
-My Theme
-</Link>
-
+<Link href="/dashboard/appearance" style={subitem}>My Theme</Link>
 <div style={subitem}>My Design</div>
 <div style={subitem}>Animations</div>
-
 </div>
 )}
 
@@ -232,17 +213,16 @@ background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transpare
 Analytics
 </Link>
 
+<hr style={{margin:"20px 0",borderColor:"#222"}}/>
+
 {/* TOOLS */}
 
 <div
 onClick={()=>setOpenTools(!openTools)}
 style={item}
 >
-
 <span>Tools</span>
-
 <span>{openTools ? "v" : ">"}</span>
-
 </div>
 
 {openTools && (
@@ -271,7 +251,9 @@ background: pathname.startsWith("/dashboard/settings") ? "#2a2a2a" : "transparen
 Settings
 </Link>
 
-{/* MAIN */}
+</div>
+
+{/* MAIN AREA */}
 
 <div style={{flex:1,display:"flex"}}>
 
