@@ -116,38 +116,38 @@ setStep("crop");
 return;
 }
 
-const { data } = await supabase.auth.getSession();
+const { data: sessionData } = await supabase.auth.getSession();
 
-if (!data || !data.session) {
+if (!sessionData || !sessionData.session) {
   alert("Session expired. Please login again.");
   return;
 }
 
-const uid = data.session.user.id;
+const uid = sessionData.session.user.id + ".jpg";
+
 /* PROGRESS ANIMATION */
 
 for(let i=0;i<=100;i+=5){
-setProgress(i);
-await new Promise(r=>setTimeout(r,70));
+  setProgress(i);
+  await new Promise(r=>setTimeout(r,70));
 }
 
 /* SUPABASE UPLOAD */
 
 await supabase.storage
-.from("avatars")
-.upload(uid,blob,{upsert:true});
+  .from("avatars")
+  .upload(uid, blob, { upsert:true });
 
-const {data}=supabase.storage
-.from("avatars")
-.getPublicUrl(uid);
+const { data: urlData } = supabase.storage
+  .from("avatars")
+  .getPublicUrl(uid);
 
 await supabase
-.from("profiles")
-.update({avatar:data.publicUrl})
-.eq("id",uid);
+  .from("profiles")
+  .update({ avatar: urlData.publicUrl })
+  .eq("id", sessionData.session.user.id);
 
-onUploaded(data.publicUrl);
-
+onUploaded(urlData.publicUrl);
 setTimeout(()=>{
 setProgress(0);
 setFile(null);
