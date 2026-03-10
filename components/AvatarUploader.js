@@ -4,27 +4,28 @@ import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { supabase } from "../app/lib/supabase";
 
-const Cropper = dynamic(() => import("react-easy-crop"), { ssr: false });
+const Cropper = dynamic(() => import("react-easy-crop"), { ssr:false });
 
 export default function AvatarUploader({ open, onClose, onUploaded }) {
 
-const [step,setStep]=useState("select");
-const [image,setImage]=useState(null);
-const [file,setFile]=useState(null);
+const [step,setStep] = useState("select");
+const [image,setImage] = useState(null);
+const [file,setFile] = useState(null);
 
-const [crop,setCrop]=useState({x:0,y:0});
-const [zoom,setZoom]=useState(1);
-const [croppedAreaPixels,setCroppedAreaPixels]=useState(null);
+const [crop,setCrop] = useState({x:0,y:0});
+const [zoom,setZoom] = useState(1);
+const [croppedAreaPixels,setCroppedAreaPixels] = useState(null);
 
-const [progress,setProgress]=useState(0);
+const [progress,setProgress] = useState(0);
 
 if(!open) return null;
 
 /* FILE SELECT */
 
 function handleFile(e){
-const f=e.target.files[0];
+const f = e.target.files[0];
 if(!f) return;
+
 setFile(f);
 setImage(URL.createObjectURL(f));
 }
@@ -33,8 +34,10 @@ setImage(URL.createObjectURL(f));
 
 function handleDrop(e){
 e.preventDefault();
-const f=e.dataTransfer.files[0];
+
+const f = e.dataTransfer.files[0];
 if(!f) return;
+
 setFile(f);
 setImage(URL.createObjectURL(f));
 }
@@ -55,7 +58,7 @@ setStep("crop");
 
 /* CROP COMPLETE */
 
-const onCropComplete=useCallback((_,croppedPixels)=>{
+const onCropComplete = useCallback((_,croppedPixels)=>{
 setCroppedAreaPixels(croppedPixels);
 },[]);
 
@@ -73,17 +76,17 @@ async function getCroppedBlob(){
 
 if(!croppedAreaPixels || !image) return null;
 
-const img=new Image();
-img.src=image;
+const img = new Image();
+img.src = image;
 
-await new Promise(r=>img.onload=r);
+await new Promise(r => img.onload = r);
 
-const canvas=document.createElement("canvas");
+const canvas = document.createElement("canvas");
 
-canvas.width=croppedAreaPixels.width;
-canvas.height=croppedAreaPixels.height;
+canvas.width = croppedAreaPixels.width;
+canvas.height = croppedAreaPixels.height;
 
-const ctx=canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
 
 ctx.drawImage(
 img,
@@ -109,18 +112,18 @@ async function upload(){
 
 setStep("upload");
 
-const blob=await getCroppedBlob();
+const blob = await getCroppedBlob();
 
 if(!blob){
 setStep("crop");
 return;
 }
 
-const { data: sessionData } = await supabase.auth.getSession();
+const { data:sessionData } = await supabase.auth.getSession();
 
-if (!sessionData || !sessionData.session) {
-  alert("Session expired. Please login again.");
-  return;
+if(!sessionData || !sessionData.session){
+alert("Session expired. Please login again.");
+return;
 }
 
 const uid = sessionData.session.user.id + ".jpg";
@@ -128,26 +131,29 @@ const uid = sessionData.session.user.id + ".jpg";
 /* PROGRESS ANIMATION */
 
 for(let i=0;i<=100;i+=5){
-  setProgress(i);
-  await new Promise(r=>setTimeout(r,70));
+setProgress(i);
+await new Promise(r=>setTimeout(r,70));
 }
 
-/* SUPABASE UPLOAD */
+/* STORAGE UPLOAD */
 
 await supabase.storage
-  .from("avatars")
-  .upload(uid, blob, { upsert:true });
+.from("avatars")
+.upload(uid,blob,{ upsert:true });
 
-const { data: urlData } = supabase.storage
-  .from("avatars")
-  .getPublicUrl(uid);
+const { data:urlData } = supabase.storage
+.from("avatars")
+.getPublicUrl(uid);
+
+/* SAVE PROFILE */
 
 await supabase
-  .from("profiles")
-  .update({ avatar: urlData.publicUrl })
-  .eq("id", sessionData.session.user.id);
+.from("profiles")
+.update({ avatar:urlData.publicUrl })
+.eq("id",sessionData.session.user.id);
 
 onUploaded(urlData.publicUrl);
+
 setTimeout(()=>{
 setProgress(0);
 setFile(null);
@@ -291,6 +297,7 @@ height:350,
 background:"#333"
 }}>
 
+{image && (
 <Cropper
 image={image}
 crop={crop}
@@ -300,6 +307,7 @@ onCropChange={setCrop}
 onZoomChange={setZoom}
 onCropComplete={onCropComplete}
 />
+)}
 
 </div>
 
