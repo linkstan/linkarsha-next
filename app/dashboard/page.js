@@ -87,47 +87,7 @@ alignItems:"center",
 marginTop:20
 }}>
 
-{/* avatar */}
 
-<div style={{
-position:"relative",
-width:120,
-height:120
-}}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:120,
-height:120,
-borderRadius:"50%",
-objectFit:"cover",
-border:"4px solid #999"
-}}
-/>
-
-<div
-onClick={()=>setAvatarModal(true)}
-style={{
-position:"absolute",
-right:-6,
-bottom:-6,
-width:36,
-height:36,
-borderRadius:"50%",
-background:"#00d26a",
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-fontSize:22,
-cursor:"pointer",
-color:"#000"
-}}
->
-+
-</div>
-
-</div>
 
 {/* username */}
 
@@ -184,14 +144,6 @@ textAlign:"center"
 Welcome to Linkarsha.  
 Use the sidebar to manage your links, blocks and analytics.
 </div>
-
-{/* AVATAR UPLOAD MODAL */}
-
-<AvatarUploader
-open={avatarModal}
-onClose={()=>setAvatarModal(false)}
-onUploaded={(url)=>setProfile({...profile,avatar:url})}
-/>
 
 </div>
 
