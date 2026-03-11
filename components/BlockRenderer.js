@@ -2,7 +2,6 @@ export default function BlockRenderer({ block }) {
 
 const data = block.data_json || {};
 const url = data.url || "";
-const title = data.title || "Website";
 
 const icons = {
 Instagram:"/icons/instagram.png",
@@ -21,7 +20,7 @@ SoundCloud:"/icons/soundcloud.png",
 Spotify:"/icons/spotify.png"
 };
 
-const icon = icons[title];
+const title = data.title || "Website";
 
 /* =========================
    YOUTUBE EMBED
@@ -41,7 +40,7 @@ videoId=url.split("youtu.be/")[1];
 
 return (
 
-<div style={{marginTop:16}}>
+<div style={{marginTop:"16px"}}>
 
 <iframe
 width="100%"
@@ -50,7 +49,7 @@ src={`https://www.youtube.com/embed/${videoId}`}
 title="YouTube video"
 loading="lazy"
 allowFullScreen
-style={{borderRadius:12}}
+style={{borderRadius:"12px"}}
 />
 
 </div>
@@ -69,14 +68,14 @@ let embedUrl=url.replace("open.spotify.com","open.spotify.com/embed");
 
 return (
 
-<div style={{marginTop:16}}>
+<div style={{marginTop:"16px"}}>
 
 <iframe
 src={embedUrl}
 width="100%"
 height="80"
 loading="lazy"
-style={{borderRadius:12}}
+style={{borderRadius:"12px"}}
 />
 
 </div>
@@ -86,55 +85,47 @@ style={{borderRadius:12}}
 }
 
 /* =========================
-   INSTAGRAM PROFILE
+   TWITTER / X EMBED
 ========================= */
 
-if(url.includes("instagram.com")){
+if(url.includes("twitter.com") || url.includes("x.com")){
 
 return (
+
+<div style={{
+marginTop:"16px",
+background:"#1a1a25",
+padding:"16px",
+borderRadius:"12px"
+}}>
 
 <a
 href={url}
 target="_blank"
 rel="noopener noreferrer"
 style={{
-display:"flex",
-alignItems:"center",
-gap:12,
-background:"#1a1a25",
-padding:14,
-borderRadius:12,
-marginTop:12,
-textDecoration:"none",
 color:"white",
-fontWeight:600
+textDecoration:"none"
 }}
 >
 
-<img
-src="/icons/instagram.png"
-style={{width:22,height:22}}
-/>
-
-Open Instagram
+View Tweet
 
 </a>
+
+</div>
 
 );
 
 }
 
 /* =========================
-   WEBSITE PREVIEW CARD
+   NORMAL LINK BUTTON
 ========================= */
 
-if(url.startsWith("http")){
+if (block.type === "link") {
 
-let domain="";
-
-try{
-domain = new URL(url).hostname.replace("www.","");
-}catch(e){}
+const icon = icons[title];
 
 return (
 
@@ -143,46 +134,33 @@ href={`/api/click/${block.id}`}
 target="_blank"
 rel="noopener noreferrer"
 style={{
-display:"block",
+display:"flex",
+alignItems:"center",
+gap:"12px",
 background:"#1a1a25",
-borderRadius:12,
-marginTop:12,
-overflow:"hidden",
+padding:"14px",
+marginTop:"12px",
+borderRadius:"12px",
 textDecoration:"none",
-color:"white"
+color:"white",
+fontWeight:"600"
 }}
 >
 
-<div style={{
-padding:14,
-display:"flex",
-alignItems:"center",
-gap:12
-}}>
-
 {icon && (
+
 <img
 src={icon}
-style={{width:22,height:22}}
+style={{
+width:22,
+height:22,
+objectFit:"contain"
+}}
 />
+
 )}
 
-<div>
-
-<div style={{fontWeight:600}}>
-{title}
-</div>
-
-<div style={{
-opacity:.6,
-fontSize:12
-}}>
-{domain}
-</div>
-
-</div>
-
-</div>
+<span>{title}</span>
 
 </a>
 
@@ -199,10 +177,11 @@ if (block.type === "image") {
 return (
 <img
 src={data.url}
+loading="lazy"
 style={{
 width:"100%",
-marginTop:16,
-borderRadius:12
+marginTop:"16px",
+borderRadius:"12px"
 }}
 />
 );
@@ -217,9 +196,9 @@ if (block.type === "text") {
 
 return (
 <p style={{
-marginTop:16,
-lineHeight:1.6,
-opacity:.9
+marginTop:"16px",
+lineHeight:"1.6",
+opacity:"0.9"
 }}>
 {data.text}
 </p>
