@@ -49,10 +49,14 @@ const { data: blocks } = await supabase
 
 /* TRACK VIEW (non blocking) */
 
-supabase.from("events").insert({
+supabase
+.from("events")
+.insert({
 user_id: profile.id,
 event_type: "view"
-});
+})
+.then(()=>{})
+.catch(()=>{});
 
 return (
 
