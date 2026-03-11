@@ -22,9 +22,7 @@ Spotify:"/icons/spotify.png"
 
 const title = data.title || "Website";
 
-/* =========================
-   YOUTUBE EMBED
-========================= */
+/* YOUTUBE EMBED */
 
 if(url.includes("youtube.com") || url.includes("youtu.be")){
 
@@ -47,7 +45,7 @@ width="100%"
 height="200"
 src={`https://www.youtube.com/embed/${videoId}`}
 title="YouTube video"
-frameBorder="0"
+loading="lazy"
 allowFullScreen
 style={{borderRadius:"12px"}}
 />
@@ -58,9 +56,7 @@ style={{borderRadius:"12px"}}
 
 }
 
-/* =========================
-   SPOTIFY EMBED
-========================= */
+/* SPOTIFY EMBED */
 
 if(url.includes("spotify.com")){
 
@@ -74,8 +70,6 @@ return (
 src={embedUrl}
 width="100%"
 height="80"
-frameBorder="0"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen"
 loading="lazy"
 style={{borderRadius:"12px"}}
 />
@@ -86,44 +80,7 @@ style={{borderRadius:"12px"}}
 
 }
 
-/* =========================
-   TWITTER / X EMBED
-========================= */
-
-if(url.includes("twitter.com") || url.includes("x.com")){
-
-return (
-
-<div style={{
-marginTop:"16px",
-background:"#1a1a25",
-padding:"16px",
-borderRadius:"12px"
-}}>
-
-<a
-href={url}
-target="_blank"
-rel="noopener noreferrer"
-style={{
-color:"white",
-textDecoration:"none"
-}}
->
-
-View Tweet
-
-</a>
-
-</div>
-
-);
-
-}
-
-/* =========================
-   NORMAL LINK BUTTON
-========================= */
+/* NORMAL LINK */
 
 if (block.type === "link") {
 
@@ -155,8 +112,7 @@ fontWeight:"600"
 src={icon}
 style={{
 width:22,
-height:22,
-objectFit:"contain"
+height:22
 }}
 />
 
@@ -166,43 +122,6 @@ objectFit:"contain"
 
 </a>
 
-);
-
-}
-
-/* =========================
-   IMAGE BLOCK
-========================= */
-
-if (block.type === "image") {
-
-return (
-<img
-src={data.url}
-style={{
-width:"100%",
-marginTop:"16px",
-borderRadius:"12px"
-}}
-/>
-);
-
-}
-
-/* =========================
-   TEXT BLOCK
-========================= */
-
-if (block.type === "text") {
-
-return (
-<p style={{
-marginTop:"16px",
-lineHeight:"1.6",
-opacity:"0.9"
-}}>
-{data.text}
-</p>
 );
 
 }
