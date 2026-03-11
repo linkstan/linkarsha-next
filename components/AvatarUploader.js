@@ -76,10 +76,12 @@ async function getCroppedBlob(){
 
 if(!croppedAreaPixels || !image) return null;
 
-const img = new Image();
+const img = document.createElement("img");
 img.src = image;
 
-await new Promise(r => img.onload = r);
+await new Promise((resolve) => {
+  img.onload = resolve;
+});
 
 const canvas = document.createElement("canvas");
 
@@ -89,19 +91,19 @@ canvas.height = croppedAreaPixels.height;
 const ctx = canvas.getContext("2d");
 
 ctx.drawImage(
-img,
-croppedAreaPixels.x,
-croppedAreaPixels.y,
-croppedAreaPixels.width,
-croppedAreaPixels.height,
-0,
-0,
-croppedAreaPixels.width,
-croppedAreaPixels.height
+  img,
+  croppedAreaPixels.x,
+  croppedAreaPixels.y,
+  croppedAreaPixels.width,
+  croppedAreaPixels.height,
+  0,
+  0,
+  croppedAreaPixels.width,
+  croppedAreaPixels.height
 );
 
-return new Promise(resolve=>{
-canvas.toBlob(blob=>resolve(blob),"image/jpeg");
+return new Promise((resolve)=>{
+  canvas.toBlob((blob)=>resolve(blob),"image/jpeg");
 });
 
 }
