@@ -1,3 +1,5 @@
+import "react-easy-crop/react-easy-crop.css";
+
 export const metadata = {
   title: "Linkarsha",
   description: "Creator economy OS"
