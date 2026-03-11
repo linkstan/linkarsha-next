@@ -1,3 +1,4 @@
+export const runtime = "edge";
 export const revalidate = 60;
 
 import { createClient } from "@supabase/supabase-js";
@@ -12,7 +13,7 @@ export default async function PublicProfile({ params }) {
 
 const username = params.username;
 
-/* GET PROFILE + BLOCKS TOGETHER */
+/* GET PROFILE */
 
 const { data: profile } = await supabase
 .from("profiles")
