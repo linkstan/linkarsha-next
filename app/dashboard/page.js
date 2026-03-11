@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect,useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../lib/supabase";
 import AvatarUploader from "../../components/AvatarUploader";
 
 export default function Dashboard(){
