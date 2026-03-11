@@ -10,13 +10,15 @@ export async function GET(req,{params}){
 
 const blockId = params.id;
 
-const {data:block} = await supabase
+/* get block */
+
+const {data:block,error} = await supabase
 .from("blocks")
-.select("*")
+.select("id,user_id,data_json")
 .eq("id",blockId)
 .single();
 
-if(!block){
+if(error || !block){
 return redirect("/");
 }
 
@@ -30,6 +32,12 @@ event_type:"click"
 
 /* redirect */
 
-return redirect(block.data_json.url);
+const url = block?.data_json?.url;
+
+if(!url){
+return redirect("/");
+}
+
+return redirect(url);
 
 }
