@@ -12,7 +12,7 @@ export default async function PublicProfile({ params }) {
 
 const username = params.username;
 
-/* GET PROFILE */
+/* GET PROFILE + BLOCKS TOGETHER */
 
 const { data: profile } = await supabase
 .from("profiles")
@@ -37,20 +37,21 @@ User not found
 
 }
 
-/* TRACK PROFILE VIEW */
-
-await supabase.from("events").insert({
-user_id: profile.id,
-event: "view"
-});
-
 /* GET BLOCKS */
 
 const { data: blocks } = await supabase
 .from("blocks")
 .select("*")
 .eq("user_id", profile.id)
-.order("position",{ascending:true});
+.order("position",{ascending:true})
+.limit(100);
+
+/* TRACK VIEW (non blocking) */
+
+supabase.from("events").insert({
+user_id: profile.id,
+event_type: "view"
+});
 
 return (
 
@@ -94,9 +95,7 @@ objectFit:"cover"
 <div style={{marginTop:40,width:320}}>
 
 {blocks?.map(block => (
-
 <BlockRenderer key={block.id} block={block} />
-
 ))}
 
 </div>
