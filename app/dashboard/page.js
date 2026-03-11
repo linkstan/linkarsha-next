@@ -2,15 +2,11 @@
 
 import { useEffect,useState } from "react";
 import { supabase } from "../lib/supabase";
-import AvatarUploader from "../../components/AvatarUploader";
 
 export default function Dashboard(){
 
 const [loading,setLoading] = useState(true);
 const [profile,setProfile] = useState(null);
-
-/* avatar modal */
-const [avatarModal,setAvatarModal] = useState(false);
 
 useEffect(()=>{
 init();
@@ -57,6 +53,42 @@ alert("Profile link copied");
 
 }
 
+/* upload avatar */
+
+async function uploadAvatar(e){
+
+const file = e.target.files[0];
+if(!file) return;
+
+const {data:{session}} = await supabase.auth.getSession();
+
+const uid = session.user.id + ".jpg";
+
+/* upload to storage */
+
+await supabase.storage
+.from("avatars")
+.upload(uid,file,{upsert:true});
+
+/* get public url */
+
+const {data} = supabase.storage
+.from("avatars")
+.getPublicUrl(uid);
+
+/* update profile */
+
+await supabase
+.from("profiles")
+.update({avatar:data.publicUrl})
+.eq("id",session.user.id);
+
+/* update UI */
+
+setProfile({...profile,avatar:data.publicUrl});
+
+}
+
 if(loading){
 
 return(
@@ -87,7 +119,50 @@ alignItems:"center",
 marginTop:20
 }}>
 
+{/* AVATAR */}
 
+<div style={{
+position:"relative",
+width:120,
+height:120
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:120,
+height:120,
+borderRadius:"50%",
+objectFit:"cover",
+border:"4px solid #999"
+}}
+/>
+
+<label style={{
+position:"absolute",
+right:-6,
+bottom:-6,
+width:36,
+height:36,
+borderRadius:"50%",
+background:"#00d26a",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+fontSize:22,
+cursor:"pointer",
+color:"#000"
+}}>
++
+<input
+type="file"
+accept="image/*"
+hidden
+onChange={uploadAvatar}
+/>
+</label>
+
+</div>
 
 {/* username */}
 
