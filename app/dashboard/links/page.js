@@ -34,7 +34,8 @@ const {data} = await supabase
 .select("*")
 .eq("user_id",uid)
 .eq("type","link")
-.order("position",{ascending:true});
+.order("position",{ascending:true})
+.limit(100);
 
 if(data) setBlocks(data);
 
@@ -59,10 +60,20 @@ if(!finalTitle){
 finalTitle=detectPlatform(finalUrl);
 }
 
+/* get last position */
+
+let lastPosition = 0;
+
+if(blocks.length > 0){
+lastPosition = blocks[blocks.length-1].position || 0;
+}
+
+const newPosition = lastPosition + 1000;
+
 await supabase.from("blocks").insert({
 user_id:user.id,
 type:"link",
-position:Date.now(),
+position:newPosition,
 data_json:{
 title:finalTitle,
 url:finalUrl
@@ -103,11 +114,13 @@ updated.splice(index,0,dragged);
 
 setBlocks(updated);
 
+/* update positions */
+
 for(let i=0;i<updated.length;i++){
 
 await supabase
 .from("blocks")
-.update({position:i})
+.update({position:(i+1)*1000})
 .eq("id",updated[i].id);
 
 }
