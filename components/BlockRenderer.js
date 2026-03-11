@@ -46,7 +46,6 @@ height="200"
 src={`https://www.youtube.com/embed/${videoId}`}
 title="YouTube video"
 loading="lazy"
-referrerPolicy="no-referrer"
 allowFullScreen
 style={{borderRadius:"12px"}}
 />
