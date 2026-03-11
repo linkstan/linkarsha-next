@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { createClient } from "@supabase/supabase-js";
 import BlockRenderer from "../../components/BlockRenderer";
 
