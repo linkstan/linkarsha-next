@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../lib/supabase";
 
 const Cropper = dynamic(() => import("react-easy-crop"), { ssr:false });
 
