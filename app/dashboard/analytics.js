@@ -267,6 +267,28 @@ return(
 
 </div>
 
+{/* CUSTOM DATE PICKER */}
+
+{mode==="custom" && (
+
+<div className="custom">
+
+<input
+type="datetime-local"
+value={startDate}
+onChange={(e)=>setStartDate(e.target.value)}
+/>
+
+<input
+type="datetime-local"
+value={endDate}
+onChange={(e)=>setEndDate(e.target.value)}
+/>
+
+</div>
+
+)}
+
 </div>
 
 
@@ -289,8 +311,6 @@ return(
 
 </div>
 
-
-{/* LIVE VISITORS */}
 
 <div className="card">
 <h3>Live Visitors</h3>
@@ -332,15 +352,11 @@ style={{height:(v*6)+10}}
 </div>
 
 
-{/* HEATMAP */}
-
 <div className="card">
 <h3>Activity Heatmap</h3>
 <Heatmap clickEvents={filtered}/>
 </div>
 
-
-{/* DEVICES */}
 
 <div className="card">
 <h3>Devices</h3>
@@ -355,8 +371,6 @@ style={{height:(v*6)+10}}
 
 </div>
 
-
-{/* CITIES */}
 
 <div className="card">
 
@@ -392,6 +406,11 @@ color:white;
 padding:6px 12px;
 border-radius:6px;
 cursor:pointer;
+}
+
+.custom{
+display:flex;
+gap:10px;
 }
 
 .analytics-cards{
