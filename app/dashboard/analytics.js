@@ -20,6 +20,27 @@ const [endDate,setEndDate] = useState("");
 
 const [loading,setLoading] = useState(false);
 
+
+/* LOAD EVENTS WHEN PAGE OPENS */
+
+useEffect(()=>{
+loadEvents();
+},[]);
+
+async function loadEvents(){
+
+const { data } = await supabase
+.from("events")
+.select("*")
+.eq("event_type","click");
+
+if(data){
+setEvents(data);
+}
+
+}
+
+
 /* DATE FILTER */
 
 function filterEvents(){
@@ -72,6 +93,7 @@ return t >= start && t <= end;
 
 const filtered = filterEvents();
 
+
 /* CLICK COUNTS */
 
 function buildClickCounts(){
@@ -92,20 +114,14 @@ useEffect(()=>{
 buildClickCounts();
 },[events,mode,startDate,endDate]);
 
+
 /* REFRESH ANALYTICS */
 
 async function refreshAnalytics(){
 
 setLoading(true);
 
-const { data } = await supabase
-.from("events")
-.select("*")
-.eq("event_type","click");
-
-if(data){
-setEvents(data);
-}
+await loadEvents();
 
 setMode("today");
 
@@ -113,11 +129,13 @@ setLoading(false);
 
 }
 
+
 /* TOTAL CLICKS */
 
 function totalClicks(){
 return Object.values(liveClicks).reduce((a,b)=>a+b,0);
 }
+
 
 /* TOP LINK */
 
@@ -137,6 +155,7 @@ return name;
 
 }
 
+
 /* TRAFFIC SOURCES */
 
 function trafficSources(){
@@ -153,7 +172,7 @@ Other:{}
 
 filtered.forEach(e=>{
 
-const ref=(e.referrer||e.source||"").toLowerCase();
+const ref=(e.referrer||"").toLowerCase();
 
 if(ref.includes("instagram")) sources.Instagram++;
 else if(ref.includes("tiktok")) sources.TikTok++;
@@ -177,51 +196,6 @@ return sources;
 
 const sources = trafficSources();
 
-/* DEVICE / OS / BROWSER */
-
-function deviceStats(){
-
-const stats={
-Mobile:0,
-Desktop:0,
-Tablet:0,
-Android:0,
-iOS:0,
-Windows:0,
-Mac:0,
-Linux:0,
-Chrome:0,
-Safari:0,
-Firefox:0
-};
-
-filtered.forEach(e=>{
-
-const device=(e.device||"").toLowerCase();
-const os=(e.os||"").toLowerCase();
-const browser=(e.browser||"").toLowerCase();
-
-if(device.includes("mobile")) stats.Mobile++;
-if(device.includes("desktop")) stats.Desktop++;
-if(device.includes("tablet")) stats.Tablet++;
-
-if(os.includes("android")) stats.Android++;
-if(os.includes("ios")) stats.iOS++;
-if(os.includes("windows")) stats.Windows++;
-if(os.includes("mac")) stats.Mac++;
-if(os.includes("linux")) stats.Linux++;
-
-if(browser.includes("chrome")) stats.Chrome++;
-if(browser.includes("safari")) stats.Safari++;
-if(browser.includes("firefox")) stats.Firefox++;
-
-});
-
-return stats;
-
-}
-
-const devices = deviceStats();
 
 /* CLICKS BY HOUR */
 
@@ -240,6 +214,7 @@ return hours;
 
 const hourly = clicksByHour();
 
+
 /* GROWTH */
 
 function growthRate(){
@@ -253,6 +228,7 @@ if(total<200) return "Strong traction";
 return "Viral growth";
 
 }
+
 
 return(
 
@@ -321,6 +297,7 @@ onChange={(e)=>setEndDate(e.target.value)}
 </div>
 
 <div className="card">
+
 <h3>Clicks by Hour</h3>
 
 <div className="hour-grid">
@@ -329,7 +306,10 @@ onChange={(e)=>setEndDate(e.target.value)}
 
 <div key={i} className="hour">
 
-<div className="bar" style={{height:(v*6)+10}}/>
+<div
+className="bar"
+style={{height:(v*6)+10}}
+/>
 
 <div className="label">{i}</div>
 
@@ -365,27 +345,6 @@ onChange={(e)=>setEndDate(e.target.value)}
 </div>
 
 ))}
-
-</div>
-
-<div className="card">
-
-<h3>Audience Devices</h3>
-
-<div className="sources">
-
-<div>Mobile: {devices.Mobile}</div>
-<div>Desktop: {devices.Desktop}</div>
-<div>Tablet: {devices.Tablet}</div>
-
-<div>Android: {devices.Android}</div>
-<div>iOS: {devices.iOS}</div>
-
-<div>Chrome: {devices.Chrome}</div>
-<div>Safari: {devices.Safari}</div>
-<div>Firefox: {devices.Firefox}</div>
-
-</div>
 
 </div>
 
