@@ -1,7 +1,7 @@
 export default function BlockRenderer({ block }) {
 
-const data = block.data_json || {};
-const url = data.url || "";
+const data = block?.data_json || {};
+const url = data?.url || "";
 
 const icons = {
 Instagram:"/icons/instagram.png",
@@ -20,13 +20,13 @@ SoundCloud:"/icons/soundcloud.png",
 Spotify:"/icons/spotify.png"
 };
 
-const title = data.title || "Website";
+const title = data?.title || "Website";
 
 /* =========================
    YOUTUBE EMBED
 ========================= */
 
-if(url.includes("youtube.com") || url.includes("youtu.be")){
+if(url && (url.includes("youtube.com") || url.includes("youtu.be"))){
 
 let videoId="";
 
@@ -62,7 +62,7 @@ style={{borderRadius:"12px"}}
    SPOTIFY EMBED
 ========================= */
 
-if(url.includes("spotify.com")){
+if(url && url.includes("spotify.com")){
 
 let embedUrl=url.replace("open.spotify.com","open.spotify.com/embed");
 
@@ -88,7 +88,7 @@ style={{borderRadius:"12px"}}
    TWITTER / X EMBED
 ========================= */
 
-if(url.includes("twitter.com") || url.includes("x.com")){
+if(url && (url.includes("twitter.com") || url.includes("x.com"))){
 
 return (
 
@@ -123,14 +123,19 @@ View Tweet
    NORMAL LINK BUTTON
 ========================= */
 
-if (block.type === "link") {
+if (block?.type === "link") {
 
 const icon = icons[title];
+const blockId = block?.id;
+
+if(!blockId || !url){
+return null;
+}
 
 return (
 
 <a
-href={`/api/click/${block.id}`}
+href={`/api/click/${blockId}`}
 target="_blank"
 rel="noopener noreferrer"
 style={{
@@ -172,7 +177,7 @@ objectFit:"contain"
    IMAGE BLOCK
 ========================= */
 
-if (block.type === "image") {
+if (block?.type === "image") {
 
 return (
 <img
@@ -192,7 +197,7 @@ borderRadius:"12px"
    TEXT BLOCK
 ========================= */
 
-if (block.type === "text") {
+if (block?.type === "text") {
 
 return (
 <p style={{
