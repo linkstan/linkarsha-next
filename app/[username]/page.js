@@ -1,6 +1,6 @@
-export const runtime = "edge";
-export const revalidate = 60;
+"use client";
 
+import { useEffect,useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import BlockRenderer from "../../components/BlockRenderer";
 
@@ -9,21 +9,54 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export default async function PublicProfile({ params }) {
+export default function PublicProfile({ params }) {
 
-const username = params.username;
+const [profile,setProfile]=useState(null);
+const [blocks,setBlocks]=useState([]);
+
+useEffect(()=>{
+load();
+},[]);
+
+async function load(){
+
+const username=params.username;
 
 /* GET PROFILE */
 
-const { data: profile } = await supabase
+const {data:prof}=await supabase
 .from("profiles")
 .select("*")
-.eq("username", username)
+.eq("username",username)
 .single();
 
-if (!profile) {
+if(!prof) return;
 
-return (
+setProfile(prof);
+
+/* TRACK PROFILE VIEW */
+
+await supabase.from("events").insert({
+user_id:prof.id,
+event_type:"view"
+});
+
+/* GET BLOCKS */
+
+const {data:blockData}=await supabase
+.from("blocks")
+.select("*")
+.eq("user_id",prof.id)
+.order("position",{ascending:true})
+.limit(100);
+
+setBlocks(blockData||[]);
+
+}
+
+if(!profile){
+
+return(
 <div style={{
 minHeight:"100vh",
 background:"#0b0b12",
@@ -32,33 +65,13 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center"
 }}>
-User not found
+Loading...
 </div>
 );
 
 }
 
-/* GET BLOCKS */
-
-const { data: blocks } = await supabase
-.from("blocks")
-.select("*")
-.eq("user_id", profile.id)
-.order("position",{ascending:true})
-.limit(100);
-
-/* TRACK VIEW (non blocking) */
-
-supabase
-.from("events")
-.insert({
-user_id: profile.id,
-event_type: "view"
-})
-.then(()=>{})
-.catch(()=>{});
-
-return (
+return(
 
 <div style={{
 minHeight:"100vh",
@@ -114,7 +127,7 @@ borderRadius:6
 
 <div style={{marginTop:40,width:320}}>
 
-{blocks?.map(block => (
+{blocks.map(block=>(
 <BlockRenderer key={block.id} block={block} />
 ))}
 
