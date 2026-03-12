@@ -14,8 +14,10 @@ const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
 
 const [mode,setMode] = useState("7d");
+
 const [startDate,setStartDate] = useState("");
 const [endDate,setEndDate] = useState("");
+
 const [loading,setLoading] = useState(false);
 
 
@@ -104,6 +106,8 @@ else{
 return events;
 }
 
+/* BOT FILTER */
+
 return events.filter(e=>{
 if(e.is_bot) return false;
 const t = new Date(e.created_at);
@@ -134,6 +138,21 @@ setLiveClicks(counts);
 useEffect(()=>{
 buildClickCounts();
 },[events,mode,startDate,endDate]);
+
+
+/* REFRESH ANALYTICS */
+
+async function refreshAnalytics(){
+
+setLoading(true);
+
+await loadEvents();
+
+setMode("today");
+
+setLoading(false);
+
+}
 
 
 /* TOTAL CLICKS */
@@ -172,10 +191,12 @@ TikTok:0,
 YouTube:0,
 Facebook:0,
 Twitter:0,
-Direct:0
+Direct:0,
+Other:{}
 };
 
 filtered.forEach(e=>{
+
 const ref=(e.referrer||"").toLowerCase();
 
 if(ref.includes("instagram")) sources.Instagram++;
@@ -183,7 +204,14 @@ else if(ref.includes("tiktok")) sources.TikTok++;
 else if(ref.includes("youtube")) sources.YouTube++;
 else if(ref.includes("facebook")) sources.Facebook++;
 else if(ref.includes("twitter")) sources.Twitter++;
-else sources.Direct++;
+else if(ref==="") sources.Direct++;
+
+else{
+
+const domain=ref.split("/")[2] || "unknown";
+sources.Other[domain]=(sources.Other[domain]||0)+1;
+
+}
 
 });
 
@@ -192,53 +220,6 @@ return sources;
 }
 
 const sources = trafficSources();
-
-
-/* DEVICE ANALYTICS */
-
-function deviceStats(){
-
-const stats={
-Mobile:0,
-Desktop:0,
-Tablet:0
-};
-
-filtered.forEach(e=>{
-const d=(e.device||"").toLowerCase();
-
-if(d.includes("mobile")) stats.Mobile++;
-else if(d.includes("tablet")) stats.Tablet++;
-else stats.Desktop++;
-
-});
-
-return stats;
-
-}
-
-const devices=deviceStats();
-
-
-/* CITY ANALYTICS */
-
-function cityStats(){
-
-const cities={};
-
-filtered.forEach(e=>{
-
-if(!e.city) return;
-
-cities[e.city]=(cities[e.city]||0)+1;
-
-});
-
-return cities;
-
-}
-
-const cities=cityStats();
 
 
 /* CLICKS BY HOUR */
@@ -278,8 +259,6 @@ return(
 
 <>
 
-{/* FILTER BAR */}
-
 <div className="topbar">
 
 <div className="filters">
@@ -292,14 +271,33 @@ return(
 
 </div>
 
-<button onClick={loadEvents}>
+{mode==="custom" && (
+
+<div className="custom">
+
+<input
+type="datetime-local"
+value={startDate}
+onChange={(e)=>setStartDate(e.target.value)}
+placeholder="From date"
+/>
+
+<input
+type="datetime-local"
+value={endDate}
+onChange={(e)=>setEndDate(e.target.value)}
+placeholder="Till date"
+/>
+
+</div>
+
+)}
+
+<button onClick={refreshAnalytics}>
 {loading ? "Refreshing..." : "🔁 Refresh"}
 </button>
 
 </div>
-
-
-{/* MAIN CARDS */}
 
 <div className="analytics-cards">
 
@@ -320,14 +318,10 @@ return(
 
 </div>
 
-
-{/* CHARTS */}
-
 <div className="card">
 <h3>Clicks per Link</h3>
 <Chart links={links} clicks={liveClicks}/>
 </div>
-
 
 <div className="card">
 
@@ -354,9 +348,7 @@ style={{height:(v*6)+10}}
 
 </div>
 
-
 <Heatmap clickEvents={filtered}/>
-
 
 <div className="card">
 
@@ -373,42 +365,112 @@ style={{height:(v*6)+10}}
 
 </div>
 
+{Object.entries(sources.Other).map(([d,v])=>(
+
+<div key={d} className="other">
+{d} — {v}
 </div>
 
-
-{/* NEW ANALYTICS */}
-
-<div className="card">
-
-<h3>Devices</h3>
-
-<div className="sources">
-
-<div>Mobile: {devices.Mobile}</div>
-<div>Desktop: {devices.Desktop}</div>
-<div>Tablet: {devices.Tablet}</div>
-
-</div>
-
-</div>
-
-
-<div className="card">
-
-<h3>Top Cities</h3>
-
-{Object.entries(cities).map(([city,count])=>(
-<div key={city}>
-{city} — {count}
-</div>
 ))}
 
 </div>
 
-
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
+
+<style jsx>{`
+
+.topbar{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.filters button{
+background:#1a1a25;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.custom{
+display:flex;
+gap:10px;
+}
+
+.analytics-cards{
+display:flex;
+gap:20px;
+margin-bottom:30px;
+}
+
+.analytics-card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+padding:24px;
+border-radius:16px;
+flex:1;
+text-align:center;
+}
+
+.big{
+font-size:30px;
+margin-top:10px;
+}
+
+.card{
+background:#111;
+padding:25px;
+border-radius:16px;
+margin-bottom:30px;
+}
+
+.hour-grid{
+display:flex;
+align-items:flex-end;
+gap:6px;
+height:120px;
+margin-top:20px;
+}
+
+.hour{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.bar{
+width:100%;
+background:#7c5cff;
+border-radius:4px 4px 0 0;
+}
+
+.label{
+font-size:10px;
+opacity:.6;
+margin-top:4px;
+}
+
+.sources{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.other{
+margin-top:6px;
+font-size:13px;
+opacity:.7;
+}
+
+`}</style>
 
 </>
 
