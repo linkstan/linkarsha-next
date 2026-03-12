@@ -89,8 +89,23 @@ objectFit:"cover"
 />
 </div>
 
-<h1 style={{fontSize:"42px"}}>
+<h1 style={{display:"flex",alignItems:"center",gap:8}}>
 @{profile.username}
+
+{profile.verified && (
+
+<span style={{
+background:"#1DA1F2",
+color:"white",
+fontSize:12,
+padding:"2px 6px",
+borderRadius:6
+}}>
+✔
+</span>
+
+)}
+
 </h1>
 
 <p style={{opacity:0.7, marginTop:10}}>
