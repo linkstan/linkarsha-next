@@ -188,7 +188,9 @@ My Links
 Link History
 </Link>
 
-<div style={subitem}>Get Verified</div>
+<Link href="/dashboard/get-verified" style={subitem}>
+Get Verified
+</Link>
 
 </div>
 
