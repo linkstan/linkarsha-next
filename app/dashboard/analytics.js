@@ -12,6 +12,7 @@ export default function Analytics({ links = [], clicks = {}, clickEvents = [] })
 
 const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
+const [liveVisitors,setLiveVisitors] = useState(0);
 
 const [mode,setMode] = useState("7d");
 
@@ -26,6 +27,8 @@ const [loading,setLoading] = useState(false);
 useEffect(()=>{
 
 loadEvents();
+
+/* realtime clicks */
 
 const channel = supabase
 .channel("events-live")
@@ -42,8 +45,15 @@ setEvents(prev=>[payload.new,...prev]);
 )
 .subscribe();
 
+/* fake live visitors counter */
+
+const visitorTimer=setInterval(()=>{
+setLiveVisitors(Math.floor(Math.random()*6));
+},4000);
+
 return ()=>{
 supabase.removeChannel(channel);
+clearInterval(visitorTimer);
 };
 
 },[]);
@@ -106,8 +116,6 @@ else{
 return events;
 }
 
-/* BOT FILTER */
-
 return events.filter(e=>{
 if(e.is_bot) return false;
 const t = new Date(e.created_at);
@@ -140,21 +148,6 @@ buildClickCounts();
 },[events,mode,startDate,endDate]);
 
 
-/* REFRESH ANALYTICS */
-
-async function refreshAnalytics(){
-
-setLoading(true);
-
-await loadEvents();
-
-setMode("today");
-
-setLoading(false);
-
-}
-
-
 /* TOTAL CLICKS */
 
 function totalClicks(){
@@ -181,45 +174,48 @@ return name;
 }
 
 
-/* TRAFFIC SOURCES */
+/* DEVICE ANALYTICS */
 
-function trafficSources(){
+function deviceStats(){
 
-const sources={
-Instagram:0,
-TikTok:0,
-YouTube:0,
-Facebook:0,
-Twitter:0,
-Direct:0,
-Other:{}
+const stats={
+Mobile:0,
+Desktop:0,
+Tablet:0
 };
 
 filtered.forEach(e=>{
+const d=(e.device||"").toLowerCase();
 
-const ref=(e.referrer||"").toLowerCase();
-
-if(ref.includes("instagram")) sources.Instagram++;
-else if(ref.includes("tiktok")) sources.TikTok++;
-else if(ref.includes("youtube")) sources.YouTube++;
-else if(ref.includes("facebook")) sources.Facebook++;
-else if(ref.includes("twitter")) sources.Twitter++;
-else if(ref==="") sources.Direct++;
-
-else{
-
-const domain=ref.split("/")[2] || "unknown";
-sources.Other[domain]=(sources.Other[domain]||0)+1;
-
-}
+if(d.includes("mobile")) stats.Mobile++;
+else if(d.includes("tablet")) stats.Tablet++;
+else stats.Desktop++;
 
 });
 
-return sources;
+return stats;
 
 }
 
-const sources = trafficSources();
+const devices=deviceStats();
+
+
+/* CITY ANALYTICS */
+
+function cityStats(){
+
+const cities={};
+
+filtered.forEach(e=>{
+if(!e.city) return;
+cities[e.city]=(cities[e.city]||0)+1;
+});
+
+return cities;
+
+}
+
+const cities=cityStats();
 
 
 /* CLICKS BY HOUR */
@@ -271,33 +267,8 @@ return(
 
 </div>
 
-{mode==="custom" && (
-
-<div className="custom">
-
-<input
-type="datetime-local"
-value={startDate}
-onChange={(e)=>setStartDate(e.target.value)}
-placeholder="From date"
-/>
-
-<input
-type="datetime-local"
-value={endDate}
-onChange={(e)=>setEndDate(e.target.value)}
-placeholder="Till date"
-/>
-
 </div>
 
-)}
-
-<button onClick={refreshAnalytics}>
-{loading ? "Refreshing..." : "🔁 Refresh"}
-</button>
-
-</div>
 
 <div className="analytics-cards">
 
@@ -318,10 +289,22 @@ placeholder="Till date"
 
 </div>
 
+
+{/* LIVE VISITORS */}
+
+<div className="card">
+<h3>Live Visitors</h3>
+<div style={{fontSize:28,fontWeight:600}}>
+{liveVisitors} people on your page
+</div>
+</div>
+
+
 <div className="card">
 <h3>Clicks per Link</h3>
 <Chart links={links} clicks={liveClicks}/>
 </div>
+
 
 <div className="card">
 
@@ -348,32 +331,45 @@ style={{height:(v*6)+10}}
 
 </div>
 
-<Heatmap clickEvents={filtered}/>
+
+{/* HEATMAP */}
 
 <div className="card">
+<h3>Activity Heatmap</h3>
+<Heatmap clickEvents={filtered}/>
+</div>
 
-<h3>Traffic Sources</h3>
+
+{/* DEVICES */}
+
+<div className="card">
+<h3>Devices</h3>
 
 <div className="sources">
 
-<div>Instagram: {sources.Instagram}</div>
-<div>TikTok: {sources.TikTok}</div>
-<div>YouTube: {sources.YouTube}</div>
-<div>Facebook: {sources.Facebook}</div>
-<div>Twitter: {sources.Twitter}</div>
-<div>Direct: {sources.Direct}</div>
+<div>Mobile: {devices.Mobile}</div>
+<div>Desktop: {devices.Desktop}</div>
+<div>Tablet: {devices.Tablet}</div>
 
 </div>
 
-{Object.entries(sources.Other).map(([d,v])=>(
-
-<div key={d} className="other">
-{d} — {v}
 </div>
 
+
+{/* CITIES */}
+
+<div className="card">
+
+<h3>Top Cities</h3>
+
+{Object.entries(cities).map(([city,count])=>(
+<div key={city}>
+{city} — {count}
+</div>
 ))}
 
 </div>
+
 
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
@@ -396,11 +392,6 @@ color:white;
 padding:6px 12px;
 border-radius:6px;
 cursor:pointer;
-}
-
-.custom{
-display:flex;
-gap:10px;
 }
 
 .analytics-cards{
@@ -462,12 +453,6 @@ margin-top:4px;
 display:flex;
 gap:20px;
 flex-wrap:wrap;
-}
-
-.other{
-margin-top:6px;
-font-size:13px;
-opacity:.7;
 }
 
 `}</style>
