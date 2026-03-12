@@ -81,7 +81,9 @@ const counts={};
 links.forEach(l=>counts[l.id]=0);
 
 filtered.forEach(e=>{
-counts[e.link_id]=(counts[e.link_id]||0)+1;
+
+counts[e.block_id]=(counts[e.block_id]||0)+1;
+
 });
 
 setLiveClicks(counts);
@@ -99,8 +101,9 @@ async function refreshAnalytics(){
 setLoading(true);
 
 const { data } = await supabase
-.from("clicks")
-.select("*");
+.from("events")
+.select("*")
+.eq("event_type","click");
 
 if(data){
 setEvents(data);
@@ -223,28 +226,6 @@ return(
 
 </div>
 
-{mode==="custom" && (
-
-<div className="custom">
-
-<input
-type="datetime-local"
-value={startDate}
-onChange={(e)=>setStartDate(e.target.value)}
-placeholder="From date"
-/>
-
-<input
-type="datetime-local"
-value={endDate}
-onChange={(e)=>setEndDate(e.target.value)}
-placeholder="Till date"
-/>
-
-</div>
-
-)}
-
 <button onClick={refreshAnalytics}>
 {loading ? "Refreshing..." : "🔁 Refresh"}
 </button>
@@ -275,154 +256,10 @@ placeholder="Till date"
 <Chart links={links} clicks={liveClicks}/>
 </div>
 
-<div className="card">
-
-<h3>Clicks by Hour</h3>
-
-<div className="hour-grid">
-
-{hourly.map((v,i)=>(
-
-<div key={i} className="hour">
-
-<div
-className="bar"
-style={{height:(v*6)+10}}
-/>
-
-<div className="label">{i}</div>
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
 <Heatmap clickEvents={filtered}/>
-
-<div className="card">
-
-<h3>Traffic Sources</h3>
-
-<div className="sources">
-
-<div>Instagram: {sources.Instagram}</div>
-<div>TikTok: {sources.TikTok}</div>
-<div>YouTube: {sources.YouTube}</div>
-<div>Facebook: {sources.Facebook}</div>
-<div>Twitter: {sources.Twitter}</div>
-<div>Direct: {sources.Direct}</div>
-
-</div>
-
-{Object.entries(sources.Other).map(([d,v])=>(
-
-<div key={d} className="other">
-{d} — {v}
-</div>
-
-))}
-
-</div>
-
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
-
-<style jsx>{`
-
-.topbar{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
-
-.filters button{
-background:#1a1a25;
-border:none;
-color:white;
-padding:6px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.custom{
-display:flex;
-gap:10px;
-}
-
-.analytics-cards{
-display:flex;
-gap:20px;
-margin-bottom:30px;
-}
-
-.analytics-card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(14px);
-padding:24px;
-border-radius:16px;
-flex:1;
-text-align:center;
-}
-
-.big{
-font-size:30px;
-margin-top:10px;
-}
-
-.card{
-background:#111;
-padding:25px;
-border-radius:16px;
-margin-bottom:30px;
-}
-
-.hour-grid{
-display:flex;
-align-items:flex-end;
-gap:6px;
-height:120px;
-margin-top:20px;
-}
-
-.hour{
-flex:1;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.bar{
-width:100%;
-background:#7c5cff;
-border-radius:4px 4px 0 0;
-}
-
-.label{
-font-size:10px;
-opacity:.6;
-margin-top:4px;
-}
-
-.sources{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.other{
-margin-top:6px;
-font-size:13px;
-opacity:.7;
-}
-
-`}</style>
 
 </>
 
