@@ -21,7 +21,7 @@ if(!session) return;
 
 const uid = session.user.id;
 
-/* load links */
+/* LOAD LINKS */
 
 const {data:blocks} = await supabase
 .from("blocks")
@@ -42,26 +42,60 @@ setLinks(linksData);
 
 }
 
-/* load click events */
+/* LOAD CLICKS */
 
-const {data:clickEvents} = await supabase
-.from("clicks")
+loadClicks(uid);
+
+/* REALTIME LISTENER */
+
+supabase
+.channel("events")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"events"
+},
+payload=>{
+
+if(payload.new.user_id===uid){
+
+loadClicks(uid);
+
+}
+
+}
+)
+.subscribe();
+
+}
+
+async function loadClicks(uid){
+
+const {data:eventData} = await supabase
+.from("events")
 .select("*")
-.eq("user_id",uid);
+.eq("user_id",uid)
+.eq("event_type","click");
 
-if(clickEvents){
+if(!eventData) return;
 
-setEvents(clickEvents);
+setEvents(eventData);
+
+/* COUNT CLICKS PER LINK */
 
 const counts={};
 
-clickEvents.forEach(c=>{
-counts[c.link_id]=(counts[c.link_id]||0)+1;
+eventData.forEach(e=>{
+
+if(!e.block_id) return;
+
+counts[e.block_id]=(counts[e.block_id]||0)+1;
+
 });
 
 setClicks(counts);
-
-}
 
 }
 
