@@ -81,7 +81,7 @@ const counts={};
 links.forEach(l=>counts[l.id]=0);
 
 filtered.forEach(e=>{
-counts[e.link_id]=(counts[e.link_id]||0)+1;
+counts[e.block_id]=(counts[e.block_id]||0)+1;
 });
 
 setLiveClicks(counts);
@@ -99,8 +99,9 @@ async function refreshAnalytics(){
 setLoading(true);
 
 const { data } = await supabase
-.from("clicks")
-.select("*");
+.from("events")
+.select("*")
+.eq("event_type","click");
 
 if(data){
 setEvents(data);
@@ -152,7 +153,7 @@ Other:{}
 
 filtered.forEach(e=>{
 
-const ref=(e.referrer||"").toLowerCase();
+const ref=(e.referrer||e.source||"").toLowerCase();
 
 if(ref.includes("instagram")) sources.Instagram++;
 else if(ref.includes("tiktok")) sources.TikTok++;
@@ -175,6 +176,52 @@ return sources;
 }
 
 const sources = trafficSources();
+
+/* DEVICE / OS / BROWSER */
+
+function deviceStats(){
+
+const stats={
+Mobile:0,
+Desktop:0,
+Tablet:0,
+Android:0,
+iOS:0,
+Windows:0,
+Mac:0,
+Linux:0,
+Chrome:0,
+Safari:0,
+Firefox:0
+};
+
+filtered.forEach(e=>{
+
+const device=(e.device||"").toLowerCase();
+const os=(e.os||"").toLowerCase();
+const browser=(e.browser||"").toLowerCase();
+
+if(device.includes("mobile")) stats.Mobile++;
+if(device.includes("desktop")) stats.Desktop++;
+if(device.includes("tablet")) stats.Tablet++;
+
+if(os.includes("android")) stats.Android++;
+if(os.includes("ios")) stats.iOS++;
+if(os.includes("windows")) stats.Windows++;
+if(os.includes("mac")) stats.Mac++;
+if(os.includes("linux")) stats.Linux++;
+
+if(browser.includes("chrome")) stats.Chrome++;
+if(browser.includes("safari")) stats.Safari++;
+if(browser.includes("firefox")) stats.Firefox++;
+
+});
+
+return stats;
+
+}
+
+const devices = deviceStats();
 
 /* CLICKS BY HOUR */
 
@@ -231,14 +278,12 @@ return(
 type="datetime-local"
 value={startDate}
 onChange={(e)=>setStartDate(e.target.value)}
-placeholder="From date"
 />
 
 <input
 type="datetime-local"
 value={endDate}
 onChange={(e)=>setEndDate(e.target.value)}
-placeholder="Till date"
 />
 
 </div>
@@ -276,7 +321,6 @@ placeholder="Till date"
 </div>
 
 <div className="card">
-
 <h3>Clicks by Hour</h3>
 
 <div className="hour-grid">
@@ -285,10 +329,7 @@ placeholder="Till date"
 
 <div key={i} className="hour">
 
-<div
-className="bar"
-style={{height:(v*6)+10}}
-/>
+<div className="bar" style={{height:(v*6)+10}}/>
 
 <div className="label">{i}</div>
 
@@ -327,102 +368,30 @@ style={{height:(v*6)+10}}
 
 </div>
 
+<div className="card">
+
+<h3>Audience Devices</h3>
+
+<div className="sources">
+
+<div>Mobile: {devices.Mobile}</div>
+<div>Desktop: {devices.Desktop}</div>
+<div>Tablet: {devices.Tablet}</div>
+
+<div>Android: {devices.Android}</div>
+<div>iOS: {devices.iOS}</div>
+
+<div>Chrome: {devices.Chrome}</div>
+<div>Safari: {devices.Safari}</div>
+<div>Firefox: {devices.Firefox}</div>
+
+</div>
+
+</div>
+
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
-
-<style jsx>{`
-
-.topbar{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
-
-.filters button{
-background:#1a1a25;
-border:none;
-color:white;
-padding:6px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.custom{
-display:flex;
-gap:10px;
-}
-
-.analytics-cards{
-display:flex;
-gap:20px;
-margin-bottom:30px;
-}
-
-.analytics-card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(14px);
-padding:24px;
-border-radius:16px;
-flex:1;
-text-align:center;
-}
-
-.big{
-font-size:30px;
-margin-top:10px;
-}
-
-.card{
-background:#111;
-padding:25px;
-border-radius:16px;
-margin-bottom:30px;
-}
-
-.hour-grid{
-display:flex;
-align-items:flex-end;
-gap:6px;
-height:120px;
-margin-top:20px;
-}
-
-.hour{
-flex:1;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.bar{
-width:100%;
-background:#7c5cff;
-border-radius:4px 4px 0 0;
-}
-
-.label{
-font-size:10px;
-opacity:.6;
-margin-top:4px;
-}
-
-.sources{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.other{
-margin-top:6px;
-font-size:13px;
-opacity:.7;
-}
-
-`}</style>
 
 </>
 
