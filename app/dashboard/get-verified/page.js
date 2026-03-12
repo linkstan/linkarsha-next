@@ -1,81 +1,79 @@
 "use client";
 
-import { useEffect,useState } from "react";
+import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-export default function Verified(){
+export default function GetVerified(){
 
-const [enabled,setEnabled] = useState(false);
+const [loading,setLoading]=useState(false);
+const [sent,setSent]=useState(false);
 
-useEffect(()=>{
-load();
-},[]);
+async function apply(){
 
-async function load(){
+setLoading(true);
 
 const {data:{session}} = await supabase.auth.getSession();
-if(!session) return;
 
-const {data} = await supabase
-.from("profiles")
-.select("verified")
-.eq("id",session.user.id)
-.single();
-
-setEnabled(data?.verified);
-
+if(!session){
+alert("Login required");
+return;
 }
 
-async function toggle(){
+await supabase.from("verification_requests").insert({
+user_id:session.user.id
+});
 
-const {data:{session}} = await supabase.auth.getSession();
-
-const newValue = !enabled;
-
-setEnabled(newValue);
-
-await supabase
-.from("profiles")
-.update({verified:newValue})
-.eq("id",session.user.id);
+setSent(true);
+setLoading(false);
 
 }
 
 return(
 
-<div style={{maxWidth:500}}>
+<div style={{maxWidth:600}}>
 
 <h2>Get Verified</h2>
 
-<div style={{
-marginTop:20,
-background:"#15151f",
-padding:20,
-borderRadius:12
-}}>
+<p style={{opacity:0.7,marginTop:10}}>
+Verified accounts receive a blue tick showing authenticity and trust.
+</p>
 
-<div style={{marginBottom:10}}>
-Show verified badge on your profile
-</div>
+<ul style={{marginTop:20,opacity:0.8}}>
+<li>✓ Authentic identity</li>
+<li>✓ Trusted public presence</li>
+<li>✓ Premium credibility</li>
+</ul>
 
-<label style={{
-display:"flex",
-alignItems:"center",
-gap:10,
+{!sent ? (
+
+<button
+onClick={apply}
+disabled={loading}
+style={{
+marginTop:30,
+padding:"12px 18px",
+background:"#1da1f2",
+border:"none",
+borderRadius:8,
+color:"white",
 cursor:"pointer"
+}}
+>
+{loading ? "Submitting..." : "Apply for Verification"}
+</button>
+
+):(
+
+<div style={{
+marginTop:30,
+background:"#15151f",
+padding:15,
+borderRadius:10
 }}>
-
-<input
-type="checkbox"
-checked={enabled}
-onChange={toggle}
-/>
-
-<span>{enabled ? "Verified Enabled" : "Verified Disabled"}</span>
-
-</label>
-
+Application submitted. We will review it soon.
 </div>
+
+)}
 
 </div>
 
