@@ -24,7 +24,28 @@ const [loading,setLoading] = useState(false);
 /* LOAD EVENTS WHEN PAGE OPENS */
 
 useEffect(()=>{
+
 loadEvents();
+
+const channel = supabase
+.channel("events-live")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"events"
+},
+payload=>{
+setEvents(prev=>[payload.new,...prev]);
+}
+)
+.subscribe();
+
+return ()=>{
+supabase.removeChannel(channel);
+};
+
 },[]);
 
 async function loadEvents(){
