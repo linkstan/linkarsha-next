@@ -70,6 +70,8 @@ lastPosition = blocks[blocks.length-1].position || 0;
 
 const newPosition = lastPosition + 1000;
 
+/* insert block */
+
 await supabase.from("blocks").insert({
 user_id:user.id,
 type:"link",
@@ -78,6 +80,15 @@ data_json:{
 title:finalTitle,
 url:finalUrl
 }
+});
+
+/* save history */
+
+await supabase.from("link_history").insert({
+user_id:user.id,
+action:"added",
+title:finalTitle,
+url:finalUrl
 });
 
 setTitle("");
@@ -89,10 +100,29 @@ loadBlocks(user.id);
 
 async function deleteLink(id){
 
+/* get block before deleting */
+
+const block = blocks.find(b => b.id === id);
+
+/* delete block */
+
 await supabase
 .from("blocks")
 .delete()
 .eq("id",id);
+
+/* save history */
+
+if(block){
+
+await supabase.from("link_history").insert({
+user_id:user.id,
+action:"deleted",
+title:block.data_json?.title,
+url:block.data_json?.url
+});
+
+}
 
 loadBlocks(user.id);
 
