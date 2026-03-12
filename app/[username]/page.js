@@ -102,20 +102,27 @@ objectFit:"cover"
 />
 </div>
 
-<h1 style={{display:"flex",alignItems:"center",gap:8}}>
+<h1 style={{display:"flex",alignItems:"center",gap:6}}>
 @{profile.username}
 
 {profile.verified && (
 
-<span style={{
-background:"#1DA1F2",
-color:"white",
-fontSize:12,
-padding:"2px 6px",
-borderRadius:6
-}}>
-✔
-</span>
+<svg
+xmlns="http://www.w3.org/2000/svg"
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="#1DA1F2"
+>
+
+<path d="M22.5 12l-2.3 2.1.5 3-2.9 1.2-1.6 2.6-3.2-.6-3.2.6-1.6-2.6-2.9-1.2.5-3L1.5 12l2.3-2.1-.5-3 2.9-1.2 1.6-2.6 3.2.6 3.2-.6 1.6 2.6 2.9 1.2-.5 3L22.5 12z"/>
+
+<path
+d="M10 13.5l-1.5-1.5-1 1L10 15.5 16 9.5l-1-1z"
+fill="white"
+/>
+
+</svg>
 
 )}
 
