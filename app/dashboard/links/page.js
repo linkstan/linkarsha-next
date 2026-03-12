@@ -100,8 +100,6 @@ loadBlocks(user.id);
 
 async function deleteLink(id){
 
-/* get block before deleting */
-
 const block = blocks.find(b => b.id === id);
 
 /* delete block */
@@ -154,6 +152,15 @@ await supabase
 .eq("id",updated[i].id);
 
 }
+
+/* save reorder history */
+
+await supabase.from("link_history").insert({
+user_id:user.id,
+action:"reordered",
+title:"Link order changed",
+url:""
+});
 
 setDragIndex(null);
 
