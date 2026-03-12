@@ -1,32 +1,31 @@
 import { createClient } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
+
+export async function GET(req,{params}){
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export async function GET(request, { params }) {
+const blockId = params.id;
 
-const id = params.id;
+/* GET BLOCK */
 
-if(!id){
-return redirect("/");
-}
-
-/* get block */
-
-const { data: block } = await supabase
+const {data:block,error} = await supabase
 .from("blocks")
-.select("id,user_id,data_json")
-.eq("id", id)
+.select("*")
+.eq("id",blockId)
 .single();
 
-if(!block){
-return redirect("/");
+/* IF BLOCK NOT FOUND */
+
+if(!block || !block.data_json?.url){
+
+return new Response("Not found",{status:404});
+
 }
 
-/* record click */
+/* RECORD CLICK EVENT */
 
 await supabase.from("events").insert({
 user_id:block.user_id,
@@ -34,14 +33,8 @@ block_id:block.id,
 event_type:"click"
 });
 
-/* redirect */
+/* REDIRECT TO REAL URL */
 
-const url = block.data_json?.url;
-
-if(!url){
-return redirect("/");
-}
-
-return redirect(url);
+return Response.redirect(block.data_json.url,302);
 
 }
