@@ -17,23 +17,26 @@ const {data:block,error} = await supabase
 .eq("id",blockId)
 .single();
 
-/* IF BLOCK NOT FOUND */
-
 if(!block || !block.data_json?.url){
 
 return new Response("Not found",{status:404});
 
 }
 
-/* RECORD CLICK EVENT */
+/* GET REFERRER */
+
+const referrer = req.headers.get("referer") || "direct";
+
+/* INSERT EVENT */
 
 await supabase.from("events").insert({
 user_id:block.user_id,
 block_id:block.id,
-event_type:"click"
+event_type:"click",
+referrer:referrer
 });
 
-/* REDIRECT TO REAL URL */
+/* REDIRECT */
 
 return Response.redirect(block.data_json.url,302);
 
