@@ -7,75 +7,64 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-const blockId = params.id;
+const blockId=params.id;
 
-/* GET BLOCK */
-
-const {data:block} = await supabase
+const {data:block}=await supabase
 .from("blocks")
 .select("*")
 .eq("id",blockId)
 .single();
 
-if(!block || !block.data_json?.url){
+if(!block){
 return new Response("Not found",{status:404});
 }
 
 /* USER AGENT */
 
-const ua = req.headers.get("user-agent") || "";
+const ua=req.headers.get("user-agent")||"";
 
-/* BOT DETECTION */
+/* DEVICE */
 
-const isBot =
-ua.includes("bot") ||
-ua.includes("crawler") ||
-ua.includes("spider");
+let device="desktop";
 
-/* DEVICE DETECTION */
-
-let device="Desktop";
-
-if(/mobile/i.test(ua)) device="Mobile";
-if(/tablet/i.test(ua)) device="Tablet";
-
-/* OS DETECTION */
-
-let os="Unknown";
-
-if(/android/i.test(ua)) os="Android";
-else if(/iphone|ipad/i.test(ua)) os="iOS";
-else if(/windows/i.test(ua)) os="Windows";
-else if(/mac/i.test(ua)) os="Mac";
+if(/mobile/i.test(ua)) device="mobile";
+if(/tablet/i.test(ua)) device="tablet";
 
 /* BROWSER */
 
-let browser="Unknown";
+let browser="unknown";
 
-if(/chrome/i.test(ua)) browser="Chrome";
-else if(/safari/i.test(ua)) browser="Safari";
-else if(/firefox/i.test(ua)) browser="Firefox";
+if(/chrome/i.test(ua)) browser="chrome";
+else if(/safari/i.test(ua)) browser="safari";
+else if(/firefox/i.test(ua)) browser="firefox";
+else if(/edge/i.test(ua)) browser="edge";
 
-/* LOCATION FROM VERCEL */
+/* OS */
 
-const country = req.headers.get("x-vercel-ip-country") || "Unknown";
-const city = req.headers.get("x-vercel-ip-city") || "Unknown";
+let os="unknown";
+
+if(/android/i.test(ua)) os="android";
+else if(/iphone|ipad/i.test(ua)) os="ios";
+else if(/windows/i.test(ua)) os="windows";
+else if(/mac/i.test(ua)) os="mac";
+
+/* BOT DETECTION */
+
+let isBot=false;
+
+if(/bot|crawl|spider/i.test(ua)) isBot=true;
 
 /* SAVE EVENT */
 
 await supabase.from("events").insert({
-
 user_id:block.user_id,
 block_id:block.id,
 event_type:"click",
-
-country,
-city,
-device,
-os,
-browser,
-is_bot:isBot
-
+device:device,
+browser:browser,
+os:os,
+is_bot:isBot,
+created_at:new Date()
 });
 
 /* REDIRECT */
