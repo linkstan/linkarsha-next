@@ -14,10 +14,8 @@ const [liveClicks,setLiveClicks] = useState(clicks || {});
 const [events,setEvents] = useState(clickEvents || []);
 
 const [mode,setMode] = useState("7d");
-
 const [startDate,setStartDate] = useState("");
 const [endDate,setEndDate] = useState("");
-
 const [loading,setLoading] = useState(false);
 
 
@@ -106,8 +104,6 @@ else{
 return events;
 }
 
-/* remove bots */
-
 return events.filter(e=>{
 if(e.is_bot) return false;
 const t = new Date(e.created_at);
@@ -138,21 +134,6 @@ setLiveClicks(counts);
 useEffect(()=>{
 buildClickCounts();
 },[events,mode,startDate,endDate]);
-
-
-/* REFRESH */
-
-async function refreshAnalytics(){
-
-setLoading(true);
-
-await loadEvents();
-
-setMode("today");
-
-setLoading(false);
-
-}
 
 
 /* TOTAL CLICKS */
@@ -191,12 +172,10 @@ TikTok:0,
 YouTube:0,
 Facebook:0,
 Twitter:0,
-Direct:0,
-Other:{}
+Direct:0
 };
 
 filtered.forEach(e=>{
-
 const ref=(e.referrer||"").toLowerCase();
 
 if(ref.includes("instagram")) sources.Instagram++;
@@ -204,14 +183,7 @@ else if(ref.includes("tiktok")) sources.TikTok++;
 else if(ref.includes("youtube")) sources.YouTube++;
 else if(ref.includes("facebook")) sources.Facebook++;
 else if(ref.includes("twitter")) sources.Twitter++;
-else if(ref==="") sources.Direct++;
-
-else{
-
-const domain=ref.split("/")[2] || "unknown";
-sources.Other[domain]=(sources.Other[domain]||0)+1;
-
-}
+else sources.Direct++;
 
 });
 
@@ -229,34 +201,15 @@ function deviceStats(){
 const stats={
 Mobile:0,
 Desktop:0,
-Tablet:0,
-Android:0,
-iOS:0,
-Windows:0,
-Mac:0,
-Chrome:0,
-Safari:0,
-Firefox:0
+Tablet:0
 };
 
 filtered.forEach(e=>{
-
 const d=(e.device||"").toLowerCase();
-const os=(e.os||"").toLowerCase();
-const br=(e.browser||"").toLowerCase();
 
 if(d.includes("mobile")) stats.Mobile++;
-if(d.includes("desktop")) stats.Desktop++;
-if(d.includes("tablet")) stats.Tablet++;
-
-if(os.includes("android")) stats.Android++;
-if(os.includes("ios")) stats.iOS++;
-if(os.includes("windows")) stats.Windows++;
-if(os.includes("mac")) stats.Mac++;
-
-if(br.includes("chrome")) stats.Chrome++;
-if(br.includes("safari")) stats.Safari++;
-if(br.includes("firefox")) stats.Firefox++;
+else if(d.includes("tablet")) stats.Tablet++;
+else stats.Desktop++;
 
 });
 
@@ -325,6 +278,8 @@ return(
 
 <>
 
+{/* FILTER BAR */}
+
 <div className="topbar">
 
 <div className="filters">
@@ -337,32 +292,14 @@ return(
 
 </div>
 
-{mode==="custom" && (
-
-<div className="custom">
-
-<input
-type="datetime-local"
-value={startDate}
-onChange={(e)=>setStartDate(e.target.value)}
-/>
-
-<input
-type="datetime-local"
-value={endDate}
-onChange={(e)=>setEndDate(e.target.value)}
-/>
-
-</div>
-
-)}
-
-<button onClick={refreshAnalytics}>
+<button onClick={loadEvents}>
 {loading ? "Refreshing..." : "🔁 Refresh"}
 </button>
 
 </div>
 
+
+{/* MAIN CARDS */}
 
 <div className="analytics-cards">
 
@@ -384,6 +321,8 @@ onChange={(e)=>setEndDate(e.target.value)}
 </div>
 
 
+{/* CHARTS */}
+
 <div className="card">
 <h3>Clicks per Link</h3>
 <Chart links={links} clicks={liveClicks}/>
@@ -391,6 +330,7 @@ onChange={(e)=>setEndDate(e.target.value)}
 
 
 <div className="card">
+
 <h3>Clicks by Hour</h3>
 
 <div className="hour-grid">
@@ -436,6 +376,8 @@ style={{height:(v*6)+10}}
 </div>
 
 
+{/* NEW ANALYTICS */}
+
 <div className="card">
 
 <h3>Devices</h3>
@@ -445,13 +387,6 @@ style={{height:(v*6)+10}}
 <div>Mobile: {devices.Mobile}</div>
 <div>Desktop: {devices.Desktop}</div>
 <div>Tablet: {devices.Tablet}</div>
-
-<div>Android: {devices.Android}</div>
-<div>iOS: {devices.iOS}</div>
-
-<div>Chrome: {devices.Chrome}</div>
-<div>Safari: {devices.Safari}</div>
-<div>Firefox: {devices.Firefox}</div>
 
 </div>
 
