@@ -5,13 +5,13 @@ import { supabase } from "../../lib/supabase";
 
 export default function LinkHistory(){
 
-const [history,setHistory] = useState([]);
+const [items,setItems] = useState([]);
 
 useEffect(()=>{
-loadHistory();
+load();
 },[]);
 
-async function loadHistory(){
+async function load(){
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -20,10 +20,9 @@ const {data} = await supabase
 .from("link_history")
 .select("*")
 .eq("user_id",session.user.id)
-.order("created_at",{ascending:false})
-.limit(100);
+.order("created_at",{ascending:false});
 
-setHistory(data || []);
+setItems(data || []);
 
 }
 
@@ -33,7 +32,13 @@ return(
 
 <h2>Link History</h2>
 
-{history.map(item => (
+{items.length === 0 && (
+<div style={{opacity:.6,marginTop:20}}>
+No link history yet
+</div>
+)}
+
+{items.map(item=>(
 
 <div key={item.id} style={{
 background:"#15151f",
@@ -46,11 +51,11 @@ marginTop:10
 {item.title}
 </div>
 
-<div style={{opacity:.7,fontSize:13}}>
+<div style={{fontSize:13,opacity:.7}}>
 {item.action} • {item.url}
 </div>
 
-<div style={{opacity:.5,fontSize:12}}>
+<div style={{fontSize:12,opacity:.5}}>
 {new Date(item.created_at).toLocaleString()}
 </div>
 
