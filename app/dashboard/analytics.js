@@ -20,8 +20,6 @@ const [endDate,setEndDate] = useState("");
 
 const [loading,setLoading] = useState(false);
 
-/* DATE FILTER */
-
 function filterEvents(){
 
 if(!events.length) return [];
@@ -72,8 +70,6 @@ return t >= start && t <= end;
 
 const filtered = filterEvents();
 
-/* CLICK COUNTS */
-
 function buildClickCounts(){
 
 const counts={};
@@ -81,9 +77,7 @@ const counts={};
 links.forEach(l=>counts[l.id]=0);
 
 filtered.forEach(e=>{
-
 counts[e.block_id]=(counts[e.block_id]||0)+1;
-
 });
 
 setLiveClicks(counts);
@@ -93,8 +87,6 @@ setLiveClicks(counts);
 useEffect(()=>{
 buildClickCounts();
 },[events,mode,startDate,endDate]);
-
-/* REFRESH ANALYTICS */
 
 async function refreshAnalytics(){
 
@@ -115,13 +107,9 @@ setLoading(false);
 
 }
 
-/* TOTAL CLICKS */
-
 function totalClicks(){
 return Object.values(liveClicks).reduce((a,b)=>a+b,0);
 }
-
-/* TOP LINK */
 
 function topLink(){
 
@@ -138,8 +126,6 @@ name=l.title;
 return name;
 
 }
-
-/* TRAFFIC SOURCES */
 
 function trafficSources(){
 
@@ -179,8 +165,6 @@ return sources;
 
 const sources = trafficSources();
 
-/* CLICKS BY HOUR */
-
 function clicksByHour(){
 
 const hours = new Array(24).fill(0);
@@ -195,8 +179,6 @@ return hours;
 }
 
 const hourly = clicksByHour();
-
-/* GROWTH */
 
 function growthRate(){
 
@@ -256,7 +238,58 @@ return(
 <Chart links={links} clicks={liveClicks}/>
 </div>
 
+<div className="card">
+
+<h3>Clicks by Hour</h3>
+
+<div className="hour-grid">
+
+{hourly.map((v,i)=>(
+
+<div key={i} className="hour">
+
+<div
+className="bar"
+style={{height:(v*6)+10}}
+/>
+
+<div className="label">{i}</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
 <Heatmap clickEvents={filtered}/>
+
+<div className="card">
+
+<h3>Traffic Sources</h3>
+
+<div className="sources">
+
+<div>Instagram: {sources.Instagram}</div>
+<div>TikTok: {sources.TikTok}</div>
+<div>YouTube: {sources.YouTube}</div>
+<div>Facebook: {sources.Facebook}</div>
+<div>Twitter: {sources.Twitter}</div>
+<div>Direct: {sources.Direct}</div>
+
+</div>
+
+{Object.entries(sources.Other).map(([d,v])=>(
+
+<div key={d} className="other">
+{d} — {v}
+</div>
+
+))}
+
+</div>
+
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
