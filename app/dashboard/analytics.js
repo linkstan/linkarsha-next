@@ -21,7 +21,7 @@ const [endDate,setEndDate] = useState("");
 const [loading,setLoading] = useState(false);
 
 
-/* LOAD EVENTS WHEN PAGE OPENS */
+/* LOAD EVENTS + REALTIME */
 
 useEffect(()=>{
 
@@ -47,6 +47,7 @@ supabase.removeChannel(channel);
 };
 
 },[]);
+
 
 async function loadEvents(){
 
@@ -105,7 +106,10 @@ else{
 return events;
 }
 
+/* remove bots */
+
 return events.filter(e=>{
+if(e.is_bot) return false;
 const t = new Date(e.created_at);
 return t >= start && t <= end;
 });
@@ -136,7 +140,7 @@ buildClickCounts();
 },[events,mode,startDate,endDate]);
 
 
-/* REFRESH ANALYTICS */
+/* REFRESH */
 
 async function refreshAnalytics(){
 
@@ -218,6 +222,72 @@ return sources;
 const sources = trafficSources();
 
 
+/* DEVICE ANALYTICS */
+
+function deviceStats(){
+
+const stats={
+Mobile:0,
+Desktop:0,
+Tablet:0,
+Android:0,
+iOS:0,
+Windows:0,
+Mac:0,
+Chrome:0,
+Safari:0,
+Firefox:0
+};
+
+filtered.forEach(e=>{
+
+const d=(e.device||"").toLowerCase();
+const os=(e.os||"").toLowerCase();
+const br=(e.browser||"").toLowerCase();
+
+if(d.includes("mobile")) stats.Mobile++;
+if(d.includes("desktop")) stats.Desktop++;
+if(d.includes("tablet")) stats.Tablet++;
+
+if(os.includes("android")) stats.Android++;
+if(os.includes("ios")) stats.iOS++;
+if(os.includes("windows")) stats.Windows++;
+if(os.includes("mac")) stats.Mac++;
+
+if(br.includes("chrome")) stats.Chrome++;
+if(br.includes("safari")) stats.Safari++;
+if(br.includes("firefox")) stats.Firefox++;
+
+});
+
+return stats;
+
+}
+
+const devices=deviceStats();
+
+
+/* CITY ANALYTICS */
+
+function cityStats(){
+
+const cities={};
+
+filtered.forEach(e=>{
+
+if(!e.city) return;
+
+cities[e.city]=(cities[e.city]||0)+1;
+
+});
+
+return cities;
+
+}
+
+const cities=cityStats();
+
+
 /* CLICKS BY HOUR */
 
 function clicksByHour(){
@@ -250,6 +320,7 @@ return "Viral growth";
 
 }
 
+
 return(
 
 <>
@@ -274,14 +345,12 @@ return(
 type="datetime-local"
 value={startDate}
 onChange={(e)=>setStartDate(e.target.value)}
-placeholder="From date"
 />
 
 <input
 type="datetime-local"
 value={endDate}
 onChange={(e)=>setEndDate(e.target.value)}
-placeholder="Till date"
 />
 
 </div>
@@ -293,6 +362,7 @@ placeholder="Till date"
 </button>
 
 </div>
+
 
 <div className="analytics-cards">
 
@@ -313,13 +383,14 @@ placeholder="Till date"
 
 </div>
 
+
 <div className="card">
 <h3>Clicks per Link</h3>
 <Chart links={links} clicks={liveClicks}/>
 </div>
 
-<div className="card">
 
+<div className="card">
 <h3>Clicks by Hour</h3>
 
 <div className="hour-grid">
@@ -343,7 +414,9 @@ style={{height:(v*6)+10}}
 
 </div>
 
+
 <Heatmap clickEvents={filtered}/>
+
 
 <div className="card">
 
@@ -360,112 +433,47 @@ style={{height:(v*6)+10}}
 
 </div>
 
-{Object.entries(sources.Other).map(([d,v])=>(
-
-<div key={d} className="other">
-{d} — {v}
 </div>
 
+
+<div className="card">
+
+<h3>Devices</h3>
+
+<div className="sources">
+
+<div>Mobile: {devices.Mobile}</div>
+<div>Desktop: {devices.Desktop}</div>
+<div>Tablet: {devices.Tablet}</div>
+
+<div>Android: {devices.Android}</div>
+<div>iOS: {devices.iOS}</div>
+
+<div>Chrome: {devices.Chrome}</div>
+<div>Safari: {devices.Safari}</div>
+<div>Firefox: {devices.Firefox}</div>
+
+</div>
+
+</div>
+
+
+<div className="card">
+
+<h3>Top Cities</h3>
+
+{Object.entries(cities).map(([city,count])=>(
+<div key={city}>
+{city} — {count}
+</div>
 ))}
 
 </div>
 
+
 <AIInsights clickEvents={filtered}/>
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
-
-<style jsx>{`
-
-.topbar{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
-
-.filters button{
-background:#1a1a25;
-border:none;
-color:white;
-padding:6px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.custom{
-display:flex;
-gap:10px;
-}
-
-.analytics-cards{
-display:flex;
-gap:20px;
-margin-bottom:30px;
-}
-
-.analytics-card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(14px);
-padding:24px;
-border-radius:16px;
-flex:1;
-text-align:center;
-}
-
-.big{
-font-size:30px;
-margin-top:10px;
-}
-
-.card{
-background:#111;
-padding:25px;
-border-radius:16px;
-margin-bottom:30px;
-}
-
-.hour-grid{
-display:flex;
-align-items:flex-end;
-gap:6px;
-height:120px;
-margin-top:20px;
-}
-
-.hour{
-flex:1;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.bar{
-width:100%;
-background:#7c5cff;
-border-radius:4px 4px 0 0;
-}
-
-.label{
-font-size:10px;
-opacity:.6;
-margin-top:4px;
-}
-
-.sources{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.other{
-margin-top:6px;
-font-size:13px;
-opacity:.7;
-}
-
-`}</style>
 
 </>
 
