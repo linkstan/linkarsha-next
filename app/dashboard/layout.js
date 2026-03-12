@@ -184,7 +184,9 @@ background: pathname === "/dashboard/links" ? "#2a2a2a" : "transparent"
 My Links
 </Link>
 
-<div style={subitem}>Link History</div>
+<Link href="/dashboard/link-history" style={subitem}>
+Link History
+</Link>
 
 <div style={subitem}>Get Verified</div>
 
