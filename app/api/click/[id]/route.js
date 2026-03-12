@@ -6,19 +6,23 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export async function GET(req,{params}){
+export async function GET(request, { params }) {
 
-const blockId = params.id;
+const id = params.id;
+
+if(!id){
+return redirect("/");
+}
 
 /* get block */
 
-const {data:block,error} = await supabase
+const { data: block } = await supabase
 .from("blocks")
 .select("id,user_id,data_json")
-.eq("id",blockId)
+.eq("id", id)
 .single();
 
-if(error || !block){
+if(!block){
 return redirect("/");
 }
 
@@ -32,7 +36,7 @@ event_type:"click"
 
 /* redirect */
 
-const url = block?.data_json?.url;
+const url = block.data_json?.url;
 
 if(!url){
 return redirect("/");
