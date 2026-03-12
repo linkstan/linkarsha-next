@@ -6,9 +6,9 @@ import Analytics from "../analytics";
 
 export default function AnalyticsPage(){
 
-const [links,setLinks] = useState([]);
-const [clicks,setClicks] = useState({});
-const [events,setEvents] = useState([]);
+const [links,setLinks]=useState([]);
+const [clicks,setClicks]=useState({});
+const [events,setEvents]=useState([]);
 
 useEffect(()=>{
 init();
@@ -19,7 +19,7 @@ async function init(){
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
-const uid = session.user.id;
+const uid=session.user.id;
 
 /* LOAD LINKS */
 
@@ -42,9 +42,9 @@ setLinks(linksData);
 
 }
 
-/* LOAD CLICKS */
+/* LOAD EVENTS */
 
-loadClicks(uid);
+loadEvents(uid);
 
 /* REALTIME LISTENER */
 
@@ -61,7 +61,7 @@ payload=>{
 
 if(payload.new.user_id===uid){
 
-loadClicks(uid);
+loadEvents(uid);
 
 }
 
@@ -71,7 +71,7 @@ loadClicks(uid);
 
 }
 
-async function loadClicks(uid){
+async function loadEvents(uid){
 
 const {data:eventData} = await supabase
 .from("events")
