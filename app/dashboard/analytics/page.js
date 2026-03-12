@@ -6,9 +6,9 @@ import Analytics from "../analytics";
 
 export default function AnalyticsPage(){
 
-const [links,setLinks]=useState([]);
-const [clicks,setClicks]=useState({});
-const [events,setEvents]=useState([]);
+const [links,setLinks] = useState([]);
+const [clicks,setClicks] = useState({});
+const [clickEvents,setClickEvents] = useState([]);
 
 useEffect(()=>{
 init();
@@ -19,7 +19,7 @@ async function init(){
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
-const uid=session.user.id;
+const uid = session.user.id;
 
 /* LOAD LINKS */
 
@@ -32,13 +32,13 @@ const {data:blocks} = await supabase
 
 if(blocks){
 
-const linksData = blocks.map(b=>({
+const linkList = blocks.map(b=>({
 id:b.id,
-title:b.data_json?.title,
+title:b.data_json?.title || "Link",
 url:b.data_json?.url
 }));
 
-setLinks(linksData);
+setLinks(linkList);
 
 }
 
@@ -46,25 +46,17 @@ setLinks(linksData);
 
 loadEvents(uid);
 
-/* REALTIME LISTENER */
+/* REALTIME UPDATES */
 
 supabase
 .channel("events")
 .on(
 "postgres_changes",
-{
-event:"INSERT",
-schema:"public",
-table:"events"
-},
+{event:"INSERT",schema:"public",table:"events"},
 payload=>{
-
 if(payload.new.user_id===uid){
-
 loadEvents(uid);
-
 }
-
 }
 )
 .subscribe();
@@ -73,26 +65,22 @@ loadEvents(uid);
 
 async function loadEvents(uid){
 
-const {data:eventData} = await supabase
+const {data} = await supabase
 .from("events")
 .select("*")
 .eq("user_id",uid)
 .eq("event_type","click");
 
-if(!eventData) return;
+if(!data) return;
 
-setEvents(eventData);
+setClickEvents(data);
 
 /* COUNT CLICKS PER LINK */
 
 const counts={};
 
-eventData.forEach(e=>{
-
-if(!e.block_id) return;
-
+data.forEach(e=>{
 counts[e.block_id]=(counts[e.block_id]||0)+1;
-
 });
 
 setClicks(counts);
@@ -104,7 +92,7 @@ return(
 <Analytics
 links={links}
 clicks={clicks}
-clickEvents={events}
+clickEvents={clickEvents}
 />
 
 );
