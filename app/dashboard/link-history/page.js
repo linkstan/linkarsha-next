@@ -5,77 +5,64 @@ import { supabase } from "../../lib/supabase";
 
 export default function LinkHistory(){
 
-const [events,setEvents] = useState([]);
-const [loading,setLoading] = useState(true);
+const [items,setItems] = useState([]);
 
 useEffect(()=>{
-loadHistory();
+load();
 },[]);
 
-async function loadHistory(){
+async function load(){
 
 const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
 
-if(!session){
-return;
-}
-
-const {data,error} = await supabase
-.from("events")
+const {data} = await supabase
+.from("link_history")
 .select("*")
 .eq("user_id",session.user.id)
-.order("created_at",{ascending:false})
-.limit(50);
+.order("created_at",{ascending:false});
 
-setEvents(data || []);
-setLoading(false);
-
-}
-
-if(loading){
-
-return(
-<div style={{padding:20}}>
-Loading history...
-</div>
-)
+setItems(data||[]);
 
 }
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
 <h2>Link History</h2>
 
-{events.length === 0 && (
+{items.length===0 &&(
 <div style={{opacity:.6,marginTop:20}}>
-No activity yet
+No link history yet
 </div>
 )}
 
-{events.map(event=>(
+{items.map(item=>(
 
-<div
-key={event.id}
-style={{
+<div key={item.id} style={{
 background:"#15151f",
 padding:14,
 borderRadius:10,
 marginTop:10
-}}
->
+}}>
 
 <div style={{fontWeight:600}}>
-{event.event_type === "click" ? "Link Clicked" : "Profile Viewed"}
+{item.title || "Link Event"}
 </div>
 
-<div style={{fontSize:12,opacity:.7}}>
-Block ID: {event.block_id || "profile"}
+<div style={{fontSize:13,opacity:.7}}>
+Action: {item.action}
 </div>
+
+{item.url &&(
+<div style={{fontSize:12,opacity:.6}}>
+{item.url}
+</div>
+)}
 
 <div style={{fontSize:12,opacity:.5}}>
-{new Date(event.created_at).toLocaleString()}
+{new Date(item.created_at).toLocaleString()}
 </div>
 
 </div>
