@@ -27,9 +27,7 @@ const [userId,setUserId] = useState(null);
 /* LOAD EVENTS + REALTIME */
 
 useEffect(()=>{
-
 init();
-
 },[]);
 
 
@@ -279,6 +277,19 @@ return "Viral growth";
 }
 
 
+/* SUSPICIOUS TRAFFIC */
+
+function suspiciousTraffic(){
+
+if(!filtered.length) return 0;
+
+const suspicious = filtered.filter(e=>e.fraud_score > 0).length;
+
+return Math.round((suspicious / filtered.length) * 100);
+
+}
+
+
 return(
 
 <>
@@ -333,6 +344,11 @@ onChange={(e)=>setEndDate(e.target.value)}
 <div className="analytics-card glow">
 <h4>Growth</h4>
 <div className="big">{growthRate()}</div>
+</div>
+
+<div className="analytics-card glow">
+<h4>Suspicious Traffic</h4>
+<div className="big">{suspiciousTraffic()}%</div>
 </div>
 
 </div>
