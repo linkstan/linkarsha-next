@@ -23,6 +23,19 @@ return;
 
 const uid=session.user.id;
 
+/* detect user timezone */
+
+const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+/* save timezone */
+
+await supabase
+.from("profiles")
+.update({timezone})
+.eq("id",uid);
+
+/* load profile */
+
 const {data:prof} = await supabase
 .from("profiles")
 .select("*")
@@ -64,13 +77,13 @@ const {data:{session}} = await supabase.auth.getSession();
 
 const uid = session.user.id + ".jpg";
 
-/* upload to storage */
+/* upload */
 
 await supabase.storage
 .from("avatars")
 .upload(uid,file,{upsert:true});
 
-/* get public url */
+/* public url */
 
 const {data} = supabase.storage
 .from("avatars")
@@ -82,8 +95,6 @@ await supabase
 .from("profiles")
 .update({avatar:data.publicUrl})
 .eq("id",session.user.id);
-
-/* update UI */
 
 setProfile({...profile,avatar:data.publicUrl});
 
@@ -110,16 +121,12 @@ return(
 
 <div>
 
-{/* PROFILE HEADER */}
-
 <div style={{
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
 marginTop:20
 }}>
-
-{/* AVATAR */}
 
 <div style={{
 position:"relative",
@@ -164,8 +171,6 @@ onChange={uploadAvatar}
 
 </div>
 
-{/* username */}
-
 <div style={{
 fontSize:34,
 marginTop:20,
@@ -173,8 +178,6 @@ fontWeight:700
 }}>
 @{profile?.username}
 </div>
-
-{/* public link */}
 
 <div style={{
 marginTop:20,
@@ -208,8 +211,6 @@ Share
 </div>
 
 </div>
-
-{/* dashboard text */}
 
 <div style={{
 marginTop:60,
