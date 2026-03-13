@@ -21,12 +21,26 @@ const [endDate,setEndDate] = useState("");
 
 const [loading,setLoading] = useState(false);
 
+const [userId,setUserId] = useState(null);
+
 
 /* LOAD EVENTS + REALTIME */
 
 useEffect(()=>{
 
-loadEvents();
+init();
+
+},[]);
+
+
+async function init(){
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+setUserId(session.user.id);
+
+loadEvents(session.user.id);
 
 /* realtime clicks */
 
@@ -40,7 +54,11 @@ schema:"public",
 table:"events"
 },
 payload=>{
+
+if(payload.new.user_id === session.user.id){
 setEvents(prev=>[payload.new,...prev]);
+}
+
 }
 )
 .subscribe();
@@ -64,15 +82,17 @@ supabase.removeChannel(channel);
 clearInterval(visitorTimer);
 };
 
-},[events]);
+}
 
 
-async function loadEvents(){
+
+async function loadEvents(uid){
 
 const { data } = await supabase
 .from("events")
 .select("*")
-.eq("event_type","click");
+.eq("event_type","click")
+.eq("user_id",uid);
 
 if(data){
 setEvents(data);
