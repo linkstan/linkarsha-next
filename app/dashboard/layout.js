@@ -272,11 +272,11 @@ background: pathname.startsWith("/dashboard/tools/ai-bio-generator") ? "#2a2a2a"
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/smart-links" style={{
+<Link href="/dashboard/tools/qr-code" style={{
 ...subitem,
-background: pathname.startsWith("/dashboard/tools/smart-links") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/tools/qr-code") ? "#2a2a2a" : "transparent"
 }}>
-Smart Links
+QR Code Generator
 </Link>
 
 <Link href="/dashboard/tools/export-data" style={{
