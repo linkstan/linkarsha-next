@@ -23,11 +23,12 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* auto open parent menus when inside page */
+/* auto open parent menus */
 
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
 if(pathname.startsWith("/dashboard/appearance")) setOpenAppearance(true);
+if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
 },[pathname]);
 
 useEffect(()=>{
@@ -261,11 +262,32 @@ background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
 </div>
 
 {openTools && (
+
 <div style={submenu}>
-<div style={subitem}>AI Bio Generator</div>
-<div style={subitem}>Smart Links</div>
-<div style={subitem}>Export Data</div>
+
+<Link href="/dashboard/tools/ai-bio-generator" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/ai-bio-generator") ? "#2a2a2a" : "transparent"
+}}>
+AI Bio Generator
+</Link>
+
+<Link href="/dashboard/tools/smart-links" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/smart-links") ? "#2a2a2a" : "transparent"
+}}>
+Smart Links
+</Link>
+
+<Link href="/dashboard/tools/export-data" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/export-data") ? "#2a2a2a" : "transparent"
+}}>
+Export Data
+</Link>
+
 </div>
+
 )}
 
 {/* REFERRALS */}
