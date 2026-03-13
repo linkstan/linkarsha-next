@@ -34,7 +34,6 @@ if(/tablet/i.test(ua)) device="tablet";
 /* BROWSER */
 
 let browser="unknown";
-
 if(/chrome/i.test(ua)) browser="chrome";
 else if(/safari/i.test(ua)) browser="safari";
 else if(/firefox/i.test(ua)) browser="firefox";
@@ -43,7 +42,6 @@ else if(/edge/i.test(ua)) browser="edge";
 /* OS */
 
 let os="unknown";
-
 if(/android/i.test(ua)) os="android";
 else if(/iphone|ipad/i.test(ua)) os="ios";
 else if(/windows/i.test(ua)) os="windows";
@@ -54,30 +52,50 @@ else if(/mac/i.test(ua)) os="mac";
 let isBot=false;
 if(/bot|crawl|spider/i.test(ua)) isBot=true;
 
-/* IP ADDRESS */
+/* IP */
 
 const ip =
 req.headers.get("x-forwarded-for") ||
 req.headers.get("x-real-ip") ||
 "unknown";
 
-/* DUPLICATE CLICK PROTECTION (same IP within 10 seconds) */
+/* FRAUD SCORE */
+
+let fraudScore = 0;
+
+if(isBot) fraudScore += 5;
+
+/* DUPLICATE CLICK CHECK */
 
 const tenSecondsAgo = new Date(Date.now() - 10000).toISOString();
 
 const {data:recent}=await supabase
 .from("events")
+.select("*")
+.eq("block_id",blockId)
+.eq("ip",ip)
+.gte("created_at",tenSecondsAgo);
+
+if(recent && recent.length>0){
+fraudScore += 2;
+}
+
+/* RAPID SPAM CHECK */
+
+const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
+
+const {data:spamClicks}=await supabase
+.from("events")
 .select("id")
 .eq("block_id",blockId)
 .eq("ip",ip)
-.gte("created_at",tenSecondsAgo)
-.limit(1);
+.gte("created_at",oneMinuteAgo);
 
-const isDuplicate = recent && recent.length>0;
+if(spamClicks && spamClicks.length>5){
+fraudScore += 3;
+}
 
-/* SAVE EVENT IF NOT DUPLICATE */
-
-if(!isDuplicate){
+/* SAVE EVENT */
 
 await supabase.from("events").insert({
 user_id:block.user_id,
@@ -88,10 +106,9 @@ browser:browser,
 os:os,
 ip:ip,
 is_bot:isBot,
+fraud_score:fraudScore,
 created_at:new Date()
 });
-
-}
 
 /* REDIRECT */
 
