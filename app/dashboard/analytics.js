@@ -22,6 +22,7 @@ const [endDate,setEndDate] = useState("");
 const [loading,setLoading] = useState(false);
 
 const [userId,setUserId] = useState(null);
+const [timezone,setTimezone] = useState("UTC");
 
 
 /* LOAD EVENTS + REALTIME */
@@ -37,6 +38,20 @@ const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
 setUserId(session.user.id);
+
+/* get user timezone */
+
+const {data:prof}=await supabase
+.from("profiles")
+.select("timezone")
+.eq("id",session.user.id)
+.single();
+
+if(prof?.timezone){
+setTimezone(prof.timezone);
+}
+
+/* load events */
 
 loadEvents(session.user.id);
 
@@ -99,6 +114,15 @@ setEvents(data);
 }
 
 
+/* TIMEZONE HELPER */
+
+function tzDate(date){
+return new Date(
+new Date(date).toLocaleString("en-US",{timeZone:timezone})
+);
+}
+
+
 /* DATE FILTER */
 
 function filterEvents(){
@@ -144,7 +168,7 @@ return events;
 
 return events.filter(e=>{
 if(e.is_bot) return false;
-const t = new Date(e.created_at);
+const t = tzDate(e.created_at);
 return t >= start && t <= end;
 });
 
@@ -244,14 +268,14 @@ return cities;
 const cities=cityStats();
 
 
-/* CLICKS BY HOUR */
+/* CLICKS BY HOUR (TIMEZONE FIXED) */
 
 function clicksByHour(){
 
 const hours = new Array(24).fill(0);
 
 filtered.forEach(c=>{
-const hour = new Date(c.created_at).getHours();
+const hour = tzDate(c.created_at).getHours();
 hours[hour]++;
 });
 
@@ -495,7 +519,7 @@ margin-top:20px;
 flex:1;
 display:flex;
 flex-direction:column;
-align-items:center;
+alignItems:center;
 }
 
 .bar{
