@@ -18,7 +18,16 @@ setLoading(true);
 
 const {data} = await supabase
 .from("verification_requests")
-.select("*")
+.select(`
+id,
+user_id,
+status,
+created_at,
+profiles (
+username,
+avatar
+)
+`)
 .order("created_at",{ascending:false});
 
 setRequests(data || []);
@@ -77,24 +86,41 @@ No verification requests
 background:"#15151f",
 padding:15,
 borderRadius:10,
-marginTop:10
+marginTop:10,
+display:"flex",
+alignItems:"center",
+justifyContent:"space-between"
 }}>
+
+<div style={{display:"flex",alignItems:"center",gap:10}}>
+
+<img
+src={r.profiles?.avatar || "/default-avatar.png"}
+style={{
+width:36,
+height:36,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+<div>
 
 <div style={{fontWeight:600}}>
-User ID: {r.user_id}
+@{r.profiles?.username || "unknown"}
 </div>
 
-<div style={{
-opacity:.6,
-fontSize:13,
-marginTop:4
-}}>
+<div style={{opacity:.6,fontSize:12}}>
 Status: {r.status}
+</div>
+
+</div>
+
 </div>
 
 {r.status==="pending" && (
 
-<div style={{marginTop:10,display:"flex",gap:10}}>
+<div style={{display:"flex",gap:10}}>
 
 <button
 onClick={()=>approve(r.user_id)}
