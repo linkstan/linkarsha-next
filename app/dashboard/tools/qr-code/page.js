@@ -7,7 +7,7 @@ import QRCode from "qrcode";
 export default function QRGenerator(){
 
 const [username,setUsername]=useState("");
-const [url,setUrl]=useState("");
+const [inputUrl,setInputUrl]=useState("");
 const [qr,setQr]=useState("");
 
 const [color,setColor]=useState("#000000");
@@ -15,10 +15,9 @@ const [bgColor,setBgColor]=useState("#ffffff");
 
 const [logo,setLogo]=useState(null);
 
-const [style,setStyle]=useState("square");
-const [frame,setFrame]=useState(false);
+const [style,setStyle]=useState("classic");
 
-/* LOAD USER */
+const [profileUrl,setProfileUrl]=useState("");
 
 useEffect(()=>{
 loadProfile();
@@ -36,19 +35,23 @@ const {data}=await supabase
 
 setUsername(data.username);
 
-const profileLink=`https://linkarsha-next.vercel.app/${data.username}`;
+const link=`https://linkarsha-next.vercel.app/${data.username}`;
 
-setUrl(profileLink);
+setProfileUrl(link);
+
+/* show profile QR automatically */
+
+generateQR(link);
 
 }
 
-/* AUTO REGENERATE QR */
+/* regenerate automatically when settings change */
 
 useEffect(()=>{
-if(url){
-generateQR(url);
+if(qr){
+generateQR(inputUrl || profileUrl);
 }
-},[url,color,bgColor,logo,style]);
+},[color,bgColor,style]);
 
 async function generateQR(link){
 
@@ -65,29 +68,37 @@ setQr(qrData);
 
 }
 
-/* QUICK LINKS */
+/* buttons */
 
 function profileQR(){
-setUrl(`https://linkarsha-next.vercel.app/${username}`);
+setInputUrl(profileUrl);
+generateQR(profileUrl);
 }
 
 function instagramQR(){
-setUrl(`https://instagram.com/${username}`);
+const link=`https://instagram.com/${username}`;
+setInputUrl(link);
+generateQR(link);
 }
 
 function youtubeQR(){
-setUrl(`https://youtube.com/@${username}`);
+const link=`https://youtube.com/@${username}`;
+setInputUrl(link);
+generateQR(link);
 }
 
 function customQR(){
-if(!url){
+
+if(!inputUrl){
 alert("Enter URL");
 return;
 }
-generateQR(url);
+
+generateQR(inputUrl);
+
 }
 
-/* DOWNLOAD */
+/* download */
 
 function download(){
 
@@ -98,7 +109,7 @@ a.click();
 
 }
 
-/* LOGO */
+/* logo */
 
 function handleLogo(e){
 
@@ -122,10 +133,10 @@ return(
 <h2>QR Code Generator</h2>
 
 <p style={{opacity:.7}}>
-Create branded QR codes for your profile or links.
+Create QR codes for your profile or any link.
 </p>
 
-{/* QUICK BUTTONS */}
+{/* quick buttons */}
 
 <div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
 
@@ -135,82 +146,65 @@ Create branded QR codes for your profile or links.
 
 </div>
 
-{/* CUSTOM URL */}
+{/* custom url */}
 
 <div style={{marginTop:20}}>
 
 <input
 placeholder="Enter custom URL"
-value={url}
-onChange={(e)=>setUrl(e.target.value)}
+value={inputUrl}
+onChange={(e)=>setInputUrl(e.target.value)}
 style={input}
 />
 
+<button
+onClick={customQR}
+style={{...btn,marginTop:10}}
+>
+Generate QR
+</button>
+
 </div>
 
-{/* COLORS */}
+{/* colors */}
 
 <div style={{marginTop:25,display:"flex",gap:30}}>
 
 <div>
-<div style={{fontSize:12,opacity:.7}}>QR Color</div>
+<div style={label}>QR Color</div>
 <input type="color" value={color} onChange={(e)=>setColor(e.target.value)} />
 </div>
 
 <div>
-<div style={{fontSize:12,opacity:.7}}>Background</div>
+<div style={label}>Background</div>
 <input type="color" value={bgColor} onChange={(e)=>setBgColor(e.target.value)} />
 </div>
 
 </div>
 
-{/* STYLE */}
+{/* style selector */}
 
 <div style={{marginTop:25}}>
 
-<div style={{fontSize:12,opacity:.7}}>Dot Style</div>
+<div style={label}>QR Style</div>
 
 <select
 value={style}
 onChange={(e)=>setStyle(e.target.value)}
-style={{
-marginTop:5,
-padding:8,
-background:"#111",
-color:"white",
-border:"1px solid #333"
-}}
+style={select}
 >
-<option value="square">Square</option>
+<option value="classic">Classic</option>
 <option value="rounded">Rounded</option>
-<option value="dots">Dots</option>
+<option value="soft">Soft</option>
 </select>
 
 </div>
 
-{/* FRAME */}
+{/* logo */}
 
 <div style={{marginTop:20}}>
 
-<label style={{display:"flex",gap:8,alignItems:"center"}}>
-
-<input
-type="checkbox"
-checked={frame}
-onChange={(e)=>setFrame(e.target.checked)}
-/>
-
-Add Frame
-
-</label>
-
-</div>
-
-{/* LOGO */}
-
-<div style={{marginTop:20}}>
-
-<div style={{fontSize:12,opacity:.7}}>Logo inside QR</div>
+<div style={label}>Logo inside QR</div>
 
 <input
 type="file"
@@ -220,7 +214,7 @@ onChange={handleLogo}
 
 </div>
 
-{/* QR PREVIEW */}
+{/* preview */}
 
 <div style={{marginTop:35}}>
 
@@ -233,8 +227,7 @@ background:bgColor,
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
-borderRadius:frame ? 20 : 10,
-border: frame ? "8px solid #000" : "none",
+borderRadius:16,
 position:"relative"
 }}>
 
@@ -243,31 +236,39 @@ src={qr}
 style={{
 width:240,
 height:240,
-borderRadius: style==="rounded" ? 20 : 0
+borderRadius: style==="rounded" ? 30 : style==="soft" ? 15 : 0
 }}
 />
 
 {logo && (
 
+<div style={{
+position:"absolute",
+background:"white",
+padding:8,
+borderRadius:12
+}}>
+
 <img
 src={logo}
 style={{
-width:70,
-height:70,
-position:"absolute",
+width:60,
+height:60,
 borderRadius:10
 }}
 />
 
-)}
-
 </div>
 
 )}
 
 </div>
 
-{/* DOWNLOAD */}
+)}
+
+</div>
+
+{/* download */}
 
 <button
 onClick={download}
@@ -296,4 +297,17 @@ padding:12,
 background:"#111",
 border:"1px solid #333",
 color:"white"
+};
+
+const select={
+marginTop:5,
+padding:8,
+background:"#111",
+color:"white",
+border:"1px solid #333"
+};
+
+const label={
+fontSize:12,
+opacity:.7
 };
