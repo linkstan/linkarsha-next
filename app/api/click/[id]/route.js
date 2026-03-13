@@ -9,6 +9,8 @@ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 const blockId=params.id;
 
+/* GET BLOCK */
+
 const {data:block}=await supabase
 .from("blocks")
 .select("*")
@@ -26,7 +28,6 @@ const ua=req.headers.get("user-agent")||"";
 /* DEVICE */
 
 let device="desktop";
-
 if(/mobile/i.test(ua)) device="mobile";
 if(/tablet/i.test(ua)) device="tablet";
 
@@ -51,10 +52,32 @@ else if(/mac/i.test(ua)) os="mac";
 /* BOT DETECTION */
 
 let isBot=false;
-
 if(/bot|crawl|spider/i.test(ua)) isBot=true;
 
-/* SAVE EVENT */
+/* IP ADDRESS */
+
+const ip =
+req.headers.get("x-forwarded-for") ||
+req.headers.get("x-real-ip") ||
+"unknown";
+
+/* DUPLICATE CLICK PROTECTION (same IP within 10 seconds) */
+
+const tenSecondsAgo = new Date(Date.now() - 10000).toISOString();
+
+const {data:recent}=await supabase
+.from("events")
+.select("id")
+.eq("block_id",blockId)
+.eq("ip",ip)
+.gte("created_at",tenSecondsAgo)
+.limit(1);
+
+const isDuplicate = recent && recent.length>0;
+
+/* SAVE EVENT IF NOT DUPLICATE */
+
+if(!isDuplicate){
 
 await supabase.from("events").insert({
 user_id:block.user_id,
@@ -63,9 +86,12 @@ event_type:"click",
 device:device,
 browser:browser,
 os:os,
+ip:ip,
 is_bot:isBot,
 created_at:new Date()
 });
+
+}
 
 /* REDIRECT */
 
