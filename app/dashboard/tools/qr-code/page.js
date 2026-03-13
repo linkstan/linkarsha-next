@@ -39,16 +39,14 @@ const link=`https://linkarsha-next.vercel.app/${data.username}`;
 
 setProfileUrl(link);
 
-/* show profile QR automatically */
-
 generateQR(link);
 
 }
 
-/* regenerate automatically when settings change */
+/* regenerate QR instantly when settings change */
 
 useEffect(()=>{
-if(qr){
+if(profileUrl){
 generateQR(inputUrl || profileUrl);
 }
 },[color,bgColor,style]);
@@ -126,6 +124,22 @@ reader.readAsDataURL(file);
 
 }
 
+/* style visual effect */
+
+function getStyle(){
+
+if(style==="rounded"){
+return {borderRadius:40};
+}
+
+if(style==="soft"){
+return {filter:"blur(0.4px)"};
+}
+
+return {};
+
+}
+
 return(
 
 <div style={{maxWidth:720}}>
@@ -136,8 +150,6 @@ return(
 Create QR codes for your profile or any link.
 </p>
 
-{/* quick buttons */}
-
 <div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
 
 <button onClick={profileQR} style={btn}>Profile</button>
@@ -145,8 +157,6 @@ Create QR codes for your profile or any link.
 <button onClick={youtubeQR} style={btn}>YouTube</button>
 
 </div>
-
-{/* custom url */}
 
 <div style={{marginTop:20}}>
 
@@ -166,8 +176,6 @@ Generate QR
 
 </div>
 
-{/* colors */}
-
 <div style={{marginTop:25,display:"flex",gap:30}}>
 
 <div>
@@ -181,8 +189,6 @@ Generate QR
 </div>
 
 </div>
-
-{/* style selector */}
 
 <div style={{marginTop:25}}>
 
@@ -200,8 +206,6 @@ style={select}
 
 </div>
 
-{/* logo */}
-
 <div style={{marginTop:20}}>
 
 <div style={label}>Logo inside QR</div>
@@ -213,8 +217,6 @@ onChange={handleLogo}
 />
 
 </div>
-
-{/* preview */}
 
 <div style={{marginTop:35}}>
 
@@ -236,7 +238,7 @@ src={qr}
 style={{
 width:240,
 height:240,
-borderRadius: style==="rounded" ? 30 : style==="soft" ? 15 : 0
+...getStyle()
 }}
 />
 
@@ -267,8 +269,6 @@ borderRadius:10
 )}
 
 </div>
-
-{/* download */}
 
 <button
 onClick={download}
