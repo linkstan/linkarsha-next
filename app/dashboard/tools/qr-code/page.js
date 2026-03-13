@@ -7,14 +7,18 @@ import QRCode from "qrcode";
 export default function QRGenerator(){
 
 const [username,setUsername]=useState("");
-const [inputUrl,setInputUrl]=useState("");
+const [url,setUrl]=useState("");
 const [qr,setQr]=useState("");
 
 const [color,setColor]=useState("#000000");
 const [bgColor,setBgColor]=useState("#ffffff");
 
 const [logo,setLogo]=useState(null);
-const [loading,setLoading]=useState(false);
+
+const [style,setStyle]=useState("square");
+const [frame,setFrame]=useState(false);
+
+/* LOAD USER */
 
 useEffect(()=>{
 loadProfile();
@@ -34,15 +38,21 @@ setUsername(data.username);
 
 const profileLink=`https://linkarsha-next.vercel.app/${data.username}`;
 
-generateQR(profileLink);
+setUrl(profileLink);
 
 }
 
-async function generateQR(url){
+/* AUTO REGENERATE QR */
 
-setLoading(true);
+useEffect(()=>{
+if(url){
+generateQR(url);
+}
+},[url,color,bgColor,logo,style]);
 
-const qrData = await QRCode.toDataURL(url,{
+async function generateQR(link){
+
+const qrData = await QRCode.toDataURL(link,{
 color:{
 dark:color,
 light:bgColor
@@ -53,42 +63,28 @@ width:500
 
 setQr(qrData);
 
-setLoading(false);
-
 }
 
-/* QUICK GENERATORS */
+/* QUICK LINKS */
 
 function profileQR(){
-
-const link=`https://linkarsha-next.vercel.app/${username}`;
-generateQR(link);
-
+setUrl(`https://linkarsha-next.vercel.app/${username}`);
 }
 
 function instagramQR(){
-
-const link=`https://instagram.com/${username}`;
-generateQR(link);
-
+setUrl(`https://instagram.com/${username}`);
 }
 
 function youtubeQR(){
-
-const link=`https://youtube.com/@${username}`;
-generateQR(link);
-
+setUrl(`https://youtube.com/@${username}`);
 }
 
 function customQR(){
-
-if(!inputUrl){
+if(!url){
 alert("Enter URL");
 return;
 }
-
-generateQR(inputUrl);
-
+generateQR(url);
 }
 
 /* DOWNLOAD */
@@ -102,7 +98,7 @@ a.click();
 
 }
 
-/* LOGO UPLOAD */
+/* LOGO */
 
 function handleLogo(e){
 
@@ -121,21 +117,21 @@ reader.readAsDataURL(file);
 
 return(
 
-<div style={{maxWidth:700}}>
+<div style={{maxWidth:720}}>
 
 <h2>QR Code Generator</h2>
 
 <p style={{opacity:.7}}>
-Create QR codes for your profile or any link.
+Create branded QR codes for your profile or links.
 </p>
 
 {/* QUICK BUTTONS */}
 
-<div style={{marginTop:20,display:"flex",gap:10,flexWrap:"wrap"}}>
+<div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
 
-<button onClick={profileQR} style={btn}>Profile QR</button>
-<button onClick={instagramQR} style={btn}>Instagram QR</button>
-<button onClick={youtubeQR} style={btn}>YouTube QR</button>
+<button onClick={profileQR} style={btn}>Profile</button>
+<button onClick={instagramQR} style={btn}>Instagram</button>
+<button onClick={youtubeQR} style={btn}>YouTube</button>
 
 </div>
 
@@ -145,38 +141,76 @@ Create QR codes for your profile or any link.
 
 <input
 placeholder="Enter custom URL"
-value={inputUrl}
-onChange={(e)=>setInputUrl(e.target.value)}
+value={url}
+onChange={(e)=>setUrl(e.target.value)}
 style={input}
 />
 
-<button onClick={customQR} style={{...btn,marginTop:10}}>
-Generate QR
-</button>
-
 </div>
 
-{/* COLOR SETTINGS */}
+{/* COLORS */}
 
-<div style={{marginTop:30,display:"flex",gap:20}}>
+<div style={{marginTop:25,display:"flex",gap:30}}>
 
 <div>
-<label>QR Color</label>
-<input type="color" value={color} onChange={(e)=>setColor(e.target.value)}/>
+<div style={{fontSize:12,opacity:.7}}>QR Color</div>
+<input type="color" value={color} onChange={(e)=>setColor(e.target.value)} />
 </div>
 
 <div>
-<label>Background</label>
-<input type="color" value={bgColor} onChange={(e)=>setBgColor(e.target.value)}/>
+<div style={{fontSize:12,opacity:.7}}>Background</div>
+<input type="color" value={bgColor} onChange={(e)=>setBgColor(e.target.value)} />
 </div>
 
 </div>
 
-{/* LOGO UPLOAD */}
+{/* STYLE */}
+
+<div style={{marginTop:25}}>
+
+<div style={{fontSize:12,opacity:.7}}>Dot Style</div>
+
+<select
+value={style}
+onChange={(e)=>setStyle(e.target.value)}
+style={{
+marginTop:5,
+padding:8,
+background:"#111",
+color:"white",
+border:"1px solid #333"
+}}
+>
+<option value="square">Square</option>
+<option value="rounded">Rounded</option>
+<option value="dots">Dots</option>
+</select>
+
+</div>
+
+{/* FRAME */}
 
 <div style={{marginTop:20}}>
 
-<label>Logo inside QR</label>
+<label style={{display:"flex",gap:8,alignItems:"center"}}>
+
+<input
+type="checkbox"
+checked={frame}
+onChange={(e)=>setFrame(e.target.checked)}
+/>
+
+Add Frame
+
+</label>
+
+</div>
+
+{/* LOGO */}
+
+<div style={{marginTop:20}}>
+
+<div style={{fontSize:12,opacity:.7}}>Logo inside QR</div>
 
 <input
 type="file"
@@ -188,26 +222,28 @@ onChange={handleLogo}
 
 {/* QR PREVIEW */}
 
-<div style={{marginTop:30}}>
+<div style={{marginTop:35}}>
 
 {qr && (
 
 <div style={{
-width:260,
-height:260,
+width:280,
+height:280,
 background:bgColor,
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
-position:"relative",
-borderRadius:12
+borderRadius:frame ? 20 : 10,
+border: frame ? "8px solid #000" : "none",
+position:"relative"
 }}>
 
 <img
 src={qr}
 style={{
 width:240,
-height:240
+height:240,
+borderRadius: style==="rounded" ? 20 : 0
 }}
 />
 
@@ -216,8 +252,8 @@ height:240
 <img
 src={logo}
 style={{
-width:60,
-height:60,
+width:70,
+height:70,
 position:"absolute",
 borderRadius:10
 }}
@@ -235,7 +271,7 @@ borderRadius:10
 
 <button
 onClick={download}
-style={{...btn,marginTop:20}}
+style={{...btn,marginTop:25}}
 >
 Download QR
 </button>
@@ -259,6 +295,5 @@ width:"100%",
 padding:12,
 background:"#111",
 border:"1px solid #333",
-color:"white",
-marginTop:10
+color:"white"
 };
