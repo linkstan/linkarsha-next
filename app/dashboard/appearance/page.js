@@ -6,7 +6,6 @@ import { supabase } from "../../lib/supabase";
 export default function Appearance(){
 
 const [section,setSection] = useState("main");
-
 const [user,setUser] = useState(null);
 
 const [displayName,setDisplayName] = useState("@username");
@@ -20,31 +19,10 @@ const [pageTextColor,setPageTextColor] = useState("#ffffff");
 const [titleTextColor,setTitleTextColor] = useState("#ffffff");
 
 const fonts = [
-"Inter",
-"Poppins",
-"Montserrat",
-"Roboto",
-"Open Sans",
-"Nunito",
-"Oswald",
-"Lato",
-"Raleway",
-"Playfair Display",
-"Bebas Neue",
-"Anton",
-"Rubik",
-"DM Sans",
-"Manrope",
-"Archivo",
-"Cabin",
-"Josefin Sans",
-"Work Sans",
-"Kanit",
-"Outfit",
-"Space Grotesk",
-"Exo",
-"Orbitron",
-"Barlow"
+"Inter","Poppins","Montserrat","Roboto","Open Sans","Nunito","Oswald",
+"Lato","Raleway","Playfair Display","Bebas Neue","Anton","Rubik",
+"DM Sans","Manrope","Archivo","Cabin","Josefin Sans","Work Sans",
+"Kanit","Outfit","Space Grotesk","Exo","Orbitron","Barlow"
 ];
 
 useEffect(()=>{
@@ -71,7 +49,7 @@ setDisplayName(prof.display_name);
 }
 
 
-/* MAIN SCREEN */
+/* MAIN */
 
 if(section==="main"){
 
@@ -92,25 +70,23 @@ marginBottom:30
 }}>
 
 <div>Custom</div>
-<div style={{opacity:0.6}}>More ></div>
+<div style={{opacity:0.6}}>More {" >"}</div>
 
 </div>
 
-
 <h3 style={{marginBottom:10}}>Customize theme</h3>
 
-<div style={card} onClick={()=>setSection("header")}>Header ></div>
-<div style={card} onClick={()=>setSection("wallpaper")}>Wallpaper ></div>
-<div style={card} onClick={()=>setSection("buttons")}>Buttons ></div>
-<div style={card} onClick={()=>setSection("text")}>Text ></div>
-<div style={card} onClick={()=>setSection("colors")}>Colors ></div>
+<div style={card} onClick={()=>setSection("header")}>Header {" >"}</div>
+<div style={card} onClick={()=>setSection("wallpaper")}>Wallpaper {" >"}</div>
+<div style={card} onClick={()=>setSection("buttons")}>Buttons {" >"}</div>
+<div style={card} onClick={()=>setSection("text")}>Text {" >"}</div>
+<div style={card} onClick={()=>setSection("colors")}>Colors {" >"}</div>
 
 </div>
 
 );
 
 }
-
 
 
 /* HEADER */
@@ -122,9 +98,8 @@ return(
 <div style={{maxWidth:600}}>
 
 <div style={back} onClick={()=>setSection("main")}>
-&lt; Header
+{"<"} Header
 </div>
-
 
 <h3 style={{marginTop:20}}>Profile Picture</h3>
 
@@ -147,16 +122,12 @@ background:"#333"
 </div>
 
 
-
 <h3>Profile Picture Layout</h3>
 
 <div style={{display:"flex",gap:10,marginBottom:20}}>
-
 <div style={selectBox}>Classic</div>
 <div style={selectBox}>Hero</div>
-
 </div>
-
 
 
 <h3>Display Name</h3>
@@ -166,7 +137,6 @@ value={displayName}
 onChange={(e)=>setDisplayName(e.target.value)}
 style={input}
 />
-
 
 
 <h3 style={{marginTop:20}}>Display Name Font</h3>
@@ -182,7 +152,6 @@ style={input}
 ))}
 
 </select>
-
 
 
 <h3 style={{marginTop:20}}>Display Name Font Color</h3>
@@ -201,7 +170,6 @@ style={colorInput}
 }
 
 
-
 /* WALLPAPER */
 
 if(section==="wallpaper"){
@@ -211,7 +179,7 @@ return(
 <div style={{maxWidth:600}}>
 
 <div style={back} onClick={()=>setSection("main")}>
-&lt; Wallpaper
+{"<"} Wallpaper
 </div>
 
 <h3 style={{marginTop:20}}>Wallpaper Style</h3>
@@ -234,7 +202,6 @@ return(
 }
 
 
-
 /* BUTTONS */
 
 if(section==="buttons"){
@@ -244,29 +211,25 @@ return(
 <div style={{maxWidth:600}}>
 
 <div style={back} onClick={()=>setSection("main")}>
-&lt; Buttons
+{"<"} Buttons
 </div>
 
 <h3 style={{marginTop:20}}>Button Style</h3>
 
 <div style={{display:"flex",gap:10,marginBottom:20}}>
-
 <div style={selectBox}>Solid</div>
 <div style={selectBox}>Glass</div>
 <div style={selectBox}>Outline</div>
-
 </div>
 
 
 <h3>Corner Roundness</h3>
 
 <div style={{display:"flex",gap:10,marginBottom:20}}>
-
 <div style={selectBox}>Square</div>
 <div style={selectBox}>Round</div>
 <div style={selectBox}>Rounder</div>
 <div style={selectBox}>Full</div>
-
 </div>
 
 
@@ -296,7 +259,6 @@ style={colorInput}
 }
 
 
-
 /* TEXT */
 
 if(section==="text"){
@@ -306,9 +268,8 @@ return(
 <div style={{maxWidth:600}}>
 
 <div style={back} onClick={()=>setSection("main")}>
-&lt; Text
+{"<"} Text
 </div>
-
 
 <h3 style={{marginTop:20}}>Page Font</h3>
 
@@ -351,10 +312,8 @@ style={colorInput}
 <h3 style={{marginTop:20}}>Title Size</h3>
 
 <div style={{display:"flex",gap:10}}>
-
 <div style={selectBox}>Small</div>
 <div style={selectBox}>Large</div>
-
 </div>
 
 </div>
@@ -362,7 +321,6 @@ style={colorInput}
 );
 
 }
-
 
 
 /* COLORS */
@@ -374,9 +332,8 @@ return(
 <div style={{maxWidth:600}}>
 
 <div style={back} onClick={()=>setSection("main")}>
-&lt; Colors
+{"<"} Colors
 </div>
-
 
 <h3 style={{marginTop:20}}>Buttons</h3>
 
