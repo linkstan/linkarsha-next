@@ -1,86 +1,154 @@
 "use client";
 
-import { useEffect,useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { useState } from "react";
 
 export default function Appearance(){
 
-const [section,setSection] = useState("main");
-const [user,setUser] = useState(null);
+const [page,setPage] = useState("main");
 
-const [displayName,setDisplayName] = useState("@username");
-const [displayFont,setDisplayFont] = useState("Inter");
-const [displayColor,setDisplayColor] = useState("#ffffff");
+const card = {
+background:"#151827",
+padding:"18px",
+borderRadius:"14px",
+display:"flex",
+alignItems:"center",
+justifyContent:"space-between",
+marginBottom:"14px",
+cursor:"pointer"
+};
 
-const [buttonColor,setButtonColor] = useState("#ffffff");
-const [buttonTextColor,setButtonTextColor] = useState("#000000");
+const sectionTitle={
+fontSize:"20px",
+fontWeight:"600",
+marginTop:"30px",
+marginBottom:"10px"
+};
 
-const [pageTextColor,setPageTextColor] = useState("#ffffff");
-const [titleTextColor,setTitleTextColor] = useState("#ffffff");
-
-const fonts = [
-"Inter","Poppins","Montserrat","Roboto","Open Sans","Nunito","Oswald",
-"Lato","Raleway","Playfair Display","Bebas Neue","Anton","Rubik",
-"DM Sans","Manrope","Archivo","Cabin","Josefin Sans","Work Sans",
-"Kanit","Outfit","Space Grotesk","Exo","Orbitron","Barlow"
-];
-
-useEffect(()=>{
-init();
-},[]);
-
-async function init(){
-
-const {data:{session}} = await supabase.auth.getSession();
-if(!session) return;
-
-setUser(session.user);
-
-const {data:prof} = await supabase
-.from("profiles")
-.select("display_name")
-.eq("id",session.user.id)
-.single();
-
-if(prof?.display_name){
-setDisplayName(prof.display_name);
-}
-
-}
-
-
-/* MAIN */
-
-if(section==="main"){
-
-return(
-
-<div style={{maxWidth:600}}>
-
-<h2 style={{marginBottom:20}}>Theme</h2>
-
-<div style={{
-background:"#1a1a25",
-padding:20,
-borderRadius:14,
+const inputRow={
+background:"#0d1020",
+border:"1px solid #333",
+borderRadius:"30px",
+padding:"14px 18px",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
-marginBottom:30
+marginBottom:"22px"
+};
+
+
+
+/* MAIN PAGE */
+
+if(page==="main"){
+
+return(
+
+<div style={{maxWidth:650}}>
+
+<h2 style={{marginBottom:15}}>Theme</h2>
+
+<div style={{
+background:"#1b1e30",
+padding:"20px",
+borderRadius:"18px",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+marginBottom:"25px"
 }}>
 
+<div style={{display:"flex",alignItems:"center",gap:15}}>
+<div style={{
+width:55,
+height:55,
+borderRadius:"12px",
+background:"linear-gradient(45deg,#ff7a18,#ffb347)"
+}}></div>
+
 <div>Custom</div>
-<div style={{opacity:0.6}}>More {" >"}</div>
+</div>
+
+<div style={{opacity:.7}}>More &gt;</div>
 
 </div>
 
-<h3 style={{marginBottom:10}}>Customize theme</h3>
 
-<div style={card} onClick={()=>setSection("header")}>Header {" >"}</div>
-<div style={card} onClick={()=>setSection("wallpaper")}>Wallpaper {" >"}</div>
-<div style={card} onClick={()=>setSection("buttons")}>Buttons {" >"}</div>
-<div style={card} onClick={()=>setSection("text")}>Text {" >"}</div>
-<div style={card} onClick={()=>setSection("colors")}>Colors {" >"}</div>
+<h3 style={sectionTitle}>Customize theme</h3>
+
+<div style={card} onClick={()=>setPage("header")}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{
+width:36,
+height:36,
+borderRadius:"50%",
+background:"#888"
+}}></div>
+<div>Header</div>
+</div>
+
+<div style={{opacity:.6}}>Classic &gt;</div>
+</div>
+
+
+<div style={card} onClick={()=>setPage("wallpaper")}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{
+width:36,
+height:36,
+borderRadius:"10px",
+background:"linear-gradient(45deg,#ff7a18,#ffd000)"
+}}></div>
+<div>Wallpaper</div>
+</div>
+
+<div style={{opacity:.6}}>Gradient &gt;</div>
+</div>
+
+
+
+<div style={card} onClick={()=>setPage("buttons")}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{
+width:38,
+height:18,
+border:"2px solid white",
+borderRadius:"6px"
+}}></div>
+
+<div>Buttons</div>
+</div>
+
+<div style={{opacity:.6}}>Outline &gt;</div>
+</div>
+
+
+
+<div style={card} onClick={()=>setPage("text")}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{fontSize:20}}>Aa</div>
+<div>Text</div>
+</div>
+
+<div style={{opacity:.6}}>Summer Glow &gt;</div>
+</div>
+
+
+
+<div style={card} onClick={()=>setPage("colors")}>
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{
+width:30,
+height:30,
+background:"#fff",
+borderRadius:"6px"
+}}></div>
+
+<div>Colors</div>
+</div>
+
+<div>&gt;</div>
+</div>
+
 
 </div>
 
@@ -89,290 +157,326 @@ marginBottom:30
 }
 
 
-/* HEADER */
 
-if(section==="header"){
+/* HEADER PAGE */
+
+if(page==="header"){
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
-<div style={back} onClick={()=>setSection("main")}>
-{"<"} Header
+<div style={{cursor:"pointer"}} onClick={()=>setPage("main")}>
+&lt; Header
 </div>
 
-<h3 style={{marginTop:20}}>Profile Picture</h3>
+
+<h3 style={{marginTop:25}}>Profile image</h3>
 
 <div style={{
 display:"flex",
 alignItems:"center",
 gap:15,
-marginBottom:20
+marginBottom:25
 }}>
 
 <div style={{
 width:60,
 height:60,
 borderRadius:"50%",
-background:"#333"
+background:"#888"
 }}></div>
 
-<button style={button}>Edit Profile Picture</button>
+<button style={{
+background:"#000",
+color:"#fff",
+borderRadius:"25px",
+padding:"10px 18px",
+border:"none"
+}}>
++ Add
+</button>
 
 </div>
 
 
-<h3>Profile Picture Layout</h3>
+<h3>Profile image layout</h3>
 
-<div style={{display:"flex",gap:10,marginBottom:20}}>
-<div style={selectBox}>Classic</div>
-<div style={selectBox}>Hero</div>
+<div style={{display:"flex",gap:12,marginBottom:25}}>
+<button>Classic</button>
+<button>Hero</button>
 </div>
+
 
 
 <h3>Display Name</h3>
 
 <input
-value={displayName}
-onChange={(e)=>setDisplayName(e.target.value)}
-style={input}
+defaultValue="@username"
+style={{
+width:"100%",
+padding:"12px",
+borderRadius:"8px",
+border:"1px solid #333",
+background:"#111",
+color:"#fff"
+}}
 />
+
+
+
+<h3 style={{marginTop:20}}>Display Name style</h3>
+
+<div style={{display:"flex",gap:10}}>
+<button>Text</button>
+<button>Logo</button>
+</div>
+
 
 
 <h3 style={{marginTop:20}}>Display Name Font</h3>
 
-<select
-value={displayFont}
-onChange={(e)=>setDisplayFont(e.target.value)}
-style={input}
->
-
-{fonts.map(f=>(
-<option key={f}>{f}</option>
-))}
-
+<select style={{width:"100%",padding:10}}>
+<option>Inter</option>
+<option>Montserrat</option>
+<option>Poppins</option>
+<option>Roboto</option>
+<option>Open Sans</option>
 </select>
 
 
-<h3 style={{marginTop:20}}>Display Name Font Color</h3>
 
-<input
-type="color"
-value={displayColor}
-onChange={(e)=>setDisplayColor(e.target.value)}
-style={colorInput}
-/>
+<h3 style={{marginTop:20}}>Display name color</h3>
+
+<input type="color"/>
+
 
 </div>
 
 );
 
 }
+
 
 
 /* WALLPAPER */
 
-if(section==="wallpaper"){
+if(page==="wallpaper"){
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
-<div style={back} onClick={()=>setSection("main")}>
-{"<"} Wallpaper
+<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
+&lt; Wallpaper
 </div>
 
-<h3 style={{marginTop:20}}>Wallpaper Style</h3>
 
-<div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+<h3 style={{marginTop:25}}>Wallpaper style</h3>
 
-<div style={selectBox}>Fill</div>
-<div style={selectBox}>Gradient</div>
-<div style={selectBox}>Blur</div>
-<div style={selectBox}>Pattern</div>
-<div style={selectBox}>Image</div>
-<div style={selectBox}>Video</div>
+<div style={{
+display:"grid",
+gridTemplateColumns:"1fr 1fr 1fr",
+gap:20
+}}>
+
+<div>
+<div style={{height:70,background:"#ccc"}}></div>
+<div>Fill</div>
+</div>
+
+<div>
+<div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}></div>
+<div>Gradient</div>
+</div>
+
+<div>
+<div style={{height:70,background:"#aaa"}}></div>
+<div>Blur</div>
+</div>
+
+<div>
+<div style={{height:70,background:"#ddd"}}></div>
+<div>Pattern</div>
+</div>
+
+<div>
+<div style={{height:70,background:"#444"}}></div>
+<div>Image</div>
+</div>
+
+<div>
+<div style={{height:70,background:"#000"}}></div>
+<div>Video</div>
+</div>
 
 </div>
+
+
+<h3 style={{marginTop:30}}>Gradient style</h3>
+
+<div style={{display:"flex",gap:15}}>
+<button>Custom</button>
+<button>Pre-made</button>
+</div>
+
 
 </div>
 
 );
 
 }
+
 
 
 /* BUTTONS */
 
-if(section==="buttons"){
+if(page==="buttons"){
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
-<div style={back} onClick={()=>setSection("main")}>
-{"<"} Buttons
-</div>
-
-<h3 style={{marginTop:20}}>Button Style</h3>
-
-<div style={{display:"flex",gap:10,marginBottom:20}}>
-<div style={selectBox}>Solid</div>
-<div style={selectBox}>Glass</div>
-<div style={selectBox}>Outline</div>
+<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
+&lt; Buttons
 </div>
 
 
-<h3>Corner Roundness</h3>
+<h3 style={{marginTop:25}}>Button style</h3>
 
-<div style={{display:"flex",gap:10,marginBottom:20}}>
-<div style={selectBox}>Square</div>
-<div style={selectBox}>Round</div>
-<div style={selectBox}>Rounder</div>
-<div style={selectBox}>Full</div>
+<div style={{display:"flex",gap:15}}>
+<button>Solid</button>
+<button>Glass</button>
+<button>Outline</button>
 </div>
 
 
-<h3>Button Color</h3>
 
-<input
-type="color"
-value={buttonColor}
-onChange={(e)=>setButtonColor(e.target.value)}
-style={colorInput}
-/>
+<h3 style={{marginTop:30}}>Corner roundness</h3>
+
+<div style={{display:"flex",gap:15}}>
+<button>Square</button>
+<button>Round</button>
+<button>Rounder</button>
+<button>Full</button>
+</div>
 
 
-<h3 style={{marginTop:20}}>Button Text Color</h3>
 
-<input
-type="color"
-value={buttonTextColor}
-onChange={(e)=>setButtonTextColor(e.target.value)}
-style={colorInput}
-/>
+<h3 style={{marginTop:30}}>Button color</h3>
+
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>&gt;</div>
+</div>
+
+
+
+<h3>Button text color</h3>
+
+<div style={inputRow}>
+<div>#000000</div>
+<div>&gt;</div>
+</div>
+
 
 </div>
 
 );
 
 }
+
 
 
 /* TEXT */
 
-if(section==="text"){
+if(page==="text"){
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
-<div style={back} onClick={()=>setSection("main")}>
-{"<"} Text
+<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
+&lt; Text
 </div>
 
-<h3 style={{marginTop:20}}>Page Font</h3>
 
-<select style={input}>
-{fonts.map(f=>(
-<option key={f}>{f}</option>
-))}
+
+<h3 style={{marginTop:25}}>Page font</h3>
+
+<select style={{width:"100%",padding:10}}>
+<option>Link Sans</option>
+<option>Inter</option>
+<option>Montserrat</option>
+<option>Poppins</option>
 </select>
 
 
-<h3 style={{marginTop:20}}>Page Text Color</h3>
 
-<input
-type="color"
-value={pageTextColor}
-onChange={(e)=>setPageTextColor(e.target.value)}
-style={colorInput}
-/>
+<h3 style={{marginTop:25}}>Page text color</h3>
 
-
-<h3 style={{marginTop:20}}>Title Font</h3>
-
-<select style={input}>
-{fonts.map(f=>(
-<option key={f}>{f}</option>
-))}
-</select>
-
-
-<h3 style={{marginTop:20}}>Title Color</h3>
-
-<input
-type="color"
-value={titleTextColor}
-onChange={(e)=>setTitleTextColor(e.target.value)}
-style={colorInput}
-/>
-
-
-<h3 style={{marginTop:20}}>Title Size</h3>
-
-<div style={{display:"flex",gap:10}}>
-<div style={selectBox}>Small</div>
-<div style={selectBox}>Large</div>
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>&gt;</div>
 </div>
+
 
 </div>
 
 );
 
 }
+
 
 
 /* COLORS */
 
-if(section==="colors"){
+if(page==="colors"){
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
-<div style={back} onClick={()=>setSection("main")}>
-{"<"} Colors
+<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
+&lt; Colors
 </div>
 
-<h3 style={{marginTop:20}}>Buttons</h3>
-
-<input
-type="color"
-value={buttonColor}
-onChange={(e)=>setButtonColor(e.target.value)}
-style={colorInput}
-/>
 
 
-<h3 style={{marginTop:20}}>Button Text</h3>
+<h3 style={{marginTop:25}}>Buttons</h3>
 
-<input
-type="color"
-value={buttonTextColor}
-onChange={(e)=>setButtonTextColor(e.target.value)}
-style={colorInput}
-/>
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>&gt;</div>
+</div>
 
 
-<h3 style={{marginTop:20}}>Page Text</h3>
 
-<input
-type="color"
-value={pageTextColor}
-onChange={(e)=>setPageTextColor(e.target.value)}
-style={colorInput}
-/>
+<h3>Button Text</h3>
+
+<div style={inputRow}>
+<div>#000000</div>
+<div>&gt;</div>
+</div>
 
 
-<h3 style={{marginTop:20}}>Title Text</h3>
 
-<input
-type="color"
-value={titleTextColor}
-onChange={(e)=>setTitleTextColor(e.target.value)}
-style={colorInput}
-/>
+<h3>Page Text</h3>
+
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>&gt;</div>
+</div>
+
+
+
+<h3>Title Text</h3>
+
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>&gt;</div>
+</div>
+
 
 </div>
 
@@ -381,51 +485,3 @@ style={colorInput}
 }
 
 }
-
-
-
-const card={
-background:"#1a1a25",
-padding:18,
-borderRadius:12,
-marginBottom:10,
-cursor:"pointer"
-};
-
-const back={
-fontSize:20,
-cursor:"pointer",
-marginBottom:20
-};
-
-const input={
-width:"100%",
-padding:12,
-borderRadius:8,
-border:"1px solid #333",
-background:"#111",
-color:"white"
-};
-
-const colorInput={
-width:80,
-height:40,
-border:"none",
-cursor:"pointer"
-};
-
-const selectBox={
-background:"#1a1a25",
-padding:12,
-borderRadius:10,
-cursor:"pointer"
-};
-
-const button={
-background:"#7c5cff",
-border:"none",
-padding:"8px 14px",
-borderRadius:8,
-color:"white",
-cursor:"pointer"
-};
