@@ -15,7 +15,7 @@ const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
-const [mode,setMode] = useState("dark");
+const [mode,setMode] = useState("light");
 
 const showPreview =
 pathname === "/dashboard" ||
@@ -46,7 +46,7 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
-setMode(prof?.theme_mode || "dark");
+setMode(prof?.theme_mode || "light");
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -61,7 +61,7 @@ setBlocks(blockData || []);
 
 async function toggleTheme(){
 
-const newMode = mode === "dark" ? "light" : "dark";
+const newMode = mode === "light" ? "dark" : "light";
 
 setMode(newMode);
 
@@ -77,9 +77,11 @@ await supabase.auth.signOut();
 window.location="/login";
 }
 
-const bg = mode==="dark" ? "#0b0b12" : "#f4f4f6";
-const text = mode==="dark" ? "white" : "#111";
+const bg = mode==="dark" ? "#0b0b12" : "#f6f7fb";
+const text = mode==="dark" ? "#ffffff" : "#111";
 const sidebar = mode==="dark" ? "#0f0f10" : "#ffffff";
+const card = mode==="dark" ? "#1a1a25" : "#ffffff";
+const border = mode==="dark" ? "#222" : "#e5e5e5";
 
 return(
 
@@ -96,7 +98,8 @@ width:260,
 background:sidebar,
 padding:20,
 display:"flex",
-flexDirection:"column"
+flexDirection:"column",
+borderRight:`1px solid ${border}`
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
@@ -128,7 +131,7 @@ objectFit:"cover"
 {profile?.username}
 </div>
 
-<div style={{opacity:0.7}}>
+<div style={{opacity:0.6}}>
 {openUser ? "v" : ">"}
 </div>
 
@@ -137,7 +140,7 @@ objectFit:"cover"
 {openUser && (
 
 <div style={{
-background: mode==="dark" ? "#1a1a25" : "#eee",
+background:card,
 borderRadius:8,
 padding:10,
 marginBottom:20
@@ -163,19 +166,11 @@ Sign Out
 
 </div>
 
-<Link href="/dashboard" style={{
-...item,
-background: pathname === "/dashboard" ? "#2a2a2a" : "transparent"
-}}>
-Home
-</Link>
+<Link href="/dashboard" style={item}>Home</Link>
 
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
-style={{
-...item,
-background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
-}}
+style={item}
 >
 <span>My Linkarsha</span>
 <span>{openLinkarsha ? "v" : ">"}</span>
@@ -201,19 +196,11 @@ Get Verified
 
 )}
 
-<Link href="/dashboard/blocks" style={item}>
-Blocks
-</Link>
+<Link href="/dashboard/blocks" style={item}>Blocks</Link>
+<Link href="/dashboard/appearance" style={item}>Appearance</Link>
+<Link href="/dashboard/analytics" style={item}>Analytics</Link>
 
-<Link href="/dashboard/appearance" style={item}>
-Appearance
-</Link>
-
-<Link href="/dashboard/analytics" style={item}>
-Analytics
-</Link>
-
-<hr style={{margin:"20px 0",borderColor:"#222"}}/>
+<hr style={{margin:"20px 0",borderColor:border}}/>
 
 <div
 onClick={()=>setOpenTools(!openTools)}
@@ -243,13 +230,8 @@ Export Data
 
 )}
 
-<Link href="/dashboard/referrals" style={item}>
-Referrals
-</Link>
-
-<Link href="/dashboard/settings" style={item}>
-Settings
-</Link>
+<Link href="/dashboard/referrals" style={item}>Referrals</Link>
+<Link href="/dashboard/settings" style={item}>Settings</Link>
 
 </div>
 
@@ -303,7 +285,7 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background:"#0f0f16"
+background: mode==="dark" ? "#0f0f16" : "#e9ebf2"
 }}>
 
 <div style={{
@@ -342,7 +324,8 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 <div style={{
 marginTop:10,
 textAlign:"center",
-fontWeight:600
+fontWeight:600,
+color:"#fff"
 }}>
 {profile?.display_name}
 </div>
@@ -350,7 +333,8 @@ fontWeight:600
 <div style={{
 textAlign:"center",
 opacity:0.7,
-fontSize:14
+fontSize:14,
+color:"#aaa"
 }}>
 {profile?.bio}
 </div>
