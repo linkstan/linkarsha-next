@@ -10,7 +10,6 @@ export default function DashboardLayout({ children }) {
 const pathname = usePathname();
 
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
-const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
 const [openUser,setOpenUser] = useState(false);
 
@@ -27,7 +26,6 @@ pathname.startsWith("/dashboard/appearance");
 
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
-if(pathname.startsWith("/dashboard/appearance")) setOpenAppearance(true);
 if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
 },[pathname]);
 
@@ -208,34 +206,12 @@ Blocks
 
 {/* APPEARANCE */}
 
-<div
-onClick={()=>setOpenAppearance(!openAppearance)}
-style={{
+<Link href="/dashboard/appearance" style={{
 ...item,
 background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
-}}
->
-<span>Appearance</span>
-<span>{openAppearance ? "v" : ">"}</span>
-</div>
-
-{openAppearance && (
-
-<div style={submenu}>
-
-<Link href="/dashboard/appearance" style={{
-...subitem,
-background: pathname === "/dashboard/appearance" ? "#2a2a2a" : "transparent"
 }}>
-My Theme
+Appearance
 </Link>
-
-<div style={subitem}>My Design</div>
-<div style={subitem}>Animations</div>
-
-</div>
-
-)}
 
 {/* ANALYTICS */}
 
