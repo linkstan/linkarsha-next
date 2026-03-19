@@ -15,14 +15,13 @@ const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
+const [mode,setMode] = useState("dark");
 
 const showPreview =
 pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
-
-/* auto open parent menus */
 
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
@@ -47,6 +46,7 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
+setMode(prof?.theme_mode || "dark");
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -59,34 +59,47 @@ setBlocks(blockData || []);
 
 }
 
+async function toggleTheme(){
+
+const newMode = mode === "dark" ? "light" : "dark";
+
+setMode(newMode);
+
+await supabase
+.from("profiles")
+.update({theme_mode:newMode})
+.eq("id",profile.id);
+
+}
+
 async function logout(){
 await supabase.auth.signOut();
 window.location="/login";
 }
+
+const bg = mode==="dark" ? "#0b0b12" : "#f4f4f6";
+const text = mode==="dark" ? "white" : "#111";
+const sidebar = mode==="dark" ? "#0f0f10" : "#ffffff";
 
 return(
 
 <div style={{
 display:"flex",
 minHeight:"100vh",
-background:"#0b0b12",
-color:"white",
+background:bg,
+color:text,
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
-{/* SIDEBAR */}
-
 <div style={{
 width:260,
-background:"#0f0f10",
+background:sidebar,
 padding:20,
 display:"flex",
 flexDirection:"column"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
-
-{/* USER */}
 
 <div style={{position:"relative"}}>
 
@@ -124,7 +137,7 @@ objectFit:"cover"
 {openUser && (
 
 <div style={{
-background:"#1a1a25",
+background: mode==="dark" ? "#1a1a25" : "#eee",
 borderRadius:8,
 padding:10,
 marginBottom:20
@@ -150,16 +163,12 @@ Sign Out
 
 </div>
 
-{/* HOME */}
-
 <Link href="/dashboard" style={{
 ...item,
 background: pathname === "/dashboard" ? "#2a2a2a" : "transparent"
 }}>
 Home
 </Link>
-
-{/* MY LINKARSHA */}
 
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
@@ -176,10 +185,7 @@ background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 
 <div style={submenu}>
 
-<Link href="/dashboard/links" style={{
-...subitem,
-background: pathname === "/dashboard/links" ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/links" style={subitem}>
 My Links
 </Link>
 
@@ -195,43 +201,23 @@ Get Verified
 
 )}
 
-{/* BLOCKS */}
-
-<Link href="/dashboard/blocks" style={{
-...item,
-background: pathname.startsWith("/dashboard/blocks") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/blocks" style={item}>
 Blocks
 </Link>
 
-{/* APPEARANCE */}
-
-<Link href="/dashboard/appearance" style={{
-...item,
-background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/appearance" style={item}>
 Appearance
 </Link>
 
-{/* ANALYTICS */}
-
-<Link href="/dashboard/analytics" style={{
-...item,
-background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/analytics" style={item}>
 Analytics
 </Link>
 
 <hr style={{margin:"20px 0",borderColor:"#222"}}/>
 
-{/* TOOLS */}
-
 <div
 onClick={()=>setOpenTools(!openTools)}
-style={{
-...item,
-background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
-}}
+style={item}
 >
 <span>Tools</span>
 <span>{openTools ? "v" : ">"}</span>
@@ -241,24 +227,15 @@ background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
 
 <div style={submenu}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/ai-bio-generator") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/qr-code" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/qr-code") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/qr-code" style={subitem}>
 QR Code Generator
 </Link>
 
-<Link href="/dashboard/tools/export-data" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/export-data") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/export-data" style={subitem}>
 Export Data
 </Link>
 
@@ -266,32 +243,57 @@ Export Data
 
 )}
 
-{/* REFERRALS */}
-
-<Link href="/dashboard/referrals" style={{
-...item,
-background: pathname.startsWith("/dashboard/referrals") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/referrals" style={item}>
 Referrals
 </Link>
 
-{/* SETTINGS */}
-
-<Link href="/dashboard/settings" style={{
-...item,
-background: pathname.startsWith("/dashboard/settings") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/settings" style={item}>
 Settings
 </Link>
 
 </div>
 
-{/* MAIN AREA */}
-
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40}}>
+<div style={{flex:1,padding:40,position:"relative"}}>
+
+<div
+onClick={toggleTheme}
+style={{
+position:"absolute",
+right:30,
+top:20,
+width:70,
+height:36,
+borderRadius:40,
+cursor:"pointer",
+background: mode==="dark"
+? "linear-gradient(45deg,#0f9bff,#00f2fe)"
+: "linear-gradient(45deg,#ff9a44,#ff5e62)",
+display:"flex",
+alignItems:"center",
+justifyContent: mode==="dark" ? "flex-start" : "flex-end",
+padding:4,
+transition:"all .3s"
+}}
+>
+
+<div style={{
+width:28,
+height:28,
+borderRadius:"50%",
+background:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+{mode==="dark" ? "🌙" : "☀️"}
+</div>
+
+</div>
+
 {children}
+
 </div>
 
 {showPreview && (
@@ -396,7 +398,7 @@ padding:"10px 12px",
 cursor:"pointer",
 borderRadius:8,
 textDecoration:"none",
-color:"white",
+color:"inherit",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
@@ -414,7 +416,7 @@ padding:"8px 10px",
 opacity:0.8,
 cursor:"pointer",
 textDecoration:"none",
-color:"white"
+color:"inherit"
 };
 
 const dropdownItem={
