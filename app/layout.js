@@ -1,14 +1,15 @@
 import "react-easy-crop/react-easy-crop.css";
+import "./globals.css";
 
 export const metadata = {
   title: "Linkarsha",
   description: "Creator economy OS"
 };
-import "./globals.css";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{background:"#0b0b0f",color:"white",fontFamily:"Arial"}}>
+      <body style={{margin:0}}>
         {children}
       </body>
     </html>
