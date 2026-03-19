@@ -4,7 +4,7 @@ export const metadata = {
   title: "Linkarsha",
   description: "Creator economy OS"
 };
-
+import "./globals.css";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
