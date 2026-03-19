@@ -23,6 +23,8 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
+/* AUTO OPEN MENUS */
+
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
 if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
@@ -31,6 +33,8 @@ if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
 useEffect(()=>{
 loadPreview();
 },[]);
+
+/* LOAD USER */
 
 async function loadPreview(){
 
@@ -48,6 +52,14 @@ const {data:prof} = await supabase
 setProfile(prof);
 setMode(prof?.theme_mode || "light");
 
+/* APPLY THEME */
+
+if(prof?.theme_mode==="dark"){
+document.documentElement.classList.add("dark");
+}else{
+document.documentElement.classList.remove("dark");
+}
+
 const {data:blockData} = await supabase
 .from("blocks")
 .select("*")
@@ -59,10 +71,19 @@ setBlocks(blockData || []);
 
 }
 
+/* TOGGLE MODE */
+
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
+
 setMode(newMode);
+
+if(newMode==="dark"){
+document.documentElement.classList.add("dark");
+}else{
+document.documentElement.classList.remove("dark");
+}
 
 await supabase
 .from("profiles")
@@ -70,6 +91,8 @@ await supabase
 .eq("id",profile.id);
 
 }
+
+/* LOGOUT */
 
 async function logout(){
 await supabase.auth.signOut();
@@ -80,22 +103,20 @@ window.location="/login";
 
 const theme = mode === "dark"
 ? {
-bg:"#0b0b12",
-text:"#ffffff",
-muted:"#a1a1aa",
-sidebar:"#0f0f10",
-card:"#1a1a25",
-border:"#222",
-hover:"#2a2a2a"
+bg:"var(--bg)",
+text:"var(--text)",
+sidebar:"var(--sidebar)",
+card:"var(--card)",
+border:"var(--border)",
+hover:"var(--hover)"
 }
 : {
-bg:"#f6f7fb",
-text:"#111111",
-muted:"#555",
-sidebar:"#ffffff",
-card:"#ffffff",
-border:"#e5e5e5",
-hover:"#ececec"
+bg:"var(--bg)",
+text:"var(--text)",
+sidebar:"var(--sidebar)",
+card:"var(--card)",
+border:"var(--border)",
+hover:"var(--hover)"
 };
 
 return(
@@ -187,7 +208,9 @@ Sign Out
 
 {/* MENU */}
 
-<Link href="/dashboard" style={menuItem(theme,pathname==="/dashboard")}>Home</Link>
+<Link href="/dashboard" style={menuItem(theme,pathname==="/dashboard")}>
+Home
+</Link>
 
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
@@ -201,17 +224,33 @@ style={menuItem(theme,pathname.startsWith("/dashboard/links"))}
 
 <div style={{marginLeft:10}}>
 
-<Link href="/dashboard/links" style={subitem(theme)}>My Links</Link>
-<Link href="/dashboard/link-history" style={subitem(theme)}>Link History</Link>
-<Link href="/dashboard/get-verified" style={subitem(theme)}>Get Verified</Link>
+<Link href="/dashboard/links" style={subitem(theme)}>
+My Links
+</Link>
+
+<Link href="/dashboard/link-history" style={subitem(theme)}>
+Link History
+</Link>
+
+<Link href="/dashboard/get-verified" style={subitem(theme)}>
+Get Verified
+</Link>
 
 </div>
 
 )}
 
-<Link href="/dashboard/blocks" style={menuItem(theme)}>Blocks</Link>
-<Link href="/dashboard/appearance" style={menuItem(theme)}>Appearance</Link>
-<Link href="/dashboard/analytics" style={menuItem(theme)}>Analytics</Link>
+<Link href="/dashboard/blocks" style={menuItem(theme)}>
+Blocks
+</Link>
+
+<Link href="/dashboard/appearance" style={menuItem(theme)}>
+Appearance
+</Link>
+
+<Link href="/dashboard/analytics" style={menuItem(theme)}>
+Analytics
+</Link>
 
 <hr style={{margin:"20px 0",borderColor:theme.border}}/>
 
@@ -227,26 +266,39 @@ style={menuItem(theme)}
 
 <div style={{marginLeft:10}}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem(theme)}>AI Bio Generator</Link>
-<Link href="/dashboard/tools/qr-code" style={subitem(theme)}>QR Code Generator</Link>
-<Link href="/dashboard/tools/export-data" style={subitem(theme)}>Export Data</Link>
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem(theme)}>
+AI Bio Generator
+</Link>
+
+<Link href="/dashboard/tools/qr-code" style={subitem(theme)}>
+QR Code Generator
+</Link>
+
+<Link href="/dashboard/tools/export-data" style={subitem(theme)}>
+Export Data
+</Link>
 
 </div>
 
 )}
 
-<Link href="/dashboard/referrals" style={menuItem(theme)}>Referrals</Link>
-<Link href="/dashboard/settings" style={menuItem(theme)}>Settings</Link>
+<Link href="/dashboard/referrals" style={menuItem(theme)}>
+Referrals
+</Link>
+
+<Link href="/dashboard/settings" style={menuItem(theme)}>
+Settings
+</Link>
 
 </div>
 
-{/* MAIN */}
+{/* MAIN AREA */}
 
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
-{/* TOGGLE */}
+{/* THEME TOGGLE */}
 
 <div
 onClick={toggleTheme}
@@ -264,8 +316,7 @@ background: mode==="dark"
 display:"flex",
 alignItems:"center",
 justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4,
-transition:"all .3s"
+padding:4
 }}
 >
 
@@ -287,7 +338,7 @@ justifyContent:"center"
 
 </div>
 
-{/* RIGHT PREVIEW COLUMN */}
+{/* PREVIEW COLUMN */}
 
 {showPreview && (
 
@@ -299,7 +350,7 @@ alignItems:"center",
 background:mode==="dark" ? "#0f0f16" : "#e9ebf2"
 }}>
 
-{/* PUBLIC PROFILE PREVIEW ALWAYS DARK */}
+{/* PUBLIC PROFILE ALWAYS DARK */}
 
 <div style={{
 width:280,
