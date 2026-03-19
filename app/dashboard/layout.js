@@ -10,12 +10,12 @@ export default function DashboardLayout({ children }) {
 const pathname = usePathname();
 
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
+const [openAppearance,setOpenAppearance] = useState(false);
 const [openTools,setOpenTools] = useState(false);
 const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
-const [mode,setMode] = useState("light");
 
 const showPreview =
 pathname === "/dashboard" ||
@@ -23,18 +23,17 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* AUTO OPEN MENUS */
+/* auto open parent menus */
 
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
+if(pathname.startsWith("/dashboard/appearance")) setOpenAppearance(true);
 if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
 },[pathname]);
 
 useEffect(()=>{
 loadPreview();
 },[]);
-
-/* LOAD USER */
 
 async function loadPreview(){
 
@@ -50,15 +49,6 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
-setMode(prof?.theme_mode || "light");
-
-/* APPLY THEME */
-
-if(prof?.theme_mode==="dark"){
-document.documentElement.classList.add("dark");
-}else{
-document.documentElement.classList.remove("dark");
-}
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -71,61 +61,18 @@ setBlocks(blockData || []);
 
 }
 
-/* TOGGLE MODE */
-
-async function toggleTheme(){
-
-const newMode = mode === "light" ? "dark" : "light";
-
-setMode(newMode);
-
-if(newMode==="dark"){
-document.documentElement.classList.add("dark");
-}else{
-document.documentElement.classList.remove("dark");
-}
-
-await supabase
-.from("profiles")
-.update({theme_mode:newMode})
-.eq("id",profile.id);
-
-}
-
-/* LOGOUT */
-
 async function logout(){
 await supabase.auth.signOut();
 window.location="/login";
 }
-
-/* THEME COLORS */
-
-const theme = mode === "dark"
-? {
-bg:"var(--bg)",
-text:"var(--text)",
-sidebar:"var(--sidebar)",
-card:"var(--card)",
-border:"var(--border)",
-hover:"var(--hover)"
-}
-: {
-bg:"var(--bg)",
-text:"var(--text)",
-sidebar:"var(--sidebar)",
-card:"var(--card)",
-border:"var(--border)",
-hover:"var(--hover)"
-};
 
 return(
 
 <div style={{
 display:"flex",
 minHeight:"100vh",
-background:theme.bg,
-color:theme.text,
+background:"#0b0b12",
+color:"white",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
@@ -133,11 +80,10 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 
 <div style={{
 width:260,
-background:theme.sidebar,
+background:"#0f0f10",
 padding:20,
 display:"flex",
-flexDirection:"column",
-borderRight:`1px solid ${theme.border}`
+flexDirection:"column"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
@@ -171,7 +117,7 @@ objectFit:"cover"
 {profile?.username}
 </div>
 
-<div style={{opacity:0.6}}>
+<div style={{opacity:0.7}}>
 {openUser ? "v" : ">"}
 </div>
 
@@ -180,7 +126,7 @@ objectFit:"cover"
 {openUser && (
 
 <div style={{
-background:theme.card,
+background:"#1a1a25",
 borderRadius:8,
 padding:10,
 marginBottom:20
@@ -206,15 +152,23 @@ Sign Out
 
 </div>
 
-{/* MENU */}
+{/* HOME */}
 
-<Link href="/dashboard" style={menuItem(theme,pathname==="/dashboard")}>
+<Link href="/dashboard" style={{
+...item,
+background: pathname === "/dashboard" ? "#2a2a2a" : "transparent"
+}}>
 Home
 </Link>
 
+{/* MY LINKARSHA */}
+
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
-style={menuItem(theme,pathname.startsWith("/dashboard/links"))}
+style={{
+...item,
+background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
+}}
 >
 <span>My Linkarsha</span>
 <span>{openLinkarsha ? "v" : ">"}</span>
@@ -222,17 +176,20 @@ style={menuItem(theme,pathname.startsWith("/dashboard/links"))}
 
 {openLinkarsha && (
 
-<div style={{marginLeft:10}}>
+<div style={submenu}>
 
-<Link href="/dashboard/links" style={subitem(theme)}>
+<Link href="/dashboard/links" style={{
+...subitem,
+background: pathname === "/dashboard/links" ? "#2a2a2a" : "transparent"
+}}>
 My Links
 </Link>
 
-<Link href="/dashboard/link-history" style={subitem(theme)}>
+<Link href="/dashboard/link-history" style={subitem}>
 Link History
 </Link>
 
-<Link href="/dashboard/get-verified" style={subitem(theme)}>
+<Link href="/dashboard/get-verified" style={subitem}>
 Get Verified
 </Link>
 
@@ -240,23 +197,65 @@ Get Verified
 
 )}
 
-<Link href="/dashboard/blocks" style={menuItem(theme)}>
+{/* BLOCKS */}
+
+<Link href="/dashboard/blocks" style={{
+...item,
+background: pathname.startsWith("/dashboard/blocks") ? "#2a2a2a" : "transparent"
+}}>
 Blocks
 </Link>
 
-<Link href="/dashboard/appearance" style={menuItem(theme)}>
-Appearance
+{/* APPEARANCE */}
+
+<div
+onClick={()=>setOpenAppearance(!openAppearance)}
+style={{
+...item,
+background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
+}}
+>
+<span>Appearance</span>
+<span>{openAppearance ? "v" : ">"}</span>
+</div>
+
+{openAppearance && (
+
+<div style={submenu}>
+
+<Link href="/dashboard/appearance" style={{
+...subitem,
+background: pathname === "/dashboard/appearance" ? "#2a2a2a" : "transparent"
+}}>
+My Theme
 </Link>
 
-<Link href="/dashboard/analytics" style={menuItem(theme)}>
+<div style={subitem}>My Design</div>
+<div style={subitem}>Animations</div>
+
+</div>
+
+)}
+
+{/* ANALYTICS */}
+
+<Link href="/dashboard/analytics" style={{
+...item,
+background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transparent"
+}}>
 Analytics
 </Link>
 
-<hr style={{margin:"20px 0",borderColor:theme.border}}/>
+<hr style={{margin:"20px 0",borderColor:"#222"}}/>
+
+{/* TOOLS */}
 
 <div
 onClick={()=>setOpenTools(!openTools)}
-style={menuItem(theme)}
+style={{
+...item,
+background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
+}}
 >
 <span>Tools</span>
 <span>{openTools ? "v" : ">"}</span>
@@ -264,17 +263,26 @@ style={menuItem(theme)}
 
 {openTools && (
 
-<div style={{marginLeft:10}}>
+<div style={submenu}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem(theme)}>
+<Link href="/dashboard/tools/ai-bio-generator" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/ai-bio-generator") ? "#2a2a2a" : "transparent"
+}}>
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/qr-code" style={subitem(theme)}>
+<Link href="/dashboard/tools/qr-code" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/qr-code") ? "#2a2a2a" : "transparent"
+}}>
 QR Code Generator
 </Link>
 
-<Link href="/dashboard/tools/export-data" style={subitem(theme)}>
+<Link href="/dashboard/tools/export-data" style={{
+...subitem,
+background: pathname.startsWith("/dashboard/tools/export-data") ? "#2a2a2a" : "transparent"
+}}>
 Export Data
 </Link>
 
@@ -282,11 +290,21 @@ Export Data
 
 )}
 
-<Link href="/dashboard/referrals" style={menuItem(theme)}>
+{/* REFERRALS */}
+
+<Link href="/dashboard/referrals" style={{
+...item,
+background: pathname.startsWith("/dashboard/referrals") ? "#2a2a2a" : "transparent"
+}}>
 Referrals
 </Link>
 
-<Link href="/dashboard/settings" style={menuItem(theme)}>
+{/* SETTINGS */}
+
+<Link href="/dashboard/settings" style={{
+...item,
+background: pathname.startsWith("/dashboard/settings") ? "#2a2a2a" : "transparent"
+}}>
 Settings
 </Link>
 
@@ -296,49 +314,9 @@ Settings
 
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40,position:"relative"}}>
-
-{/* THEME TOGGLE */}
-
-<div
-onClick={toggleTheme}
-style={{
-position:"absolute",
-right:30,
-top:20,
-width:70,
-height:36,
-borderRadius:40,
-cursor:"pointer",
-background: mode==="dark"
-? "linear-gradient(45deg,#0f9bff,#00f2fe)"
-: "linear-gradient(45deg,#ff9a44,#ff5e62)",
-display:"flex",
-alignItems:"center",
-justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4
-}}
->
-
-<div style={{
-width:28,
-height:28,
-borderRadius:"50%",
-background:"white",
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}>
-{mode==="dark" ? "🌙" : "☀️"}
-</div>
-
-</div>
-
+<div style={{flex:1,padding:40}}>
 {children}
-
 </div>
-
-{/* PREVIEW COLUMN */}
 
 {showPreview && (
 
@@ -347,10 +325,8 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background:mode==="dark" ? "#0f0f16" : "#e9ebf2"
+background:"#0f0f16"
 }}>
-
-{/* PUBLIC PROFILE ALWAYS DARK */}
 
 <div style={{
 width:280,
@@ -388,8 +364,7 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 <div style={{
 marginTop:10,
 textAlign:"center",
-fontWeight:600,
-color:"#fff"
+fontWeight:600
 }}>
 {profile?.display_name}
 </div>
@@ -397,8 +372,7 @@ color:"#fff"
 <div style={{
 textAlign:"center",
 opacity:0.7,
-fontSize:14,
-color:"#aaa"
+fontSize:14
 }}>
 {profile?.bio}
 </div>
@@ -441,32 +415,31 @@ color:"white"
 
 }
 
-/* STYLES */
-
-function menuItem(theme,active=false){
-return{
+const item={
 padding:"10px 12px",
 cursor:"pointer",
 borderRadius:8,
 textDecoration:"none",
-color:theme.text,
+color:"white",
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center",
-background:active ? theme.hover : "transparent"
+alignItems:"center"
 };
-}
 
-function subitem(theme){
-return{
+const submenu={
+marginLeft:10,
+marginTop:5,
+marginBottom:10
+};
+
+const subitem={
 display:"block",
 padding:"8px 10px",
-opacity:0.85,
+opacity:0.8,
 cursor:"pointer",
 textDecoration:"none",
-color:theme.text
+color:"white"
 };
-}
 
 const dropdownItem={
 padding:"8px 10px",
