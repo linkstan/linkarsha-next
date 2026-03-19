@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function Appearance(){
+export default function Appearance() {
 
 const [page,setPage] = useState("main");
 
@@ -35,12 +35,11 @@ alignItems:"center",
 marginBottom:"22px"
 };
 
-
+function renderPage(){
 
 /* MAIN PAGE */
 
 if(page==="main"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -149,11 +148,8 @@ borderRadius:"6px"
 <div>&gt;</div>
 </div>
 
-
 </div>
-
 );
-
 }
 
 
@@ -161,7 +157,6 @@ borderRadius:"6px"
 /* HEADER PAGE */
 
 if(page==="header"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -169,7 +164,6 @@ return(
 <div style={{cursor:"pointer"}} onClick={()=>setPage("main")}>
 &lt; Header
 </div>
-
 
 <h3 style={{marginTop:25}}>Profile image</h3>
 
@@ -199,15 +193,12 @@ border:"none"
 
 </div>
 
-
 <h3>Profile image layout</h3>
 
 <div style={{display:"flex",gap:12,marginBottom:25}}>
 <button>Classic</button>
 <button>Hero</button>
 </div>
-
-
 
 <h3>Display Name</h3>
 
@@ -223,16 +214,12 @@ color:"#fff"
 }}
 />
 
-
-
 <h3 style={{marginTop:20}}>Display Name style</h3>
 
 <div style={{display:"flex",gap:10}}>
 <button>Text</button>
 <button>Logo</button>
 </div>
-
-
 
 <h3 style={{marginTop:20}}>Display Name Font</h3>
 
@@ -244,17 +231,12 @@ color:"#fff"
 <option>Open Sans</option>
 </select>
 
-
-
 <h3 style={{marginTop:20}}>Display name color</h3>
 
 <input type="color"/>
 
-
 </div>
-
 );
-
 }
 
 
@@ -262,7 +244,6 @@ color:"#fff"
 /* WALLPAPER */
 
 if(page==="wallpaper"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -270,7 +251,6 @@ return(
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Wallpaper
 </div>
-
 
 <h3 style={{marginTop:25}}>Wallpaper style</h3>
 
@@ -280,38 +260,14 @@ gridTemplateColumns:"1fr 1fr 1fr",
 gap:20
 }}>
 
-<div>
-<div style={{height:70,background:"#ccc"}}></div>
-<div>Fill</div>
-</div>
-
-<div>
-<div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}></div>
-<div>Gradient</div>
-</div>
-
-<div>
-<div style={{height:70,background:"#aaa"}}></div>
-<div>Blur</div>
-</div>
-
-<div>
-<div style={{height:70,background:"#ddd"}}></div>
-<div>Pattern</div>
-</div>
-
-<div>
-<div style={{height:70,background:"#444"}}></div>
-<div>Image</div>
-</div>
-
-<div>
-<div style={{height:70,background:"#000"}}></div>
-<div>Video</div>
-</div>
+<div><div style={{height:70,background:"#ccc"}}></div><div>Fill</div></div>
+<div><div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}></div><div>Gradient</div></div>
+<div><div style={{height:70,background:"#aaa"}}></div><div>Blur</div></div>
+<div><div style={{height:70,background:"#ddd"}}></div><div>Pattern</div></div>
+<div><div style={{height:70,background:"#444"}}></div><div>Image</div></div>
+<div><div style={{height:70,background:"#000"}}></div><div>Video</div></div>
 
 </div>
-
 
 <h3 style={{marginTop:30}}>Gradient style</h3>
 
@@ -320,11 +276,8 @@ gap:20
 <button>Pre-made</button>
 </div>
 
-
 </div>
-
 );
-
 }
 
 
@@ -332,7 +285,6 @@ gap:20
 /* BUTTONS */
 
 if(page==="buttons"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -341,7 +293,6 @@ return(
 &lt; Buttons
 </div>
 
-
 <h3 style={{marginTop:25}}>Button style</h3>
 
 <div style={{display:"flex",gap:15}}>
@@ -349,8 +300,6 @@ return(
 <button>Glass</button>
 <button>Outline</button>
 </div>
-
-
 
 <h3 style={{marginTop:30}}>Corner roundness</h3>
 
@@ -361,16 +310,12 @@ return(
 <button>Full</button>
 </div>
 
-
-
 <h3 style={{marginTop:30}}>Button color</h3>
 
 <div style={inputRow}>
 <div>#FFFFFF</div>
 <div>&gt;</div>
 </div>
-
-
 
 <h3>Button text color</h3>
 
@@ -379,11 +324,8 @@ return(
 <div>&gt;</div>
 </div>
 
-
 </div>
-
 );
-
 }
 
 
@@ -391,7 +333,6 @@ return(
 /* TEXT */
 
 if(page==="text"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -399,8 +340,6 @@ return(
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Text
 </div>
-
-
 
 <h3 style={{marginTop:25}}>Page font</h3>
 
@@ -411,8 +350,6 @@ return(
 <option>Poppins</option>
 </select>
 
-
-
 <h3 style={{marginTop:25}}>Page text color</h3>
 
 <div style={inputRow}>
@@ -420,11 +357,8 @@ return(
 <div>&gt;</div>
 </div>
 
-
 </div>
-
 );
-
 }
 
 
@@ -432,7 +366,6 @@ return(
 /* COLORS */
 
 if(page==="colors"){
-
 return(
 
 <div style={{maxWidth:650}}>
@@ -441,47 +374,28 @@ return(
 &lt; Colors
 </div>
 
-
-
 <h3 style={{marginTop:25}}>Buttons</h3>
-
-<div style={inputRow}>
-<div>#FFFFFF</div>
-<div>&gt;</div>
-</div>
-
-
+<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
 
 <h3>Button Text</h3>
-
-<div style={inputRow}>
-<div>#000000</div>
-<div>&gt;</div>
-</div>
-
-
+<div style={inputRow}><div>#000000</div><div>&gt;</div></div>
 
 <h3>Page Text</h3>
-
-<div style={inputRow}>
-<div>#FFFFFF</div>
-<div>&gt;</div>
-</div>
-
-
+<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
 
 <h3>Title Text</h3>
-
-<div style={inputRow}>
-<div>#FFFFFF</div>
-<div>&gt;</div>
-</div>
-
+<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
 
 </div>
-
 );
+}
 
 }
+
+return (
+<div style={{padding:"20px"}}>
+{renderPage()}
+</div>
+);
 
 }
