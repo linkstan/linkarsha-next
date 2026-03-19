@@ -6,6 +6,7 @@
 --muted:#666666;
 --border:#e5e5e5;
 --hover:#ececec;
+--card-dark:#1a1a25;
 }
 
 .dark{
@@ -18,7 +19,7 @@
 --hover:#2a2a2a;
 }
 
-/* GLOBAL PAGE */
+/* PAGE */
 
 html,body{
 margin:0;
@@ -34,20 +35,19 @@ font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 color:var(--text);
 }
 
-/* LINKS */
-
-a{
-color:var(--text);
-text-decoration:none;
-}
-
 /* CARDS */
 
-.card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:12px;
-padding:16px;
+div{
+border-color:var(--border);
+}
+
+/* AUTO FIX DARK CARDS IN LIGHT MODE */
+
+body:not(.dark) div[style*="#1a1a25"],
+body:not(.dark) div[style*="#0b0b12"],
+body:not(.dark) div[style*="#000"]{
+background:var(--card) !important;
+color:var(--text) !important;
 }
 
 /* INPUTS */
@@ -61,7 +61,6 @@ border:1px solid var(--border);
 padding:10px;
 border-radius:8px;
 outline:none;
-font-size:14px;
 width:100%;
 box-sizing:border-box;
 }
@@ -71,26 +70,21 @@ textarea::placeholder{
 color:var(--muted);
 }
 
-/* DARK MODE INPUT */
-
-.dark input,
-.dark textarea,
-.dark select{
-background:#0f0f10;
-color:#ffffff;
-border:1px solid #333333;
-}
-
 /* BUTTONS */
 
 button{
 cursor:pointer;
-border:none;
 border-radius:8px;
-padding:10px 16px;
+border:1px solid var(--border);
 background:var(--card);
 color:var(--text);
-border:1px solid var(--border);
+}
+
+/* LINKS */
+
+a{
+color:var(--text);
+text-decoration:none;
 }
 
 /* SCROLLBAR */
