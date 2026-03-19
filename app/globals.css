@@ -24,3 +24,30 @@ background:var(--bg);
 color:var(--text);
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 }
+/* INPUTS FIX FOR LIGHT + DARK MODE */
+
+input, textarea, select{
+background: var(--card);
+color: var(--text);
+border: 1px solid var(--border);
+padding: 10px;
+border-radius: 6px;
+outline: none;
+}
+
+input::placeholder,
+textarea::placeholder{
+color: var(--muted);
+}
+
+.dark input,
+.dark textarea,
+.dark select{
+background:#0f0f10;
+color:#ffffff;
+border:1px solid #333;
+}
+
+button{
+cursor:pointer;
+}
