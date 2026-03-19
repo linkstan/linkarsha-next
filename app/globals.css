@@ -1,5 +1,4 @@
 :root{
-
 --bg:#f6f7fb;
 --card:#ffffff;
 --sidebar:#ffffff;
@@ -7,11 +6,9 @@
 --muted:#666;
 --border:#e5e5e5;
 --hover:#ececec;
-
 }
 
 .dark{
-
 --bg:#0b0b12;
 --card:#1a1a25;
 --sidebar:#0f0f10;
@@ -19,12 +16,10 @@
 --muted:#a1a1aa;
 --border:#222;
 --hover:#2a2a2a;
-
 }
 
 body{
 margin:0;
-padding:0;
 background:var(--bg);
 color:var(--text);
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
