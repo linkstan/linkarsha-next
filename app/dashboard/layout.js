@@ -62,7 +62,6 @@ setBlocks(blockData || []);
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
-
 setMode(newMode);
 
 await supabase
@@ -77,32 +76,52 @@ await supabase.auth.signOut();
 window.location="/login";
 }
 
-const bg = mode==="dark" ? "#0b0b12" : "#f6f7fb";
-const text = mode==="dark" ? "#ffffff" : "#111";
-const sidebar = mode==="dark" ? "#0f0f10" : "#ffffff";
-const card = mode==="dark" ? "#1a1a25" : "#ffffff";
-const border = mode==="dark" ? "#222" : "#e5e5e5";
+/* THEME COLORS */
+
+const theme = mode === "dark"
+? {
+bg:"#0b0b12",
+text:"#ffffff",
+muted:"#a1a1aa",
+sidebar:"#0f0f10",
+card:"#1a1a25",
+border:"#222",
+hover:"#2a2a2a"
+}
+: {
+bg:"#f6f7fb",
+text:"#111111",
+muted:"#555",
+sidebar:"#ffffff",
+card:"#ffffff",
+border:"#e5e5e5",
+hover:"#ececec"
+};
 
 return(
 
 <div style={{
 display:"flex",
 minHeight:"100vh",
-background:bg,
-color:text,
+background:theme.bg,
+color:theme.text,
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
+{/* SIDEBAR */}
+
 <div style={{
 width:260,
-background:sidebar,
+background:theme.sidebar,
 padding:20,
 display:"flex",
 flexDirection:"column",
-borderRight:`1px solid ${border}`
+borderRight:`1px solid ${theme.border}`
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
+
+{/* USER */}
 
 <div style={{position:"relative"}}>
 
@@ -140,7 +159,7 @@ objectFit:"cover"
 {openUser && (
 
 <div style={{
-background:card,
+background:theme.card,
 borderRadius:8,
 padding:10,
 marginBottom:20
@@ -166,11 +185,13 @@ Sign Out
 
 </div>
 
-<Link href="/dashboard" style={item}>Home</Link>
+{/* MENU */}
+
+<Link href="/dashboard" style={menuItem(theme,pathname==="/dashboard")}>Home</Link>
 
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
-style={item}
+style={menuItem(theme,pathname.startsWith("/dashboard/links"))}
 >
 <span>My Linkarsha</span>
 <span>{openLinkarsha ? "v" : ">"}</span>
@@ -178,33 +199,25 @@ style={item}
 
 {openLinkarsha && (
 
-<div style={submenu}>
+<div style={{marginLeft:10}}>
 
-<Link href="/dashboard/links" style={subitem}>
-My Links
-</Link>
-
-<Link href="/dashboard/link-history" style={subitem}>
-Link History
-</Link>
-
-<Link href="/dashboard/get-verified" style={subitem}>
-Get Verified
-</Link>
+<Link href="/dashboard/links" style={subitem(theme)}>My Links</Link>
+<Link href="/dashboard/link-history" style={subitem(theme)}>Link History</Link>
+<Link href="/dashboard/get-verified" style={subitem(theme)}>Get Verified</Link>
 
 </div>
 
 )}
 
-<Link href="/dashboard/blocks" style={item}>Blocks</Link>
-<Link href="/dashboard/appearance" style={item}>Appearance</Link>
-<Link href="/dashboard/analytics" style={item}>Analytics</Link>
+<Link href="/dashboard/blocks" style={menuItem(theme)}>Blocks</Link>
+<Link href="/dashboard/appearance" style={menuItem(theme)}>Appearance</Link>
+<Link href="/dashboard/analytics" style={menuItem(theme)}>Analytics</Link>
 
-<hr style={{margin:"20px 0",borderColor:border}}/>
+<hr style={{margin:"20px 0",borderColor:theme.border}}/>
 
 <div
 onClick={()=>setOpenTools(!openTools)}
-style={item}
+style={menuItem(theme)}
 >
 <span>Tools</span>
 <span>{openTools ? "v" : ">"}</span>
@@ -212,32 +225,28 @@ style={item}
 
 {openTools && (
 
-<div style={submenu}>
+<div style={{marginLeft:10}}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
-AI Bio Generator
-</Link>
-
-<Link href="/dashboard/tools/qr-code" style={subitem}>
-QR Code Generator
-</Link>
-
-<Link href="/dashboard/tools/export-data" style={subitem}>
-Export Data
-</Link>
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem(theme)}>AI Bio Generator</Link>
+<Link href="/dashboard/tools/qr-code" style={subitem(theme)}>QR Code Generator</Link>
+<Link href="/dashboard/tools/export-data" style={subitem(theme)}>Export Data</Link>
 
 </div>
 
 )}
 
-<Link href="/dashboard/referrals" style={item}>Referrals</Link>
-<Link href="/dashboard/settings" style={item}>Settings</Link>
+<Link href="/dashboard/referrals" style={menuItem(theme)}>Referrals</Link>
+<Link href="/dashboard/settings" style={menuItem(theme)}>Settings</Link>
 
 </div>
+
+{/* MAIN */}
 
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
+
+{/* TOGGLE */}
 
 <div
 onClick={toggleTheme}
@@ -278,6 +287,8 @@ justifyContent:"center"
 
 </div>
 
+{/* RIGHT PREVIEW COLUMN */}
+
 {showPreview && (
 
 <div style={{
@@ -285,8 +296,10 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background: mode==="dark" ? "#0f0f16" : "#e9ebf2"
+background:mode==="dark" ? "#0f0f16" : "#e9ebf2"
 }}>
+
+{/* PUBLIC PROFILE PREVIEW ALWAYS DARK */}
 
 <div style={{
 width:280,
@@ -377,31 +390,32 @@ color:"white"
 
 }
 
-const item={
+/* STYLES */
+
+function menuItem(theme,active=false){
+return{
 padding:"10px 12px",
 cursor:"pointer",
 borderRadius:8,
 textDecoration:"none",
-color:"inherit",
+color:theme.text,
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center"
+alignItems:"center",
+background:active ? theme.hover : "transparent"
 };
+}
 
-const submenu={
-marginLeft:10,
-marginTop:5,
-marginBottom:10
-};
-
-const subitem={
+function subitem(theme){
+return{
 display:"block",
 padding:"8px 10px",
-opacity:0.8,
+opacity:0.85,
 cursor:"pointer",
 textDecoration:"none",
-color:"inherit"
+color:theme.text
 };
+}
 
 const dropdownItem={
 padding:"8px 10px",
