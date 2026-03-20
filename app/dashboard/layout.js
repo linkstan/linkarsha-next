@@ -11,8 +11,6 @@ const pathname = usePathname();
 
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openTools,setOpenTools] = useState(false);
-const [openUser,setOpenUser] = useState(false);
-
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
@@ -27,15 +25,8 @@ pathname.startsWith("/dashboard/appearance");
 
 useEffect(()=>{
 
-if(pathname.startsWith("/dashboard/links")){
-setOpenLinkarsha(true);
-setOpenTools(false);
-}
-
-if(pathname.startsWith("/dashboard/tools")){
-setOpenTools(true);
-setOpenLinkarsha(false);
-}
+setOpenLinkarsha(pathname.startsWith("/dashboard/links"));
+setOpenTools(pathname.startsWith("/dashboard/tools"));
 
 },[pathname]);
 
@@ -86,7 +77,7 @@ const newMode = mode === "light" ? "dark" : "light";
 
 setMode(newMode);
 
-document.documentElement.style.transition="all .25s ease";
+document.body.style.transition="background .25s,color .25s";
 
 if(newMode==="dark"){
 document.documentElement.classList.add("dark");
@@ -101,27 +92,24 @@ await supabase
 
 }
 
-/* LOGOUT */
-
-async function logout(){
-await supabase.auth.signOut();
-window.location="/login";
-}
-
 function active(path){
 return pathname.startsWith(path);
 }
 
-/* MENU CLICK (accordion) */
+/* ACCORDION CLICK */
 
-function toggleLinkarsha(){
+function openMenu(menu){
+
+if(menu==="linkarsha"){
 setOpenLinkarsha(!openLinkarsha);
 setOpenTools(false);
 }
 
-function toggleTools(){
+if(menu==="tools"){
 setOpenTools(!openTools);
 setOpenLinkarsha(false);
+}
+
 }
 
 return(
@@ -130,8 +118,7 @@ return(
 display:"flex",
 minHeight:"100vh",
 background:"var(--bg)",
-color:"var(--text)",
-fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+color:"var(--text)"
 }}>
 
 {/* SIDEBAR */}
@@ -140,79 +127,10 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 width:260,
 background:"var(--sidebar)",
 padding:20,
-display:"flex",
-flexDirection:"column",
 borderRight:"1px solid var(--border)"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
-
-{/* USER */}
-
-<div style={{position:"relative"}}>
-
-<div
-onClick={()=>setOpenUser(!openUser)}
-style={{
-display:"flex",
-alignItems:"center",
-gap:10,
-marginBottom:10,
-cursor:"pointer"
-}}
->
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:28,
-height:28,
-borderRadius:"50%",
-objectFit:"cover"
-}}
-/>
-
-<div style={{flex:1}}>
-{profile?.username}
-</div>
-
-<div style={{opacity:0.7}}>
-{openUser ? "v" : ">"}
-</div>
-
-</div>
-
-{openUser && (
-
-<div style={{
-background:"var(--card)",
-borderRadius:8,
-padding:10,
-marginBottom:20,
-border:"1px solid var(--border)"
-}}>
-
-<div style={dropdownItem}>Ask Question</div>
-<div style={dropdownItem}>Help Center</div>
-<div style={dropdownItem}>Contact Support</div>
-
-<div
-onClick={logout}
-style={{
-...dropdownItem,
-color:"#ff6b6b"
-}}
->
-Sign Out
-</div>
-
-</div>
-
-)}
-
-</div>
-
-{/* HOME */}
 
 <Link href="/dashboard" style={{
 ...item,
@@ -221,10 +139,8 @@ background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 Home
 </Link>
 
-{/* MY LINKARSHA */}
-
 <div
-onClick={toggleLinkarsha}
+onClick={()=>openMenu("linkarsha")}
 style={{
 ...item,
 background: active("/dashboard/links") ? "var(--hover)" : "transparent"
@@ -254,8 +170,6 @@ Get Verified
 
 )}
 
-{/* BLOCKS */}
-
 <Link href="/dashboard/blocks" style={{
 ...item,
 background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
@@ -263,16 +177,12 @@ background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
 Blocks
 </Link>
 
-{/* APPEARANCE */}
-
 <Link href="/dashboard/appearance" style={{
 ...item,
 background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
 </Link>
-
-{/* ANALYTICS */}
 
 <Link href="/dashboard/analytics" style={{
 ...item,
@@ -283,10 +193,8 @@ Analytics
 
 <hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
 
-{/* TOOLS */}
-
 <div
-onClick={toggleTools}
+onClick={()=>openMenu("tools")}
 style={{
 ...item,
 background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
@@ -338,7 +246,7 @@ Settings
 
 <div style={{
 flex:1,
-padding:"60px 60px 40px 60px",
+padding:"60px",
 position:"relative"
 }}>
 
@@ -393,7 +301,6 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background:"var(--bg)",
 borderLeft:"1px solid var(--border)"
 }}>
 
@@ -402,9 +309,9 @@ width:280,
 height:520,
 borderRadius:36,
 padding:18,
-background:"rgba(0,0,0,0.85)",
+background:"rgba(0,0,0,0.75)",
 backdropFilter:"blur(30px)",
-boxShadow:"0 50px 120px rgba(0,0,0,0.6)"
+boxShadow:"0 60px 140px rgba(0,0,0,0.6)"
 }}>
 
 <div style={{
@@ -412,8 +319,7 @@ width:"100%",
 height:"100%",
 background:"#0b0b12",
 borderRadius:22,
-padding:20,
-overflow:"auto"
+padding:20
 }}>
 
 <div style={{
@@ -421,8 +327,7 @@ width:70,
 height:70,
 borderRadius:"50%",
 overflow:"hidden",
-margin:"auto",
-background:"#222"
+margin:"auto"
 }}>
 
 <img
@@ -457,14 +362,13 @@ key={block.id}
 href={block.data_json?.url}
 target="_blank"
 style={{
-display:"flex",
-alignItems:"center",
+display:"block",
 background:"#1a1a25",
 padding:12,
 borderRadius:10,
 marginTop:10,
-textDecoration:"none",
-color:"white"
+color:"white",
+textDecoration:"none"
 }}
 >
 {block.data_json?.title}
@@ -512,10 +416,4 @@ opacity:0.85,
 cursor:"pointer",
 textDecoration:"none",
 color:"var(--text)"
-};
-
-const dropdownItem={
-padding:"8px 10px",
-cursor:"pointer",
-borderRadius:6
 };
