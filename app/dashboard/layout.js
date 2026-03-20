@@ -90,6 +90,10 @@ await supabase.auth.signOut();
 window.location="/login";
 }
 
+function active(path){
+return pathname.startsWith(path);
+}
+
 return(
 
 <div style={{
@@ -187,7 +191,7 @@ Home
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/links") ? "var(--hover)" : "transparent"
+background: active("/dashboard/links") ? "var(--hover)" : "transparent"
 }}
 >
 <span>My Linkarsha</span>
@@ -205,11 +209,17 @@ background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
 My Links
 </Link>
 
-<Link href="/dashboard/link-history" style={subitem}>
+<Link href="/dashboard/link-history" style={{
+...subitem,
+background: active("/dashboard/link-history") ? "var(--hover)" : "transparent"
+}}>
 Link History
 </Link>
 
-<Link href="/dashboard/get-verified" style={subitem}>
+<Link href="/dashboard/get-verified" style={{
+...subitem,
+background: active("/dashboard/get-verified") ? "var(--hover)" : "transparent"
+}}>
 Get Verified
 </Link>
 
@@ -219,21 +229,21 @@ Get Verified
 
 <Link href="/dashboard/blocks" style={{
 ...item,
-background: pathname.startsWith("/dashboard/blocks") ? "var(--hover)" : "transparent"
+background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
 }}>
 Blocks
 </Link>
 
 <Link href="/dashboard/appearance" style={{
 ...item,
-background: pathname.startsWith("/dashboard/appearance") ? "var(--hover)" : "transparent"
+background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
 </Link>
 
 <Link href="/dashboard/analytics" style={{
 ...item,
-background: pathname.startsWith("/dashboard/analytics") ? "var(--hover)" : "transparent"
+background: active("/dashboard/analytics") ? "var(--hover)" : "transparent"
 }}>
 Analytics
 </Link>
@@ -244,7 +254,7 @@ Analytics
 onClick={()=>setOpenTools(!openTools)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/tools") ? "var(--hover)" : "transparent"
+background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
 }}
 >
 <span>Tools</span>
@@ -255,15 +265,24 @@ background: pathname.startsWith("/dashboard/tools") ? "var(--hover)" : "transpar
 
 <div style={submenu}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
+<Link href="/dashboard/tools/ai-bio-generator" style={{
+...subitem,
+background: active("/dashboard/tools/ai-bio-generator") ? "var(--hover)" : "transparent"
+}}>
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/qr-code" style={subitem}>
+<Link href="/dashboard/tools/qr-code" style={{
+...subitem,
+background: active("/dashboard/tools/qr-code") ? "var(--hover)" : "transparent"
+}}>
 QR Code Generator
 </Link>
 
-<Link href="/dashboard/tools/export-data" style={subitem}>
+<Link href="/dashboard/tools/export-data" style={{
+...subitem,
+background: active("/dashboard/tools/export-data") ? "var(--hover)" : "transparent"
+}}>
 Export Data
 </Link>
 
@@ -273,14 +292,14 @@ Export Data
 
 <Link href="/dashboard/referrals" style={{
 ...item,
-background: pathname.startsWith("/dashboard/referrals") ? "var(--hover)" : "transparent"
+background: active("/dashboard/referrals") ? "var(--hover)" : "transparent"
 }}>
 Referrals
 </Link>
 
 <Link href="/dashboard/settings" style={{
 ...item,
-background: pathname.startsWith("/dashboard/settings") ? "var(--hover)" : "transparent"
+background: active("/dashboard/settings") ? "var(--hover)" : "transparent"
 }}>
 Settings
 </Link>
@@ -351,7 +370,8 @@ width:280,
 height:520,
 background:"#000",
 borderRadius:30,
-padding:18
+padding:18,
+boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 }}>
 
 <div style={{
