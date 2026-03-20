@@ -1,4 +1,5 @@
 import "react-easy-crop/react-easy-crop.css";
+import "./globals.css";
 
 export const metadata = {
   title: "Linkarsha",
@@ -8,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{background:"#0b0b0f",color:"white",fontFamily:"Arial"}}>
+      <body>
         {children}
       </body>
     </html>
