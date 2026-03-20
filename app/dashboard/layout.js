@@ -15,7 +15,6 @@ const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
-const [mode,setMode] = useState("light");
 
 const showPreview =
 pathname === "/dashboard" ||
@@ -47,15 +46,6 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-const savedMode = prof?.theme_mode || "light";
-setMode(savedMode);
-
-if(savedMode==="dark"){
-document.documentElement.classList.add("dark");
-}else{
-document.documentElement.classList.remove("dark");
-}
-
 const {data:blockData} = await supabase
 .from("blocks")
 .select("*")
@@ -64,24 +54,6 @@ const {data:blockData} = await supabase
 .order("position",{ascending:true});
 
 setBlocks(blockData || []);
-
-}
-
-async function toggleTheme(){
-
-const newMode = mode === "light" ? "dark" : "light";
-setMode(newMode);
-
-if(newMode==="dark"){
-document.documentElement.classList.add("dark");
-}else{
-document.documentElement.classList.remove("dark");
-}
-
-await supabase
-.from("profiles")
-.update({theme_mode:newMode})
-.eq("id",profile.id);
 
 }
 
@@ -175,8 +147,6 @@ Sign Out
 )}
 
 </div>
-
-{/* SIDEBAR MENU */}
 
 <Link href="/dashboard" style={{
 ...item,
@@ -287,45 +257,43 @@ Settings
 
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40,position:"relative"}}>
+<div style={{flex:1,padding:40}}>
+{children}
 
-{/* THEME SWITCH */}
+{/* HOME PROFILE LINK BOX */}
 
-<div
-onClick={toggleTheme}
-style={{
-position:"absolute",
-right:30,
-top:20,
-width:70,
-height:36,
-borderRadius:40,
-cursor:"pointer",
-background: mode==="dark"
-? "linear-gradient(45deg,#0f9bff,#00f2fe)"
-: "linear-gradient(45deg,#ff9a44,#ff5e62)",
-display:"flex",
-alignItems:"center",
-justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4
-}}
->
+{profile && pathname === "/dashboard" && (
 
 <div style={{
-width:28,
-height:28,
-borderRadius:"50%",
-background:"white",
+marginTop:20,
+background:"var(--card)",
+border:"1px solid var(--border)",
+borderRadius:10,
 display:"flex",
-alignItems:"center",
-justifyContent:"center"
+overflow:"hidden",
+width:"fit-content"
 }}>
-{mode==="dark" ? "🌙" : "☀️"}
+
+<div style={{
+padding:"12px 18px",
+color:"var(--text)"
+}}>
+linkarsha-next.vercel.app/{profile.username}
 </div>
+
+<button style={{
+padding:"12px 18px",
+border:"none",
+background:"#00d26a",
+color:"black",
+cursor:"pointer"
+}}>
+Copy
+</button>
 
 </div>
 
-{children}
+)}
 
 </div>
 
@@ -341,19 +309,20 @@ alignItems:"center",
 background:"var(--bg)"
 }}>
 
+{/* ALWAYS DARK PUBLIC PREVIEW */}
+
 <div style={{
 width:280,
 height:520,
-background:"var(--card)",
+background:"#000",
 borderRadius:30,
-padding:18,
-border:"1px solid var(--border)"
+padding:18
 }}>
 
 <div style={{
 width:"100%",
 height:"100%",
-background:"var(--card)",
+background:"#0b0b12",
 borderRadius:20,
 padding:20,
 overflow:"auto"
@@ -365,7 +334,7 @@ height:70,
 borderRadius:"50%",
 overflow:"hidden",
 margin:"auto",
-background:"#ccc"
+background:"#222"
 }}>
 
 <img
@@ -379,7 +348,7 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 marginTop:10,
 textAlign:"center",
 fontWeight:600,
-color:"var(--text)"
+color:"white"
 }}>
 {profile?.display_name}
 </div>
@@ -388,7 +357,7 @@ color:"var(--text)"
 textAlign:"center",
 opacity:0.7,
 fontSize:14,
-color:"var(--text)"
+color:"#aaa"
 }}>
 {profile?.bio}
 </div>
@@ -402,13 +371,12 @@ target="_blank"
 style={{
 display:"flex",
 alignItems:"center",
-background:"var(--card)",
+background:"#1a1a25",
 padding:12,
 borderRadius:10,
 marginTop:10,
 textDecoration:"none",
-color:"var(--text)",
-border:"1px solid var(--border)"
+color:"white"
 }}
 >
 {block.data_json?.title}
@@ -452,7 +420,7 @@ marginBottom:10
 const subitem={
 display:"block",
 padding:"8px 10px",
-opacity:0.8,
+opacity:0.85,
 cursor:"pointer",
 textDecoration:"none",
 color:"var(--text)"
