@@ -23,26 +23,18 @@ return;
 
 const uid=session.user.id;
 
-/* detect user timezone */
-
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-/* save timezone */
 
 await supabase
 .from("profiles")
 .update({timezone})
 .eq("id",uid);
 
-/* load profile */
-
 const {data:prof} = await supabase
 .from("profiles")
 .select("*")
 .eq("id",uid)
 .single();
-
-/* onboarding protection */
 
 if(!prof || !prof.user_type){
 window.location="/setup";
@@ -54,8 +46,6 @@ setLoading(false);
 
 }
 
-/* share profile */
-
 function shareProfile(){
 
 const url=`https://linkarsha-next.vercel.app/${profile.username}`;
@@ -66,8 +56,6 @@ alert("Profile link copied");
 
 }
 
-/* upload avatar */
-
 async function uploadAvatar(e){
 
 const file = e.target.files[0];
@@ -77,19 +65,13 @@ const {data:{session}} = await supabase.auth.getSession();
 
 const uid = session.user.id + ".jpg";
 
-/* upload */
-
 await supabase.storage
 .from("avatars")
 .upload(uid,file,{upsert:true});
 
-/* public url */
-
 const {data} = supabase.storage
 .from("avatars")
 .getPublicUrl(uid);
-
-/* update profile */
 
 await supabase
 .from("profiles")
@@ -179,33 +161,46 @@ fontWeight:700
 @{profile?.username}
 </div>
 
+
+{/* PROFILE LINK + SHARE BUTTON */}
+
 <div style={{
-marginTop:20,
+marginTop:25,
 display:"flex",
-borderRadius:14,
-overflow:"hidden",
-border:"1px solid #333"
+gap:12,
+alignItems:"center"
 }}>
 
 <div style={{
-padding:"14px 20px",
-background:"#111",
+display:"flex",
+border:"1px solid var(--border)",
+borderRadius:14,
+overflow:"hidden",
+background:"var(--card)"
+}}>
+
+<div style={{
+padding:"14px 18px",
+color:"var(--text)",
 fontWeight:600
 }}>
 linkarsha-next.vercel.app/{profile?.username}
+</div>
+
 </div>
 
 <button
 onClick={shareProfile}
 style={{
 padding:"14px 20px",
-background:"#1a1a25",
+borderRadius:14,
 border:"none",
+background:"#1a1a25",
 color:"white",
 cursor:"pointer"
 }}
 >
-Share
+Share Profile
 </button>
 
 </div>
@@ -215,7 +210,8 @@ Share
 <div style={{
 marginTop:60,
 opacity:0.7,
-textAlign:"center"
+textAlign:"center",
+color:"var(--text)"
 }}>
 Welcome to Linkarsha.  
 Use the sidebar to manage your links, blocks and analytics.
