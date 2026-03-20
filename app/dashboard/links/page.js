@@ -60,8 +60,6 @@ if(!finalTitle){
 finalTitle=detectPlatform(finalUrl);
 }
 
-/* get last position */
-
 let lastPosition = 0;
 
 if(blocks.length > 0){
@@ -69,8 +67,6 @@ lastPosition = blocks[blocks.length-1].position || 0;
 }
 
 const newPosition = lastPosition + 1000;
-
-/* insert block */
 
 await supabase.from("blocks").insert({
 user_id:user.id,
@@ -81,8 +77,6 @@ title:finalTitle,
 url:finalUrl
 }
 });
-
-/* save history */
 
 await supabase.from("link_history").insert({
 user_id:user.id,
@@ -102,14 +96,10 @@ async function deleteLink(id){
 
 const block = blocks.find(b => b.id === id);
 
-/* delete block */
-
 await supabase
 .from("blocks")
 .delete()
 .eq("id",id);
-
-/* save history */
 
 if(block){
 
@@ -142,8 +132,6 @@ updated.splice(index,0,dragged);
 
 setBlocks(updated);
 
-/* update positions */
-
 for(let i=0;i<updated.length;i++){
 
 await supabase
@@ -152,8 +140,6 @@ await supabase
 .eq("id",updated[i].id);
 
 }
-
-/* save reorder history */
 
 await supabase.from("link_history").insert({
 user_id:user.id,
@@ -198,9 +184,9 @@ onChange={(e)=>setTitle(e.target.value)}
 style={{
 width:"100%",
 padding:12,
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}
 />
 
@@ -212,9 +198,9 @@ style={{
 width:"100%",
 padding:12,
 marginTop:10,
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}
 />
 
@@ -244,14 +230,15 @@ onDragStart={()=>handleDragStart(index)}
 onDragOver={(e)=>e.preventDefault()}
 onDrop={()=>handleDrop(index)}
 style={{
-background:"#15151f",
+background:"var(--card)",
 padding:14,
 borderRadius:10,
 marginTop:10,
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
-cursor:"grab"
+cursor:"grab",
+border:"1px solid var(--border)"
 }}
 >
 
