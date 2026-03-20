@@ -22,8 +22,6 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* auto open parent menus */
-
 useEffect(()=>{
 if(pathname.startsWith("/dashboard/links")) setOpenLinkarsha(true);
 if(pathname.startsWith("/dashboard/tools")) setOpenTools(true);
@@ -69,24 +67,21 @@ return(
 <div style={{
 display:"flex",
 minHeight:"100vh",
-background:"#0b0b12",
-color:"white",
+background:"var(--bg)",
+color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
-{/* SIDEBAR */}
-
 <div style={{
 width:260,
-background:"#0f0f10",
+background:"var(--sidebar)",
 padding:20,
 display:"flex",
-flexDirection:"column"
+flexDirection:"column",
+borderRight:"1px solid var(--border)"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
-
-{/* USER */}
 
 <div style={{position:"relative"}}>
 
@@ -124,7 +119,7 @@ objectFit:"cover"
 {openUser && (
 
 <div style={{
-background:"#1a1a25",
+background:"var(--card)",
 borderRadius:8,
 padding:10,
 marginBottom:20
@@ -150,22 +145,18 @@ Sign Out
 
 </div>
 
-{/* HOME */}
-
 <Link href="/dashboard" style={{
 ...item,
-background: pathname === "/dashboard" ? "#2a2a2a" : "transparent"
+background: pathname === "/dashboard" ? "var(--card)" : "transparent"
 }}>
 Home
 </Link>
-
-{/* MY LINKARSHA */}
 
 <div
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/links") ? "var(--card)" : "transparent"
 }}
 >
 <span>My Linkarsha</span>
@@ -178,7 +169,7 @@ background: pathname.startsWith("/dashboard/links") ? "#2a2a2a" : "transparent"
 
 <Link href="/dashboard/links" style={{
 ...subitem,
-background: pathname === "/dashboard/links" ? "#2a2a2a" : "transparent"
+background: pathname === "/dashboard/links" ? "var(--card)" : "transparent"
 }}>
 My Links
 </Link>
@@ -195,42 +186,34 @@ Get Verified
 
 )}
 
-{/* BLOCKS */}
-
 <Link href="/dashboard/blocks" style={{
 ...item,
-background: pathname.startsWith("/dashboard/blocks") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/blocks") ? "var(--card)" : "transparent"
 }}>
 Blocks
 </Link>
 
-{/* APPEARANCE */}
-
 <Link href="/dashboard/appearance" style={{
 ...item,
-background: pathname.startsWith("/dashboard/appearance") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/appearance") ? "var(--card)" : "transparent"
 }}>
 Appearance
 </Link>
 
-{/* ANALYTICS */}
-
 <Link href="/dashboard/analytics" style={{
 ...item,
-background: pathname.startsWith("/dashboard/analytics") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/analytics") ? "var(--card)" : "transparent"
 }}>
 Analytics
 </Link>
 
-<hr style={{margin:"20px 0",borderColor:"#222"}}/>
-
-{/* TOOLS */}
+<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
 
 <div
 onClick={()=>setOpenTools(!openTools)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
+background: pathname.startsWith("/dashboard/tools") ? "var(--card)" : "transparent"
 }}
 >
 <span>Tools</span>
@@ -241,24 +224,15 @@ background: pathname.startsWith("/dashboard/tools") ? "#2a2a2a" : "transparent"
 
 <div style={submenu}>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/ai-bio-generator") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/qr-code" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/qr-code") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/qr-code" style={subitem}>
 QR Code Generator
 </Link>
 
-<Link href="/dashboard/tools/export-data" style={{
-...subitem,
-background: pathname.startsWith("/dashboard/tools/export-data") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/tools/export-data" style={subitem}>
 Export Data
 </Link>
 
@@ -266,27 +240,15 @@ Export Data
 
 )}
 
-{/* REFERRALS */}
-
-<Link href="/dashboard/referrals" style={{
-...item,
-background: pathname.startsWith("/dashboard/referrals") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/referrals" style={item}>
 Referrals
 </Link>
 
-{/* SETTINGS */}
-
-<Link href="/dashboard/settings" style={{
-...item,
-background: pathname.startsWith("/dashboard/settings") ? "#2a2a2a" : "transparent"
-}}>
+<Link href="/dashboard/settings" style={item}>
 Settings
 </Link>
 
 </div>
-
-{/* MAIN AREA */}
 
 <div style={{flex:1,display:"flex"}}>
 
@@ -301,7 +263,7 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background:"#0f0f16"
+background:"var(--bg)"
 }}>
 
 <div style={{
@@ -396,7 +358,7 @@ padding:"10px 12px",
 cursor:"pointer",
 borderRadius:8,
 textDecoration:"none",
-color:"white",
+color:"var(--text)",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
@@ -414,7 +376,7 @@ padding:"8px 10px",
 opacity:0.8,
 cursor:"pointer",
 textDecoration:"none",
-color:"white"
+color:"var(--text)"
 };
 
 const dropdownItem={
