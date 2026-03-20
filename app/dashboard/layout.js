@@ -281,7 +281,7 @@ Settings
 
 </div>
 
-{/* MAIN */}
+{/* MAIN AREA */}
 
 <div style={{flex:1,display:"flex"}}>
 
@@ -333,13 +333,15 @@ justifyContent:"center"
 marginTop:30,
 display:"flex",
 border:"1px solid var(--border)",
-borderRadius:10,
+borderRadius:12,
 overflow:"hidden",
-background:"var(--card)"
+background:"var(--card)",
+maxWidth:420
 }}>
 
 <div style={{
-padding:"12px 18px",
+padding:"12px 16px",
+flex:1,
 color:"var(--text)"
 }}>
 linkarsha-next.vercel.app/{profile.username}
@@ -466,7 +468,7 @@ color:"white"
 const item={
 padding:"10px 12px",
 cursor:"pointer",
-borderRadius:8,
+borderRadius:10,
 textDecoration:"none",
 color:"var(--text)",
 display:"flex",
