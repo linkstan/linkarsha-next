@@ -15,6 +15,7 @@ const [openUser,setOpenUser] = useState(false);
 
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
+const [mode,setMode] = useState("light");
 
 const showPreview =
 pathname === "/dashboard" ||
@@ -46,6 +47,17 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
+/* LOAD SAVED THEME */
+
+const savedMode = prof?.theme_mode || "light";
+setMode(savedMode);
+
+if(savedMode === "dark"){
+document.documentElement.classList.add("dark");
+}else{
+document.documentElement.classList.remove("dark");
+}
+
 const {data:blockData} = await supabase
 .from("blocks")
 .select("*")
@@ -54,6 +66,26 @@ const {data:blockData} = await supabase
 .order("position",{ascending:true});
 
 setBlocks(blockData || []);
+
+}
+
+/* THEME TOGGLE */
+
+async function toggleTheme(){
+
+const newMode = mode === "light" ? "dark" : "light";
+setMode(newMode);
+
+if(newMode === "dark"){
+document.documentElement.classList.add("dark");
+}else{
+document.documentElement.classList.remove("dark");
+}
+
+await supabase
+.from("profiles")
+.update({theme_mode:newMode})
+.eq("id",profile.id);
 
 }
 
@@ -71,6 +103,8 @@ background:"var(--bg)",
 color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
+
+{/* SIDEBAR */}
 
 <div style={{
 width:260,
@@ -250,10 +284,51 @@ Settings
 
 </div>
 
+{/* MAIN AREA */}
+
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40}}>
+<div style={{flex:1,padding:40,position:"relative"}}>
+
+{/* THEME SWITCH */}
+
+<div
+onClick={toggleTheme}
+style={{
+position:"absolute",
+right:30,
+top:20,
+width:70,
+height:36,
+borderRadius:40,
+cursor:"pointer",
+background: mode==="dark"
+? "linear-gradient(45deg,#0f9bff,#00f2fe)"
+: "linear-gradient(45deg,#ff9a44,#ff5e62)",
+display:"flex",
+alignItems:"center",
+justifyContent: mode==="dark" ? "flex-start" : "flex-end",
+padding:4,
+transition:"all .3s"
+}}
+>
+
+<div style={{
+width:28,
+height:28,
+borderRadius:"50%",
+background:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+{mode==="dark" ? "🌙" : "☀️"}
+</div>
+
+</div>
+
 {children}
+
 </div>
 
 {showPreview && (
