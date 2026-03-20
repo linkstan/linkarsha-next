@@ -47,12 +47,10 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-/* LOAD SAVED THEME */
-
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
 
-if(savedMode === "dark"){
+if(savedMode==="dark"){
 document.documentElement.classList.add("dark");
 }else{
 document.documentElement.classList.remove("dark");
@@ -69,14 +67,12 @@ setBlocks(blockData || []);
 
 }
 
-/* THEME TOGGLE */
-
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
 setMode(newMode);
 
-if(newMode === "dark"){
+if(newMode==="dark"){
 document.documentElement.classList.add("dark");
 }else{
 document.documentElement.classList.remove("dark");
@@ -156,7 +152,8 @@ objectFit:"cover"
 background:"var(--card)",
 borderRadius:8,
 padding:10,
-marginBottom:20
+marginBottom:20,
+border:"1px solid var(--border)"
 }}>
 
 <div style={dropdownItem}>Ask Question</div>
@@ -179,9 +176,11 @@ Sign Out
 
 </div>
 
+{/* SIDEBAR MENU */}
+
 <Link href="/dashboard" style={{
 ...item,
-background: pathname === "/dashboard" ? "var(--card)" : "transparent"
+background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 }}>
 Home
 </Link>
@@ -190,7 +189,7 @@ Home
 onClick={()=>setOpenLinkarsha(!openLinkarsha)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/links") ? "var(--card)" : "transparent"
+background: pathname.startsWith("/dashboard/links") ? "var(--hover)" : "transparent"
 }}
 >
 <span>My Linkarsha</span>
@@ -203,7 +202,7 @@ background: pathname.startsWith("/dashboard/links") ? "var(--card)" : "transpare
 
 <Link href="/dashboard/links" style={{
 ...subitem,
-background: pathname === "/dashboard/links" ? "var(--card)" : "transparent"
+background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
 }}>
 My Links
 </Link>
@@ -222,21 +221,21 @@ Get Verified
 
 <Link href="/dashboard/blocks" style={{
 ...item,
-background: pathname.startsWith("/dashboard/blocks") ? "var(--card)" : "transparent"
+background: pathname.startsWith("/dashboard/blocks") ? "var(--hover)" : "transparent"
 }}>
 Blocks
 </Link>
 
 <Link href="/dashboard/appearance" style={{
 ...item,
-background: pathname.startsWith("/dashboard/appearance") ? "var(--card)" : "transparent"
+background: pathname.startsWith("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
 </Link>
 
 <Link href="/dashboard/analytics" style={{
 ...item,
-background: pathname.startsWith("/dashboard/analytics") ? "var(--card)" : "transparent"
+background: pathname.startsWith("/dashboard/analytics") ? "var(--hover)" : "transparent"
 }}>
 Analytics
 </Link>
@@ -247,7 +246,7 @@ Analytics
 onClick={()=>setOpenTools(!openTools)}
 style={{
 ...item,
-background: pathname.startsWith("/dashboard/tools") ? "var(--card)" : "transparent"
+background: pathname.startsWith("/dashboard/tools") ? "var(--hover)" : "transparent"
 }}
 >
 <span>Tools</span>
@@ -284,7 +283,7 @@ Settings
 
 </div>
 
-{/* MAIN AREA */}
+{/* MAIN */}
 
 <div style={{flex:1,display:"flex"}}>
 
@@ -308,8 +307,7 @@ background: mode==="dark"
 display:"flex",
 alignItems:"center",
 justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4,
-transition:"all .3s"
+padding:4
 }}
 >
 
@@ -331,6 +329,8 @@ justifyContent:"center"
 
 </div>
 
+{/* PHONE PREVIEW */}
+
 {showPreview && (
 
 <div style={{
@@ -344,15 +344,16 @@ background:"var(--bg)"
 <div style={{
 width:280,
 height:520,
-background:"#000",
+background:"var(--card)",
 borderRadius:30,
-padding:18
+padding:18,
+border:"1px solid var(--border)"
 }}>
 
 <div style={{
 width:"100%",
 height:"100%",
-background:"#0b0b12",
+background:"var(--card)",
 borderRadius:20,
 padding:20,
 overflow:"auto"
@@ -364,7 +365,7 @@ height:70,
 borderRadius:"50%",
 overflow:"hidden",
 margin:"auto",
-background:"#222"
+background:"#ccc"
 }}>
 
 <img
@@ -377,7 +378,8 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 <div style={{
 marginTop:10,
 textAlign:"center",
-fontWeight:600
+fontWeight:600,
+color:"var(--text)"
 }}>
 {profile?.display_name}
 </div>
@@ -385,7 +387,8 @@ fontWeight:600
 <div style={{
 textAlign:"center",
 opacity:0.7,
-fontSize:14
+fontSize:14,
+color:"var(--text)"
 }}>
 {profile?.bio}
 </div>
@@ -399,12 +402,13 @@ target="_blank"
 style={{
 display:"flex",
 alignItems:"center",
-background:"#1a1a25",
+background:"var(--card)",
 padding:12,
 borderRadius:10,
 marginTop:10,
 textDecoration:"none",
-color:"white"
+color:"var(--text)",
+border:"1px solid var(--border)"
 }}
 >
 {block.data_json?.title}
