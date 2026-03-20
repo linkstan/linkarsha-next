@@ -271,11 +271,17 @@ Export Data
 
 )}
 
-<Link href="/dashboard/referrals" style={item}>
+<Link href="/dashboard/referrals" style={{
+...item,
+background: pathname.startsWith("/dashboard/referrals") ? "var(--hover)" : "transparent"
+}}>
 Referrals
 </Link>
 
-<Link href="/dashboard/settings" style={item}>
+<Link href="/dashboard/settings" style={{
+...item,
+background: pathname.startsWith("/dashboard/settings") ? "var(--hover)" : "transparent"
+}}>
 Settings
 </Link>
 
@@ -324,42 +330,6 @@ justifyContent:"center"
 </div>
 
 {children}
-
-{/* PROFILE LINK BOX */}
-
-{profile && pathname === "/dashboard" && (
-
-<div style={{
-marginTop:30,
-display:"flex",
-border:"1px solid var(--border)",
-borderRadius:12,
-overflow:"hidden",
-background:"var(--card)",
-maxWidth:420
-}}>
-
-<div style={{
-padding:"12px 16px",
-flex:1,
-color:"var(--text)"
-}}>
-linkarsha-next.vercel.app/{profile.username}
-</div>
-
-<button style={{
-padding:"12px 18px",
-border:"none",
-background:"#5cc06a",
-color:"#000",
-cursor:"pointer"
-}}>
-Copy
-</button>
-
-</div>
-
-)}
 
 </div>
 
