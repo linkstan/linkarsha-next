@@ -130,7 +130,10 @@ return {};
 
 return(
 
-<div style={{maxWidth:720,color:"var(--text)"}}>
+<div style={{
+maxWidth:720,
+color:"var(--text)"
+}}>
 
 <h2>QR Code Generator</h2>
 
@@ -138,13 +141,24 @@ return(
 Create QR codes for your profile or any link.
 </p>
 
-<div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
+
+{/* QUICK LINKS */}
+
+<div style={{
+display:"flex",
+gap:10,
+marginTop:20,
+flexWrap:"wrap"
+}}>
 
 <button onClick={profileQR} style={btn}>Profile</button>
 <button onClick={instagramQR} style={btn}>Instagram</button>
 <button onClick={youtubeQR} style={btn}>YouTube</button>
 
 </div>
+
+
+{/* CUSTOM URL */}
 
 <div style={{marginTop:20}}>
 
@@ -164,6 +178,9 @@ Generate QR
 
 </div>
 
+
+{/* QR PREVIEW */}
+
 <div style={{marginTop:35}}>
 
 {qr && (
@@ -177,7 +194,8 @@ alignItems:"center",
 justifyContent:"center",
 borderRadius:16,
 position:"relative",
-border:"1px solid var(--border)"
+border:"1px solid var(--border)",
+boxShadow:"0 10px 30px rgba(0,0,0,0.15)"
 }}>
 
 <img
@@ -193,7 +211,7 @@ height:240,
 
 <div style={{
 position:"absolute",
-background:"#fff",
+background:"white",
 padding:8,
 borderRadius:12
 }}>
@@ -216,6 +234,58 @@ borderRadius:10
 )}
 
 </div>
+
+
+{/* CUSTOMIZATION */}
+
+<div style={{marginTop:30}}>
+
+<div style={{marginBottom:15}}>
+<label>QR Color</label>
+<br/>
+<input
+type="color"
+value={color}
+onChange={(e)=>setColor(e.target.value)}
+/>
+</div>
+
+<div style={{marginBottom:15}}>
+<label>Background Color</label>
+<br/>
+<input
+type="color"
+value={bgColor}
+onChange={(e)=>setBgColor(e.target.value)}
+/>
+</div>
+
+<div style={{marginBottom:15}}>
+<label>QR Style</label>
+<br/>
+<select
+value={style}
+onChange={(e)=>setStyle(e.target.value)}
+style={select}
+>
+<option value="classic">Classic</option>
+<option value="rounded">Rounded</option>
+<option value="soft">Soft</option>
+</select>
+</div>
+
+<div style={{marginBottom:15}}>
+<label>Add Logo</label>
+<br/>
+<input
+type="file"
+accept="image/*"
+onChange={handleLogo}
+/>
+</div>
+
+</div>
+
 
 <button
 onClick={download}
@@ -244,4 +314,12 @@ padding:12,
 background:"var(--card)",
 border:"1px solid var(--border)",
 color:"var(--text)"
+};
+
+const select={
+padding:10,
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)",
+borderRadius:6
 };
