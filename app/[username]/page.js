@@ -69,49 +69,19 @@ Loading...
 
 const themes={
 
-Minimal:{
-bg:"#ffffff",
-text:"#111111"
-},
-
-Midnight:{
-bg:"#0b0b12",
-text:"#ffffff"
-},
-
-Ocean:{
-bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",
-text:"#ffffff"
-},
-
-Sunset:{
-bg:"linear-gradient(135deg,#ff7a18,#ffb347)",
-text:"#ffffff"
-},
-
-Luxury:{
-bg:"#000000",
-text:"#d4af37"
-},
-
-Pastel:{
-bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",
-text:"#111"
-},
-
-Neon:{
-bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",
-text:"#ffffff"
-},
-
-Mono:{
-bg:"#111111",
-text:"#ffffff"
-}
+minimal:{bg:"#ffffff",text:"#111"},
+midnight:{bg:"#0b0b12",text:"#ffffff"},
+ocean:{bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",text:"#ffffff"},
+sunset:{bg:"linear-gradient(135deg,#ff7a18,#ffb347)",text:"#ffffff"},
+luxury:{bg:"#000000",text:"#d4af37"},
+pastel:{bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",text:"#111"},
+neon:{bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",text:"#ffffff"},
+mono:{bg:"#111111",text:"#ffffff"}
 
 };
 
-const theme=themes[profile.theme] || themes.Midnight;
+const themeKey=(profile.theme || "midnight").toLowerCase();
+const theme=themes[themeKey] || themes.midnight;
 
 return(
 
@@ -147,28 +117,6 @@ objectFit:"cover"
 
 <h1 style={{display:"flex",alignItems:"center",gap:6}}>
 @{profile.username}
-
-{profile.verified && (
-
-<svg
-xmlns="http://www.w3.org/2000/svg"
-width="18"
-height="18"
-viewBox="0 0 24 24"
-fill="#1DA1F2"
->
-
-<path d="M22.5 12l-2.3 2.1.5 3-2.9 1.2-1.6 2.6-3.2-.6-3.2.6-1.6-2.6-2.9-1.2.5-3L1.5 12l2.3-2.1-.5-3 2.9-1.2 1.6-2.6 3.2.6 3.2-.6 1.6 2.6 2.9 1.2-.5 3L22.5 12z"/>
-
-<path
-d="M10 13.5l-1.5-1.5-1 1L10 15.5 16 9.5l-1-1z"
-fill="white"
-/>
-
-</svg>
-
-)}
-
 </h1>
 
 <p style={{opacity:0.7, marginTop:10}}>
