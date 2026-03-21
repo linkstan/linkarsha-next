@@ -19,13 +19,9 @@ const [mode,setMode] = useState("7d");
 const [startDate,setStartDate] = useState("");
 const [endDate,setEndDate] = useState("");
 
-const [loading,setLoading] = useState(false);
-
 const [userId,setUserId] = useState(null);
 const [timezone,setTimezone] = useState("UTC");
 
-
-/* LOAD EVENTS + REALTIME */
 
 useEffect(()=>{
 init();
@@ -39,8 +35,6 @@ if(!session) return;
 
 setUserId(session.user.id);
 
-/* get user timezone */
-
 const {data:prof}=await supabase
 .from("profiles")
 .select("timezone")
@@ -51,11 +45,7 @@ if(prof?.timezone){
 setTimezone(prof.timezone);
 }
 
-/* load events */
-
 loadEvents(session.user.id);
-
-/* realtime clicks */
 
 const channel = supabase
 .channel("events-live")
@@ -75,8 +65,6 @@ setEvents(prev=>[payload.new,...prev]);
 }
 )
 .subscribe();
-
-/* REAL LIVE VISITORS (last 5 minutes activity) */
 
 const visitorTimer=setInterval(()=>{
 
@@ -114,16 +102,12 @@ setEvents(data);
 }
 
 
-/* TIMEZONE HELPER */
-
 function tzDate(date){
 return new Date(
 new Date(date).toLocaleString("en-US",{timeZone:timezone})
 );
 }
 
-
-/* DATE FILTER */
 
 function filterEvents(){
 
@@ -177,8 +161,6 @@ return t >= start && t <= end;
 const filtered = filterEvents();
 
 
-/* CLICK COUNTS */
-
 function buildClickCounts(){
 
 const counts={};
@@ -198,14 +180,10 @@ buildClickCounts();
 },[events,mode,startDate,endDate]);
 
 
-/* TOTAL CLICKS */
-
 function totalClicks(){
 return Object.values(liveClicks).reduce((a,b)=>a+b,0);
 }
 
-
-/* TOP LINK */
 
 function topLink(){
 
@@ -223,8 +201,6 @@ return name;
 
 }
 
-
-/* DEVICE ANALYTICS */
 
 function deviceStats(){
 
@@ -250,8 +226,6 @@ return stats;
 const devices=deviceStats();
 
 
-/* CITY ANALYTICS */
-
 function cityStats(){
 
 const cities={};
@@ -267,8 +241,6 @@ return cities;
 
 const cities=cityStats();
 
-
-/* CLICKS BY HOUR (TIMEZONE FIXED) */
 
 function clicksByHour(){
 
@@ -286,8 +258,6 @@ return hours;
 const hourly = clicksByHour();
 
 
-/* GROWTH */
-
 function growthRate(){
 
 const total = totalClicks();
@@ -300,8 +270,6 @@ return "Viral growth";
 
 }
 
-
-/* SUSPICIOUS TRAFFIC */
 
 function suspiciousTraffic(){
 
@@ -355,22 +323,22 @@ onChange={(e)=>setEndDate(e.target.value)}
 
 <div className="analytics-cards">
 
-<div className="analytics-card glow">
+<div className="analytics-card">
 <h4>Total Clicks</h4>
 <div className="big">{totalClicks()}</div>
 </div>
 
-<div className="analytics-card glow">
+<div className="analytics-card">
 <h4>Top Link</h4>
 <div className="big">{topLink()}</div>
 </div>
 
-<div className="analytics-card glow">
+<div className="analytics-card">
 <h4>Growth</h4>
 <div className="big">{growthRate()}</div>
 </div>
 
-<div className="analytics-card glow">
+<div className="analytics-card">
 <h4>Suspicious Traffic</h4>
 <div className="big">{suspiciousTraffic()}%</div>
 </div>
@@ -455,6 +423,7 @@ style={{height:(v*6)+10}}
 <Funnel links={links} clicks={liveClicks}/>
 <GeoMap clickEvents={filtered}/>
 
+
 <style jsx>{`
 
 .topbar{
@@ -466,9 +435,9 @@ flex-wrap:wrap;
 }
 
 .filters button{
-background:#1a1a25;
-border:none;
-color:white;
+background:var(--card);
+border:1px solid var(--border);
+color:var(--text);
 padding:6px 12px;
 border-radius:6px;
 cursor:pointer;
@@ -486,13 +455,13 @@ margin-bottom:30px;
 }
 
 .analytics-card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(14px);
+background:var(--card);
+border:1px solid var(--border);
 padding:24px;
 border-radius:16px;
 flex:1;
 text-align:center;
+color:var(--text);
 }
 
 .big{
@@ -501,10 +470,12 @@ margin-top:10px;
 }
 
 .card{
-background:#111;
+background:var(--card);
+border:1px solid var(--border);
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+color:var(--text);
 }
 
 .hour-grid{
@@ -519,7 +490,7 @@ margin-top:20px;
 flex:1;
 display:flex;
 flex-direction:column;
-alignItems:center;
+align-items:center;
 }
 
 .bar{
