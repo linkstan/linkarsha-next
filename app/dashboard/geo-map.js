@@ -36,10 +36,12 @@ return(
 <style jsx>{`
 
 .card{
-background:#111;
+background:var(--card);
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+border:1px solid var(--border);
+color:var(--text);
 }
 
 .row{
