@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { supabase } from "../../../lib/supabase";
 
 export default function Themes(){
+
+const [selected,setSelected]=useState(null);
 
 const themes=[
 {name:"Minimal",bg:"#ffffff",text:"#111"},
@@ -22,7 +25,39 @@ const themes=[
 {name:"Vivid",bg:"linear-gradient(45deg,#f83600,#f9d423)",text:"#fff"}
 ];
 
-const [selected,setSelected]=useState(null);
+useEffect(()=>{
+loadTheme();
+},[]);
+
+async function loadTheme(){
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const {data}=await supabase
+.from("profiles")
+.select("theme")
+.eq("id",session.user.id)
+.single();
+
+if(data?.theme){
+setSelected(data.theme);
+}
+
+}
+
+async function selectTheme(name){
+
+setSelected(name);
+
+const {data:{session}} = await supabase.auth.getSession();
+
+await supabase
+.from("profiles")
+.update({theme:name})
+.eq("id",session.user.id);
+
+}
 
 return(
 
@@ -46,10 +81,12 @@ maxWidth:900
 
 <div
 key={i}
-onClick={()=>setSelected(t.name)}
+onClick={()=>selectTheme(t.name)}
 style={{
 cursor:"pointer",
-border:"1px solid var(--border)",
+border:selected===t.name
+? "2px solid #00d26a"
+: "1px solid var(--border)",
 borderRadius:14,
 padding:14,
 background:"var(--card)"
