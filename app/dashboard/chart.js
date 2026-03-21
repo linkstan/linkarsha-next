@@ -15,9 +15,11 @@ export default function Chart({ links = [], clicks = {} }) {
 if (!links || links.length === 0) {
 return (
 <div style={{
-background:"#111",
+background:"var(--card)",
 padding:"25px",
-borderRadius:"16px"
+borderRadius:"16px",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}>
 No analytics data yet
 </div>
@@ -32,11 +34,11 @@ clicks: clicks?.[link.id] || 0
 return (
 
 <div style={{
-background:"rgba(255,255,255,0.04)",
-border:"1px solid rgba(255,255,255,0.08)",
+background:"var(--card)",
+border:"1px solid var(--border)",
 borderRadius:"16px",
 padding:"25px",
-backdropFilter:"blur(10px)"
+color:"var(--text)"
 }}>
 
 <h3 style={{marginBottom:20}}>
@@ -47,17 +49,18 @@ Clicks per Link
 
 <BarChart data={data}>
 
-<CartesianGrid strokeDasharray="3 3" stroke="#1c1c25"/>
+<CartesianGrid strokeDasharray="3 3" stroke="var(--border)"/>
 
-<XAxis dataKey="name" stroke="#aaa"/>
+<XAxis dataKey="name" stroke="var(--text)"/>
 
-<YAxis stroke="#aaa"/>
+<YAxis stroke="var(--text)"/>
 
 <Tooltip
 contentStyle={{
-background:"#111",
-border:"1px solid #333",
-borderRadius:8
+background:"var(--card)",
+border:"1px solid var(--border)",
+borderRadius:8,
+color:"var(--text)"
 }}
 />
 
