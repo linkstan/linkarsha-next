@@ -1,8 +1,33 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect,useState } from "react";
+import { supabase } from "../../lib/supabase";
 
 export default function Appearance(){
+
+const [theme,setTheme]=useState("Custom");
+
+useEffect(()=>{
+loadTheme();
+},[]);
+
+async function loadTheme(){
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const {data}=await supabase
+.from("profiles")
+.select("theme")
+.eq("id",session.user.id)
+.single();
+
+if(data?.theme){
+setTheme(data.theme);
+}
+
+}
 
 const card={
 background:"var(--card)",
@@ -54,7 +79,7 @@ borderRadius:"12px",
 background:"linear-gradient(45deg,#ff7a18,#ffb347)"
 }}></div>
 
-<div>Custom</div>
+<div>{theme}</div>
 
 </div>
 
@@ -74,94 +99,28 @@ Customize theme
 </h3>
 
 <div style={card}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-
-<div style={{
-width:36,
-height:36,
-borderRadius:"50%",
-background:"#888"
-}}></div>
-
 <div>Header</div>
-
-</div>
-
 <div style={{opacity:.6}}>Classic →</div>
-
 </div>
 
 <div style={card}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-
-<div style={{
-width:36,
-height:36,
-borderRadius:"10px",
-background:"linear-gradient(45deg,#ff7a18,#ffd000)"
-}}></div>
-
 <div>Wallpaper</div>
-
-</div>
-
 <div style={{opacity:.6}}>Gradient →</div>
-
 </div>
 
 <div style={card}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-
-<div style={{
-width:38,
-height:18,
-border:"2px solid var(--text)",
-borderRadius:"6px"
-}}></div>
-
 <div>Buttons</div>
-
-</div>
-
 <div style={{opacity:.6}}>Outline →</div>
-
 </div>
 
 <div style={card}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-
-<div style={{fontSize:20}}>Aa</div>
-
 <div>Text</div>
-
-</div>
-
 <div style={{opacity:.6}}>Summer Glow →</div>
-
 </div>
 
 <div style={card}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-
-<div style={{
-width:30,
-height:30,
-background:"var(--bg)",
-borderRadius:"6px",
-border:"1px solid var(--border)"
-}}></div>
-
 <div>Colors</div>
-
-</div>
-
 <div>→</div>
-
 </div>
 
 </div>
