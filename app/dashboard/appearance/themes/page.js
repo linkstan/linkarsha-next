@@ -8,21 +8,14 @@ export default function Themes(){
 const [selected,setSelected]=useState(null);
 
 const themes=[
-{name:"Minimal",bg:"#ffffff",text:"#111"},
-{name:"Midnight",bg:"#0b0b12",text:"#ffffff"},
-{name:"Ocean",bg:"linear-gradient(45deg,#2193b0,#6dd5ed)",text:"#fff"},
-{name:"Sunset",bg:"linear-gradient(45deg,#ff7a18,#ffb347)",text:"#fff"},
-{name:"Neon",bg:"linear-gradient(45deg,#00f2fe,#7c5cff)",text:"#fff"},
-{name:"Luxury",bg:"#000000",text:"#d4af37"},
-{name:"Glass",bg:"linear-gradient(45deg,#e0eafc,#cfdef3)",text:"#111"},
-{name:"Pastel",bg:"linear-gradient(45deg,#fbc2eb,#a6c1ee)",text:"#111"},
-{name:"Mono",bg:"#111",text:"#fff"},
-{name:"Creator Pro",bg:"linear-gradient(45deg,#ff9966,#ff5e62)",text:"#fff"},
-{name:"Gradient Flow",bg:"linear-gradient(45deg,#667eea,#764ba2)",text:"#fff"},
-{name:"Tech",bg:"linear-gradient(45deg,#00c6ff,#0072ff)",text:"#fff"},
-{name:"Elegant",bg:"linear-gradient(45deg,#bdc3c7,#2c3e50)",text:"#fff"},
-{name:"Dark Pro",bg:"#121212",text:"#fff"},
-{name:"Vivid",bg:"linear-gradient(45deg,#f83600,#f9d423)",text:"#fff"}
+{name:"Minimal",bg:"#ffffff"},
+{name:"Midnight",bg:"#0b0b12"},
+{name:"Ocean",bg:"linear-gradient(45deg,#2193b0,#6dd5ed)"},
+{name:"Sunset",bg:"linear-gradient(45deg,#ff7a18,#ffb347)"},
+{name:"Neon",bg:"linear-gradient(45deg,#00f2fe,#7c5cff)"},
+{name:"Luxury",bg:"#000000"},
+{name:"Pastel",bg:"linear-gradient(45deg,#fbc2eb,#a6c1ee)"},
+{name:"Mono",bg:"#111"},
 ];
 
 useEffect(()=>{
@@ -46,7 +39,7 @@ setSelected(data.theme);
 
 }
 
-async function selectTheme(name){
+async function applyTheme(name){
 
 setSelected(name);
 
@@ -81,12 +74,8 @@ maxWidth:900
 
 <div
 key={i}
-onClick={()=>selectTheme(t.name)}
 style={{
-cursor:"pointer",
-border:selected===t.name
-? "2px solid #00d26a"
-: "1px solid var(--border)",
+border:"1px solid var(--border)",
 borderRadius:14,
 padding:14,
 background:"var(--card)"
@@ -100,24 +89,24 @@ background:t.bg,
 marginBottom:10
 }}/>
 
-<div style={{
-display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
-}}>
-
-<div>{t.name}</div>
-
-{selected===t.name && (
-<div style={{
-width:8,
-height:8,
-borderRadius:"50%",
-background:"#00d26a"
-}}/>
-)}
-
+<div style={{marginBottom:10}}>
+{t.name}
 </div>
+
+<button
+onClick={()=>applyTheme(t.name)}
+style={{
+width:"100%",
+background:selected===t.name ? "#00d26a" : "#222",
+border:"none",
+padding:"8px",
+borderRadius:6,
+color:"white",
+cursor:"pointer"
+}}
+>
+{selected===t.name ? "Applied" : "Apply"}
+</button>
 
 </div>
 
