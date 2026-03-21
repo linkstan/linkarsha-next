@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "../../../lib/supabase";
 
 export default function AIBioGenerator(){
@@ -18,8 +18,6 @@ if(!niche){
 alert("Enter niche");
 return;
 }
-
-const words = keywords.split(",");
 
 const generated = [
 `🔥 ${niche} creator sharing insights`,
@@ -54,7 +52,7 @@ alert("Bio updated");
 
 return(
 
-<div style={{maxWidth:700}}>
+<div style={{maxWidth:700,color:"var(--text)"}}>
 
 <h2>AI Bio Generator</h2>
 
@@ -67,9 +65,9 @@ onChange={(e)=>setNiche(e.target.value)}
 style={{
 width:"100%",
 padding:12,
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}
 />
 
@@ -80,9 +78,9 @@ style={{
 width:"100%",
 padding:12,
 marginTop:10,
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}
 >
 <option>Professional</option>
@@ -98,9 +96,9 @@ style={{
 width:"100%",
 padding:12,
 marginTop:10,
-background:"#111",
-border:"1px solid #333",
-color:"white"
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}
 />
 
@@ -124,7 +122,8 @@ Generate Bios
 {bios.map((b,i)=>(
 
 <div key={i} style={{
-background:"#15151f",
+background:"var(--card)",
+border:"1px solid var(--border)",
 padding:14,
 borderRadius:10,
 marginTop:10
@@ -138,11 +137,11 @@ marginTop:10
 onClick={()=>navigator.clipboard.writeText(b)}
 style={{
 marginRight:10,
-background:"#333",
-border:"none",
+background:"var(--card)",
+border:"1px solid var(--border)",
 padding:"6px 12px",
 borderRadius:6,
-color:"white"
+color:"var(--text)"
 }}
 >
 Copy
@@ -155,7 +154,7 @@ background:"#1da1f2",
 border:"none",
 padding:"6px 12px",
 borderRadius:6,
-color:"white"
+color:"#fff"
 }}
 >
 {saving ? "Saving..." : "Use this Bio"}
