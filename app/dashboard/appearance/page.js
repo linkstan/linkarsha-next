@@ -412,7 +412,12 @@ return(
 }
 
 return (
-<div style={{padding:"20px"}}>
+<div style={{
+padding:"20px",
+background:"var(--bg)",
+minHeight:"100vh",
+color:"var(--text)"
+}}>
 {renderPage()}
 </div>
 );
