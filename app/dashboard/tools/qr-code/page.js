@@ -14,9 +14,7 @@ const [color,setColor]=useState("#000000");
 const [bgColor,setBgColor]=useState("#ffffff");
 
 const [logo,setLogo]=useState(null);
-
 const [style,setStyle]=useState("classic");
-
 const [profileUrl,setProfileUrl]=useState("");
 
 useEffect(()=>{
@@ -43,8 +41,6 @@ generateQR(link);
 
 }
 
-/* regenerate QR instantly when settings change */
-
 useEffect(()=>{
 if(profileUrl){
 generateQR(inputUrl || profileUrl);
@@ -65,8 +61,6 @@ width:500
 setQr(qrData);
 
 }
-
-/* buttons */
 
 function profileQR(){
 setInputUrl(profileUrl);
@@ -96,8 +90,6 @@ generateQR(inputUrl);
 
 }
 
-/* download */
-
 function download(){
 
 const a=document.createElement("a");
@@ -106,8 +98,6 @@ a.download="linkarsha-qr.png";
 a.click();
 
 }
-
-/* logo */
 
 function handleLogo(e){
 
@@ -123,8 +113,6 @@ setLogo(reader.result);
 reader.readAsDataURL(file);
 
 }
-
-/* style visual effect */
 
 function getStyle(){
 
@@ -142,7 +130,7 @@ return {};
 
 return(
 
-<div style={{maxWidth:720}}>
+<div style={{maxWidth:720,color:"var(--text)"}}>
 
 <h2>QR Code Generator</h2>
 
@@ -176,48 +164,6 @@ Generate QR
 
 </div>
 
-<div style={{marginTop:25,display:"flex",gap:30}}>
-
-<div>
-<div style={label}>QR Color</div>
-<input type="color" value={color} onChange={(e)=>setColor(e.target.value)} />
-</div>
-
-<div>
-<div style={label}>Background</div>
-<input type="color" value={bgColor} onChange={(e)=>setBgColor(e.target.value)} />
-</div>
-
-</div>
-
-<div style={{marginTop:25}}>
-
-<div style={label}>QR Style</div>
-
-<select
-value={style}
-onChange={(e)=>setStyle(e.target.value)}
-style={select}
->
-<option value="classic">Classic</option>
-<option value="rounded">Rounded</option>
-<option value="soft">Soft</option>
-</select>
-
-</div>
-
-<div style={{marginTop:20}}>
-
-<div style={label}>Logo inside QR</div>
-
-<input
-type="file"
-accept="image/*"
-onChange={handleLogo}
-/>
-
-</div>
-
 <div style={{marginTop:35}}>
 
 {qr && (
@@ -230,7 +176,8 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center",
 borderRadius:16,
-position:"relative"
+position:"relative",
+border:"1px solid var(--border)"
 }}>
 
 <img
@@ -246,7 +193,7 @@ height:240,
 
 <div style={{
 position:"absolute",
-background:"white",
+background:"#fff",
 padding:8,
 borderRadius:12
 }}>
@@ -294,20 +241,7 @@ cursor:"pointer"
 const input={
 width:"100%",
 padding:12,
-background:"#111",
-border:"1px solid #333",
-color:"white"
-};
-
-const select={
-marginTop:5,
-padding:8,
-background:"#111",
-color:"white",
-border:"1px solid #333"
-};
-
-const label={
-fontSize:12,
-opacity:.7
+background:"var(--card)",
+border:"1px solid var(--border)",
+color:"var(--text)"
 };
