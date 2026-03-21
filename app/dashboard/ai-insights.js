@@ -22,18 +22,18 @@ return(
 <h3>AI Creator Insights</h3>
 
 <div className="insight">
-
 🤖 {insight}
-
 </div>
 
 <style jsx>{`
 
 .card{
-background:#111;
+background:var(--card);
+border:1px solid var(--border);
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+color:var(--text);
 }
 
 .insight{
