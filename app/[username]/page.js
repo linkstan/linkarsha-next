@@ -22,8 +22,6 @@ async function load(){
 
 const username=params.username;
 
-/* GET PROFILE */
-
 const {data:prof}=await supabase
 .from("profiles")
 .select("*")
@@ -34,14 +32,10 @@ if(!prof) return;
 
 setProfile(prof);
 
-/* TRACK PROFILE VIEW */
-
 await supabase.from("events").insert({
 user_id:prof.id,
 event_type:"view"
 });
-
-/* GET BLOCKS */
 
 const {data:blockData}=await supabase
 .from("blocks")
@@ -71,17 +65,66 @@ Loading...
 
 }
 
+/* THEME ENGINE */
+
+const themes={
+
+Minimal:{
+bg:"#ffffff",
+text:"#111111"
+},
+
+Midnight:{
+bg:"#0b0b12",
+text:"#ffffff"
+},
+
+Ocean:{
+bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",
+text:"#ffffff"
+},
+
+Sunset:{
+bg:"linear-gradient(135deg,#ff7a18,#ffb347)",
+text:"#ffffff"
+},
+
+Luxury:{
+bg:"#000000",
+text:"#d4af37"
+},
+
+Pastel:{
+bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",
+text:"#111"
+},
+
+Neon:{
+bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",
+text:"#ffffff"
+},
+
+Mono:{
+bg:"#111111",
+text:"#ffffff"
+}
+
+};
+
+const theme=themes[profile.theme] || themes.Midnight;
+
 return(
 
 <div style={{
 minHeight:"100vh",
-background:"#0b0b12",
-color:"white",
+background:theme.bg,
+color:theme.text,
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
 flexDirection:"column",
-fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
+fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",
+transition:"all .4s ease"
 }}>
 
 <div style={{
