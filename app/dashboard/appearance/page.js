@@ -7,32 +7,36 @@ export default function Appearance() {
 const [page,setPage] = useState("main");
 
 const card = {
-background:"#151827",
+background:"var(--card)",
 padding:"18px",
 borderRadius:"14px",
 display:"flex",
 alignItems:"center",
 justifyContent:"space-between",
 marginBottom:"14px",
-cursor:"pointer"
+cursor:"pointer",
+border:"1px solid var(--border)",
+color:"var(--text)"
 };
 
 const sectionTitle={
 fontSize:"20px",
 fontWeight:"600",
 marginTop:"30px",
-marginBottom:"10px"
+marginBottom:"10px",
+color:"var(--text)"
 };
 
 const inputRow={
-background:"#0d1020",
-border:"1px solid #333",
+background:"var(--card)",
+border:"1px solid var(--border)",
 borderRadius:"30px",
 padding:"14px 18px",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
-marginBottom:"22px"
+marginBottom:"22px",
+color:"var(--text)"
 };
 
 function renderPage(){
@@ -44,16 +48,18 @@ return(
 
 <div style={{maxWidth:650}}>
 
-<h2 style={{marginBottom:15}}>Theme</h2>
+<h2 style={{marginBottom:15,color:"var(--text)"}}>Theme</h2>
 
 <div style={{
-background:"#1b1e30",
+background:"var(--card)",
 padding:"20px",
 borderRadius:"18px",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
-marginBottom:"25px"
+marginBottom:"25px",
+border:"1px solid var(--border)",
+color:"var(--text)"
 }}>
 
 <div style={{display:"flex",alignItems:"center",gap:15}}>
@@ -110,7 +116,7 @@ background:"linear-gradient(45deg,#ff7a18,#ffd000)"
 <div style={{
 width:38,
 height:18,
-border:"2px solid white",
+border:"2px solid var(--text)",
 borderRadius:"6px"
 }}></div>
 
@@ -138,8 +144,9 @@ borderRadius:"6px"
 <div style={{
 width:30,
 height:30,
-background:"#fff",
-borderRadius:"6px"
+background:"var(--bg)",
+borderRadius:"6px",
+border:"1px solid var(--border)"
 }}></div>
 
 <div>Colors</div>
@@ -159,7 +166,7 @@ borderRadius:"6px"
 if(page==="header"){
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:650,color:"var(--text)"}}>
 
 <div style={{cursor:"pointer"}} onClick={()=>setPage("main")}>
 &lt; Header
@@ -182,11 +189,11 @@ background:"#888"
 }}></div>
 
 <button style={{
-background:"#000",
-color:"#fff",
+background:"var(--card)",
+color:"var(--text)",
 borderRadius:"25px",
 padding:"10px 18px",
-border:"none"
+border:"1px solid var(--border)"
 }}>
 + Add
 </button>
@@ -208,9 +215,9 @@ style={{
 width:"100%",
 padding:"12px",
 borderRadius:"8px",
-border:"1px solid #333",
-background:"#111",
-color:"#fff"
+border:"1px solid var(--border)",
+background:"var(--card)",
+color:"var(--text)"
 }}
 />
 
@@ -223,7 +230,13 @@ color:"#fff"
 
 <h3 style={{marginTop:20}}>Display Name Font</h3>
 
-<select style={{width:"100%",padding:10}}>
+<select style={{
+width:"100%",
+padding:10,
+background:"var(--card)",
+color:"var(--text)",
+border:"1px solid var(--border)"
+}}>
 <option>Inter</option>
 <option>Montserrat</option>
 <option>Poppins</option>
@@ -246,7 +259,7 @@ color:"#fff"
 if(page==="wallpaper"){
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:650,color:"var(--text)"}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Wallpaper
@@ -287,7 +300,7 @@ gap:20
 if(page==="buttons"){
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:650,color:"var(--text)"}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Buttons
@@ -335,7 +348,7 @@ return(
 if(page==="text"){
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:650,color:"var(--text)"}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Text
@@ -343,7 +356,13 @@ return(
 
 <h3 style={{marginTop:25}}>Page font</h3>
 
-<select style={{width:"100%",padding:10}}>
+<select style={{
+width:"100%",
+padding:10,
+background:"var(--card)",
+color:"var(--text)",
+border:"1px solid var(--border)"
+}}>
 <option>Link Sans</option>
 <option>Inter</option>
 <option>Montserrat</option>
@@ -368,7 +387,7 @@ return(
 if(page==="colors"){
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:650,color:"var(--text)"}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Colors
