@@ -52,13 +52,16 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-size:11px;
+color:white;
 }
 
 .card{
-background:#111;
+background:var(--card);
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+border:1px solid var(--border);
+color:var(--text);
 }
 
 `}</style>
