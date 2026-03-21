@@ -23,7 +23,7 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* ---------------- AUTO OPEN MENUS ---------------- */
+/* AUTO OPEN MENUS */
 
 useEffect(()=>{
 
@@ -37,7 +37,7 @@ setOpenTools(true);
 
 },[pathname]);
 
-/* ---------------- LOAD USER ---------------- */
+/* LOAD USER */
 
 useEffect(()=>{
 loadPreview();
@@ -58,7 +58,7 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-/* theme */
+/* THEME */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -69,7 +69,7 @@ document.documentElement.classList.add("dark");
 document.documentElement.classList.remove("dark");
 }
 
-/* blocks */
+/* LOAD BLOCKS */
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -82,12 +82,11 @@ setBlocks(blockData || []);
 
 }
 
-/* ---------------- THEME TOGGLE ---------------- */
+/* TOGGLE THEME */
 
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
-
 setMode(newMode);
 
 if(newMode==="dark"){
@@ -103,14 +102,14 @@ await supabase
 
 }
 
-/* ---------------- LOGOUT ---------------- */
+/* LOGOUT */
 
 async function logout(){
 await supabase.auth.signOut();
 window.location="/login";
 }
 
-/* ---------------- HELPERS ---------------- */
+/* ACTIVE HELPER */
 
 function active(path){
 return pathname.startsWith(path);
@@ -139,7 +138,7 @@ borderRight:"1px solid var(--border)"
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
 
-{/* USER DROPDOWN */}
+{/* USER */}
 
 <div style={{position:"relative"}}>
 
@@ -333,7 +332,9 @@ Settings
 
 </div>
 
-{/* MAIN AREA */}
+{/* MAIN + PHONE */}
+
+<div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
@@ -374,6 +375,103 @@ justifyContent:"center"
 </div>
 
 {children}
+
+</div>
+
+{/* PHONE PREVIEW */}
+
+{showPreview && (
+
+<div style={{
+width:360,
+display:"flex",
+justifyContent:"center",
+alignItems:"center",
+background:"var(--bg)",
+borderLeft:"1px solid var(--border)"
+}}>
+
+<div style={{
+width:280,
+height:520,
+background:"#000",
+borderRadius:30,
+padding:18,
+boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
+}}>
+
+<div style={{
+width:"100%",
+height:"100%",
+background:"#0b0b12",
+borderRadius:20,
+padding:20,
+overflow:"auto"
+}}>
+
+<div style={{
+width:70,
+height:70,
+borderRadius:"50%",
+overflow:"hidden",
+margin:"auto",
+background:"#222"
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+</div>
+
+<div style={{
+marginTop:10,
+textAlign:"center",
+fontWeight:600,
+color:"white"
+}}>
+{profile?.display_name}
+</div>
+
+<div style={{
+textAlign:"center",
+opacity:0.7,
+fontSize:14,
+color:"#aaa"
+}}>
+{profile?.bio}
+</div>
+
+{blocks.map(block=>(
+
+<a
+key={block.id}
+href={block.data_json?.url}
+target="_blank"
+style={{
+display:"flex",
+alignItems:"center",
+background:"#1a1a25",
+padding:12,
+borderRadius:10,
+marginTop:10,
+textDecoration:"none",
+color:"white"
+}}
+>
+{block.data_json?.title}
+</a>
+
+))}
+
+</div>
+
+</div>
+
+</div>
+
+)}
 
 </div>
 
