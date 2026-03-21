@@ -11,6 +11,8 @@ const pathname = usePathname();
 
 const [openLinkarsha,setOpenLinkarsha] = useState(false);
 const [openTools,setOpenTools] = useState(false);
+const [openUser,setOpenUser] = useState(false);
+
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
@@ -21,14 +23,21 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* AUTO OPEN MENUS */
+/* ---------------- AUTO OPEN MENUS ---------------- */
 
 useEffect(()=>{
 
-setOpenLinkarsha(pathname.startsWith("/dashboard/links"));
-setOpenTools(pathname.startsWith("/dashboard/tools"));
+if(pathname.startsWith("/dashboard/links")){
+setOpenLinkarsha(true);
+}
+
+if(pathname.startsWith("/dashboard/tools")){
+setOpenTools(true);
+}
 
 },[pathname]);
+
+/* ---------------- LOAD USER ---------------- */
 
 useEffect(()=>{
 loadPreview();
@@ -49,6 +58,8 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
+/* theme */
+
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
 
@@ -57,6 +68,8 @@ document.documentElement.classList.add("dark");
 }else{
 document.documentElement.classList.remove("dark");
 }
+
+/* blocks */
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -69,15 +82,13 @@ setBlocks(blockData || []);
 
 }
 
-/* THEME TOGGLE */
+/* ---------------- THEME TOGGLE ---------------- */
 
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
 
 setMode(newMode);
-
-document.body.style.transition="background .25s,color .25s";
 
 if(newMode==="dark"){
 document.documentElement.classList.add("dark");
@@ -92,24 +103,17 @@ await supabase
 
 }
 
+/* ---------------- LOGOUT ---------------- */
+
+async function logout(){
+await supabase.auth.signOut();
+window.location="/login";
+}
+
+/* ---------------- HELPERS ---------------- */
+
 function active(path){
 return pathname.startsWith(path);
-}
-
-/* ACCORDION CLICK */
-
-function openMenu(menu){
-
-if(menu==="linkarsha"){
-setOpenLinkarsha(!openLinkarsha);
-setOpenTools(false);
-}
-
-if(menu==="tools"){
-setOpenTools(!openTools);
-setOpenLinkarsha(false);
-}
-
 }
 
 return(
@@ -118,7 +122,8 @@ return(
 display:"flex",
 minHeight:"100vh",
 background:"var(--bg)",
-color:"var(--text)"
+color:"var(--text)",
+fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
 {/* SIDEBAR */}
@@ -127,10 +132,79 @@ color:"var(--text)"
 width:260,
 background:"var(--sidebar)",
 padding:20,
+display:"flex",
+flexDirection:"column",
 borderRight:"1px solid var(--border)"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
+
+{/* USER DROPDOWN */}
+
+<div style={{position:"relative"}}>
+
+<div
+onClick={()=>setOpenUser(!openUser)}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:10,
+cursor:"pointer"
+}}
+>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:28,
+height:28,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+<div style={{flex:1}}>
+{profile?.username}
+</div>
+
+<div style={{opacity:0.7}}>
+{openUser ? "v" : ">"}
+</div>
+
+</div>
+
+{openUser && (
+
+<div style={{
+background:"var(--card)",
+borderRadius:8,
+padding:10,
+marginBottom:20,
+border:"1px solid var(--border)"
+}}>
+
+<div style={dropdownItem}>Ask Question</div>
+<div style={dropdownItem}>Help Center</div>
+<div style={dropdownItem}>Contact Support</div>
+
+<div
+onClick={logout}
+style={{
+...dropdownItem,
+color:"#ff6b6b"
+}}
+>
+Sign Out
+</div>
+
+</div>
+
+)}
+
+</div>
+
+{/* HOME */}
 
 <Link href="/dashboard" style={{
 ...item,
@@ -139,8 +213,13 @@ background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 Home
 </Link>
 
+{/* MY LINKARSHA */}
+
 <div
-onClick={()=>openMenu("linkarsha")}
+onClick={()=>{
+setOpenLinkarsha(!openLinkarsha);
+setOpenTools(false);
+}}
 style={{
 ...item,
 background: active("/dashboard/links") ? "var(--hover)" : "transparent"
@@ -154,21 +233,32 @@ background: active("/dashboard/links") ? "var(--hover)" : "transparent"
 
 <div style={submenu}>
 
-<Link href="/dashboard/links" style={subitem}>
+<Link href="/dashboard/links" style={{
+...subitem,
+background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
+}}>
 My Links
 </Link>
 
-<Link href="/dashboard/link-history" style={subitem}>
+<Link href="/dashboard/link-history" style={{
+...subitem,
+background: active("/dashboard/link-history") ? "var(--hover)" : "transparent"
+}}>
 Link History
 </Link>
 
-<Link href="/dashboard/get-verified" style={subitem}>
+<Link href="/dashboard/get-verified" style={{
+...subitem,
+background: active("/dashboard/get-verified") ? "var(--hover)" : "transparent"
+}}>
 Get Verified
 </Link>
 
 </div>
 
 )}
+
+{/* BLOCKS */}
 
 <Link href="/dashboard/blocks" style={{
 ...item,
@@ -177,12 +267,16 @@ background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
 Blocks
 </Link>
 
+{/* APPEARANCE */}
+
 <Link href="/dashboard/appearance" style={{
 ...item,
 background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
 </Link>
+
+{/* ANALYTICS */}
 
 <Link href="/dashboard/analytics" style={{
 ...item,
@@ -193,8 +287,13 @@ Analytics
 
 <hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
 
+{/* TOOLS */}
+
 <div
-onClick={()=>openMenu("tools")}
+onClick={()=>{
+setOpenTools(!openTools);
+setOpenLinkarsha(false);
+}}
 style={{
 ...item,
 background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
@@ -224,17 +323,11 @@ Export Data
 
 )}
 
-<Link href="/dashboard/referrals" style={{
-...item,
-background: active("/dashboard/referrals") ? "var(--hover)" : "transparent"
-}}>
+<Link href="/dashboard/referrals" style={item}>
 Referrals
 </Link>
 
-<Link href="/dashboard/settings" style={{
-...item,
-background: active("/dashboard/settings") ? "var(--hover)" : "transparent"
-}}>
+<Link href="/dashboard/settings" style={item}>
 Settings
 </Link>
 
@@ -242,13 +335,7 @@ Settings
 
 {/* MAIN AREA */}
 
-<div style={{flex:1,display:"flex"}}>
-
-<div style={{
-flex:1,
-padding:"60px",
-position:"relative"
-}}>
+<div style={{flex:1,padding:40,position:"relative"}}>
 
 {/* THEME TOGGLE */}
 
@@ -268,8 +355,7 @@ background: mode==="dark"
 display:"flex",
 alignItems:"center",
 justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4,
-transition:"all .25s ease"
+padding:4
 }}
 >
 
@@ -280,8 +366,7 @@ borderRadius:"50%",
 background:"white",
 display:"flex",
 alignItems:"center",
-justifyContent:"center",
-transition:"all .25s ease"
+justifyContent:"center"
 }}>
 {mode==="dark" ? "🌙" : "☀️"}
 </div>
@@ -289,100 +374,6 @@ transition:"all .25s ease"
 </div>
 
 {children}
-
-</div>
-
-{/* PHONE PREVIEW */}
-
-{showPreview && (
-
-<div style={{
-width:360,
-display:"flex",
-justifyContent:"center",
-alignItems:"center",
-borderLeft:"1px solid var(--border)"
-}}>
-
-<div style={{
-width:280,
-height:520,
-borderRadius:36,
-padding:18,
-background:"rgba(0,0,0,0.75)",
-backdropFilter:"blur(30px)",
-boxShadow:"0 60px 140px rgba(0,0,0,0.6)"
-}}>
-
-<div style={{
-width:"100%",
-height:"100%",
-background:"#0b0b12",
-borderRadius:22,
-padding:20
-}}>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden",
-margin:"auto"
-}}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{width:"100%",height:"100%",objectFit:"cover"}}
-/>
-
-</div>
-
-<div style={{
-marginTop:10,
-textAlign:"center",
-fontWeight:600,
-color:"white"
-}}>
-{profile?.display_name}
-</div>
-
-<div style={{
-textAlign:"center",
-opacity:0.7,
-fontSize:14,
-color:"#aaa"
-}}>
-{profile?.bio}
-</div>
-
-{blocks.map(block=>(
-
-<a
-key={block.id}
-href={block.data_json?.url}
-target="_blank"
-style={{
-display:"block",
-background:"#1a1a25",
-padding:12,
-borderRadius:10,
-marginTop:10,
-color:"white",
-textDecoration:"none"
-}}
->
-{block.data_json?.title}
-</a>
-
-))}
-
-</div>
-
-</div>
-
-</div>
-
-)}
 
 </div>
 
@@ -416,4 +407,10 @@ opacity:0.85,
 cursor:"pointer",
 textDecoration:"none",
 color:"var(--text)"
+};
+
+const dropdownItem={
+padding:"8px 10px",
+cursor:"pointer",
+borderRadius:6
 };
