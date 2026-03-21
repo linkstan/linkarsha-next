@@ -5,8 +5,34 @@ import { useState } from "react";
 export default function Appearance() {
 
 const [page,setPage] = useState("main");
+const [theme,setTheme] = useState({
+name:"Custom",
+preview:"linear-gradient(45deg,#ff7a18,#ffb347)"
+});
 
-const card = {
+/* 15 THEMES */
+
+const themes=[
+{name:"Minimal",preview:"#ffffff"},
+{name:"Midnight",preview:"#0b0b12"},
+{name:"Neon Glow",preview:"linear-gradient(45deg,#00f2fe,#7c5cff)"},
+{name:"Sunset",preview:"linear-gradient(45deg,#ff7a18,#ffb347)"},
+{name:"Ocean",preview:"linear-gradient(45deg,#2193b0,#6dd5ed)"},
+{name:"Glass",preview:"linear-gradient(45deg,#e0eafc,#cfdef3)"},
+{name:"Luxury",preview:"linear-gradient(45deg,#000000,#434343)"},
+{name:"Creator Pro",preview:"linear-gradient(45deg,#ff9966,#ff5e62)"},
+{name:"Soft Pastel",preview:"linear-gradient(45deg,#fbc2eb,#a6c1ee)"},
+{name:"Mono",preview:"#111"},
+{name:"Gradient Flow",preview:"linear-gradient(45deg,#667eea,#764ba2)"},
+{name:"Dark Pro",preview:"#121212"},
+{name:"Vivid",preview:"linear-gradient(45deg,#f83600,#f9d423)"},
+{name:"Elegant",preview:"linear-gradient(45deg,#bdc3c7,#2c3e50)"},
+{name:"Tech",preview:"linear-gradient(45deg,#00c6ff,#0072ff)"}
+];
+
+/* UI STYLES */
+
+const card={
 background:"var(--card)",
 padding:"18px",
 borderRadius:"14px",
@@ -39,6 +65,8 @@ marginBottom:"22px",
 color:"var(--text)"
 };
 
+/* PAGE RENDER */
+
 function renderPage(){
 
 /* MAIN PAGE */
@@ -67,16 +95,20 @@ color:"var(--text)"
 width:55,
 height:55,
 borderRadius:"12px",
-background:"linear-gradient(45deg,#ff7a18,#ffb347)"
+background:theme.preview
 }}></div>
 
-<div>Custom</div>
+<div>{theme.name}</div>
 </div>
 
-<div style={{opacity:.7}}>More &gt;</div>
-
+<div
+style={{opacity:.7,cursor:"pointer"}}
+onClick={()=>setPage("themes")}
+>
+More >
 </div>
 
+</div>
 
 <h3 style={sectionTitle}>Customize theme</h3>
 
@@ -91,9 +123,8 @@ background:"#888"
 <div>Header</div>
 </div>
 
-<div style={{opacity:.6}}>Classic &gt;</div>
+<div style={{opacity:.6}}>Classic ></div>
 </div>
-
 
 <div style={card} onClick={()=>setPage("wallpaper")}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -106,10 +137,8 @@ background:"linear-gradient(45deg,#ff7a18,#ffd000)"
 <div>Wallpaper</div>
 </div>
 
-<div style={{opacity:.6}}>Gradient &gt;</div>
+<div style={{opacity:.6}}>Gradient ></div>
 </div>
-
-
 
 <div style={card} onClick={()=>setPage("buttons")}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -123,10 +152,8 @@ borderRadius:"6px"
 <div>Buttons</div>
 </div>
 
-<div style={{opacity:.6}}>Outline &gt;</div>
+<div style={{opacity:.6}}>Outline ></div>
 </div>
-
-
 
 <div style={card} onClick={()=>setPage("text")}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -134,10 +161,8 @@ borderRadius:"6px"
 <div>Text</div>
 </div>
 
-<div style={{opacity:.6}}>Summer Glow &gt;</div>
+<div style={{opacity:.6}}>Summer Glow ></div>
 </div>
-
-
 
 <div style={card} onClick={()=>setPage("colors")}>
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -152,120 +177,25 @@ border:"1px solid var(--border)"
 <div>Colors</div>
 </div>
 
-<div>&gt;</div>
+<div>></div>
 </div>
 
 </div>
 );
 }
 
+/* THEMES PAGE */
 
-
-/* HEADER PAGE */
-
-if(page==="header"){
+if(page==="themes"){
 return(
 
-<div style={{maxWidth:650,color:"var(--text)"}}>
+<div style={{maxWidth:650}}>
 
-<div style={{cursor:"pointer"}} onClick={()=>setPage("main")}>
-&lt; Header
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+&lt; Themes
 </div>
 
-<h3 style={{marginTop:25}}>Profile image</h3>
-
-<div style={{
-display:"flex",
-alignItems:"center",
-gap:15,
-marginBottom:25
-}}>
-
-<div style={{
-width:60,
-height:60,
-borderRadius:"50%",
-background:"#888"
-}}></div>
-
-<button style={{
-background:"var(--card)",
-color:"var(--text)",
-borderRadius:"25px",
-padding:"10px 18px",
-border:"1px solid var(--border)"
-}}>
-+ Add
-</button>
-
-</div>
-
-<h3>Profile image layout</h3>
-
-<div style={{display:"flex",gap:12,marginBottom:25}}>
-<button>Classic</button>
-<button>Hero</button>
-</div>
-
-<h3>Display Name</h3>
-
-<input
-defaultValue="@username"
-style={{
-width:"100%",
-padding:"12px",
-borderRadius:"8px",
-border:"1px solid var(--border)",
-background:"var(--card)",
-color:"var(--text)"
-}}
-/>
-
-<h3 style={{marginTop:20}}>Display Name style</h3>
-
-<div style={{display:"flex",gap:10}}>
-<button>Text</button>
-<button>Logo</button>
-</div>
-
-<h3 style={{marginTop:20}}>Display Name Font</h3>
-
-<select style={{
-width:"100%",
-padding:10,
-background:"var(--card)",
-color:"var(--text)",
-border:"1px solid var(--border)"
-}}>
-<option>Inter</option>
-<option>Montserrat</option>
-<option>Poppins</option>
-<option>Roboto</option>
-<option>Open Sans</option>
-</select>
-
-<h3 style={{marginTop:20}}>Display name color</h3>
-
-<input type="color"/>
-
-</div>
-);
-}
-
-
-
-/* WALLPAPER */
-
-if(page==="wallpaper"){
-return(
-
-<div style={{maxWidth:650,color:"var(--text)"}}>
-
-<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
-&lt; Wallpaper
-</div>
-
-<h3 style={{marginTop:25}}>Wallpaper style</h3>
+<h3 style={{marginBottom:20}}>Select Theme</h3>
 
 <div style={{
 display:"grid",
@@ -273,138 +203,90 @@ gridTemplateColumns:"1fr 1fr 1fr",
 gap:20
 }}>
 
-<div><div style={{height:70,background:"#ccc"}}></div><div>Fill</div></div>
-<div><div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}></div><div>Gradient</div></div>
-<div><div style={{height:70,background:"#aaa"}}></div><div>Blur</div></div>
-<div><div style={{height:70,background:"#ddd"}}></div><div>Pattern</div></div>
-<div><div style={{height:70,background:"#444"}}></div><div>Image</div></div>
-<div><div style={{height:70,background:"#000"}}></div><div>Video</div></div>
+{themes.map(t=>(
+<div
+key={t.name}
+onClick={()=>{
+setTheme(t);
+setPage("main");
+}}
+style={{
+cursor:"pointer",
+border:"1px solid var(--border)",
+borderRadius:12,
+padding:10,
+textAlign:"center",
+background:"var(--card)"
+}}
+>
+
+<div style={{
+height:70,
+borderRadius:8,
+background:t.preview,
+marginBottom:8
+}}></div>
+
+<div>{t.name}</div>
 
 </div>
+))}
 
-<h3 style={{marginTop:30}}>Gradient style</h3>
-
-<div style={{display:"flex",gap:15}}>
-<button>Custom</button>
-<button>Pre-made</button>
 </div>
 
 </div>
 );
 }
 
+/* OTHER PAGES REMAIN SAME */
 
+if(page==="header"){
+return(
+<div style={{maxWidth:650,color:"var(--text)"}}>
+<div style={{cursor:"pointer"}} onClick={()=>setPage("main")}>
+&lt; Header
+</div>
+<h3 style={{marginTop:25}}>Profile image</h3>
+</div>
+);
+}
 
-/* BUTTONS */
+if(page==="wallpaper"){
+return(
+<div style={{maxWidth:650,color:"var(--text)"}}>
+<div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
+&lt; Wallpaper
+</div>
+</div>
+);
+}
 
 if(page==="buttons"){
 return(
-
 <div style={{maxWidth:650,color:"var(--text)"}}>
-
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Buttons
 </div>
-
-<h3 style={{marginTop:25}}>Button style</h3>
-
-<div style={{display:"flex",gap:15}}>
-<button>Solid</button>
-<button>Glass</button>
-<button>Outline</button>
-</div>
-
-<h3 style={{marginTop:30}}>Corner roundness</h3>
-
-<div style={{display:"flex",gap:15}}>
-<button>Square</button>
-<button>Round</button>
-<button>Rounder</button>
-<button>Full</button>
-</div>
-
-<h3 style={{marginTop:30}}>Button color</h3>
-
-<div style={inputRow}>
-<div>#FFFFFF</div>
-<div>&gt;</div>
-</div>
-
-<h3>Button text color</h3>
-
-<div style={inputRow}>
-<div>#000000</div>
-<div>&gt;</div>
-</div>
-
 </div>
 );
 }
-
-
-
-/* TEXT */
 
 if(page==="text"){
 return(
-
 <div style={{maxWidth:650,color:"var(--text)"}}>
-
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Text
 </div>
-
-<h3 style={{marginTop:25}}>Page font</h3>
-
-<select style={{
-width:"100%",
-padding:10,
-background:"var(--card)",
-color:"var(--text)",
-border:"1px solid var(--border)"
-}}>
-<option>Link Sans</option>
-<option>Inter</option>
-<option>Montserrat</option>
-<option>Poppins</option>
-</select>
-
-<h3 style={{marginTop:25}}>Page text color</h3>
-
-<div style={inputRow}>
-<div>#FFFFFF</div>
-<div>&gt;</div>
-</div>
-
 </div>
 );
 }
 
-
-
-/* COLORS */
-
 if(page==="colors"){
 return(
-
 <div style={{maxWidth:650,color:"var(--text)"}}>
-
 <div onClick={()=>setPage("main")} style={{cursor:"pointer"}}>
 &lt; Colors
 </div>
-
-<h3 style={{marginTop:25}}>Buttons</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
-
-<h3>Button Text</h3>
-<div style={inputRow}><div>#000000</div><div>&gt;</div></div>
-
-<h3>Page Text</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
-
-<h3>Title Text</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>&gt;</div></div>
-
 </div>
 );
 }
