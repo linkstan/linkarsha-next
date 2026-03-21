@@ -44,10 +44,12 @@ style={{width:percent+"%"}}
 <style jsx>{`
 
 .card{
-background:#111;
+background:var(--card);
 padding:25px;
 border-radius:16px;
 margin-bottom:30px;
+border:1px solid var(--border);
+color:var(--text);
 }
 
 .funnel-row{
@@ -64,7 +66,7 @@ font-size:14px;
 
 .bar-wrap{
 flex:1;
-background:#0f0f15;
+background:var(--bg);
 border-radius:6px;
 overflow:hidden;
 }
