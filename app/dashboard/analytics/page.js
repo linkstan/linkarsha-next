@@ -89,11 +89,18 @@ setClicks(counts);
 
 return(
 
+<div style={{
+background:"var(--bg)",
+color:"var(--text)"
+}}>
+
 <Analytics
 links={links}
 clicks={clicks}
 clickEvents={clickEvents}
 />
+
+</div>
 
 );
 
