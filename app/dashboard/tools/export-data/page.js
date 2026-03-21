@@ -36,7 +36,7 @@ a.click();
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:600,color:"var(--text)"}}>
 
 <h2>Export Analytics Data</h2>
 
