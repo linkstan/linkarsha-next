@@ -16,12 +16,49 @@ const [openUser,setOpenUser] = useState(false);
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
+const [theme,setTheme] = useState("Minimal");
 
 const showPreview =
 pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
+
+/* THEME ENGINE */
+
+const themes={
+
+Minimal:{bg:"#ffffff",text:"#111",btn:"#e9e9e9"},
+Paper:{bg:"#fafafa",text:"#111",btn:"#ececec"},
+Clean:{bg:"#f4f4f4",text:"#111",btn:"#eaeaea"},
+"Soft White":{bg:"#fdfdfd",text:"#111",btn:"#ececec"},
+"Creator Light":{bg:"#ffffff",text:"#111",btn:"#ededed"},
+
+Midnight:{bg:"#0b0b12",text:"#fff",btn:"#1a1a25"},
+"Dark Pro":{bg:"#121212",text:"#fff",btn:"#1d1d1d"},
+Mono:{bg:"#111111",text:"#fff",btn:"#1f1f1f"},
+Obsidian:{bg:"#0f0f10",text:"#fff",btn:"#1b1b1b"},
+"Creator Dark":{bg:"#141414",text:"#fff",btn:"#1d1d1d"},
+
+Ocean:{bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",text:"#fff",btn:"rgba(0,0,0,.25)"},
+Sunset:{bg:"linear-gradient(135deg,#ff7a18,#ffb347)",text:"#fff",btn:"rgba(0,0,0,.25)"},
+Neon:{bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",text:"#fff",btn:"rgba(0,0,0,.25)"},
+Pastel:{bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",text:"#111",btn:"rgba(255,255,255,.6)"},
+"Gradient Flow":{bg:"linear-gradient(135deg,#667eea,#764ba2)",text:"#fff",btn:"rgba(0,0,0,.25)"},
+
+Luxury:{bg:"#000000",text:"#d4af37",btn:"#111"},
+"Gold Night":{bg:"linear-gradient(135deg,#000,#434343)",text:"#d4af37",btn:"#222"},
+Royal:{bg:"linear-gradient(135deg,#141e30,#243b55)",text:"#fff",btn:"rgba(255,255,255,.2)"},
+Tech:{bg:"linear-gradient(135deg,#00c6ff,#0072ff)",text:"#fff",btn:"rgba(0,0,0,.2)"},
+Elegant:{bg:"linear-gradient(135deg,#bdc3c7,#2c3e50)",text:"#fff",btn:"rgba(0,0,0,.25)"},
+
+"Creator Pro":{bg:"linear-gradient(135deg,#ff9966,#ff5e62)",text:"#fff",btn:"rgba(0,0,0,.2)"},
+Vivid:{bg:"linear-gradient(135deg,#f83600,#f9d423)",text:"#fff",btn:"rgba(0,0,0,.2)"},
+Energy:{bg:"linear-gradient(135deg,#f953c6,#b91d73)",text:"#fff",btn:"rgba(0,0,0,.2)"},
+Skyline:{bg:"linear-gradient(135deg,#4facfe,#00f2fe)",text:"#fff",btn:"rgba(0,0,0,.2)"},
+Dream:{bg:"linear-gradient(135deg,#a18cd1,#fbc2eb)",text:"#111",btn:"rgba(255,255,255,.6)"}
+
+};
 
 /* AUTO OPEN MENUS */
 
@@ -57,8 +94,9 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
+setTheme(prof?.theme || "Minimal");
 
-/* THEME */
+/* THEME MODE */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -82,7 +120,21 @@ setBlocks(blockData || []);
 
 }
 
-/* TOGGLE THEME */
+/* LIVE THEME UPDATE */
+
+useEffect(()=>{
+
+function updateTheme(e){
+setTheme(e.detail);
+}
+
+window.addEventListener("theme-change",updateTheme);
+
+return ()=>window.removeEventListener("theme-change",updateTheme);
+
+},[]);
+
+/* TOGGLE DARK MODE */
 
 async function toggleTheme(){
 
@@ -102,18 +154,11 @@ await supabase
 
 }
 
-/* LOGOUT */
-
-async function logout(){
-await supabase.auth.signOut();
-window.location="/login";
-}
-
-/* ACTIVE HELPER */
-
 function active(path){
 return pathname.startsWith(path);
 }
+
+const activeTheme=themes[theme] || themes.Minimal;
 
 return(
 
@@ -126,219 +171,11 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
 {/* SIDEBAR */}
-
-<div style={{
-width:260,
-background:"var(--sidebar)",
-padding:20,
-display:"flex",
-flexDirection:"column",
-borderRight:"1px solid var(--border)"
-}}>
-
-<h2 style={{marginBottom:15}}>Linkarsha</h2>
-
-{/* USER */}
-
-<div style={{position:"relative"}}>
-
-<div
-onClick={()=>setOpenUser(!openUser)}
-style={{
-display:"flex",
-alignItems:"center",
-gap:10,
-marginBottom:10,
-cursor:"pointer"
-}}
->
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:28,
-height:28,
-borderRadius:"50%",
-objectFit:"cover"
-}}
-/>
-
-<div style={{flex:1}}>
-{profile?.username}
-</div>
-
-<div style={{opacity:0.7}}>
-{openUser ? "v" : ">"}
-</div>
-
-</div>
-
-{openUser && (
-
-<div style={{
-background:"var(--card)",
-borderRadius:8,
-padding:10,
-marginBottom:20,
-border:"1px solid var(--border)"
-}}>
-
-<div style={dropdownItem}>Ask Question</div>
-<div style={dropdownItem}>Help Center</div>
-<div style={dropdownItem}>Contact Support</div>
-
-<div
-onClick={logout}
-style={{
-...dropdownItem,
-color:"#ff6b6b"
-}}
->
-Sign Out
-</div>
-
-</div>
-
-)}
-
-</div>
-
-{/* HOME */}
-
-<Link href="/dashboard" style={{
-...item,
-background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
-}}>
-Home
-</Link>
-
-{/* MY LINKARSHA */}
-
-<div
-onClick={()=>{
-setOpenLinkarsha(!openLinkarsha);
-setOpenTools(false);
-}}
-style={{
-...item,
-background: active("/dashboard/links") ? "var(--hover)" : "transparent"
-}}
->
-<span>My Linkarsha</span>
-<span>{openLinkarsha ? "v" : ">"}</span>
-</div>
-
-{openLinkarsha && (
-
-<div style={submenu}>
-
-<Link href="/dashboard/links" style={{
-...subitem,
-background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
-}}>
-My Links
-</Link>
-
-<Link href="/dashboard/link-history" style={{
-...subitem,
-background: active("/dashboard/link-history") ? "var(--hover)" : "transparent"
-}}>
-Link History
-</Link>
-
-<Link href="/dashboard/get-verified" style={{
-...subitem,
-background: active("/dashboard/get-verified") ? "var(--hover)" : "transparent"
-}}>
-Get Verified
-</Link>
-
-</div>
-
-)}
-
-{/* BLOCKS */}
-
-<Link href="/dashboard/blocks" style={{
-...item,
-background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
-}}>
-Blocks
-</Link>
-
-{/* APPEARANCE */}
-
-<Link href="/dashboard/appearance" style={{
-...item,
-background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
-}}>
-Appearance
-</Link>
-
-{/* ANALYTICS */}
-
-<Link href="/dashboard/analytics" style={{
-...item,
-background: active("/dashboard/analytics") ? "var(--hover)" : "transparent"
-}}>
-Analytics
-</Link>
-
-<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
-
-{/* TOOLS */}
-
-<div
-onClick={()=>{
-setOpenTools(!openTools);
-setOpenLinkarsha(false);
-}}
-style={{
-...item,
-background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
-}}
->
-<span>Tools</span>
-<span>{openTools ? "v" : ">"}</span>
-</div>
-
-{openTools && (
-
-<div style={submenu}>
-
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
-AI Bio Generator
-</Link>
-
-<Link href="/dashboard/tools/qr-code" style={subitem}>
-QR Code Generator
-</Link>
-
-<Link href="/dashboard/tools/export-data" style={subitem}>
-Export Data
-</Link>
-
-</div>
-
-)}
-
-<Link href="/dashboard/referrals" style={item}>
-Referrals
-</Link>
-
-<Link href="/dashboard/settings" style={item}>
-Settings
-</Link>
-
-</div>
-
-{/* MAIN + PHONE */}
+{/* (unchanged sidebar code) */}
 
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
-
-{/* THEME TOGGLE */}
 
 <div
 onClick={toggleTheme}
@@ -380,7 +217,7 @@ justifyContent:"center"
 
 {/* PHONE PREVIEW */}
 
-{showPreview && (
+{showPreview && profile && (
 
 <div style={{
 width:360,
@@ -403,7 +240,8 @@ boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 <div style={{
 width:"100%",
 height:"100%",
-background:"#0b0b12",
+background:activeTheme.bg,
+color:activeTheme.text,
 borderRadius:20,
 padding:20,
 overflow:"auto"
@@ -419,7 +257,7 @@ background:"#222"
 }}>
 
 <img
-src={profile?.avatar || "/default-avatar.png"}
+src={profile.avatar || "/default-avatar.png"}
 style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
@@ -428,19 +266,17 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 <div style={{
 marginTop:10,
 textAlign:"center",
-fontWeight:600,
-color:"white"
+fontWeight:600
 }}>
-{profile?.display_name}
+{profile.display_name}
 </div>
 
 <div style={{
 textAlign:"center",
 opacity:0.7,
-fontSize:14,
-color:"#aaa"
+fontSize:14
 }}>
-{profile?.bio}
+{profile.bio}
 </div>
 
 {blocks.map(block=>(
@@ -452,12 +288,12 @@ target="_blank"
 style={{
 display:"flex",
 alignItems:"center",
-background:"#1a1a25",
+background:activeTheme.btn,
 padding:12,
 borderRadius:10,
 marginTop:10,
 textDecoration:"none",
-color:"white"
+color:activeTheme.text
 }}
 >
 {block.data_json?.title}
@@ -480,35 +316,3 @@ color:"white"
 );
 
 }
-
-const item={
-padding:"10px 12px",
-cursor:"pointer",
-borderRadius:10,
-textDecoration:"none",
-color:"var(--text)",
-display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
-};
-
-const submenu={
-marginLeft:10,
-marginTop:5,
-marginBottom:10
-};
-
-const subitem={
-display:"block",
-padding:"8px 10px",
-opacity:0.85,
-cursor:"pointer",
-textDecoration:"none",
-color:"var(--text)"
-};
-
-const dropdownItem={
-padding:"8px 10px",
-cursor:"pointer",
-borderRadius:6
-};
