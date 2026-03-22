@@ -17,7 +17,7 @@ const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
 
-/* NEW: LIVE THEME STATE */
+/* LIVE THEME */
 
 const [liveTheme,setLiveTheme] = useState(null);
 
@@ -78,7 +78,7 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-/* THEME */
+/* THEME MODE */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -102,7 +102,7 @@ setBlocks(blockData || []);
 
 }
 
-/* TOGGLE THEME */
+/* TOGGLE THEME MODE */
 
 async function toggleTheme(){
 
@@ -138,6 +138,42 @@ return pathname.startsWith(path);
 /* THEME USED IN PREVIEW */
 
 const theme = liveTheme || profile?.theme;
+
+/* THEME MAP */
+
+const themeMap={
+
+Minimal:"#ffffff",
+Paper:"#fafafa",
+Clean:"#f4f4f4",
+"Soft White":"#fdfdfd",
+"Creator Light":"#ffffff",
+
+Midnight:"#0b0b12",
+"Dark Pro":"#121212",
+Mono:"#111111",
+Obsidian:"#0f0f10",
+"Creator Dark":"#141414",
+
+Ocean:"linear-gradient(135deg,#2193b0,#6dd5ed)",
+Sunset:"linear-gradient(135deg,#ff7a18,#ffb347)",
+Neon:"linear-gradient(135deg,#00f2fe,#7c5cff)",
+Pastel:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",
+"Gradient Flow":"linear-gradient(135deg,#667eea,#764ba2)",
+
+Luxury:"#000000",
+"Gold Night":"linear-gradient(135deg,#000000,#434343)",
+Royal:"linear-gradient(135deg,#141e30,#243b55)",
+Tech:"linear-gradient(135deg,#00c6ff,#0072ff)",
+Elegant:"linear-gradient(135deg,#bdc3c7,#2c3e50)",
+
+"Creator Pro":"linear-gradient(135deg,#ff9966,#ff5e62)",
+Vivid:"linear-gradient(135deg,#f83600,#f9d423)",
+Energy:"linear-gradient(135deg,#f953c6,#b91d73)",
+Skyline:"linear-gradient(135deg,#4facfe,#00f2fe)",
+Dream:"linear-gradient(135deg,#a18cd1,#fbc2eb)"
+
+};
 
 return(
 
@@ -252,51 +288,17 @@ background: active("/dashboard/links") ? "var(--hover)" : "transparent"
 
 <div style={submenu}>
 
-<Link href="/dashboard/links" style={{
-...subitem,
-background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
-}}>
-My Links
-</Link>
-
-<Link href="/dashboard/link-history" style={{
-...subitem,
-background: active("/dashboard/link-history") ? "var(--hover)" : "transparent"
-}}>
-Link History
-</Link>
-
-<Link href="/dashboard/get-verified" style={{
-...subitem,
-background: active("/dashboard/get-verified") ? "var(--hover)" : "transparent"
-}}>
-Get Verified
-</Link>
+<Link href="/dashboard/links" style={subitem}>My Links</Link>
+<Link href="/dashboard/link-history" style={subitem}>Link History</Link>
+<Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
 
 </div>
 
 )}
 
-<Link href="/dashboard/blocks" style={{
-...item,
-background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
-}}>
-Blocks
-</Link>
-
-<Link href="/dashboard/appearance" style={{
-...item,
-background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
-}}>
-Appearance
-</Link>
-
-<Link href="/dashboard/analytics" style={{
-...item,
-background: active("/dashboard/analytics") ? "var(--hover)" : "transparent"
-}}>
-Analytics
-</Link>
+<Link href="/dashboard/blocks" style={item}>Blocks</Link>
+<Link href="/dashboard/appearance" style={item}>Appearance</Link>
+<Link href="/dashboard/analytics" style={item}>Analytics</Link>
 
 <hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
 
@@ -305,10 +307,7 @@ onClick={()=>{
 setOpenTools(!openTools);
 setOpenLinkarsha(false);
 }}
-style={{
-...item,
-background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
-}}
+style={item}
 >
 <span>Tools</span>
 <span>{openTools ? "v" : ">"}</span>
@@ -317,30 +316,15 @@ background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
 {openTools && (
 
 <div style={submenu}>
-
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
-AI Bio Generator
-</Link>
-
-<Link href="/dashboard/tools/qr-code" style={subitem}>
-QR Code Generator
-</Link>
-
-<Link href="/dashboard/tools/export-data" style={subitem}>
-Export Data
-</Link>
-
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>AI Bio Generator</Link>
+<Link href="/dashboard/tools/qr-code" style={subitem}>QR Code Generator</Link>
+<Link href="/dashboard/tools/export-data" style={subitem}>Export Data</Link>
 </div>
 
 )}
 
-<Link href="/dashboard/referrals" style={item}>
-Referrals
-</Link>
-
-<Link href="/dashboard/settings" style={item}>
-Settings
-</Link>
+<Link href="/dashboard/referrals" style={item}>Referrals</Link>
+<Link href="/dashboard/settings" style={item}>Settings</Link>
 
 </div>
 
@@ -413,11 +397,7 @@ boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 <div style={{
 width:"100%",
 height:"100%",
-background:
-theme === "Minimal" ? "#ffffff" :
-theme === "Royal" ? "linear-gradient(135deg,#141e30,#243b55)" :
-theme === "Luxury" ? "#000000" :
-"#0b0b12",
+background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
 padding:20,
 overflow:"auto",
