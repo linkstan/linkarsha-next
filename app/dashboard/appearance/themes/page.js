@@ -2,8 +2,11 @@
 
 import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function Themes(){
+
+const router = useRouter();
 
 const [selected,setSelected]=useState(null);
 const [loading,setLoading]=useState(false);
@@ -68,7 +71,7 @@ async function applyTheme(name){
 setSelected(name);
 setLoading(true);
 
-/* LIVE PREVIEW EVENT */
+/* FIRE LIVE PREVIEW EVENT IMMEDIATELY */
 
 window.dispatchEvent(
 new CustomEvent("theme-change",{detail:name})
@@ -80,6 +83,12 @@ await supabase
 .from("profiles")
 .update({theme:name})
 .eq("id",session.user.id);
+
+/* FIRE AGAIN AFTER SAVE (ensures layout receives it) */
+
+window.dispatchEvent(
+new CustomEvent("theme-change",{detail:name})
+);
 
 setLoading(false);
 
@@ -94,7 +103,31 @@ minHeight:"100vh",
 color:"var(--text)"
 }}>
 
-<h2 style={{marginBottom:25}}>Select Theme</h2>
+{/* HEADER */}
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:25
+}}>
+
+<div
+onClick={()=>router.back()}
+style={{
+cursor:"pointer",
+fontSize:22,
+opacity:.8
+}}
+>
+←
+</div>
+
+<h2>Select Theme</h2>
+
+</div>
+
+{/* GRID */}
 
 <div style={{
 display:"grid",
@@ -108,15 +141,13 @@ maxWidth:1000
 <div
 key={i}
 style={{
-cursor:"pointer",
 border:selected===t.name
 ? "2px solid #00d26a"
 : "1px solid var(--border)",
 borderRadius:14,
 padding:14,
 background:"var(--card)",
-transition:"all .25s ease",
-position:"relative"
+transition:"all .25s ease"
 }}
 
 onMouseEnter={(e)=>{
