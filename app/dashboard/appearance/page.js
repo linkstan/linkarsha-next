@@ -73,6 +73,22 @@ setTheme(data.theme);
 
 }
 
+/* LIVE THEME UPDATE LISTENER */
+
+useEffect(()=>{
+
+function handleThemeChange(e){
+setTheme(e.detail);
+}
+
+window.addEventListener("theme-change",handleThemeChange);
+
+return ()=>{
+window.removeEventListener("theme-change",handleThemeChange);
+};
+
+},[]);
+
 /* CARD STYLE */
 
 const card={
