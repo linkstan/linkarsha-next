@@ -21,7 +21,7 @@ const [mode,setMode] = useState("light");
 
 const [liveTheme,setLiveTheme] = useState(null);
 
-/* NEW: APPEARANCE SETTINGS */
+/* APPEARANCE SETTINGS */
 
 const [appearance,setAppearance] = useState({});
 
@@ -61,12 +61,15 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
-/* NEW: APPEARANCE LIVE LISTENER */
+/* LIVE APPEARANCE LISTENER */
 
 useEffect(()=>{
 
 function handleAppearance(e){
-setAppearance(e.detail);
+setAppearance(prev=>({
+...prev,
+...e.detail
+}));
 }
 
 window.addEventListener("appearance-update",handleAppearance);
@@ -225,8 +228,6 @@ borderRight:"1px solid var(--border)"
 }}>
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
-
-{/* USER */}
 
 <div style={{position:"relative"}}>
 
@@ -430,38 +431,72 @@ overflow:"auto",
 color: theme === "Minimal" ? "#111" : "#fff"
 }}>
 
+{/* HEADER */}
+
+<div style={{
+display:"flex",
+flexDirection:"column",
+alignItems:
+header.alignment==="left"
+? "flex-start"
+: header.alignment==="right"
+? "flex-end"
+: "center",
+textAlign: header.alignment || "center"
+}}>
+
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
 overflow:"hidden",
-margin:"auto",
-background:"#222"
+background:"#222",
+marginBottom:10
 }}>
 
 <img
 src={profile?.avatar || "/default-avatar.png"}
-style={{width:"100%",height:"100%",objectFit:"cover"}}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
 />
 
 </div>
 
+{header.showDisplayName !== false && (
+
 <div style={{
-marginTop:10,
-textAlign: header.alignment || "center",
+fontFamily: header.font || "Inter",
 fontWeight: header.fontWeight || 600,
-fontSize: header.fontSize || 22,
-fontFamily: header.font || "Inter"
+fontSize: header.fontSize || 22
 }}>
 {profile?.display_name}
 </div>
 
+)}
+
+{header.showUsername !== false && (
+
 <div style={{
-textAlign:"center",
-opacity:0.7,
+opacity:.7,
 fontSize:14
 }}>
+@{profile?.username}
+</div>
+
+)}
+
+<div style={{
+marginTop:6,
+opacity:.7,
+fontSize:14,
+maxWidth:220
+}}>
 {profile?.bio}
+</div>
+
 </div>
 
 {blocks.map(block=>(
