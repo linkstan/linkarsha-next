@@ -17,6 +17,10 @@ const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
 
+/* NEW: LIVE THEME STATE */
+
+const [liveTheme,setLiveTheme] = useState(null);
+
 const showPreview =
 pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
@@ -36,6 +40,22 @@ setOpenTools(true);
 }
 
 },[pathname]);
+
+/* LIVE THEME LISTENER */
+
+useEffect(()=>{
+
+function handleThemeChange(e){
+setLiveTheme(e.detail);
+}
+
+window.addEventListener("theme-change",handleThemeChange);
+
+return ()=>{
+window.removeEventListener("theme-change",handleThemeChange);
+};
+
+},[]);
 
 /* LOAD USER */
 
@@ -114,6 +134,10 @@ window.location="/login";
 function active(path){
 return pathname.startsWith(path);
 }
+
+/* THEME USED IN PREVIEW */
+
+const theme = liveTheme || profile?.theme;
 
 return(
 
@@ -203,16 +227,12 @@ Sign Out
 
 </div>
 
-{/* HOME */}
-
 <Link href="/dashboard" style={{
 ...item,
 background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 }}>
 Home
 </Link>
-
-{/* MY LINKARSHA */}
 
 <div
 onClick={()=>{
@@ -257,8 +277,6 @@ Get Verified
 
 )}
 
-{/* BLOCKS */}
-
 <Link href="/dashboard/blocks" style={{
 ...item,
 background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
@@ -266,16 +284,12 @@ background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
 Blocks
 </Link>
 
-{/* APPEARANCE */}
-
 <Link href="/dashboard/appearance" style={{
 ...item,
 background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
 </Link>
-
-{/* ANALYTICS */}
 
 <Link href="/dashboard/analytics" style={{
 ...item,
@@ -285,8 +299,6 @@ Analytics
 </Link>
 
 <hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
-
-{/* TOOLS */}
 
 <div
 onClick={()=>{
@@ -337,8 +349,6 @@ Settings
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
-
-{/* THEME TOGGLE */}
 
 <div
 onClick={toggleTheme}
@@ -404,14 +414,14 @@ boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 width:"100%",
 height:"100%",
 background:
-profile.theme === "Minimal" ? "#ffffff" :
-profile.theme === "Royal" ? "linear-gradient(135deg,#141e30,#243b55)" :
-profile.theme === "Luxury" ? "#000000" :
+theme === "Minimal" ? "#ffffff" :
+theme === "Royal" ? "linear-gradient(135deg,#141e30,#243b55)" :
+theme === "Luxury" ? "#000000" :
 "#0b0b12",
 borderRadius:20,
 padding:20,
 overflow:"auto",
-color: profile.theme === "Minimal" ? "#111" : "#fff"
+color: theme === "Minimal" ? "#111" : "#fff"
 }}>
 
 <div style={{
