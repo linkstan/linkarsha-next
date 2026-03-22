@@ -14,6 +14,8 @@ fontWeight:"bold",
 fontSize:22,
 alignment:"center",
 
+/* NEW BACKGROUND SETTINGS */
+
 backgroundType:"transparent",
 backgroundColor:"#000000",
 backgroundGradient:["#141e30","#243b55"],
@@ -80,7 +82,7 @@ await supabase
 
 return(
 
-<div style={{maxWidth:650}}>
+<div style={{maxWidth:600}}>
 
 <h2 style={{marginBottom:20}}>Header</h2>
 
@@ -101,82 +103,6 @@ onChange={(e)=>updateSetting("layout",e.target.value)}
 </select>
 
 </div>
-
-{/* BACKGROUND */}
-
-<div style={{marginBottom:20}}>
-
-<div style={{marginBottom:6}}>Header Background</div>
-
-<select
-value={settings.backgroundType}
-onChange={(e)=>updateSetting("backgroundType",e.target.value)}
->
-
-<option value="transparent">Transparent</option>
-<option value="solid">Solid Color</option>
-<option value="gradient">Gradient</option>
-<option value="image">Image</option>
-
-</select>
-
-</div>
-
-{/* SOLID COLOR */}
-
-{settings.backgroundType==="solid" && (
-
-<div style={{marginBottom:20}}>
-
-<div>Background Color</div>
-
-<input
-type="color"
-value={settings.backgroundColor}
-onChange={(e)=>updateSetting("backgroundColor",e.target.value)}
-/>
-
-</div>
-
-)}
-
-{/* GRADIENT */}
-
-{settings.backgroundType==="gradient" && (
-
-<div style={{marginBottom:20}}>
-
-<div>Gradient Color 1</div>
-
-<input
-type="color"
-value={settings.backgroundGradient[0]}
-onChange={(e)=>{
-
-const g=[...settings.backgroundGradient];
-g[0]=e.target.value;
-updateSetting("backgroundGradient",g);
-
-}}
-/>
-
-<div style={{marginTop:10}}>Gradient Color 2</div>
-
-<input
-type="color"
-value={settings.backgroundGradient[1]}
-onChange={(e)=>{
-
-const g=[...settings.backgroundGradient];
-g[1]=e.target.value;
-updateSetting("backgroundGradient",g);
-
-}}
-/>
-
-</div>
-
-)}
 
 {/* DISPLAY NAME */}
 
@@ -273,7 +199,7 @@ onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
 
 {/* ALIGNMENT */}
 
-<div>
+<div style={{marginBottom:30}}>
 
 <div>Alignment</div>
 
@@ -289,6 +215,84 @@ onChange={(e)=>updateSetting("alignment",e.target.value)}
 </select>
 
 </div>
+
+{/* HEADER BACKGROUND */}
+
+<h3 style={{marginBottom:10}}>Header Background</h3>
+
+<select
+value={settings.backgroundType}
+onChange={(e)=>updateSetting("backgroundType",e.target.value)}
+>
+
+<option value="transparent">Transparent</option>
+<option value="solid">Solid Color</option>
+<option value="gradient">Gradient</option>
+<option value="image">Image</option>
+
+</select>
+
+{/* SOLID COLOR */}
+
+{settings.backgroundType==="solid" && (
+
+<div style={{marginTop:10}}>
+
+<input
+type="color"
+value={settings.backgroundColor}
+onChange={(e)=>updateSetting("backgroundColor",e.target.value)}
+/>
+
+</div>
+
+)}
+
+{/* GRADIENT */}
+
+{settings.backgroundType==="gradient" && (
+
+<div style={{marginTop:10,display:"flex",gap:10}}>
+
+<input
+type="color"
+value={settings.backgroundGradient[0]}
+onChange={(e)=>updateSetting(
+"backgroundGradient",
+[e.target.value,settings.backgroundGradient[1]]
+)}
+/>
+
+<input
+type="color"
+value={settings.backgroundGradient[1]}
+onChange={(e)=>updateSetting(
+"backgroundGradient",
+[settings.backgroundGradient[0],e.target.value]
+)}
+/>
+
+</div>
+
+)}
+
+{/* IMAGE */}
+
+{settings.backgroundType==="image" && (
+
+<div style={{marginTop:10}}>
+
+<input
+type="text"
+placeholder="Paste image URL"
+value={settings.backgroundImage}
+onChange={(e)=>updateSetting("backgroundImage",e.target.value)}
+style={{width:"100%"}}
+/>
+
+</div>
+
+)}
 
 </div>
 
