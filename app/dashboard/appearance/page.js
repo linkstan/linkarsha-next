@@ -1,6 +1,5 @@
 "use client";
 
-import PhonePreview from "../../../components/PhonePreview";
 import { useState,useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 import Link from "next/link";
@@ -9,18 +8,6 @@ export default function Appearance(){
 
 const [editor,setEditor] = useState("main");
 const [theme,setTheme] = useState("Minimal");
-
-/* PREVENT DOUBLE PHONE PREVIEW */
-
-const [showPreview,setShowPreview] = useState(true);
-
-useEffect(()=>{
-if(document.querySelector(".phone-preview-root")){
-setShowPreview(false);
-}
-},[]);
-
-/* THEME PREVIEW COLORS */
 
 const themePreview={
 
@@ -56,8 +43,6 @@ Dream:"linear-gradient(45deg,#a18cd1,#fbc2eb)"
 
 };
 
-/* LOAD USER THEME */
-
 useEffect(()=>{
 loadTheme();
 },[]);
@@ -79,8 +64,6 @@ setTheme(data.theme);
 
 }
 
-/* LIVE THEME UPDATE */
-
 useEffect(()=>{
 
 function handleThemeChange(e){
@@ -94,8 +77,6 @@ window.removeEventListener("theme-change",handleThemeChange);
 };
 
 },[]);
-
-/* CARD STYLE */
 
 const card={
 background:"var(--card)",
@@ -122,8 +103,6 @@ marginBottom:"22px",
 color:"var(--text)"
 };
 
-/* MAIN PANEL */
-
 if(editor==="main"){
 
 return(
@@ -135,16 +114,7 @@ minHeight:"100vh",
 color:"var(--text)"
 }}>
 
-<div style={{
-display:"grid",
-gridTemplateColumns:"minmax(0,650px) 320px",
-gap:"60px",
-alignItems:"start"
-}}>
-
-{/* EDITOR */}
-
-<div>
+<div style={{maxWidth:650}}>
 
 <h2 style={{marginBottom:15}}>Theme</h2>
 
@@ -158,7 +128,8 @@ display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
 marginBottom:"25px",
-border:"1px solid var(--border)"
+border:"1px solid var(--border)",
+cursor:"pointer"
 }}>
 
 <div style={{display:"flex",alignItems:"center",gap:15}}>
@@ -190,149 +161,230 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
-{/* HEADER */}
-
 <div style={card} onClick={()=>setEditor("header")}>
+
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:36,height:36,borderRadius:"50%",background:"#888"}}/>
 <div>Header</div>
 </div>
+
 <div>→</div>
+
 </div>
 
-{/* WALLPAPER */}
-
 <div style={card} onClick={()=>setEditor("wallpaper")}>
+
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:36,height:36,borderRadius:"10px",background:"linear-gradient(45deg,#ff7a18,#ffd000)"}}/>
 <div>Wallpaper</div>
 </div>
+
 <div>→</div>
+
 </div>
 
-{/* BUTTONS */}
-
 <div style={card} onClick={()=>setEditor("buttons")}>
+
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:38,height:18,border:"2px solid var(--text)",borderRadius:"6px"}}/>
 <div>Buttons</div>
 </div>
+
 <div>→</div>
+
 </div>
 
-{/* TEXT */}
-
 <div style={card} onClick={()=>setEditor("text")}>
+
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{fontSize:20}}>Aa</div>
 <div>Text</div>
 </div>
+
 <div>→</div>
+
 </div>
 
-{/* COLORS */}
-
 <div style={card} onClick={()=>setEditor("colors")}>
+
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:30,height:30,background:"var(--bg)",borderRadius:"6px",border:"1px solid var(--border)"}}/>
 <div>Colors</div>
 </div>
+
+<div>→</div>
+
+</div>
+
+</div>
+
+</div>
+
+);
+
+}
+
+if(editor==="header"){
+
+return(
+
+<div style={{padding:20,maxWidth:650}}>
+
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Header
+</div>
+
+<h3>Profile Image</h3>
+
+<div style={{
+width:70,
+height:70,
+borderRadius:"50%",
+background:"#888",
+marginBottom:15
+}}/>
+
+<button style={{
+padding:"10px 18px",
+borderRadius:"20px",
+border:"1px solid var(--border)"
+}}>
+Upload
+</button>
+
+<h3 style={{marginTop:25}}>Layout</h3>
+
+<button>Classic</button>
+<button style={{marginLeft:10}}>Hero</button>
+
+</div>
+
+);
+
+}
+
+if(editor==="wallpaper"){
+
+return(
+
+<div style={{padding:20,maxWidth:650}}>
+
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Wallpaper
+</div>
+
+<h3>Wallpaper Style</h3>
+
+<div style={{
+display:"grid",
+gridTemplateColumns:"1fr 1fr 1fr",
+gap:20,
+marginTop:20
+}}>
+
+<div><div style={{height:70,background:"#ccc"}}/><div>Fill</div></div>
+<div><div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}/><div>Gradient</div></div>
+<div><div style={{height:70,background:"#444"}}/><div>Image</div></div>
+
+</div>
+
+</div>
+
+);
+
+}
+
+if(editor==="buttons"){
+
+return(
+
+<div style={{padding:20,maxWidth:650}}>
+
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Buttons
+</div>
+
+<h3>Button Style</h3>
+
+<div style={{display:"flex",gap:10,marginTop:15}}>
+<button>Solid</button>
+<button>Glass</button>
+<button>Outline</button>
+</div>
+
+<h3 style={{marginTop:25}}>Corner Radius</h3>
+
+<div style={{display:"flex",gap:10}}>
+<button>Square</button>
+<button>Round</button>
+<button>Rounder</button>
+<button>Full</button>
+</div>
+
+</div>
+
+);
+
+}
+
+if(editor==="text"){
+
+return(
+
+<div style={{padding:20,maxWidth:650}}>
+
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Text
+</div>
+
+<h3>Font</h3>
+
+<select style={{padding:10,marginTop:10}}>
+<option>Inter</option>
+<option>Montserrat</option>
+<option>Poppins</option>
+<option>Roboto</option>
+</select>
+
+<h3 style={{marginTop:25}}>Text Color</h3>
+
+<div style={inputRow}>
+<div>#FFFFFF</div>
 <div>→</div>
 </div>
 
 </div>
 
-{/* PHONE PREVIEW */}
-
-{showPreview && (
-<div style={{
-position:"sticky",
-top:"40px"
-}}>
-<PhonePreview/>
-</div>
-)}
-
-</div>
-
-</div>
-
 );
 
 }
-
-/* EDITOR PANELS REMAIN UNCHANGED BELOW */
-
-/* HEADER */
-
-if(editor==="header"){
-return(
-<div style={{padding:20,maxWidth:650}}>
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Header
-</div>
-<h3>Profile Image</h3>
-<div style={{width:70,height:70,borderRadius:"50%",background:"#888",marginBottom:15}}/>
-<button style={{padding:"10px 18px",borderRadius:"20px",border:"1px solid var(--border)"}}>
-Upload
-</button>
-<h3 style={{marginTop:25}}>Layout</h3>
-<button>Classic</button>
-<button style={{marginLeft:10}}>Hero</button>
-</div>
-);
-}
-
-/* WALLPAPER */
-
-if(editor==="wallpaper"){
-return(
-<div style={{padding:20,maxWidth:650}}>
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Wallpaper
-</div>
-<h3>Wallpaper Style</h3>
-</div>
-);
-}
-
-/* BUTTONS */
-
-if(editor==="buttons"){
-return(
-<div style={{padding:20,maxWidth:650}}>
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Buttons
-</div>
-<h3>Button Style</h3>
-</div>
-);
-}
-
-/* TEXT */
-
-if(editor==="text"){
-return(
-<div style={{padding:20,maxWidth:650}}>
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Text
-</div>
-<h3>Font</h3>
-</div>
-);
-}
-
-/* COLORS */
 
 if(editor==="colors"){
+
 return(
+
 <div style={{padding:20,maxWidth:650}}>
+
 <div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Colors
 </div>
-<h3>Colors</h3>
+
+<h3>Buttons</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+
+<h3>Button Text</h3>
+<div style={inputRow}><div>#000000</div><div>→</div></div>
+
+<h3>Page Text</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+
+<h3>Title Text</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+
 </div>
+
 );
+
 }
 
 }
