@@ -6,10 +6,15 @@ import Link from "next/link";
 
 export default function Appearance(){
 
-const [page,setPage] = useState("main");
+/* ACTIVE EDITOR PANEL */
+
+const [editor,setEditor] = useState("main");
+
+/* CURRENT THEME */
+
 const [theme,setTheme] = useState("Minimal");
 
-/* THEME PREVIEW */
+/* THEME PREVIEW COLORS */
 
 const themePreview={
 Minimal:"#ffffff",
@@ -21,6 +26,8 @@ Luxury:"#000000",
 Pastel:"linear-gradient(45deg,#fbc2eb,#a6c1ee)",
 Mono:"#111111"
 };
+
+/* LOAD USER THEME */
 
 useEffect(()=>{
 loadTheme();
@@ -43,7 +50,7 @@ setTheme(data.theme);
 
 }
 
-/* UI STYLES */
+/* CARD STYLE */
 
 const card={
 background:"var(--card)",
@@ -58,6 +65,8 @@ border:"1px solid var(--border)",
 color:"var(--text)"
 };
 
+/* INPUT STYLE */
+
 const inputRow={
 background:"var(--card)",
 border:"1px solid var(--border)",
@@ -70,9 +79,9 @@ marginBottom:"22px",
 color:"var(--text)"
 };
 
-/* MAIN PAGE */
+/* MAIN PANEL */
 
-if(page==="main"){
+if(editor==="main"){
 
 return(
 
@@ -130,9 +139,10 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
+
 {/* HEADER */}
 
-<div style={card} onClick={()=>setPage("header")}>
+<div style={card} onClick={()=>setEditor("header")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -147,13 +157,14 @@ background:"#888"
 
 </div>
 
-<div style={{opacity:.6}}>Classic →</div>
+<div>→</div>
 
 </div>
 
+
 {/* WALLPAPER */}
 
-<div style={card} onClick={()=>setPage("wallpaper")}>
+<div style={card} onClick={()=>setEditor("wallpaper")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -168,13 +179,14 @@ background:"linear-gradient(45deg,#ff7a18,#ffd000)"
 
 </div>
 
-<div style={{opacity:.6}}>Gradient →</div>
+<div>→</div>
 
 </div>
 
+
 {/* BUTTONS */}
 
-<div style={card} onClick={()=>setPage("buttons")}>
+<div style={card} onClick={()=>setEditor("buttons")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -189,13 +201,14 @@ borderRadius:"6px"
 
 </div>
 
-<div style={{opacity:.6}}>Outline →</div>
+<div>→</div>
 
 </div>
 
+
 {/* TEXT */}
 
-<div style={card} onClick={()=>setPage("text")}>
+<div style={card} onClick={()=>setEditor("text")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -205,13 +218,14 @@ borderRadius:"6px"
 
 </div>
 
-<div style={{opacity:.6}}>Summer Glow →</div>
+<div>→</div>
 
 </div>
 
+
 {/* COLORS */}
 
-<div style={card} onClick={()=>setPage("colors")}>
+<div style={card} onClick={()=>setEditor("colors")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -239,52 +253,41 @@ border:"1px solid var(--border)"
 
 }
 
-/* HEADER PAGE */
 
-if(page==="header"){
+/* HEADER EDITOR */
+
+if(editor==="header"){
 
 return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Header
 </div>
 
-<h3>Profile image</h3>
+<h3>Profile Image</h3>
 
 <div style={{
-display:"flex",
-alignItems:"center",
-gap:15,
-marginBottom:25
-}}>
-
-<div style={{
-width:60,
-height:60,
+width:70,
+height:70,
 borderRadius:"50%",
-background:"#888"
+background:"#888",
+marginBottom:15
 }}/>
 
 <button style={{
-background:"var(--card)",
-color:"var(--text)",
-borderRadius:"25px",
 padding:"10px 18px",
+borderRadius:"20px",
 border:"1px solid var(--border)"
 }}>
-+ Add
+Upload
 </button>
 
-</div>
+<h3 style={{marginTop:25}}>Layout</h3>
 
-<h3>Profile image layout</h3>
-
-<div style={{display:"flex",gap:12}}>
 <button>Classic</button>
-<button>Hero</button>
-</div>
+<button style={{marginLeft:10}}>Hero</button>
 
 </div>
 
@@ -292,29 +295,31 @@ border:"1px solid var(--border)"
 
 }
 
-/* WALLPAPER PAGE */
 
-if(page==="wallpaper"){
+/* WALLPAPER EDITOR */
+
+if(editor==="wallpaper"){
 
 return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Wallpaper
 </div>
 
-<h3>Wallpaper style</h3>
+<h3>Wallpaper Style</h3>
 
 <div style={{
 display:"grid",
 gridTemplateColumns:"1fr 1fr 1fr",
-gap:20
+gap:20,
+marginTop:20
 }}>
 
 <div><div style={{height:70,background:"#ccc"}}/><div>Fill</div></div>
 <div><div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}/><div>Gradient</div></div>
-<div><div style={{height:70,background:"#aaa"}}/><div>Blur</div></div>
+<div><div style={{height:70,background:"#444"}}/><div>Image</div></div>
 
 </div>
 
@@ -324,29 +329,30 @@ gap:20
 
 }
 
-/* BUTTONS PAGE */
 
-if(page==="buttons"){
+/* BUTTON EDITOR */
+
+if(editor==="buttons"){
 
 return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Buttons
 </div>
 
-<h3>Button style</h3>
+<h3>Button Style</h3>
 
-<div style={{display:"flex",gap:15}}>
+<div style={{display:"flex",gap:10,marginTop:15}}>
 <button>Solid</button>
 <button>Glass</button>
 <button>Outline</button>
 </div>
 
-<h3 style={{marginTop:25}}>Corner roundness</h3>
+<h3 style={{marginTop:25}}>Corner Radius</h3>
 
-<div style={{display:"flex",gap:15}}>
+<div style={{display:"flex",gap:10}}>
 <button>Square</button>
 <button>Round</button>
 <button>Rounder</button>
@@ -359,28 +365,29 @@ return(
 
 }
 
-/* TEXT PAGE */
 
-if(page==="text"){
+/* TEXT EDITOR */
+
+if(editor==="text"){
 
 return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Text
 </div>
 
-<h3>Page font</h3>
+<h3>Font</h3>
 
-<select style={{width:"100%",padding:10}}>
-<option>Link Sans</option>
+<select style={{padding:10,marginTop:10}}>
 <option>Inter</option>
 <option>Montserrat</option>
 <option>Poppins</option>
+<option>Roboto</option>
 </select>
 
-<h3 style={{marginTop:20}}>Page text color</h3>
+<h3 style={{marginTop:25}}>Text Color</h3>
 
 <div style={inputRow}>
 <div>#FFFFFF</div>
@@ -393,15 +400,16 @@ return(
 
 }
 
-/* COLORS PAGE */
 
-if(page==="colors"){
+/* COLOR EDITOR */
+
+if(editor==="colors"){
 
 return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Colors
 </div>
 
