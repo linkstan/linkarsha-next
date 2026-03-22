@@ -6,6 +6,7 @@ import { supabase } from "../../../lib/supabase";
 export default function Themes(){
 
 const [selected,setSelected]=useState(null);
+const [loading,setLoading]=useState(false);
 
 const themes=[
 
@@ -76,6 +77,13 @@ setSelected(data.theme);
 async function applyTheme(name){
 
 setSelected(name);
+setLoading(true);
+
+/* LIVE PREVIEW EVENT */
+
+window.dispatchEvent(
+new CustomEvent("theme-change",{detail:name})
+);
 
 const {data:{session}}=await supabase.auth.getSession();
 
@@ -83,6 +91,8 @@ await supabase
 .from("profiles")
 .update({theme:name})
 .eq("id",session.user.id);
+
+setLoading(false);
 
 }
 
@@ -108,7 +118,6 @@ maxWidth:1000
 
 <div
 key={i}
-onClick={()=>applyTheme(t.name)}
 style={{
 cursor:"pointer",
 border:selected===t.name
@@ -117,12 +126,13 @@ border:selected===t.name
 borderRadius:14,
 padding:14,
 background:"var(--card)",
-transition:"all .25s ease"
+transition:"all .25s ease",
+position:"relative"
 }}
 
 onMouseEnter={(e)=>{
 e.currentTarget.style.transform="translateY(-4px)";
-e.currentTarget.style.boxShadow="0 10px 30px rgba(0,0,0,.25)";
+e.currentTarget.style.boxShadow="0 12px 35px rgba(0,0,0,.25)";
 }}
 
 onMouseLeave={(e)=>{
@@ -165,6 +175,28 @@ marginTop:6
 }}>
 {t.category}
 </div>
+
+<button
+onClick={()=>applyTheme(t.name)}
+style={{
+marginTop:10,
+width:"100%",
+padding:"8px",
+borderRadius:8,
+border:"none",
+background:selected===t.name ? "#00d26a" : "#333",
+color:"#fff",
+cursor:"pointer"
+}}
+>
+
+{loading && selected===t.name
+? "Applying..."
+: selected===t.name
+? "Applied"
+: "Apply Theme"}
+
+</button>
 
 </div>
 
