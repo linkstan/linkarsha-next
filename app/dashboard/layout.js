@@ -28,35 +28,21 @@ pathname.startsWith("/dashboard/appearance");
 
 const themes={
 
-Minimal:{bg:"#ffffff",text:"#111",btn:"#e9e9e9"},
-Paper:{bg:"#fafafa",text:"#111",btn:"#ececec"},
-Clean:{bg:"#f4f4f4",text:"#111",btn:"#eaeaea"},
-"Soft White":{bg:"#fdfdfd",text:"#111",btn:"#ececec"},
-"Creator Light":{bg:"#ffffff",text:"#111",btn:"#ededed"},
+Minimal:{bg:"#ffffff",text:"#111",btn:"#eee"},
+Paper:{bg:"#fafafa",text:"#111",btn:"#eee"},
+Clean:{bg:"#f4f4f4",text:"#111",btn:"#eee"},
 
 Midnight:{bg:"#0b0b12",text:"#fff",btn:"#1a1a25"},
-"Dark Pro":{bg:"#121212",text:"#fff",btn:"#1d1d1d"},
-Mono:{bg:"#111111",text:"#fff",btn:"#1f1f1f"},
-Obsidian:{bg:"#0f0f10",text:"#fff",btn:"#1b1b1b"},
-"Creator Dark":{bg:"#141414",text:"#fff",btn:"#1d1d1d"},
+"Dark Pro":{bg:"#121212",text:"#fff",btn:"#1a1a25"},
+Mono:{bg:"#111111",text:"#fff",btn:"#1a1a25"},
 
 Ocean:{bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",text:"#fff",btn:"rgba(0,0,0,.25)"},
 Sunset:{bg:"linear-gradient(135deg,#ff7a18,#ffb347)",text:"#fff",btn:"rgba(0,0,0,.25)"},
 Neon:{bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",text:"#fff",btn:"rgba(0,0,0,.25)"},
 Pastel:{bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",text:"#111",btn:"rgba(255,255,255,.6)"},
-"Gradient Flow":{bg:"linear-gradient(135deg,#667eea,#764ba2)",text:"#fff",btn:"rgba(0,0,0,.25)"},
 
-Luxury:{bg:"#000000",text:"#d4af37",btn:"#111"},
-"Gold Night":{bg:"linear-gradient(135deg,#000,#434343)",text:"#d4af37",btn:"#222"},
 Royal:{bg:"linear-gradient(135deg,#141e30,#243b55)",text:"#fff",btn:"rgba(255,255,255,.2)"},
-Tech:{bg:"linear-gradient(135deg,#00c6ff,#0072ff)",text:"#fff",btn:"rgba(0,0,0,.2)"},
-Elegant:{bg:"linear-gradient(135deg,#bdc3c7,#2c3e50)",text:"#fff",btn:"rgba(0,0,0,.25)"},
-
-"Creator Pro":{bg:"linear-gradient(135deg,#ff9966,#ff5e62)",text:"#fff",btn:"rgba(0,0,0,.2)"},
-Vivid:{bg:"linear-gradient(135deg,#f83600,#f9d423)",text:"#fff",btn:"rgba(0,0,0,.2)"},
-Energy:{bg:"linear-gradient(135deg,#f953c6,#b91d73)",text:"#fff",btn:"rgba(0,0,0,.2)"},
-Skyline:{bg:"linear-gradient(135deg,#4facfe,#00f2fe)",text:"#fff",btn:"rgba(0,0,0,.2)"},
-Dream:{bg:"linear-gradient(135deg,#a18cd1,#fbc2eb)",text:"#111",btn:"rgba(255,255,255,.6)"}
+Luxury:{bg:"#000",text:"#d4af37",btn:"#111"}
 
 };
 
@@ -134,7 +120,7 @@ return ()=>window.removeEventListener("theme-change",updateTheme);
 
 },[]);
 
-/* TOGGLE DARK MODE */
+/* TOGGLE THEME */
 
 async function toggleTheme(){
 
@@ -154,11 +140,20 @@ await supabase
 
 }
 
+/* LOGOUT */
+
+async function logout(){
+await supabase.auth.signOut();
+window.location="/login";
+}
+
+/* ACTIVE HELPER */
+
 function active(path){
 return pathname.startsWith(path);
 }
 
-const activeTheme=themes[theme] || themes.Minimal;
+const activeTheme = themes[theme] || themes.Minimal;
 
 return(
 
@@ -170,46 +165,105 @@ color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
-{/* SIDEBAR */}
-{/* (unchanged sidebar code) */}
+{/* SIDEBAR (UNCHANGED) */}
+
+<div style={{
+width:260,
+background:"var(--sidebar)",
+padding:20,
+display:"flex",
+flexDirection:"column",
+borderRight:"1px solid var(--border)"
+}}>
+
+<h2 style={{marginBottom:15}}>Linkarsha</h2>
+
+{/* USER */}
+
+<div style={{position:"relative"}}>
+
+<div
+onClick={()=>setOpenUser(!openUser)}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:10,
+cursor:"pointer"
+}}
+>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:28,
+height:28,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+<div style={{flex:1}}>
+{profile?.username}
+</div>
+
+<div style={{opacity:0.7}}>
+{openUser ? "v" : ">"}
+</div>
+
+</div>
+
+{openUser && (
+
+<div style={{
+background:"var(--card)",
+borderRadius:8,
+padding:10,
+marginBottom:20,
+border:"1px solid var(--border)"
+}}>
+
+<div style={dropdownItem}>Ask Question</div>
+<div style={dropdownItem}>Help Center</div>
+<div style={dropdownItem}>Contact Support</div>
+
+<div
+onClick={logout}
+style={{
+...dropdownItem,
+color:"#ff6b6b"
+}}
+>
+Sign Out
+</div>
+
+</div>
+
+)}
+
+</div>
+
+<Link href="/dashboard" style={{
+...item,
+background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
+}}>
+Home
+</Link>
+
+<Link href="/dashboard/appearance" style={{
+...item,
+background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
+}}>
+Appearance
+</Link>
+
+</div>
+
+{/* MAIN + PHONE */}
 
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
-
-<div
-onClick={toggleTheme}
-style={{
-position:"absolute",
-right:30,
-top:20,
-width:70,
-height:36,
-borderRadius:40,
-cursor:"pointer",
-background: mode==="dark"
-? "linear-gradient(45deg,#0f9bff,#00f2fe)"
-: "linear-gradient(45deg,#ff9a44,#ff5e62)",
-display:"flex",
-alignItems:"center",
-justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4
-}}
->
-
-<div style={{
-width:28,
-height:28,
-borderRadius:"50%",
-background:"white",
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}>
-{mode==="dark" ? "🌙" : "☀️"}
-</div>
-
-</div>
 
 {children}
 
@@ -217,7 +271,7 @@ justifyContent:"center"
 
 {/* PHONE PREVIEW */}
 
-{showPreview && profile && (
+{showPreview && (
 
 <div style={{
 width:360,
@@ -257,7 +311,7 @@ background:"#222"
 }}>
 
 <img
-src={profile.avatar || "/default-avatar.png"}
+src={profile?.avatar || "/default-avatar.png"}
 style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
@@ -268,7 +322,7 @@ marginTop:10,
 textAlign:"center",
 fontWeight:600
 }}>
-{profile.display_name}
+{profile?.display_name}
 </div>
 
 <div style={{
@@ -276,7 +330,7 @@ textAlign:"center",
 opacity:0.7,
 fontSize:14
 }}>
-{profile.bio}
+{profile?.bio}
 </div>
 
 {blocks.map(block=>(
@@ -316,3 +370,20 @@ color:activeTheme.text
 );
 
 }
+
+const item={
+padding:"10px 12px",
+cursor:"pointer",
+borderRadius:10,
+textDecoration:"none",
+color:"var(--text)",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
+};
+
+const dropdownItem={
+padding:"8px 10px",
+cursor:"pointer",
+borderRadius:6
+};
