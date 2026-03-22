@@ -13,17 +13,17 @@ font:"Inter",
 fontWeight:"bold",
 fontSize:22,
 alignment:"center",
-
-/* NEW BACKGROUND SETTINGS */
-
 backgroundType:"transparent",
 backgroundColor:"#000000",
 backgroundGradient:["#141e30","#243b55"],
 backgroundImage:""
 });
 
+const [avatar,setAvatar]=useState(null);
+
 useEffect(()=>{
 loadSettings();
+loadProfile();
 },[]);
 
 async function loadSettings(){
@@ -38,13 +38,32 @@ const {data}=await supabase
 .single();
 
 if(data?.profile_settings?.header){
-setSettings({
-...settings,
+setSettings(prev=>({
+...prev,
 ...data.profile_settings.header
-});
+}));
 }
 
 }
+
+async function loadProfile(){
+
+const {data:{session}}=await supabase.auth.getSession();
+if(!session) return;
+
+const {data}=await supabase
+.from("profiles")
+.select("avatar")
+.eq("id",session.user.id)
+.single();
+
+if(data?.avatar){
+setAvatar(data.avatar);
+}
+
+}
+
+/* UPDATE HEADER SETTINGS */
 
 async function updateSetting(key,value){
 
@@ -54,8 +73,6 @@ const newSettings={
 };
 
 setSettings(newSettings);
-
-/* LIVE PREVIEW */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{header:newSettings}})
@@ -80,17 +97,133 @@ await supabase
 
 }
 
+/* AVATAR UPLOAD */
+
+async function uploadAvatar(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const {data:{session}}=await supabase.auth.getSession();
+
+const filePath=`avatars/${session.user.id}_${Date.now()}`;
+
+await supabase.storage
+.from("avatars")
+.upload(filePath,file);
+
+const {data}=supabase.storage
+.from("avatars")
+.getPublicUrl(filePath);
+
+await supabase
+.from("profiles")
+.update({avatar:data.publicUrl})
+.eq("id",session.user.id);
+
+setAvatar(data.publicUrl);
+
+/* LIVE PREVIEW */
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
+);
+
+}
+
+/* REMOVE AVATAR */
+
+async function removeAvatar(){
+
+const {data:{session}}=await supabase.auth.getSession();
+
+await supabase
+.from("profiles")
+.update({avatar:null})
+.eq("id",session.user.id);
+
+setAvatar(null);
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{avatar:null}})
+);
+
+}
+
 return(
 
 <div style={{maxWidth:600}}>
 
 <h2 style={{marginBottom:20}}>Header</h2>
 
+{/* PROFILE IMAGE */}
+
+<h3 style={{marginBottom:10}}>Profile Image</h3>
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:20,
+marginBottom:20
+}}>
+
+<div style={{
+width:70,
+height:70,
+borderRadius:"50%",
+background:"#ccc",
+overflow:"hidden"
+}}>
+
+<img
+src={avatar || "/default-avatar.png"}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+
+</div>
+
+<div style={{display:"flex",flexDirection:"column",gap:10}}>
+
+<label style={{
+padding:"8px 14px",
+border:"1px solid var(--border)",
+borderRadius:20,
+cursor:"pointer"
+}}>
+Upload
+<input
+type="file"
+accept="image/*"
+onChange={uploadAvatar}
+style={{display:"none"}}
+/>
+</label>
+
+<button
+onClick={removeAvatar}
+style={{
+padding:"8px 14px",
+border:"1px solid var(--border)",
+borderRadius:20,
+cursor:"pointer"
+}}
+>
+Remove
+</button>
+
+</div>
+
+</div>
+
 {/* LAYOUT */}
 
 <div style={{marginBottom:20}}>
 
-<div style={{marginBottom:6}}>Layout</div>
+<div>Layout</div>
 
 <select
 value={settings.layout}
@@ -106,9 +239,7 @@ onChange={(e)=>updateSetting("layout",e.target.value)}
 
 {/* DISPLAY NAME */}
 
-<div style={{marginBottom:20}}>
-
-<label>
+<label style={{display:"block",marginBottom:10}}>
 
 <input
 type="checkbox"
@@ -120,13 +251,7 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 
 </label>
 
-</div>
-
-{/* USERNAME */}
-
-<div style={{marginBottom:20}}>
-
-<label>
+<label style={{display:"block",marginBottom:20}}>
 
 <input
 type="checkbox"
@@ -137,8 +262,6 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
  Show Username
 
 </label>
-
-</div>
 
 {/* FONT */}
 
@@ -162,25 +285,6 @@ onChange={(e)=>updateSetting("font",e.target.value)}
 
 </div>
 
-{/* FONT WEIGHT */}
-
-<div style={{marginBottom:20}}>
-
-<div>Font Weight</div>
-
-<select
-value={settings.fontWeight}
-onChange={(e)=>updateSetting("fontWeight",e.target.value)}
->
-
-<option value="normal">Normal</option>
-<option value="600">Semi Bold</option>
-<option value="bold">Bold</option>
-
-</select>
-
-</div>
-
 {/* FONT SIZE */}
 
 <div style={{marginBottom:20}}>
@@ -199,7 +303,7 @@ onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
 
 {/* ALIGNMENT */}
 
-<div style={{marginBottom:30}}>
+<div style={{marginBottom:20}}>
 
 <div>Alignment</div>
 
@@ -218,7 +322,7 @@ onChange={(e)=>updateSetting("alignment",e.target.value)}
 
 {/* HEADER BACKGROUND */}
 
-<h3 style={{marginBottom:10}}>Header Background</h3>
+<h3>Header Background</h3>
 
 <select
 value={settings.backgroundType}
@@ -226,73 +330,11 @@ onChange={(e)=>updateSetting("backgroundType",e.target.value)}
 >
 
 <option value="transparent">Transparent</option>
-<option value="solid">Solid Color</option>
+<option value="solid">Solid</option>
 <option value="gradient">Gradient</option>
 <option value="image">Image</option>
 
 </select>
-
-{/* SOLID COLOR */}
-
-{settings.backgroundType==="solid" && (
-
-<div style={{marginTop:10}}>
-
-<input
-type="color"
-value={settings.backgroundColor}
-onChange={(e)=>updateSetting("backgroundColor",e.target.value)}
-/>
-
-</div>
-
-)}
-
-{/* GRADIENT */}
-
-{settings.backgroundType==="gradient" && (
-
-<div style={{marginTop:10,display:"flex",gap:10}}>
-
-<input
-type="color"
-value={settings.backgroundGradient[0]}
-onChange={(e)=>updateSetting(
-"backgroundGradient",
-[e.target.value,settings.backgroundGradient[1]]
-)}
-/>
-
-<input
-type="color"
-value={settings.backgroundGradient[1]}
-onChange={(e)=>updateSetting(
-"backgroundGradient",
-[settings.backgroundGradient[0],e.target.value]
-)}
-/>
-
-</div>
-
-)}
-
-{/* IMAGE */}
-
-{settings.backgroundType==="image" && (
-
-<div style={{marginTop:10}}>
-
-<input
-type="text"
-placeholder="Paste image URL"
-value={settings.backgroundImage}
-onChange={(e)=>updateSetting("backgroundImage",e.target.value)}
-style={{width:"100%"}}
-/>
-
-</div>
-
-)}
 
 </div>
 
