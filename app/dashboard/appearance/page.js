@@ -161,7 +161,12 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
-<div style={card} onClick={()=>setEditor("header")}>
+
+{/* HEADER */}
+
+<Link href="/dashboard/appearance/header" style={{textDecoration:"none"}}>
+
+<div style={card}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 <div style={{width:36,height:36,borderRadius:"50%",background:"#888"}}/>
@@ -171,6 +176,11 @@ Customize theme
 <div>→</div>
 
 </div>
+
+</Link>
+
+
+{/* WALLPAPER */}
 
 <div style={card} onClick={()=>setEditor("wallpaper")}>
 
@@ -183,6 +193,9 @@ Customize theme
 
 </div>
 
+
+{/* BUTTONS */}
+
 <div style={card} onClick={()=>setEditor("buttons")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -194,6 +207,9 @@ Customize theme
 
 </div>
 
+
+{/* TEXT */}
+
 <div style={card} onClick={()=>setEditor("text")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -204,6 +220,9 @@ Customize theme
 <div>→</div>
 
 </div>
+
+
+{/* COLORS */}
 
 <div style={card} onClick={()=>setEditor("colors")}>
 
@@ -224,44 +243,8 @@ Customize theme
 
 }
 
-if(editor==="header"){
 
-return(
-
-<div style={{padding:20,maxWidth:650}}>
-
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Header
-</div>
-
-<h3>Profile Image</h3>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-background:"#888",
-marginBottom:15
-}}/>
-
-<button style={{
-padding:"10px 18px",
-borderRadius:"20px",
-border:"1px solid var(--border)"
-}}>
-Upload
-</button>
-
-<h3 style={{marginTop:25}}>Layout</h3>
-
-<button>Classic</button>
-<button style={{marginLeft:10}}>Hero</button>
-
-</div>
-
-);
-
-}
+/* WALLPAPER */
 
 if(editor==="wallpaper"){
 
@@ -293,6 +276,9 @@ marginTop:20
 );
 
 }
+
+
+/* BUTTONS */
 
 if(editor==="buttons"){
 
@@ -327,6 +313,9 @@ return(
 
 }
 
+
+/* TEXT */
+
 if(editor==="text"){
 
 return(
@@ -358,6 +347,9 @@ return(
 );
 
 }
+
+
+/* COLORS */
 
 if(editor==="colors"){
 
