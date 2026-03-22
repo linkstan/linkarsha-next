@@ -1,5 +1,6 @@
 "use client";
 
+import PhonePreview from "../../../components/PhonePreview";
 import { useState,useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 import Link from "next/link";
