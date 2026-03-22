@@ -18,11 +18,9 @@ const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
 
 /* LIVE THEME */
-
 const [liveTheme,setLiveTheme] = useState(null);
 
 /* APPEARANCE SETTINGS */
-
 const [appearance,setAppearance] = useState({});
 
 const showPreview =
@@ -433,6 +431,82 @@ color: theme === "Minimal" ? "#111" : "#fff"
 
 {/* HEADER */}
 
+{header.layout === "hero" ? (
+
+<div style={{marginBottom:20}}>
+
+<div style={{
+height:120,
+borderRadius:16,
+background: themeMap[theme] || "#222",
+marginBottom:-40
+}}/>
+
+<div style={{
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+textAlign:"center"
+}}>
+
+<div style={{
+width:80,
+height:80,
+borderRadius:"50%",
+overflow:"hidden",
+background:"#222",
+border:"4px solid white"
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+
+</div>
+
+{header.showDisplayName !== false && (
+
+<div style={{
+marginTop:10,
+fontFamily: header.font || "Inter",
+fontWeight: header.fontWeight || 600,
+fontSize: header.fontSize || 22
+}}>
+{profile?.display_name}
+</div>
+
+)}
+
+{header.showUsername !== false && (
+
+<div style={{
+opacity:.7,
+fontSize:14
+}}>
+@{profile?.username}
+</div>
+
+)}
+
+<div style={{
+marginTop:6,
+opacity:.7,
+fontSize:14
+}}>
+{profile?.bio}
+</div>
+
+</div>
+
+</div>
+
+) : (
+
 <div style={{
 display:"flex",
 flexDirection:"column",
@@ -442,7 +516,8 @@ header.alignment==="left"
 : header.alignment==="right"
 ? "flex-end"
 : "center",
-textAlign: header.alignment || "center"
+textAlign: header.alignment || "center",
+marginBottom:20
 }}>
 
 <div style={{
@@ -498,6 +573,8 @@ maxWidth:220
 </div>
 
 </div>
+
+)}
 
 {blocks.map(block=>(
 
