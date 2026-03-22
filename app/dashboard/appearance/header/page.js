@@ -2,8 +2,12 @@
 
 import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
+import { saveAppearance } from "../../../lib/saveAppearance";
+import { useRouter } from "next/navigation";
 
 export default function HeaderEditor(){
+
+const router = useRouter();
 
 const [settings,setSettings]=useState({
 layout:"classic",
@@ -36,7 +40,7 @@ setSettings(data.profile_settings.header);
 
 }
 
-async function updateSetting(key,value){
+function updateSetting(key,value){
 
 const newSettings={
 ...settings,
@@ -45,60 +49,79 @@ const newSettings={
 
 setSettings(newSettings);
 
-/* LIVE PREVIEW EVENT */
+/* SAVE + LIVE PREVIEW */
 
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{header:newSettings}})
-);
-
-const {data:{session}}=await supabase.auth.getSession();
-
-const {data:profile}=await supabase
-.from("profiles")
-.select("profile_settings")
-.eq("id",session.user.id)
-.single();
-
-const allSettings=profile?.profile_settings || {};
-
-allSettings.header=newSettings;
-
-await supabase
-.from("profiles")
-.update({profile_settings:allSettings})
-.eq("id",session.user.id);
+saveAppearance("header",{[key]:value});
 
 }
 
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{
+padding:20,
+maxWidth:650
+}}>
 
-<h2 style={{marginBottom:20}}>Header</h2>
+{/* HEADER */}
 
-{/* LAYOUT */}
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:20
+}}>
 
-<div style={{marginBottom:20}}>
-
-<div style={{marginBottom:6}}>Layout</div>
-
-<select
-value={settings.layout}
-onChange={(e)=>updateSetting("layout",e.target.value)}
+<div
+onClick={()=>router.back()}
+style={{
+cursor:"pointer",
+fontSize:22
+}}
 >
+←
+</div>
 
-<option value="classic">Classic</option>
-<option value="hero">Hero</option>
-
-</select>
+<h2>Header</h2>
 
 </div>
 
+
+{/* LAYOUT */}
+
+<h3>Layout</h3>
+
+<div style={{display:"flex",gap:10,marginBottom:20}}>
+
+<button
+onClick={()=>updateSetting("layout","classic")}
+style={{
+padding:"8px 14px",
+borderRadius:8,
+border:"1px solid var(--border)"
+}}
+>
+Classic
+</button>
+
+<button
+onClick={()=>updateSetting("layout","hero")}
+style={{
+padding:"8px 14px",
+borderRadius:8,
+border:"1px solid var(--border)"
+}}
+>
+Hero
+</button>
+
+</div>
+
+
 {/* DISPLAY NAME */}
 
-<div style={{marginBottom:20}}>
+<h3>Display Name</h3>
 
-<label>
+<label style={{display:"block",marginBottom:20}}>
 
 <input
 type="checkbox"
@@ -110,13 +133,12 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 
 </label>
 
-</div>
 
 {/* USERNAME */}
 
-<div style={{marginBottom:20}}>
+<h3>Username</h3>
 
-<label>
+<label style={{display:"block",marginBottom:20}}>
 
 <input
 type="checkbox"
@@ -128,17 +150,15 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 
 </label>
 
-</div>
 
 {/* FONT */}
 
-<div style={{marginBottom:20}}>
-
-<div>Font</div>
+<h3>Font</h3>
 
 <select
 value={settings.font}
 onChange={(e)=>updateSetting("font",e.target.value)}
+style={{marginBottom:20}}
 >
 
 <option>Inter</option>
@@ -150,17 +170,15 @@ onChange={(e)=>updateSetting("font",e.target.value)}
 
 </select>
 
-</div>
 
 {/* FONT WEIGHT */}
 
-<div style={{marginBottom:20}}>
-
-<div>Font Weight</div>
+<h3>Font Weight</h3>
 
 <select
 value={settings.fontWeight}
 onChange={(e)=>updateSetting("fontWeight",e.target.value)}
+style={{marginBottom:20}}
 >
 
 <option value="normal">Normal</option>
@@ -169,13 +187,10 @@ onChange={(e)=>updateSetting("fontWeight",e.target.value)}
 
 </select>
 
-</div>
 
 {/* FONT SIZE */}
 
-<div style={{marginBottom:20}}>
-
-<div>Font Size</div>
+<h3>Font Size</h3>
 
 <input
 type="range"
@@ -183,15 +198,13 @@ min="16"
 max="40"
 value={settings.fontSize}
 onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
+style={{marginBottom:20}}
 />
 
-</div>
 
 {/* ALIGNMENT */}
 
-<div>
-
-<div>Alignment</div>
+<h3>Alignment</h3>
 
 <select
 value={settings.alignment}
@@ -203,8 +216,6 @@ onChange={(e)=>updateSetting("alignment",e.target.value)}
 <option value="right">Right</option>
 
 </select>
-
-</div>
 
 </div>
 
