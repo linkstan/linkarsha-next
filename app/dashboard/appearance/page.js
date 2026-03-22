@@ -6,8 +6,8 @@ import Link from "next/link";
 
 export default function Appearance(){
 
-const [page,setPage]=useState("main");
-const [theme,setTheme]=useState("Minimal");
+const [page,setPage] = useState("main");
+const [theme,setTheme] = useState("Minimal");
 
 /* THEME PREVIEW */
 
@@ -43,7 +43,7 @@ setTheme(data.theme);
 
 }
 
-/* UI CARD STYLE */
+/* UI STYLES */
 
 const card={
 background:"var(--card)",
@@ -55,6 +55,18 @@ justifyContent:"space-between",
 marginBottom:"14px",
 cursor:"pointer",
 border:"1px solid var(--border)",
+color:"var(--text)"
+};
+
+const inputRow={
+background:"var(--card)",
+border:"1px solid var(--border)",
+borderRadius:"30px",
+padding:"14px 18px",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+marginBottom:"22px",
 color:"var(--text)"
 };
 
@@ -233,13 +245,46 @@ if(page==="header"){
 
 return(
 
-<div style={{padding:20}}>
+<div style={{padding:20,maxWidth:650}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Header
 </div>
 
-<h3>Header customization coming here</h3>
+<h3>Profile image</h3>
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:15,
+marginBottom:25
+}}>
+
+<div style={{
+width:60,
+height:60,
+borderRadius:"50%",
+background:"#888"
+}}/>
+
+<button style={{
+background:"var(--card)",
+color:"var(--text)",
+borderRadius:"25px",
+padding:"10px 18px",
+border:"1px solid var(--border)"
+}}>
++ Add
+</button>
+
+</div>
+
+<h3>Profile image layout</h3>
+
+<div style={{display:"flex",gap:12}}>
+<button>Classic</button>
+<button>Hero</button>
+</div>
 
 </div>
 
@@ -253,13 +298,25 @@ if(page==="wallpaper"){
 
 return(
 
-<div style={{padding:20}}>
+<div style={{padding:20,maxWidth:650}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Wallpaper
 </div>
 
-<h3>Wallpaper customization coming here</h3>
+<h3>Wallpaper style</h3>
+
+<div style={{
+display:"grid",
+gridTemplateColumns:"1fr 1fr 1fr",
+gap:20
+}}>
+
+<div><div style={{height:70,background:"#ccc"}}/><div>Fill</div></div>
+<div><div style={{height:70,background:"linear-gradient(45deg,orange,red)"}}/><div>Gradient</div></div>
+<div><div style={{height:70,background:"#aaa"}}/><div>Blur</div></div>
+
+</div>
 
 </div>
 
@@ -273,13 +330,28 @@ if(page==="buttons"){
 
 return(
 
-<div style={{padding:20}}>
+<div style={{padding:20,maxWidth:650}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Buttons
 </div>
 
-<h3>Buttons customization coming here</h3>
+<h3>Button style</h3>
+
+<div style={{display:"flex",gap:15}}>
+<button>Solid</button>
+<button>Glass</button>
+<button>Outline</button>
+</div>
+
+<h3 style={{marginTop:25}}>Corner roundness</h3>
+
+<div style={{display:"flex",gap:15}}>
+<button>Square</button>
+<button>Round</button>
+<button>Rounder</button>
+<button>Full</button>
+</div>
 
 </div>
 
@@ -293,13 +365,27 @@ if(page==="text"){
 
 return(
 
-<div style={{padding:20}}>
+<div style={{padding:20,maxWidth:650}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Text
 </div>
 
-<h3>Text customization coming here</h3>
+<h3>Page font</h3>
+
+<select style={{width:"100%",padding:10}}>
+<option>Link Sans</option>
+<option>Inter</option>
+<option>Montserrat</option>
+<option>Poppins</option>
+</select>
+
+<h3 style={{marginTop:20}}>Page text color</h3>
+
+<div style={inputRow}>
+<div>#FFFFFF</div>
+<div>→</div>
+</div>
 
 </div>
 
@@ -313,13 +399,23 @@ if(page==="colors"){
 
 return(
 
-<div style={{padding:20}}>
+<div style={{padding:20,maxWidth:650}}>
 
 <div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
 ← Colors
 </div>
 
-<h3>Color customization coming here</h3>
+<h3>Buttons</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+
+<h3>Button Text</h3>
+<div style={inputRow}><div>#000000</div><div>→</div></div>
+
+<h3>Page Text</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+
+<h3>Title Text</h3>
+<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
 
 </div>
 
