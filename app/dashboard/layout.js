@@ -16,35 +16,12 @@ const [openUser,setOpenUser] = useState(false);
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
-const [theme,setTheme] = useState("Minimal");
 
 const showPreview =
 pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
-
-/* THEME ENGINE */
-
-const themes={
-
-Minimal:{bg:"#ffffff",text:"#111",btn:"#eee"},
-Paper:{bg:"#fafafa",text:"#111",btn:"#eee"},
-Clean:{bg:"#f4f4f4",text:"#111",btn:"#eee"},
-
-Midnight:{bg:"#0b0b12",text:"#fff",btn:"#1a1a25"},
-"Dark Pro":{bg:"#121212",text:"#fff",btn:"#1a1a25"},
-Mono:{bg:"#111111",text:"#fff",btn:"#1a1a25"},
-
-Ocean:{bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",text:"#fff",btn:"rgba(0,0,0,.25)"},
-Sunset:{bg:"linear-gradient(135deg,#ff7a18,#ffb347)",text:"#fff",btn:"rgba(0,0,0,.25)"},
-Neon:{bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",text:"#fff",btn:"rgba(0,0,0,.25)"},
-Pastel:{bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",text:"#111",btn:"rgba(255,255,255,.6)"},
-
-Royal:{bg:"linear-gradient(135deg,#141e30,#243b55)",text:"#fff",btn:"rgba(255,255,255,.2)"},
-Luxury:{bg:"#000",text:"#d4af37",btn:"#111"}
-
-};
 
 /* AUTO OPEN MENUS */
 
@@ -80,9 +57,8 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
-setTheme(prof?.theme || "Minimal");
 
-/* THEME MODE */
+/* THEME */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -105,20 +81,6 @@ const {data:blockData} = await supabase
 setBlocks(blockData || []);
 
 }
-
-/* LIVE THEME UPDATE */
-
-useEffect(()=>{
-
-function updateTheme(e){
-setTheme(e.detail);
-}
-
-window.addEventListener("theme-change",updateTheme);
-
-return ()=>window.removeEventListener("theme-change",updateTheme);
-
-},[]);
 
 /* TOGGLE THEME */
 
@@ -153,8 +115,6 @@ function active(path){
 return pathname.startsWith(path);
 }
 
-const activeTheme = themes[theme] || themes.Minimal;
-
 return(
 
 <div style={{
@@ -165,7 +125,7 @@ color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
-{/* SIDEBAR (UNCHANGED) */}
+{/* SIDEBAR */}
 
 <div style={{
 width:260,
@@ -243,6 +203,8 @@ Sign Out
 
 </div>
 
+{/* HOME */}
+
 <Link href="/dashboard" style={{
 ...item,
 background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
@@ -250,11 +212,122 @@ background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 Home
 </Link>
 
+{/* MY LINKARSHA */}
+
+<div
+onClick={()=>{
+setOpenLinkarsha(!openLinkarsha);
+setOpenTools(false);
+}}
+style={{
+...item,
+background: active("/dashboard/links") ? "var(--hover)" : "transparent"
+}}
+>
+<span>My Linkarsha</span>
+<span>{openLinkarsha ? "v" : ">"}</span>
+</div>
+
+{openLinkarsha && (
+
+<div style={submenu}>
+
+<Link href="/dashboard/links" style={{
+...subitem,
+background: pathname === "/dashboard/links" ? "var(--hover)" : "transparent"
+}}>
+My Links
+</Link>
+
+<Link href="/dashboard/link-history" style={{
+...subitem,
+background: active("/dashboard/link-history") ? "var(--hover)" : "transparent"
+}}>
+Link History
+</Link>
+
+<Link href="/dashboard/get-verified" style={{
+...subitem,
+background: active("/dashboard/get-verified") ? "var(--hover)" : "transparent"
+}}>
+Get Verified
+</Link>
+
+</div>
+
+)}
+
+{/* BLOCKS */}
+
+<Link href="/dashboard/blocks" style={{
+...item,
+background: active("/dashboard/blocks") ? "var(--hover)" : "transparent"
+}}>
+Blocks
+</Link>
+
+{/* APPEARANCE */}
+
 <Link href="/dashboard/appearance" style={{
 ...item,
 background: active("/dashboard/appearance") ? "var(--hover)" : "transparent"
 }}>
 Appearance
+</Link>
+
+{/* ANALYTICS */}
+
+<Link href="/dashboard/analytics" style={{
+...item,
+background: active("/dashboard/analytics") ? "var(--hover)" : "transparent"
+}}>
+Analytics
+</Link>
+
+<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
+
+{/* TOOLS */}
+
+<div
+onClick={()=>{
+setOpenTools(!openTools);
+setOpenLinkarsha(false);
+}}
+style={{
+...item,
+background: active("/dashboard/tools") ? "var(--hover)" : "transparent"
+}}
+>
+<span>Tools</span>
+<span>{openTools ? "v" : ">"}</span>
+</div>
+
+{openTools && (
+
+<div style={submenu}>
+
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>
+AI Bio Generator
+</Link>
+
+<Link href="/dashboard/tools/qr-code" style={subitem}>
+QR Code Generator
+</Link>
+
+<Link href="/dashboard/tools/export-data" style={subitem}>
+Export Data
+</Link>
+
+</div>
+
+)}
+
+<Link href="/dashboard/referrals" style={item}>
+Referrals
+</Link>
+
+<Link href="/dashboard/settings" style={item}>
+Settings
 </Link>
 
 </div>
@@ -265,13 +338,49 @@ Appearance
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
+{/* THEME TOGGLE */}
+
+<div
+onClick={toggleTheme}
+style={{
+position:"absolute",
+right:30,
+top:20,
+width:70,
+height:36,
+borderRadius:40,
+cursor:"pointer",
+background: mode==="dark"
+? "linear-gradient(45deg,#0f9bff,#00f2fe)"
+: "linear-gradient(45deg,#ff9a44,#ff5e62)",
+display:"flex",
+alignItems:"center",
+justifyContent: mode==="dark" ? "flex-start" : "flex-end",
+padding:4
+}}
+>
+
+<div style={{
+width:28,
+height:28,
+borderRadius:"50%",
+background:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+{mode==="dark" ? "🌙" : "☀️"}
+</div>
+
+</div>
+
 {children}
 
 </div>
 
 {/* PHONE PREVIEW */}
 
-{showPreview && (
+{showPreview && profile && (
 
 <div style={{
 width:360,
@@ -294,11 +403,15 @@ boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 <div style={{
 width:"100%",
 height:"100%",
-background:activeTheme.bg,
-color:activeTheme.text,
+background:
+profile.theme === "Minimal" ? "#ffffff" :
+profile.theme === "Royal" ? "linear-gradient(135deg,#141e30,#243b55)" :
+profile.theme === "Luxury" ? "#000000" :
+"#0b0b12",
 borderRadius:20,
 padding:20,
-overflow:"auto"
+overflow:"auto",
+color: profile.theme === "Minimal" ? "#111" : "#fff"
 }}>
 
 <div style={{
@@ -342,12 +455,12 @@ target="_blank"
 style={{
 display:"flex",
 alignItems:"center",
-background:activeTheme.btn,
+background:"rgba(0,0,0,.25)",
 padding:12,
 borderRadius:10,
 marginTop:10,
 textDecoration:"none",
-color:activeTheme.text
+color:"inherit"
 }}
 >
 {block.data_json?.title}
@@ -380,6 +493,21 @@ color:"var(--text)",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
+};
+
+const submenu={
+marginLeft:10,
+marginTop:5,
+marginBottom:10
+};
+
+const subitem={
+display:"block",
+padding:"8px 10px",
+opacity:0.85,
+cursor:"pointer",
+textDecoration:"none",
+color:"var(--text)"
 };
 
 const dropdownItem={
