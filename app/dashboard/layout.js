@@ -21,6 +21,10 @@ const [mode,setMode] = useState("light");
 
 const [liveTheme,setLiveTheme] = useState(null);
 
+/* NEW: APPEARANCE SETTINGS */
+
+const [appearance,setAppearance] = useState({});
+
 const showPreview =
 pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
@@ -57,6 +61,22 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
+/* NEW: APPEARANCE LIVE LISTENER */
+
+useEffect(()=>{
+
+function handleAppearance(e){
+setAppearance(e.detail);
+}
+
+window.addEventListener("appearance-update",handleAppearance);
+
+return ()=>{
+window.removeEventListener("appearance-update",handleAppearance);
+};
+
+},[]);
+
 /* LOAD USER */
 
 useEffect(()=>{
@@ -77,6 +97,10 @@ const {data:prof} = await supabase
 .single();
 
 setProfile(prof);
+
+/* LOAD APPEARANCE */
+
+setAppearance(prof?.profile_settings || {});
 
 /* THEME MODE */
 
@@ -138,6 +162,10 @@ return pathname.startsWith(path);
 /* THEME USED IN PREVIEW */
 
 const theme = liveTheme || profile?.theme;
+
+/* HEADER SETTINGS */
+
+const header = appearance?.header || {};
 
 /* THEME MAP */
 
@@ -287,11 +315,9 @@ background: active("/dashboard/links") ? "var(--hover)" : "transparent"
 {openLinkarsha && (
 
 <div style={submenu}>
-
 <Link href="/dashboard/links" style={subitem}>My Links</Link>
 <Link href="/dashboard/link-history" style={subitem}>Link History</Link>
 <Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
-
 </div>
 
 )}
@@ -422,8 +448,10 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 
 <div style={{
 marginTop:10,
-textAlign:"center",
-fontWeight:600
+textAlign: header.alignment || "center",
+fontWeight: header.fontWeight || 600,
+fontSize: header.fontSize || 22,
+fontFamily: header.font || "Inter"
 }}>
 {profile?.display_name}
 </div>
