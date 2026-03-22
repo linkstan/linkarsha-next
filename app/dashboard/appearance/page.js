@@ -132,7 +132,13 @@ minHeight:"100vh",
 color:"var(--text)"
 }}>
 
-<div style={{maxWidth:650}}>
+<div style={{
+display:"flex",
+gap:"50px",
+alignItems:"flex-start"
+}}>
+
+<div style={{maxWidth:650,width:"100%"}}>
 
 <h2 style={{marginBottom:15}}>Theme</h2>
 
@@ -284,6 +290,12 @@ border:"1px solid var(--border)"
 <div>→</div>
 
 </div>
+
+</div>
+
+{/* LIVE PHONE PREVIEW */}
+
+<PhonePreview/>
 
 </div>
 
