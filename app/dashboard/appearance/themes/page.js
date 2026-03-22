@@ -10,15 +10,11 @@ const [loading,setLoading]=useState(false);
 
 const themes=[
 
-/* LIGHT */
-
 {name:"Minimal",category:"Light",bg:"#ffffff"},
 {name:"Paper",category:"Light",bg:"#fafafa"},
 {name:"Clean",category:"Light",bg:"#f4f4f4"},
 {name:"Soft White",category:"Light",bg:"#fdfdfd"},
 {name:"Creator Light",category:"Light",bg:"#ffffff"},
-
-/* DARK */
 
 {name:"Midnight",category:"Dark",bg:"#0b0b12"},
 {name:"Dark Pro",category:"Dark",bg:"#121212"},
@@ -26,23 +22,17 @@ const themes=[
 {name:"Obsidian",category:"Dark",bg:"#0f0f10"},
 {name:"Creator Dark",category:"Dark",bg:"#141414"},
 
-/* GRADIENT */
-
 {name:"Ocean",category:"Gradient",bg:"linear-gradient(45deg,#2193b0,#6dd5ed)"},
 {name:"Sunset",category:"Gradient",bg:"linear-gradient(45deg,#ff7a18,#ffb347)"},
 {name:"Neon",category:"Gradient",bg:"linear-gradient(45deg,#00f2fe,#7c5cff)"},
 {name:"Pastel",category:"Gradient",bg:"linear-gradient(45deg,#fbc2eb,#a6c1ee)"},
 {name:"Gradient Flow",category:"Gradient",bg:"linear-gradient(45deg,#667eea,#764ba2)"},
 
-/* PREMIUM */
-
 {name:"Luxury",category:"Premium",bg:"#000000"},
 {name:"Gold Night",category:"Premium",bg:"linear-gradient(45deg,#000000,#434343)"},
 {name:"Royal",category:"Premium",bg:"linear-gradient(45deg,#141e30,#243b55)"},
 {name:"Tech",category:"Premium",bg:"linear-gradient(45deg,#00c6ff,#0072ff)"},
 {name:"Elegant",category:"Premium",bg:"linear-gradient(45deg,#bdc3c7,#2c3e50)"},
-
-/* CREATOR */
 
 {name:"Creator Pro",category:"Creator",bg:"linear-gradient(45deg,#ff9966,#ff5e62)"},
 {name:"Vivid",category:"Creator",bg:"linear-gradient(45deg,#f83600,#f9d423)"},
@@ -59,7 +49,6 @@ loadTheme();
 async function loadTheme(){
 
 const {data:{session}}=await supabase.auth.getSession();
-
 if(!session) return;
 
 const {data}=await supabase
