@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect,useState } from "react";
+import { useState,useEffect } from "react";
 import { supabase } from "../../lib/supabase";
+import Link from "next/link";
 
 export default function Appearance(){
 
+const [page,setPage]=useState("main");
 const [theme,setTheme]=useState("Minimal");
 
-/* THEME PREVIEW COLORS */
+/* THEME PREVIEW */
 
 const themePreview={
 Minimal:"#ffffff",
@@ -42,7 +43,7 @@ setTheme(data.theme);
 
 }
 
-/* CARD STYLE */
+/* UI CARD STYLE */
 
 const card={
 background:"var(--card)",
@@ -56,6 +57,10 @@ cursor:"pointer",
 border:"1px solid var(--border)",
 color:"var(--text)"
 };
+
+/* MAIN PAGE */
+
+if(page==="main"){
 
 return(
 
@@ -81,8 +86,7 @@ justifyContent:"space-between",
 alignItems:"center",
 marginBottom:"25px",
 border:"1px solid var(--border)",
-cursor:"pointer",
-color:"var(--text)"
+cursor:"pointer"
 }}>
 
 <div style={{display:"flex",alignItems:"center",gap:15}}>
@@ -91,9 +95,9 @@ color:"var(--text)"
 width:55,
 height:55,
 borderRadius:"12px",
-background:themePreview[theme] || "#ffffff",
+background:themePreview[theme] || "#fff",
 border:"1px solid var(--border)"
-}}></div>
+}}/>
 
 <div>{theme}</div>
 
@@ -116,8 +120,7 @@ Customize theme
 
 {/* HEADER */}
 
-<Link href="/dashboard/appearance/header" style={{textDecoration:"none"}}>
-<div style={card}>
+<div style={card} onClick={()=>setPage("header")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -126,7 +129,7 @@ width:36,
 height:36,
 borderRadius:"50%",
 background:"#888"
-}}></div>
+}}/>
 
 <div>Header</div>
 
@@ -135,12 +138,10 @@ background:"#888"
 <div style={{opacity:.6}}>Classic →</div>
 
 </div>
-</Link>
 
 {/* WALLPAPER */}
 
-<Link href="/dashboard/appearance/wallpaper" style={{textDecoration:"none"}}>
-<div style={card}>
+<div style={card} onClick={()=>setPage("wallpaper")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -149,7 +150,7 @@ width:36,
 height:36,
 borderRadius:"10px",
 background:"linear-gradient(45deg,#ff7a18,#ffd000)"
-}}></div>
+}}/>
 
 <div>Wallpaper</div>
 
@@ -158,12 +159,10 @@ background:"linear-gradient(45deg,#ff7a18,#ffd000)"
 <div style={{opacity:.6}}>Gradient →</div>
 
 </div>
-</Link>
 
 {/* BUTTONS */}
 
-<Link href="/dashboard/appearance/buttons" style={{textDecoration:"none"}}>
-<div style={card}>
+<div style={card} onClick={()=>setPage("buttons")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -172,7 +171,7 @@ width:38,
 height:18,
 border:"2px solid var(--text)",
 borderRadius:"6px"
-}}></div>
+}}/>
 
 <div>Buttons</div>
 
@@ -181,12 +180,10 @@ borderRadius:"6px"
 <div style={{opacity:.6}}>Outline →</div>
 
 </div>
-</Link>
 
 {/* TEXT */}
 
-<Link href="/dashboard/appearance/text" style={{textDecoration:"none"}}>
-<div style={card}>
+<div style={card} onClick={()=>setPage("text")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -199,12 +196,10 @@ borderRadius:"6px"
 <div style={{opacity:.6}}>Summer Glow →</div>
 
 </div>
-</Link>
 
 {/* COLORS */}
 
-<Link href="/dashboard/appearance/colors" style={{textDecoration:"none"}}>
-<div style={card}>
+<div style={card} onClick={()=>setPage("colors")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
 
@@ -214,7 +209,7 @@ height:30,
 background:"var(--bg)",
 borderRadius:"6px",
 border:"1px solid var(--border)"
-}}></div>
+}}/>
 
 <div>Colors</div>
 
@@ -223,12 +218,113 @@ border:"1px solid var(--border)"
 <div>→</div>
 
 </div>
-</Link>
 
 </div>
 
 </div>
 
 );
+
+}
+
+/* HEADER PAGE */
+
+if(page==="header"){
+
+return(
+
+<div style={{padding:20}}>
+
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Header
+</div>
+
+<h3>Header customization coming here</h3>
+
+</div>
+
+);
+
+}
+
+/* WALLPAPER PAGE */
+
+if(page==="wallpaper"){
+
+return(
+
+<div style={{padding:20}}>
+
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Wallpaper
+</div>
+
+<h3>Wallpaper customization coming here</h3>
+
+</div>
+
+);
+
+}
+
+/* BUTTONS PAGE */
+
+if(page==="buttons"){
+
+return(
+
+<div style={{padding:20}}>
+
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Buttons
+</div>
+
+<h3>Buttons customization coming here</h3>
+
+</div>
+
+);
+
+}
+
+/* TEXT PAGE */
+
+if(page==="text"){
+
+return(
+
+<div style={{padding:20}}>
+
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Text
+</div>
+
+<h3>Text customization coming here</h3>
+
+</div>
+
+);
+
+}
+
+/* COLORS PAGE */
+
+if(page==="colors"){
+
+return(
+
+<div style={{padding:20}}>
+
+<div onClick={()=>setPage("main")} style={{cursor:"pointer",marginBottom:20}}>
+← Colors
+</div>
+
+<h3>Color customization coming here</h3>
+
+</div>
+
+);
+
+}
 
 }
