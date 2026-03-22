@@ -64,10 +64,21 @@ window.removeEventListener("theme-change",handleThemeChange);
 useEffect(()=>{
 
 function handleAppearance(e){
+
 setAppearance(prev=>({
 ...prev,
 ...e.detail
 }));
+
+/* NEW: LIVE AVATAR UPDATE */
+
+if(e.detail?.avatar!==undefined){
+setProfile(prev=>({
+...prev,
+avatar:e.detail.avatar
+}));
+}
+
 }
 
 window.addEventListener("appearance-update",handleAppearance);
