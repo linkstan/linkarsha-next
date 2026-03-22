@@ -8,14 +8,47 @@ export default function Themes(){
 const [selected,setSelected]=useState(null);
 
 const themes=[
-{name:"Minimal",bg:"#ffffff"},
-{name:"Midnight",bg:"#0b0b12"},
-{name:"Ocean",bg:"linear-gradient(45deg,#2193b0,#6dd5ed)"},
-{name:"Sunset",bg:"linear-gradient(45deg,#ff7a18,#ffb347)"},
-{name:"Neon",bg:"linear-gradient(45deg,#00f2fe,#7c5cff)"},
-{name:"Luxury",bg:"#000000"},
-{name:"Pastel",bg:"linear-gradient(45deg,#fbc2eb,#a6c1ee)"},
-{name:"Mono",bg:"#111"},
+
+/* LIGHT */
+
+{name:"Minimal",category:"Light",bg:"#ffffff"},
+{name:"Paper",category:"Light",bg:"#fafafa"},
+{name:"Clean",category:"Light",bg:"#f4f4f4"},
+{name:"Soft White",category:"Light",bg:"#fdfdfd"},
+{name:"Creator Light",category:"Light",bg:"#ffffff"},
+
+/* DARK */
+
+{name:"Midnight",category:"Dark",bg:"#0b0b12"},
+{name:"Dark Pro",category:"Dark",bg:"#121212"},
+{name:"Mono",category:"Dark",bg:"#111111"},
+{name:"Obsidian",category:"Dark",bg:"#0f0f10"},
+{name:"Creator Dark",category:"Dark",bg:"#141414"},
+
+/* GRADIENT */
+
+{name:"Ocean",category:"Gradient",bg:"linear-gradient(45deg,#2193b0,#6dd5ed)"},
+{name:"Sunset",category:"Gradient",bg:"linear-gradient(45deg,#ff7a18,#ffb347)"},
+{name:"Neon",category:"Gradient",bg:"linear-gradient(45deg,#00f2fe,#7c5cff)"},
+{name:"Pastel",category:"Gradient",bg:"linear-gradient(45deg,#fbc2eb,#a6c1ee)"},
+{name:"Gradient Flow",category:"Gradient",bg:"linear-gradient(45deg,#667eea,#764ba2)"},
+
+/* PREMIUM */
+
+{name:"Luxury",category:"Premium",bg:"#000000"},
+{name:"Gold Night",category:"Premium",bg:"linear-gradient(45deg,#000000,#434343)"},
+{name:"Royal",category:"Premium",bg:"linear-gradient(45deg,#141e30,#243b55)"},
+{name:"Tech",category:"Premium",bg:"linear-gradient(45deg,#00c6ff,#0072ff)"},
+{name:"Elegant",category:"Premium",bg:"linear-gradient(45deg,#bdc3c7,#2c3e50)"},
+
+/* CREATOR */
+
+{name:"Creator Pro",category:"Creator",bg:"linear-gradient(45deg,#ff9966,#ff5e62)"},
+{name:"Vivid",category:"Creator",bg:"linear-gradient(45deg,#f83600,#f9d423)"},
+{name:"Energy",category:"Creator",bg:"linear-gradient(45deg,#f953c6,#b91d73)"},
+{name:"Skyline",category:"Creator",bg:"linear-gradient(45deg,#4facfe,#00f2fe)"},
+{name:"Dream",category:"Creator",bg:"linear-gradient(45deg,#a18cd1,#fbc2eb)"}
+
 ];
 
 useEffect(()=>{
@@ -24,7 +57,8 @@ loadTheme();
 
 async function loadTheme(){
 
-const {data:{session}} = await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
+
 if(!session) return;
 
 const {data}=await supabase
@@ -43,7 +77,7 @@ async function applyTheme(name){
 
 setSelected(name);
 
-const {data:{session}} = await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
 
 await supabase
 .from("profiles")
@@ -67,19 +101,35 @@ color:"var(--text)"
 display:"grid",
 gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",
 gap:"20px",
-maxWidth:900
+maxWidth:1000
 }}>
 
 {themes.map((t,i)=>(
 
 <div
 key={i}
+onClick={()=>applyTheme(t.name)}
 style={{
-border:"1px solid var(--border)",
+cursor:"pointer",
+border:selected===t.name
+? "2px solid #00d26a"
+: "1px solid var(--border)",
 borderRadius:14,
 padding:14,
-background:"var(--card)"
+background:"var(--card)",
+transition:"all .25s ease"
 }}
+
+onMouseEnter={(e)=>{
+e.currentTarget.style.transform="translateY(-4px)";
+e.currentTarget.style.boxShadow="0 10px 30px rgba(0,0,0,.25)";
+}}
+
+onMouseLeave={(e)=>{
+e.currentTarget.style.transform="none";
+e.currentTarget.style.boxShadow="none";
+}}
+
 >
 
 <div style={{
@@ -89,24 +139,32 @@ background:t.bg,
 marginBottom:10
 }}/>
 
-<div style={{marginBottom:10}}>
-{t.name}
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
+}}>
+
+<div>{t.name}</div>
+
+{selected===t.name && (
+<div style={{
+width:8,
+height:8,
+borderRadius:"50%",
+background:"#00d26a"
+}}/>
+)}
+
 </div>
 
-<button
-onClick={()=>applyTheme(t.name)}
-style={{
-width:"100%",
-background:selected===t.name ? "#00d26a" : "#222",
-border:"none",
-padding:"8px",
-borderRadius:6,
-color:"white",
-cursor:"pointer"
-}}
->
-{selected===t.name ? "Applied" : "Apply"}
-</button>
+<div style={{
+fontSize:11,
+opacity:.6,
+marginTop:6
+}}>
+{t.category}
+</div>
 
 </div>
 
