@@ -279,22 +279,11 @@ Sign Out
 
 </div>
 
-<Link href="/dashboard" style={{
-...item,
-background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
-}}>
-Home
-</Link>
+<Link href="/dashboard" style={item}>Home</Link>
 
 <div
-onClick={()=>{
-setOpenLinkarsha(!openLinkarsha);
-setOpenTools(false);
-}}
-style={{
-...item,
-background: active("/dashboard/links") ? "var(--hover)" : "transparent"
-}}
+onClick={()=>setOpenLinkarsha(!openLinkarsha)}
+style={item}
 >
 <span>My Linkarsha</span>
 <span>{openLinkarsha ? "v" : ">"}</span>
@@ -314,13 +303,10 @@ background: active("/dashboard/links") ? "var(--hover)" : "transparent"
 <Link href="/dashboard/appearance" style={item}>Appearance</Link>
 <Link href="/dashboard/analytics" style={item}>Analytics</Link>
 
-<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
+<hr style={{margin:"20px 0"}}/>
 
 <div
-onClick={()=>{
-setOpenTools(!openTools);
-setOpenLinkarsha(false);
-}}
+onClick={()=>setOpenTools(!openTools)}
 style={item}
 >
 <span>Tools</span>
@@ -348,6 +334,42 @@ style={item}
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
+{/* DARK LIGHT TOGGLE */}
+
+<div
+onClick={toggleTheme}
+style={{
+position:"absolute",
+right:30,
+top:20,
+width:70,
+height:36,
+borderRadius:40,
+cursor:"pointer",
+background: mode==="dark"
+? "linear-gradient(45deg,#0f9bff,#00f2fe)"
+: "linear-gradient(45deg,#ff9a44,#ff5e62)",
+display:"flex",
+alignItems:"center",
+justifyContent: mode==="dark" ? "flex-start" : "flex-end",
+padding:4
+}}
+>
+
+<div style={{
+width:28,
+height:28,
+borderRadius:"50%",
+background:"white",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+{mode==="dark" ? "🌙" : "☀️"}
+</div>
+
+</div>
+
 {children}
 
 </div>
@@ -369,8 +391,7 @@ width:280,
 height:520,
 background:"#000",
 borderRadius:30,
-padding:18,
-boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
+padding:18
 }}>
 
 <div style={{
@@ -379,89 +400,49 @@ height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
 padding:20,
-overflow:"auto",
-color: theme === "Minimal" ? "#111" : "#fff"
+overflow:"auto"
 }}>
 
-{header.layout === "hero" ? (
+{/* HEADER */}
+
+{header.layout==="hero" ? (
 
 <div>
 
 <div style={{
 height:180,
-backgroundImage:`url(${profile?.avatar || "/default-avatar.png"})`,
+backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
 backgroundPosition:"center"
 }}/>
-
-<div style={{textAlign:"center",marginTop:10}}>
-
-{header.showDisplayName !== false && (
-<div style={{
-fontFamily: header.displayFont || "Poppins",
-fontWeight:600,
-fontSize: header.displaySize || 22
-}}>
-{profile?.display_name}
-</div>
-)}
-
-{header.showUsername !== false && (
-<div style={{
-fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14,
-opacity:.7
-}}>
-@{profile?.username}
-</div>
-)}
-
-<div style={{
-fontFamily: header.bioFont || "Lora",
-fontSize: header.bioSize || 15,
-opacity:.7,
-marginTop:6
-}}>
-{profile?.bio}
-</div>
-
-</div>
 
 </div>
 
 ) : (
 
-<div style={{
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-textAlign:"center"
-}}>
+<div style={{textAlign:"center"}}>
 
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
 overflow:"hidden",
-background:"#222",
-marginBottom:10
+margin:"0 auto"
 }}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
+<img src={profile?.avatar}/>
+</div>
 
 </div>
+
+)}
+
+{/* TEXT */}
+
+<div style={{textAlign:"center",marginTop:10}}>
 
 {header.showDisplayName !== false && (
 <div style={{
 fontFamily: header.displayFont || "Poppins",
-fontWeight:600,
 fontSize: header.displaySize || 22
 }}>
 {profile?.display_name}
@@ -471,8 +452,7 @@ fontSize: header.displaySize || 22
 {header.showUsername !== false && (
 <div style={{
 fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14,
-opacity:.7
+fontSize: header.usernameSize || 14
 }}>
 @{profile?.username}
 </div>
@@ -480,16 +460,36 @@ opacity:.7
 
 <div style={{
 fontFamily: header.bioFont || "Lora",
-fontSize: header.bioSize || 15,
-opacity:.7,
-marginTop:6
+fontSize: header.bioSize || 15
 }}>
 {profile?.bio}
 </div>
 
 </div>
 
-)}
+{/* LINKS */}
+
+{blocks.map(block=>(
+
+<a
+key={block.id}
+href={block.data_json?.url}
+target="_blank"
+style={{
+display:"flex",
+alignItems:"center",
+background:"rgba(0,0,0,.25)",
+padding:12,
+borderRadius:10,
+marginTop:10,
+textDecoration:"none",
+color:"inherit"
+}}
+>
+{block.data_json?.title}
+</a>
+
+))}
 
 </div>
 
