@@ -71,8 +71,6 @@ async function applyTheme(name){
 setSelected(name);
 setLoading(true);
 
-/* FIRE LIVE PREVIEW EVENT IMMEDIATELY */
-
 window.dispatchEvent(
 new CustomEvent("theme-change",{detail:name})
 );
@@ -83,8 +81,6 @@ await supabase
 .from("profiles")
 .update({theme:name})
 .eq("id",session.user.id);
-
-/* FIRE AGAIN AFTER SAVE (ensures layout receives it) */
 
 window.dispatchEvent(
 new CustomEvent("theme-change",{detail:name})
@@ -103,21 +99,24 @@ minHeight:"100vh",
 color:"var(--text)"
 }}>
 
-{/* HEADER */}
-
 <div style={{
 display:"flex",
 alignItems:"center",
-gap:10,
+gap:12,
 marginBottom:25
 }}>
 
 <div
 onClick={()=>router.back()}
 style={{
-cursor:"pointer",
-fontSize:22,
-opacity:.8
+width:34,
+height:34,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer"
 }}
 >
 ←
@@ -127,13 +126,11 @@ opacity:.8
 
 </div>
 
-{/* GRID */}
-
 <div style={{
 display:"grid",
-gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",
+gridTemplateColumns:"repeat(3,1fr)",
 gap:"20px",
-maxWidth:1000
+maxWidth:800
 }}>
 
 {themes.map((t,i)=>(
