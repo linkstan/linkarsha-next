@@ -411,42 +411,8 @@ color:"#fff"
 height:200,
 backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center",
-position:"relative"
-}}>
-
-<div style={{
-position:"absolute",
-bottom:0,
-left:0,
-right:0,
-padding:16,
-background:"linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0))"
-}}>
-
-{header.showDisplayName !== false && (
-<div style={{
-fontFamily: header.displayFont || "Poppins",
-fontSize: header.displaySize || 22,
-fontWeight:600
-}}>
-{profile?.display_name}
-</div>
-)}
-
-{header.showUsername !== false && (
-<div style={{
-fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14,
-opacity:.8
-}}>
-@{profile?.username}
-</div>
-)}
-
-</div>
-
-</div>
+backgroundPosition:"center"
+}}/>
 
 ) : (
 
@@ -472,8 +438,6 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 </div>
 
 )}
-
-{header.layout!=="hero" && (
 
 <div style={{textAlign:"center",marginTop:10}}>
 
@@ -503,8 +467,6 @@ fontSize: header.bioSize || 15
 </div>
 
 </div>
-
-)}
 
 <div style={{padding:20}}>
 
