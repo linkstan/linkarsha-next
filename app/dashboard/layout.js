@@ -26,8 +26,6 @@ pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
 
-/* AUTO OPEN MENUS */
-
 useEffect(()=>{
 
 if(pathname.startsWith("/dashboard/links")){
@@ -84,6 +82,8 @@ window.removeEventListener("appearance-update",handleAppearance);
 
 },[]);
 
+/* LOAD USER */
+
 useEffect(()=>{
 loadPreview();
 },[]);
@@ -125,6 +125,8 @@ setBlocks(blockData || []);
 
 }
 
+/* THEME SWITCH */
+
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
@@ -155,14 +157,39 @@ return pathname.startsWith(path);
 const theme = liveTheme || profile?.theme;
 const header = appearance?.header || {};
 
-/* THEME MAP */
+/* THEMES */
 
 const themeMap={
 
 Minimal:"#ffffff",
+Paper:"#fafafa",
+Clean:"#f4f4f4",
+"Soft White":"#fdfdfd",
+"Creator Light":"#ffffff",
+
 Midnight:"#0b0b12",
+"Dark Pro":"#121212",
+Mono:"#111111",
+Obsidian:"#0f0f10",
+"Creator Dark":"#141414",
+
 Ocean:"linear-gradient(135deg,#2193b0,#6dd5ed)",
-Sunset:"linear-gradient(135deg,#ff7a18,#ffb347)"
+Sunset:"linear-gradient(135deg,#ff7a18,#ffb347)",
+Neon:"linear-gradient(135deg,#00f2fe,#7c5cff)",
+Pastel:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",
+"Gradient Flow":"linear-gradient(135deg,#667eea,#764ba2)",
+
+Luxury:"#000000",
+"Gold Night":"linear-gradient(135deg,#000000,#434343)",
+Royal:"linear-gradient(135deg,#141e30,#243b55)",
+Tech:"linear-gradient(135deg,#00c6ff,#0072ff)",
+Elegant:"linear-gradient(135deg,#bdc3c7,#2c3e50)",
+
+"Creator Pro":"linear-gradient(135deg,#ff9966,#ff5e62)",
+Vivid:"linear-gradient(135deg,#f83600,#f9d423)",
+Energy:"linear-gradient(135deg,#f953c6,#b91d73)",
+Skyline:"linear-gradient(135deg,#4facfe,#00f2fe)",
+Dream:"linear-gradient(135deg,#a18cd1,#fbc2eb)"
 
 };
 
@@ -172,7 +199,8 @@ return(
 display:"flex",
 minHeight:"100vh",
 background:"var(--bg)",
-color:"var(--text)"
+color:"var(--text)",
+fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
 {/* SIDEBAR */}
@@ -188,20 +216,128 @@ borderRight:"1px solid var(--border)"
 
 <h2 style={{marginBottom:15}}>Linkarsha</h2>
 
-<Link href="/dashboard" style={item}>Home</Link>
+<div style={{position:"relative"}}>
 
-<Link href="/dashboard/links" style={item}>My Links</Link>
+<div
+onClick={()=>setOpenUser(!openUser)}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:10,
+cursor:"pointer"
+}}
+>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:28,
+height:28,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+<div style={{flex:1}}>
+{profile?.username}
+</div>
+
+<div style={{opacity:0.7}}>
+{openUser ? "v" : ">"}
+</div>
+
+</div>
+
+{openUser && (
+
+<div style={{
+background:"var(--card)",
+borderRadius:8,
+padding:10,
+marginBottom:20,
+border:"1px solid var(--border)"
+}}>
+
+<div style={dropdownItem}>Ask Question</div>
+<div style={dropdownItem}>Help Center</div>
+<div style={dropdownItem}>Contact Support</div>
+
+<div
+onClick={logout}
+style={{
+...dropdownItem,
+color:"#ff6b6b"
+}}
+>
+Sign Out
+</div>
+
+</div>
+
+)}
+
+</div>
+
+<Link href="/dashboard" style={{
+...item,
+background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
+}}>
+Home
+</Link>
+
+<div
+onClick={()=>{
+setOpenLinkarsha(!openLinkarsha);
+setOpenTools(false);
+}}
+style={{
+...item,
+background: active("/dashboard/links") ? "var(--hover)" : "transparent"
+}}
+>
+<span>My Linkarsha</span>
+<span>{openLinkarsha ? "v" : ">"}</span>
+</div>
+
+{openLinkarsha && (
+
+<div style={submenu}>
+<Link href="/dashboard/links" style={subitem}>My Links</Link>
+<Link href="/dashboard/link-history" style={subitem}>Link History</Link>
+<Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
+</div>
+
+)}
 
 <Link href="/dashboard/blocks" style={item}>Blocks</Link>
-
 <Link href="/dashboard/appearance" style={item}>Appearance</Link>
-
 <Link href="/dashboard/analytics" style={item}>Analytics</Link>
 
-<hr style={{margin:"20px 0"}}/>
+<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
+
+<div
+onClick={()=>{
+setOpenTools(!openTools);
+setOpenLinkarsha(false);
+}}
+style={item}
+>
+<span>Tools</span>
+<span>{openTools ? "v" : ">"}</span>
+</div>
+
+{openTools && (
+
+<div style={submenu}>
+<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>AI Bio Generator</Link>
+<Link href="/dashboard/tools/qr-code" style={subitem}>QR Code Generator</Link>
+<Link href="/dashboard/tools/export-data" style={subitem}>Export Data</Link>
+</div>
+
+)}
 
 <Link href="/dashboard/referrals" style={item}>Referrals</Link>
-
 <Link href="/dashboard/settings" style={item}>Settings</Link>
 
 </div>
@@ -210,7 +346,7 @@ borderRight:"1px solid var(--border)"
 
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40}}>
+<div style={{flex:1,padding:40,position:"relative"}}>
 
 {children}
 
@@ -233,7 +369,8 @@ width:280,
 height:520,
 background:"#000",
 borderRadius:30,
-padding:18
+padding:18,
+boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
 }}>
 
 <div style={{
@@ -241,51 +378,51 @@ width:"100%",
 height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
-overflow:"hidden",
-color:"#fff"
+padding:20,
+overflow:"auto",
+color: theme === "Minimal" ? "#111" : "#fff"
 }}>
 
-{header.layout==="hero" ? (
+{header.layout === "hero" ? (
 
 <div>
 
 <div style={{
-height:160,
-backgroundImage:`url(${profile.avatar})`,
+height:180,
+backgroundImage:`url(${profile?.avatar || "/default-avatar.png"})`,
 backgroundSize:"cover",
 backgroundPosition:"center"
 }}/>
 
-<div style={{
-padding:20,
-textAlign:"center"
-}}>
+<div style={{textAlign:"center",marginTop:10}}>
 
-{header.showDisplayName!==false && (
+{header.showDisplayName !== false && (
 <div style={{
-fontFamily:header.displayFont || "Poppins",
-fontSize:header.displaySize || 22
+fontFamily: header.displayFont || "Poppins",
+fontWeight:600,
+fontSize: header.displaySize || 22
 }}>
-{profile.display_name}
+{profile?.display_name}
 </div>
 )}
 
-{header.showUsername!==false && (
+{header.showUsername !== false && (
 <div style={{
-fontFamily:header.usernameFont || "Roboto",
-fontSize:header.usernameSize || 14,
+fontFamily: header.usernameFont || "Roboto",
+fontSize: header.usernameSize || 14,
 opacity:.7
 }}>
-@{profile.username}
+@{profile?.username}
 </div>
 )}
 
 <div style={{
-fontFamily:header.bioFont || "Lora",
-fontSize:header.bioSize || 15,
-opacity:.7
+fontFamily: header.bioFont || "Lora",
+fontSize: header.bioSize || 15,
+opacity:.7,
+marginTop:6
 }}>
-{profile.bio}
+{profile?.bio}
 </div>
 
 </div>
@@ -298,16 +435,56 @@ opacity:.7
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-padding:20
+textAlign:"center"
 }}>
 
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
-overflow:"hidden"
+overflow:"hidden",
+background:"#222",
+marginBottom:10
 }}>
-<img src={profile.avatar}/>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+
+</div>
+
+{header.showDisplayName !== false && (
+<div style={{
+fontFamily: header.displayFont || "Poppins",
+fontWeight:600,
+fontSize: header.displaySize || 22
+}}>
+{profile?.display_name}
+</div>
+)}
+
+{header.showUsername !== false && (
+<div style={{
+fontFamily: header.usernameFont || "Roboto",
+fontSize: header.usernameSize || 14,
+opacity:.7
+}}>
+@{profile?.username}
+</div>
+)}
+
+<div style={{
+fontFamily: header.bioFont || "Lora",
+fontSize: header.bioSize || 15,
+opacity:.7,
+marginTop:6
+}}>
+{profile?.bio}
 </div>
 
 </div>
@@ -332,6 +509,32 @@ overflow:"hidden"
 
 const item={
 padding:"10px 12px",
+cursor:"pointer",
+borderRadius:10,
+textDecoration:"none",
+color:"var(--text)",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
+};
+
+const submenu={
+marginLeft:10,
+marginTop:5,
+marginBottom:10
+};
+
+const subitem={
+display:"block",
+padding:"8px 10px",
+opacity:0.85,
+cursor:"pointer",
 textDecoration:"none",
 color:"var(--text)"
+};
+
+const dropdownItem={
+padding:"8px 10px",
+cursor:"pointer",
+borderRadius:6
 };
