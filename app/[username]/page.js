@@ -48,11 +48,19 @@ if(!profile) return null;
 
 const header=appearance?.header || {};
 
+const themeMap={
+Minimal:"#ffffff",
+Midnight:"#0b0b12",
+Ocean:"linear-gradient(135deg,#2193b0,#6dd5ed)",
+Sunset:"linear-gradient(135deg,#ff7a18,#ffb347)",
+Dream:"linear-gradient(135deg,#a18cd1,#fbc2eb)"
+};
+
 return(
 
 <div style={{
 minHeight:"100vh",
-background:"#0b0b12",
+background: themeMap[profile.theme] || "#0b0b12",
 color:"#fff",
 display:"flex",
 flexDirection:"column",
@@ -69,8 +77,20 @@ width:"100%",
 height:220,
 backgroundImage:`url(${profile.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center"
+backgroundPosition:"center",
+position:"relative"
+}}>
+
+<div style={{
+position:"absolute",
+left:0,
+right:0,
+bottom:0,
+height:120,
+background:`linear-gradient(to bottom, transparent, ${themeMap[profile.theme] || "#0b0b12"})`
 }}/>
+
+</div>
 
 ) : (
 
