@@ -63,7 +63,7 @@ setAvatar(data.avatar);
 
 }
 
-/* UPDATE HEADER SETTINGS */
+/* UPDATE SETTINGS */
 
 async function updateSetting(key,value){
 
@@ -148,21 +148,41 @@ new CustomEvent("appearance-update",{detail:{avatar:null}})
 
 }
 
+/* UI STYLES */
+
+const section={
+background:"var(--card)",
+border:"1px solid var(--border)",
+borderRadius:14,
+padding:20,
+marginBottom:20
+};
+
+const optionButton=(active)=>({
+padding:"8px 16px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:active ? "var(--text)" : "var(--card)",
+color:active ? "#fff" : "var(--text)",
+cursor:"pointer"
+});
+
 return(
 
-<div style={{maxWidth:600}}>
+<div style={{maxWidth:650}}>
 
 <h2 style={{marginBottom:20}}>Header</h2>
 
 {/* PROFILE IMAGE */}
+
+<div style={section}>
 
 <h3 style={{marginBottom:10}}>Profile Image</h3>
 
 <div style={{
 display:"flex",
 alignItems:"center",
-gap:20,
-marginBottom:20
+gap:20
 }}>
 
 <div style={{
@@ -217,38 +237,26 @@ Remove
 
 </div>
 
+</div>
+
 {/* LAYOUT */}
 
-<div style={{marginBottom:20}}>
+<div style={section}>
 
-<div style={{marginBottom:8}}>Layout</div>
+<h3 style={{marginBottom:10}}>Layout</h3>
 
 <div style={{display:"flex",gap:10}}>
 
 <button
 onClick={()=>updateSetting("layout","classic")}
-style={{
-padding:"8px 16px",
-borderRadius:20,
-border:"1px solid var(--border)",
-background:settings.layout==="classic"?"var(--text)":"var(--card)",
-color:settings.layout==="classic"?"#fff":"var(--text)",
-cursor:"pointer"
-}}
+style={optionButton(settings.layout==="classic")}
 >
 Classic
 </button>
 
 <button
 onClick={()=>updateSetting("layout","hero")}
-style={{
-padding:"8px 16px",
-borderRadius:20,
-border:"1px solid var(--border)",
-background:settings.layout==="hero"?"var(--text)":"var(--card)",
-color:settings.layout==="hero"?"#fff":"var(--text)",
-cursor:"pointer"
-}}
+style={optionButton(settings.layout==="hero")}
 >
 Hero
 </button>
@@ -257,7 +265,11 @@ Hero
 
 </div>
 
-{/* DISPLAY NAME */}
+{/* DISPLAY OPTIONS */}
+
+<div style={section}>
+
+<h3 style={{marginBottom:10}}>Display</h3>
 
 <label style={{display:"block",marginBottom:10}}>
 
@@ -271,7 +283,7 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 
 </label>
 
-<label style={{display:"block",marginBottom:20}}>
+<label>
 
 <input
 type="checkbox"
@@ -283,11 +295,13 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 
 </label>
 
+</div>
+
 {/* FONT */}
 
-<div style={{marginBottom:20}}>
+<div style={section}>
 
-<div>Font</div>
+<h3 style={{marginBottom:10}}>Font</h3>
 
 <select
 value={settings.font}
@@ -307,9 +321,9 @@ onChange={(e)=>updateSetting("font",e.target.value)}
 
 {/* FONT SIZE */}
 
-<div style={{marginBottom:20}}>
+<div style={section}>
 
-<div>Font Size</div>
+<h3 style={{marginBottom:10}}>Font Size</h3>
 
 <input
 type="range"
@@ -323,47 +337,29 @@ onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
 
 {/* ALIGNMENT */}
 
-<div style={{marginBottom:20}}>
+<div style={section}>
 
-<div style={{marginBottom:8}}>Alignment</div>
+<h3 style={{marginBottom:10}}>Alignment</h3>
 
 <div style={{display:"flex",gap:10}}>
 
 <button
 onClick={()=>updateSetting("alignment","left")}
-style={{
-padding:"8px 14px",
-borderRadius:20,
-border:"1px solid var(--border)",
-background:settings.alignment==="left"?"var(--text)":"var(--card)",
-color:settings.alignment==="left"?"#fff":"var(--text)"
-}}
+style={optionButton(settings.alignment==="left")}
 >
 ⬅ Left
 </button>
 
 <button
 onClick={()=>updateSetting("alignment","center")}
-style={{
-padding:"8px 14px",
-borderRadius:20,
-border:"1px solid var(--border)",
-background:settings.alignment==="center"?"var(--text)":"var(--card)",
-color:settings.alignment==="center"?"#fff":"var(--text)"
-}}
+style={optionButton(settings.alignment==="center")}
 >
 ⬤ Center
 </button>
 
 <button
 onClick={()=>updateSetting("alignment","right")}
-style={{
-padding:"8px 14px",
-borderRadius:20,
-border:"1px solid var(--border)",
-background:settings.alignment==="right"?"var(--text)":"var(--card)",
-color:settings.alignment==="right"?"#fff":"var(--text)"
-}}
+style={optionButton(settings.alignment==="right")}
 >
 ➡ Right
 </button>
@@ -374,7 +370,9 @@ color:settings.alignment==="right"?"#fff":"var(--text)"
 
 {/* HEADER BACKGROUND */}
 
-<h3>Header Background</h3>
+<div style={section}>
+
+<h3 style={{marginBottom:10}}>Header Background</h3>
 
 <select
 value={settings.backgroundType}
@@ -387,6 +385,8 @@ onChange={(e)=>updateSetting("backgroundType",e.target.value)}
 <option value="image">Image</option>
 
 </select>
+
+</div>
 
 </div>
 
