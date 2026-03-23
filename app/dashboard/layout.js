@@ -399,19 +399,28 @@ color:"#fff"
 
 <div style={{
 height:200,
+position:"relative",
+overflow:"hidden"
+}}>
+
+<div style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
 backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center",
-position:"relative"
-}}>
+backgroundPosition:"center"
+}}/>
 
 <div style={{
 position:"absolute",
 left:0,
 right:0,
 bottom:0,
-height:100,
-background:"linear-gradient(to bottom, transparent, rgba(0,0,0,0.85))"
+height:120,
+background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
 }}/>
 
 </div>
