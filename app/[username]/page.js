@@ -48,8 +48,6 @@ if (!profile) return null;
 
 const header = appearance?.header || {};
 
-/* FULL THEME MAP (same as dashboard) */
-
 const themeMap={
 
 Minimal:"#ffffff",
@@ -119,7 +117,8 @@ right:0,
 bottom:0,
 backgroundImage:`url(${profile.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center"
+backgroundPosition:"center",
+zIndex:1
 }}/>
 
 <div style={{
@@ -127,8 +126,9 @@ position:"absolute",
 left:0,
 right:0,
 bottom:0,
-height:120,
-background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%)"
+height:140,
+background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.95) 100%)",
+zIndex:2
 }}/>
 
 </div>
@@ -152,8 +152,6 @@ style={{ width: "100%", height: "100%", objectFit: "cover" }}
 
 )}
 
-{/* DISPLAY NAME */}
-
 {header.showDisplayName !== false && (
 <h1
 style={{
@@ -164,8 +162,6 @@ fontSize: header.displaySize || 22
 {profile.display_name}
 </h1>
 )}
-
-{/* USERNAME */}
 
 {header.showUsername !== false && (
 <div
@@ -179,8 +175,6 @@ opacity: 0.7
 </div>
 )}
 
-{/* BIO */}
-
 <p
 style={{
 fontFamily: header.bioFont || "Lora",
@@ -190,8 +184,6 @@ opacity: 0.7
 >
 {profile.bio}
 </p>
-
-{/* LINKS */}
 
 <div style={{ marginTop: 40, width: 320 }}>
 
