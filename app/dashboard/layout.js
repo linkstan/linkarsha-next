@@ -38,6 +38,8 @@ setOpenTools(true);
 
 },[pathname]);
 
+/* LIVE THEME */
+
 useEffect(()=>{
 
 function handleThemeChange(e){
@@ -51,6 +53,8 @@ window.removeEventListener("theme-change",handleThemeChange);
 };
 
 },[]);
+
+/* LIVE APPEARANCE */
 
 useEffect(()=>{
 
@@ -77,6 +81,8 @@ window.removeEventListener("appearance-update",handleAppearance);
 };
 
 },[]);
+
+/* LOAD USER */
 
 useEffect(()=>{
 loadPreview();
@@ -119,6 +125,8 @@ setBlocks(blockData || []);
 
 }
 
+/* THEME SWITCH */
+
 async function toggleTheme(){
 
 const newMode = mode === "light" ? "dark" : "light";
@@ -148,6 +156,8 @@ return pathname.startsWith(path);
 
 const theme = liveTheme || profile?.theme;
 const header = appearance?.header || {};
+
+/* THEMES */
 
 const themeMap={
 
@@ -324,6 +334,8 @@ style={item}
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
+{/* DARK LIGHT TOGGLE */}
+
 <div
 onClick={toggleTheme}
 style={{
@@ -399,20 +411,8 @@ color:"#fff"
 height:200,
 backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center",
-position:"relative"
-}}>
-
-<div style={{
-position:"absolute",
-left:0,
-right:0,
-bottom:0,
-height:100,
-background:`linear-gradient(to bottom, rgba(0,0,0,0), ${themeMap[theme] || "#0b0b12"})`
+backgroundPosition:"center"
 }}/>
-
-</div>
 
 ) : (
 
