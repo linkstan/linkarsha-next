@@ -2,17 +2,17 @@
 
 import { useEffect,useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import BlockRenderer from "../../components/BlockRenderer";
 
-const supabase = createClient(
+const supabase=createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export default function PublicProfile({ params }) {
+export default function PublicProfile({params}){
 
 const [profile,setProfile]=useState(null);
 const [blocks,setBlocks]=useState([]);
+const [appearance,setAppearance]=useState({});
 
 useEffect(()=>{
 load();
@@ -28,7 +28,11 @@ const {data:prof}=await supabase
 .eq("username",username)
 .single();
 
+if(!prof) return;
+
 setProfile(prof);
+
+setAppearance(prof.profile_settings || {});
 
 const {data:blockData}=await supabase
 .from("blocks")
@@ -36,23 +40,27 @@ const {data:blockData}=await supabase
 .eq("user_id",prof.id)
 .order("position",{ascending:true});
 
-setBlocks(blockData||[]);
+setBlocks(blockData || []);
 
 }
 
-if(!profile) return <div>Loading...</div>;
+if(!profile) return null;
 
-const header = profile.profile_settings?.header || {};
+const header=appearance?.header || {};
 
 return(
 
 <div style={{
 minHeight:"100vh",
+background:"#0b0b12",
+color:"#fff",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-justifyContent:"center"
+paddingTop:40
 }}>
+
+{/* HERO */}
 
 {header.layout==="hero" ? (
 
@@ -60,7 +68,8 @@ justifyContent:"center"
 width:"100%",
 height:220,
 backgroundImage:`url(${profile.avatar})`,
-backgroundSize:"cover"
+backgroundSize:"cover",
+backgroundPosition:"center"
 }}/>
 
 ) : (
@@ -69,27 +78,65 @@ backgroundSize:"cover"
 width:110,
 height:110,
 borderRadius:"50%",
-overflow:"hidden"
+overflow:"hidden",
+marginBottom:20
 }}>
-<img src={profile.avatar}/>
+<img
+src={profile.avatar}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
 </div>
 
 )}
 
-{header.showDisplayName!==false && (
-<h1>{profile.display_name}</h1>
+{header.showDisplayName !== false && (
+<h1 style={{
+fontFamily: header.displayFont || "Poppins",
+fontSize: header.displaySize || 22
+}}>
+{profile.display_name}
+</h1>
 )}
 
-{header.showUsername!==false && (
-<div>@{profile.username}</div>
+{header.showUsername !== false && (
+<div style={{
+fontFamily: header.usernameFont || "Roboto",
+fontSize: header.usernameSize || 14,
+opacity:.7
+}}>
+@{profile.username}
+</div>
 )}
 
-<p>{profile.bio}</p>
+<p style={{
+fontFamily: header.bioFont || "Lora",
+fontSize: header.bioSize || 15,
+opacity:.7
+}}>
+{profile.bio}
+</p>
 
 <div style={{marginTop:40,width:320}}>
 
 {blocks.map(block=>(
-<BlockRenderer key={block.id} block={block} />
+
+<a
+key={block.id}
+href={block.data_json?.url}
+target="_blank"
+style={{
+display:"block",
+background:"rgba(255,255,255,.08)",
+padding:14,
+borderRadius:10,
+marginBottom:10,
+textDecoration:"none",
+color:"#fff"
+}}
+>
+{block.data_json?.title}
+</a>
+
 ))}
 
 </div>
