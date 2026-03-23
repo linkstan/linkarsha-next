@@ -409,7 +409,10 @@ color:"#fff"
 
 <div style={{
 height:200,
-backgroundImage:`url(${profile?.avatar})`,
+backgroundImage:`
+linear-gradient(to bottom, rgba(0,0,0,0) 40%, ${themeMap[theme]} 100%),
+url(${profile?.avatar})
+`,
 backgroundSize:"cover",
 backgroundPosition:"center"
 }}/>
