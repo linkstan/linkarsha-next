@@ -22,8 +22,6 @@ displaySize:22,
 usernameSize:14,
 bioSize:15,
 
-alignment:"center",
-
 advancedFonts:false
 });
 
@@ -136,6 +134,8 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
 
 }
+
+/* UI STYLES */
 
 const section={
 background:"var(--card)",
@@ -286,6 +286,16 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 
 <h3>Fonts</h3>
 
+<div style={{marginBottom:10,fontSize:14,opacity:.7}}>
+Default fonts:
+<br/>
+Display Name → Poppins
+<br/>
+Username → Roboto
+<br/>
+Bio → Lora
+</div>
+
 <label>
 <input
 type="checkbox"
@@ -306,7 +316,6 @@ value={settings.displayFont}
 onChange={(e)=>updateSetting("displayFont",e.target.value)}
 >
 
-<option>Default</option>
 <option>Montserrat</option>
 <option>Poppins</option>
 <option>Playfair Display</option>
@@ -331,14 +340,13 @@ onChange={(e)=>updateSetting("displayFont",e.target.value)}
 
 </select>
 
-<h4>Username Font</h4>
+<h4 style={{marginTop:15}}>Username Font</h4>
 
 <select
 value={settings.usernameFont}
 onChange={(e)=>updateSetting("usernameFont",e.target.value)}
 >
 
-<option>Default</option>
 <option>Roboto</option>
 <option>Open Sans</option>
 <option>Lato</option>
@@ -352,14 +360,13 @@ onChange={(e)=>updateSetting("usernameFont",e.target.value)}
 
 </select>
 
-<h4>Bio Font</h4>
+<h4 style={{marginTop:15}}>Bio Font</h4>
 
 <select
 value={settings.bioFont}
 onChange={(e)=>updateSetting("bioFont",e.target.value)}
 >
 
-<option>Default</option>
 <option>Merriweather</option>
 <option>Lora</option>
 <option>PT Serif</option>
@@ -391,7 +398,9 @@ onChange={(e)=>updateSetting("bioFont",e.target.value)}
 
 <h3>Font Size</h3>
 
-Display Name
+<div style={{marginBottom:10}}>
+Display Name ({settings.displaySize}px)
+</div>
 
 <input
 type="range"
@@ -401,7 +410,9 @@ value={settings.displaySize}
 onChange={(e)=>updateSetting("displaySize",Number(e.target.value))}
 />
 
-Username
+<div style={{marginTop:15,marginBottom:10}}>
+Username ({settings.usernameSize}px)
+</div>
 
 <input
 type="range"
@@ -411,7 +422,9 @@ value={settings.usernameSize}
 onChange={(e)=>updateSetting("usernameSize",Number(e.target.value))}
 />
 
-Bio
+<div style={{marginTop:15,marginBottom:10}}>
+Bio ({settings.bioSize}px)
+</div>
 
 <input
 type="range"
