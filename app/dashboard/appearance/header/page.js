@@ -14,15 +14,16 @@ layout:"classic",
 showDisplayName:true,
 showUsername:true,
 
+useDefaultFonts:true,
+advancedFonts:false,
+
 displayFont:"Poppins",
 usernameFont:"Roboto",
 bioFont:"Lora",
 
 displaySize:22,
 usernameSize:14,
-bioSize:15,
-
-advancedFonts:false
+bioSize:15
 });
 
 const [avatar,setAvatar]=useState(null);
@@ -44,10 +45,12 @@ const {data}=await supabase
 .single();
 
 if(data?.profile_settings?.header){
+
 setSettings(prev=>({
 ...prev,
 ...data.profile_settings.header
 }));
+
 }
 
 }
@@ -69,16 +72,31 @@ setAvatar(data.avatar);
 
 }
 
-/* UPDATE SETTINGS */
+/* SAVE SETTINGS */
 
 async function updateSetting(key,value){
 
-const newSettings={
+let newSettings={
 ...settings,
 [key]:value
 };
 
+/* DEFAULT FONT LOGIC */
+
+if(key==="useDefaultFonts" && value===true){
+newSettings.displayFont="Poppins";
+newSettings.usernameFont="Roboto";
+newSettings.bioFont="Lora";
+newSettings.advancedFonts=false;
+}
+
+if(key==="advancedFonts" && value===true){
+newSettings.useDefaultFonts=false;
+}
+
 setSettings(newSettings);
+
+/* LIVE PREVIEW */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{header:newSettings}})
@@ -103,7 +121,7 @@ await supabase
 
 }
 
-/* AVATAR */
+/* AVATAR UPLOAD */
 
 async function uploadAvatar(e){
 
@@ -112,15 +130,15 @@ if(!file) return;
 
 const {data:{session}}=await supabase.auth.getSession();
 
-const filePath=`avatars/${session.user.id}_${Date.now()}`;
+const path=`avatars/${session.user.id}_${Date.now()}`;
 
 await supabase.storage
 .from("avatars")
-.upload(filePath,file);
+.upload(path,file);
 
 const {data}=supabase.storage
 .from("avatars")
-.getPublicUrl(filePath);
+.getPublicUrl(path);
 
 await supabase
 .from("profiles")
@@ -158,7 +176,7 @@ return(
 
 <div style={{maxWidth:650}}>
 
-{/* HEADER */}
+{/* HEADER TITLE */}
 
 <div style={{
 display:"flex",
@@ -201,12 +219,10 @@ height:70,
 borderRadius:"50%",
 overflow:"hidden"
 }}>
-
 <img
 src={avatar || "/default-avatar.png"}
 style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
-
 </div>
 
 <label style={{
@@ -254,7 +270,7 @@ Hero
 
 </div>
 
-{/* DISPLAY */}
+{/* DISPLAY OPTIONS */}
 
 <div style={section}>
 
@@ -280,19 +296,24 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 
 </div>
 
-{/* FONTS */}
+{/* FONT SYSTEM */}
 
 <div style={section}>
 
 <h3>Fonts</h3>
 
-<div style={{marginBottom:10,fontSize:14,opacity:.7}}>
-Default fonts:
-<br/>
-Display Name → Poppins
-<br/>
-Username → Roboto
-<br/>
+<label>
+<input
+type="checkbox"
+checked={settings.useDefaultFonts}
+onChange={(e)=>updateSetting("useDefaultFonts",e.target.checked)}
+/>
+ Default Fonts
+</label>
+
+<div style={{fontSize:13,opacity:.7,marginBottom:10}}>
+Display Name → Poppins<br/>
+Username → Roboto<br/>
 Bio → Lora
 </div>
 
@@ -398,9 +419,7 @@ onChange={(e)=>updateSetting("bioFont",e.target.value)}
 
 <h3>Font Size</h3>
 
-<div style={{marginBottom:10}}>
-Display Name ({settings.displaySize}px)
-</div>
+<div>Display Name ({settings.displaySize}px)</div>
 
 <input
 type="range"
@@ -410,7 +429,7 @@ value={settings.displaySize}
 onChange={(e)=>updateSetting("displaySize",Number(e.target.value))}
 />
 
-<div style={{marginTop:15,marginBottom:10}}>
+<div style={{marginTop:15}}>
 Username ({settings.usernameSize}px)
 </div>
 
@@ -422,7 +441,7 @@ value={settings.usernameSize}
 onChange={(e)=>updateSetting("usernameSize",Number(e.target.value))}
 />
 
-<div style={{marginTop:15,marginBottom:10}}>
+<div style={{marginTop:15}}>
 Bio ({settings.bioSize}px)
 </div>
 
