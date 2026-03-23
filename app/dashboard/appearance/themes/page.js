@@ -99,6 +99,8 @@ minHeight:"100vh",
 color:"var(--text)"
 }}>
 
+{/* HEADER */}
+
 <div style={{
 display:"flex",
 alignItems:"center",
@@ -109,8 +111,8 @@ marginBottom:25
 <div
 onClick={()=>router.back()}
 style={{
-width:34,
-height:34,
+width:36,
+height:36,
 borderRadius:"50%",
 border:"1px solid var(--border)",
 display:"flex",
@@ -126,11 +128,13 @@ cursor:"pointer"
 
 </div>
 
+{/* GRID */}
+
 <div style={{
 display:"grid",
 gridTemplateColumns:"repeat(3,1fr)",
 gap:"20px",
-maxWidth:800
+maxWidth:900
 }}>
 
 {themes.map((t,i)=>(
@@ -145,16 +149,6 @@ borderRadius:14,
 padding:14,
 background:"var(--card)",
 transition:"all .25s ease"
-}}
-
-onMouseEnter={(e)=>{
-e.currentTarget.style.transform="translateY(-4px)";
-e.currentTarget.style.boxShadow="0 12px 35px rgba(0,0,0,.25)";
-}}
-
-onMouseLeave={(e)=>{
-e.currentTarget.style.transform="none";
-e.currentTarget.style.boxShadow="none";
 }}
 
 >
