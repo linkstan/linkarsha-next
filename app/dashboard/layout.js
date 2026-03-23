@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
@@ -150,14 +150,8 @@ await supabase.auth.signOut();
 window.location="/login";
 }
 
-function active(path){
-return pathname.startsWith(path);
-}
-
 const theme = liveTheme || profile?.theme;
 const header = appearance?.header || {};
-
-/* THEMES */
 
 const themeMap={
 
@@ -334,8 +328,6 @@ style={item}
 
 <div style={{flex:1,padding:40,position:"relative"}}>
 
-{/* DARK LIGHT TOGGLE */}
-
 <div
 onClick={toggleTheme}
 style={{
@@ -419,12 +411,13 @@ left:0,
 right:0,
 bottom:0,
 height:100,
-background:`linear-gradient(to bottom, transparent, ${themeMap[theme] || "#0b0b12"})`
+background:"linear-gradient(to bottom, transparent, rgba(0,0,0,0.85))"
 }}/>
 
 </div>
 
 ) : (
+
 <div style={{
 display:"flex",
 flexDirection:"column",
