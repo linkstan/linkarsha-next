@@ -193,6 +193,8 @@ color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
+{/* SIDEBAR */}
+
 <div style={{
 width:260,
 background:"var(--sidebar)",
@@ -274,61 +276,13 @@ background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 Home
 </Link>
 
-<div
-onClick={()=>{
-setOpenLinkarsha(!openLinkarsha);
-setOpenTools(false);
-}}
-style={{
-...item,
-background: active("/dashboard/links") ? "var(--hover)" : "transparent"
-}}
->
-<span>My Linkarsha</span>
-<span>{openLinkarsha ? "v" : ">"}</span>
-</div>
-
-{openLinkarsha && (
-
-<div style={submenu}>
-<Link href="/dashboard/links" style={subitem}>My Links</Link>
-<Link href="/dashboard/link-history" style={subitem}>Link History</Link>
-<Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
-</div>
-
-)}
-
 <Link href="/dashboard/blocks" style={item}>Blocks</Link>
 <Link href="/dashboard/appearance" style={item}>Appearance</Link>
 <Link href="/dashboard/analytics" style={item}>Analytics</Link>
 
-<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
-
-<div
-onClick={()=>{
-setOpenTools(!openTools);
-setOpenLinkarsha(false);
-}}
-style={item}
->
-<span>Tools</span>
-<span>{openTools ? "v" : ">"}</span>
 </div>
 
-{openTools && (
-
-<div style={submenu}>
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>AI Bio Generator</Link>
-<Link href="/dashboard/tools/qr-code" style={subitem}>QR Code Generator</Link>
-<Link href="/dashboard/tools/export-data" style={subitem}>Export Data</Link>
-</div>
-
-)}
-
-<Link href="/dashboard/referrals" style={item}>Referrals</Link>
-<Link href="/dashboard/settings" style={item}>Settings</Link>
-
-</div>
+{/* MAIN + PHONE */}
 
 <div style={{flex:1,display:"flex"}}>
 
@@ -372,6 +326,8 @@ justifyContent:"center"
 
 </div>
 
+{/* PHONE PREVIEW */}
+
 {showPreview && profile && (
 
 <div style={{
@@ -379,7 +335,6 @@ width:360,
 display:"flex",
 justifyContent:"center",
 alignItems:"center",
-background:"var(--bg)",
 borderLeft:"1px solid var(--border)"
 }}>
 
@@ -388,8 +343,7 @@ width:280,
 height:520,
 background:"#000",
 borderRadius:30,
-padding:18,
-boxShadow:"0 40px 80px rgba(0,0,0,0.5)"
+padding:18
 }}>
 
 <div style={{
@@ -397,52 +351,36 @@ width:"100%",
 height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
-padding:20,
-overflow:"auto",
-color: theme === "Minimal" ? "#111" : "#fff"
-}}>
-
-<div style={{
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-textAlign:"center",
-marginBottom:20
-}}>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
 overflow:"hidden",
-background:"#222",
-marginBottom:10
+color:"#fff"
 }}>
 
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
+{/* HERO MODE */}
 
-</div>
+{header.layout==="hero" ? (
 
-{header.showDisplayName !== false && (
+<div>
+
+<div style={{
+height:160,
+backgroundImage:`url(${profile?.avatar || "/default-avatar.png"})`,
+backgroundSize:"cover",
+backgroundPosition:"center",
+filter:"blur(2px)"
+}}/>
+
+<div style={{
+padding:20,
+textAlign:"center"
+}}>
 
 <div style={{
 fontFamily: header.displayFont || "Poppins",
-fontWeight:600,
-fontSize: header.displaySize || 22
+fontSize: header.displaySize || 22,
+fontWeight:600
 }}>
 {profile?.display_name}
 </div>
-
-)}
-
-{header.showUsername !== false && (
 
 <div style={{
 fontFamily: header.usernameFont || "Roboto",
@@ -452,41 +390,74 @@ opacity:.7
 @{profile?.username}
 </div>
 
-)}
-
 <div style={{
 fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15,
 opacity:.7,
-marginTop:6,
-maxWidth:220
+marginTop:6
 }}>
 {profile?.bio}
 </div>
 
 </div>
 
-{blocks.map(block=>(
+</div>
 
-<a
-key={block.id}
-href={block.data_json?.url}
-target="_blank"
-style={{
+) : (
+
+/* CLASSIC MODE */
+
+<div style={{
 display:"flex",
+flexDirection:"column",
 alignItems:"center",
-background:"rgba(0,0,0,.25)",
-padding:12,
-borderRadius:10,
-marginTop:10,
-textDecoration:"none",
-color:"inherit"
-}}
->
-{block.data_json?.title}
-</a>
+textAlign:"center",
+padding:20
+}}>
 
-))}
+<div style={{
+width:70,
+height:70,
+borderRadius:"50%",
+overflow:"hidden",
+marginBottom:10
+}}>
+
+<img
+src={profile?.avatar || "/default-avatar.png"}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
+
+</div>
+
+<div style={{
+fontFamily: header.displayFont || "Poppins",
+fontSize: header.displaySize || 22,
+fontWeight:600
+}}>
+{profile?.display_name}
+</div>
+
+<div style={{
+fontFamily: header.usernameFont || "Roboto",
+fontSize: header.usernameSize || 14,
+opacity:.7
+}}>
+@{profile?.username}
+</div>
+
+<div style={{
+fontFamily: header.bioFont || "Lora",
+fontSize: header.bioSize || 15,
+opacity:.7,
+marginTop:6
+}}>
+{profile?.bio}
+</div>
+
+</div>
+
+)}
 
 </div>
 
@@ -513,21 +484,6 @@ color:"var(--text)",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
-};
-
-const submenu={
-marginLeft:10,
-marginTop:5,
-marginBottom:10
-};
-
-const subitem={
-display:"block",
-padding:"8px 10px",
-opacity:0.85,
-cursor:"pointer",
-textDecoration:"none",
-color:"var(--text)"
 };
 
 const dropdownItem={
