@@ -17,10 +17,7 @@ const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
 
-/* LIVE THEME */
 const [liveTheme,setLiveTheme] = useState(null);
-
-/* APPEARANCE SETTINGS */
 const [appearance,setAppearance] = useState({});
 
 const showPreview =
@@ -28,8 +25,6 @@ pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
-
-/* AUTO OPEN MENUS */
 
 useEffect(()=>{
 
@@ -42,8 +37,6 @@ setOpenTools(true);
 }
 
 },[pathname]);
-
-/* LIVE THEME LISTENER */
 
 useEffect(()=>{
 
@@ -59,8 +52,6 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
-/* LIVE APPEARANCE LISTENER */
-
 useEffect(()=>{
 
 function handleAppearance(e){
@@ -69,8 +60,6 @@ setAppearance(prev=>({
 ...prev,
 ...e.detail
 }));
-
-/* NEW: LIVE AVATAR UPDATE */
 
 if(e.detail?.avatar!==undefined){
 setProfile(prev=>({
@@ -88,8 +77,6 @@ window.removeEventListener("appearance-update",handleAppearance);
 };
 
 },[]);
-
-/* LOAD USER */
 
 useEffect(()=>{
 loadPreview();
@@ -110,11 +97,7 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-/* LOAD APPEARANCE */
-
 setAppearance(prof?.profile_settings || {});
-
-/* THEME MODE */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -124,8 +107,6 @@ document.documentElement.classList.add("dark");
 }else{
 document.documentElement.classList.remove("dark");
 }
-
-/* LOAD BLOCKS */
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -137,8 +118,6 @@ const {data:blockData} = await supabase
 setBlocks(blockData || []);
 
 }
-
-/* TOGGLE THEME MODE */
 
 async function toggleTheme(){
 
@@ -158,28 +137,28 @@ await supabase
 
 }
 
-/* LOGOUT */
-
 async function logout(){
 await supabase.auth.signOut();
 window.location="/login";
 }
 
-/* ACTIVE HELPER */
-
 function active(path){
 return pathname.startsWith(path);
 }
 
-/* THEME USED IN PREVIEW */
-
 const theme = liveTheme || profile?.theme;
-
-/* HEADER SETTINGS */
 
 const header = appearance?.header || {};
 
-/* THEME MAP */
+/* NEW FONT SYSTEM */
+
+const displayFont = header.displayFont || "Poppins";
+const usernameFont = header.usernameFont || "Roboto";
+const bioFont = header.bioFont || "Lora";
+
+const displaySize = header.displaySize || 22;
+const usernameSize = header.usernameSize || 14;
+const bioSize = header.bioSize || 15;
 
 const themeMap={
 
@@ -308,59 +287,9 @@ background: pathname === "/dashboard" ? "var(--hover)" : "transparent"
 Home
 </Link>
 
-<div
-onClick={()=>{
-setOpenLinkarsha(!openLinkarsha);
-setOpenTools(false);
-}}
-style={{
-...item,
-background: active("/dashboard/links") ? "var(--hover)" : "transparent"
-}}
->
-<span>My Linkarsha</span>
-<span>{openLinkarsha ? "v" : ">"}</span>
-</div>
-
-{openLinkarsha && (
-
-<div style={submenu}>
-<Link href="/dashboard/links" style={subitem}>My Links</Link>
-<Link href="/dashboard/link-history" style={subitem}>Link History</Link>
-<Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
-</div>
-
-)}
-
 <Link href="/dashboard/blocks" style={item}>Blocks</Link>
 <Link href="/dashboard/appearance" style={item}>Appearance</Link>
 <Link href="/dashboard/analytics" style={item}>Analytics</Link>
-
-<hr style={{margin:"20px 0",borderColor:"var(--border)"}}/>
-
-<div
-onClick={()=>{
-setOpenTools(!openTools);
-setOpenLinkarsha(false);
-}}
-style={item}
->
-<span>Tools</span>
-<span>{openTools ? "v" : ">"}</span>
-</div>
-
-{openTools && (
-
-<div style={submenu}>
-<Link href="/dashboard/tools/ai-bio-generator" style={subitem}>AI Bio Generator</Link>
-<Link href="/dashboard/tools/qr-code" style={subitem}>QR Code Generator</Link>
-<Link href="/dashboard/tools/export-data" style={subitem}>Export Data</Link>
-</div>
-
-)}
-
-<Link href="/dashboard/referrals" style={item}>Referrals</Link>
-<Link href="/dashboard/settings" style={item}>Settings</Link>
 
 </div>
 
@@ -369,40 +298,6 @@ style={item}
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
-
-<div
-onClick={toggleTheme}
-style={{
-position:"absolute",
-right:30,
-top:20,
-width:70,
-height:36,
-borderRadius:40,
-cursor:"pointer",
-background: mode==="dark"
-? "linear-gradient(45deg,#0f9bff,#00f2fe)"
-: "linear-gradient(45deg,#ff9a44,#ff5e62)",
-display:"flex",
-alignItems:"center",
-justifyContent: mode==="dark" ? "flex-start" : "flex-end",
-padding:4
-}}
->
-
-<div style={{
-width:28,
-height:28,
-borderRadius:"50%",
-background:"white",
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}>
-{mode==="dark" ? "🌙" : "☀️"}
-</div>
-
-</div>
 
 {children}
 
@@ -436,22 +331,23 @@ height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
 padding:20,
-overflow:"auto",
-color: theme === "Minimal" ? "#111" : "#fff"
+overflow:"auto"
 }}>
 
-{/* HEADER */}
+{/* HERO HEADER */}
 
-{header.layout === "hero" ? (
-
-<div style={{marginBottom:20}}>
+{header.layout==="hero" && (
 
 <div style={{
-height:120,
+height:140,
 borderRadius:16,
 background: themeMap[theme] || "#222",
-marginBottom:-40
+marginBottom:-50
 }}/>
+
+)}
+
+{/* HEADER CONTENT */}
 
 <div style={{
 display:"flex",
@@ -480,24 +376,25 @@ objectFit:"cover"
 
 </div>
 
-{header.showDisplayName !== false && (
+{header.showDisplayName!==false && (
 
 <div style={{
 marginTop:10,
-fontFamily: header.font || "Inter",
-fontWeight: header.fontWeight || 600,
-fontSize: header.fontSize || 22
+fontFamily:displayFont,
+fontSize:displaySize,
+fontWeight:600
 }}>
 {profile?.display_name}
 </div>
 
 )}
 
-{header.showUsername !== false && (
+{header.showUsername!==false && (
 
 <div style={{
 opacity:.7,
-fontSize:14
+fontSize:usernameSize,
+fontFamily:usernameFont
 }}>
 @{profile?.username}
 </div>
@@ -507,85 +404,13 @@ fontSize:14
 <div style={{
 marginTop:6,
 opacity:.7,
-fontSize:14
+fontSize:bioSize,
+fontFamily:bioFont
 }}>
 {profile?.bio}
 </div>
 
 </div>
-
-</div>
-
-) : (
-
-<div style={{
-display:"flex",
-flexDirection:"column",
-alignItems:
-header.alignment==="left"
-? "flex-start"
-: header.alignment==="right"
-? "flex-end"
-: "center",
-textAlign: header.alignment || "center",
-marginBottom:20
-}}>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden",
-background:"#222",
-marginBottom:10
-}}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
-
-</div>
-
-{header.showDisplayName !== false && (
-
-<div style={{
-fontFamily: header.font || "Inter",
-fontWeight: header.fontWeight || 600,
-fontSize: header.fontSize || 22
-}}>
-{profile?.display_name}
-</div>
-
-)}
-
-{header.showUsername !== false && (
-
-<div style={{
-opacity:.7,
-fontSize:14
-}}>
-@{profile?.username}
-</div>
-
-)}
-
-<div style={{
-marginTop:6,
-opacity:.7,
-fontSize:14,
-maxWidth:220
-}}>
-{profile?.bio}
-</div>
-
-</div>
-
-)}
 
 {blocks.map(block=>(
 
@@ -634,21 +459,6 @@ color:"var(--text)",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
-};
-
-const submenu={
-marginLeft:10,
-marginTop:5,
-marginBottom:10
-};
-
-const subitem={
-display:"block",
-padding:"8px 10px",
-opacity:0.85,
-cursor:"pointer",
-textDecoration:"none",
-color:"var(--text)"
 };
 
 const dropdownItem={
