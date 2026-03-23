@@ -403,19 +403,28 @@ overflow:"auto",
 color:"#fff"
 }}>
 
-{/* HERO HEADER */}
-
 {header.layout==="hero" ? (
 
 <div style={{
 height:200,
 backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
-backgroundPosition:"center"
+backgroundPosition:"center",
+position:"relative"
+}}>
+
+<div style={{
+position:"absolute",
+left:0,
+right:0,
+bottom:0,
+height:100,
+background:`linear-gradient(to bottom, transparent, ${themeMap[theme] || "#0b0b12"})`
 }}/>
 
-) : (
+</div>
 
+) : (
 <div style={{
 display:"flex",
 flexDirection:"column",
