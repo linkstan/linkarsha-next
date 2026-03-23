@@ -123,8 +123,6 @@ await supabase
 
 setAvatar(data.publicUrl);
 
-/* LIVE PREVIEW */
-
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
@@ -223,17 +221,39 @@ Remove
 
 <div style={{marginBottom:20}}>
 
-<div>Layout</div>
+<div style={{marginBottom:8}}>Layout</div>
 
-<select
-value={settings.layout}
-onChange={(e)=>updateSetting("layout",e.target.value)}
+<div style={{display:"flex",gap:10}}>
+
+<button
+onClick={()=>updateSetting("layout","classic")}
+style={{
+padding:"8px 16px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:settings.layout==="classic"?"var(--text)":"var(--card)",
+color:settings.layout==="classic"?"#fff":"var(--text)",
+cursor:"pointer"
+}}
 >
+Classic
+</button>
 
-<option value="classic">Classic</option>
-<option value="hero">Hero</option>
+<button
+onClick={()=>updateSetting("layout","hero")}
+style={{
+padding:"8px 16px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:settings.layout==="hero"?"var(--text)":"var(--card)",
+color:settings.layout==="hero"?"#fff":"var(--text)",
+cursor:"pointer"
+}}
+>
+Hero
+</button>
 
-</select>
+</div>
 
 </div>
 
@@ -305,18 +325,50 @@ onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
 
 <div style={{marginBottom:20}}>
 
-<div>Alignment</div>
+<div style={{marginBottom:8}}>Alignment</div>
 
-<select
-value={settings.alignment}
-onChange={(e)=>updateSetting("alignment",e.target.value)}
+<div style={{display:"flex",gap:10}}>
+
+<button
+onClick={()=>updateSetting("alignment","left")}
+style={{
+padding:"8px 14px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:settings.alignment==="left"?"var(--text)":"var(--card)",
+color:settings.alignment==="left"?"#fff":"var(--text)"
+}}
 >
+⬅ Left
+</button>
 
-<option value="left">Left</option>
-<option value="center">Center</option>
-<option value="right">Right</option>
+<button
+onClick={()=>updateSetting("alignment","center")}
+style={{
+padding:"8px 14px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:settings.alignment==="center"?"var(--text)":"var(--card)",
+color:settings.alignment==="center"?"#fff":"var(--text)"
+}}
+>
+⬤ Center
+</button>
 
-</select>
+<button
+onClick={()=>updateSetting("alignment","right")}
+style={{
+padding:"8px 14px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:settings.alignment==="right"?"var(--text)":"var(--card)",
+color:settings.alignment==="right"?"#fff":"var(--text)"
+}}
+>
+➡ Right
+</button>
+
+</div>
 
 </div>
 
