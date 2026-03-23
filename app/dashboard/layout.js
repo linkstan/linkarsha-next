@@ -409,31 +409,10 @@ color:"#fff"
 
 <div style={{
 height:200,
-position:"relative",
-overflow:"hidden"
-}}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover",
-filter:"blur(1.5px)",
-transform:"scale(1.05)"
-}}
-/>
-
-<div style={{
-position:"absolute",
-bottom:0,
-left:0,
-right:0,
-height:80,
-background:"linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.7))"
+backgroundImage:`url(${profile?.avatar})`,
+backgroundSize:"cover",
+backgroundPosition:"center"
 }}/>
-
-</div>
 
 ) : (
 
