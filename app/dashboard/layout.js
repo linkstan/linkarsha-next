@@ -399,44 +399,45 @@ width:"100%",
 height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
-padding:20,
-overflow:"auto"
+overflow:"auto",
+color:"#fff"
 }}>
 
-{/* HEADER */}
+{/* HERO HEADER */}
 
 {header.layout==="hero" ? (
 
-<div>
-
 <div style={{
-height:180,
+height:200,
 backgroundImage:`url(${profile?.avatar})`,
 backgroundSize:"cover",
 backgroundPosition:"center"
 }}/>
 
-</div>
-
 ) : (
 
-<div style={{textAlign:"center"}}>
+<div style={{
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+marginTop:20
+}}>
 
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
-overflow:"hidden",
-margin:"0 auto"
+overflow:"hidden"
 }}>
-<img src={profile?.avatar}/>
+<img
+src={profile?.avatar}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
+/>
 </div>
 
 </div>
 
 )}
-
-{/* TEXT */}
 
 <div style={{textAlign:"center",marginTop:10}}>
 
@@ -467,7 +468,7 @@ fontSize: header.bioSize || 15
 
 </div>
 
-{/* LINKS */}
+<div style={{padding:20}}>
 
 {blocks.map(block=>(
 
@@ -476,8 +477,7 @@ key={block.id}
 href={block.data_json?.url}
 target="_blank"
 style={{
-display:"flex",
-alignItems:"center",
+display:"block",
 background:"rgba(0,0,0,.25)",
 padding:12,
 borderRadius:10,
@@ -490,6 +490,8 @@ color:"inherit"
 </a>
 
 ))}
+
+</div>
 
 </div>
 
