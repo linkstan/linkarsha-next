@@ -78,31 +78,12 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
-const arrow={
-width:32,
-height:32,
-borderRadius:"50%",
-border:"1px solid var(--border)",
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-};
-
-const backArrow={
-width:34,
-height:34,
-borderRadius:"50%",
-border:"1px solid var(--border)",
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-cursor:"pointer"
-};
+/* CARD STYLE */
 
 const card={
 background:"var(--card)",
 padding:"18px",
-borderRadius:"14px",
+borderRadius:"16px",
 display:"flex",
 alignItems:"center",
 justifyContent:"space-between",
@@ -110,6 +91,19 @@ marginBottom:"14px",
 cursor:"pointer",
 border:"1px solid var(--border)",
 color:"var(--text)"
+};
+
+/* CIRCLE ARROW */
+
+const arrow={
+width:36,
+height:36,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+background:"var(--bg)"
 };
 
 const inputRow={
@@ -139,7 +133,13 @@ color:"var(--text)"
 
 <h2 style={{marginBottom:15}}>Theme</h2>
 
-<Link href="/dashboard/appearance/themes" style={{textDecoration:"none",color:"var(--text)"}}>
+<Link
+href="/dashboard/appearance/themes"
+style={{
+textDecoration:"none",
+color:"var(--text)"
+}}
+>
 
 <div style={{
 background:"var(--card)",
@@ -182,9 +182,16 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
+
 {/* HEADER */}
 
-<Link href="/dashboard/appearance/header" style={{textDecoration:"none",color:"var(--text)"}}>
+<Link
+href="/dashboard/appearance/header"
+style={{
+textDecoration:"none",
+color:"var(--text)"
+}}
+>
 
 <div style={card}>
 
@@ -199,12 +206,18 @@ Customize theme
 
 </Link>
 
+
 {/* WALLPAPER */}
 
 <div style={card} onClick={()=>setEditor("wallpaper")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{width:36,height:36,borderRadius:"10px",background:"linear-gradient(45deg,#ff7a18,#ffd000)"}}/>
+<div style={{
+width:36,
+height:36,
+borderRadius:"10px",
+background:"linear-gradient(45deg,#ff7a18,#ffd000)"
+}}/>
 <div>Wallpaper</div>
 </div>
 
@@ -212,18 +225,25 @@ Customize theme
 
 </div>
 
+
 {/* BUTTONS */}
 
 <div style={card} onClick={()=>setEditor("buttons")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{width:38,height:18,border:"2px solid var(--text)",borderRadius:"6px"}}/>
+<div style={{
+width:38,
+height:18,
+border:"2px solid var(--text)",
+borderRadius:"6px"
+}}/>
 <div>Buttons</div>
 </div>
 
 <div style={arrow}>→</div>
 
 </div>
+
 
 {/* TEXT */}
 
@@ -238,12 +258,19 @@ Customize theme
 
 </div>
 
+
 {/* COLORS */}
 
 <div style={card} onClick={()=>setEditor("colors")}>
 
 <div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{width:30,height:30,background:"var(--bg)",borderRadius:"6px",border:"1px solid var(--border)"}}/>
+<div style={{
+width:30,
+height:30,
+background:"var(--bg)",
+borderRadius:"6px",
+border:"1px solid var(--border)"
+}}/>
 <div>Colors</div>
 </div>
 
@@ -268,8 +295,20 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
-<div style={backArrow}>←</div>
+<div
+onClick={()=>setEditor("main")}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+cursor:"pointer",
+marginBottom:20
+}}
+>
+
+<div style={arrow}>←</div>
+<div>Wallpaper</div>
+
 </div>
 
 <h3>Wallpaper Style</h3>
@@ -302,8 +341,20 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
-<div style={backArrow}>←</div>
+<div
+onClick={()=>setEditor("main")}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+cursor:"pointer",
+marginBottom:20
+}}
+>
+
+<div style={arrow}>←</div>
+<div>Buttons</div>
+
 </div>
 
 <h3>Button Style</h3>
@@ -338,8 +389,20 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
-<div style={backArrow}>←</div>
+<div
+onClick={()=>setEditor("main")}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+cursor:"pointer",
+marginBottom:20
+}}
+>
+
+<div style={arrow}>←</div>
+<div>Text</div>
+
 </div>
 
 <h3>Font</h3>
@@ -373,8 +436,20 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
-<div style={backArrow}>←</div>
+<div
+onClick={()=>setEditor("main")}
+style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+cursor:"pointer",
+marginBottom:20
+}}
+>
+
+<div style={arrow}>←</div>
+<div>Colors</div>
+
 </div>
 
 <h3>Buttons</h3>
