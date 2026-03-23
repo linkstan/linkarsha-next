@@ -76,29 +76,32 @@ paddingTop: 40
 
 {header.layout === "hero" ? (
 
-<div
-style={{
-width: "100%",
-height: 220,
-backgroundImage: `url(${profile.avatar})`,
-backgroundSize: "cover",
-backgroundPosition: "center",
-position: "relative"
-}}
->
+<div style={{
+width:"100%",
+height:220,
+position:"relative",
+overflow:"hidden"
+}}>
 
-{/* FADE OVERLAY */}
+<div style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+backgroundImage:`url(${profile.avatar})`,
+backgroundSize:"cover",
+backgroundPosition:"center"
+}}/>
 
-<div
-style={{
-position: "absolute",
-bottom: 0,
-left: 0,
-right: 0,
-height: 120,
-background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
-}}
-/>
+<div style={{
+position:"absolute",
+left:0,
+right:0,
+bottom:0,
+height:120,
+background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%)"
+}}/>
 
 </div>
 
