@@ -94,7 +94,7 @@ color: "#fff",
 display: "flex",
 flexDirection: "column",
 alignItems: "center",
-paddingTop: 40
+paddingTop: 0
 }}
 >
 
@@ -104,7 +104,7 @@ paddingTop: 40
 
 <div style={{
 width:"100%",
-height:220,
+height:260,
 position:"relative",
 overflow:"hidden"
 }}>
@@ -127,7 +127,7 @@ left:0,
 right:0,
 bottom:0,
 height:140,
-background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.95) 100%)",
+background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)"
 zIndex:2
 }}/>
 
