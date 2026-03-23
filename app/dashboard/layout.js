@@ -17,10 +17,7 @@ const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
 
-/* LIVE THEME */
 const [liveTheme,setLiveTheme] = useState(null);
-
-/* APPEARANCE SETTINGS */
 const [appearance,setAppearance] = useState({});
 
 const showPreview =
@@ -28,8 +25,6 @@ pathname === "/dashboard" ||
 pathname.startsWith("/dashboard/links") ||
 pathname.startsWith("/dashboard/blocks") ||
 pathname.startsWith("/dashboard/appearance");
-
-/* AUTO OPEN MENUS */
 
 useEffect(()=>{
 
@@ -42,8 +37,6 @@ setOpenTools(true);
 }
 
 },[pathname]);
-
-/* LIVE THEME LISTENER */
 
 useEffect(()=>{
 
@@ -59,8 +52,6 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
-/* LIVE APPEARANCE LISTENER */
-
 useEffect(()=>{
 
 function handleAppearance(e){
@@ -69,8 +60,6 @@ setAppearance(prev=>({
 ...prev,
 ...e.detail
 }));
-
-/* NEW: LIVE AVATAR UPDATE */
 
 if(e.detail?.avatar!==undefined){
 setProfile(prev=>({
@@ -88,8 +77,6 @@ window.removeEventListener("appearance-update",handleAppearance);
 };
 
 },[]);
-
-/* LOAD USER */
 
 useEffect(()=>{
 loadPreview();
@@ -110,11 +97,7 @@ const {data:prof} = await supabase
 
 setProfile(prof);
 
-/* LOAD APPEARANCE */
-
 setAppearance(prof?.profile_settings || {});
-
-/* THEME MODE */
 
 const savedMode = prof?.theme_mode || "light";
 setMode(savedMode);
@@ -124,8 +107,6 @@ document.documentElement.classList.add("dark");
 }else{
 document.documentElement.classList.remove("dark");
 }
-
-/* LOAD BLOCKS */
 
 const {data:blockData} = await supabase
 .from("blocks")
@@ -137,8 +118,6 @@ const {data:blockData} = await supabase
 setBlocks(blockData || []);
 
 }
-
-/* TOGGLE THEME MODE */
 
 async function toggleTheme(){
 
@@ -158,28 +137,17 @@ await supabase
 
 }
 
-/* LOGOUT */
-
 async function logout(){
 await supabase.auth.signOut();
 window.location="/login";
 }
 
-/* ACTIVE HELPER */
-
 function active(path){
 return pathname.startsWith(path);
 }
 
-/* THEME USED IN PREVIEW */
-
 const theme = liveTheme || profile?.theme;
-
-/* HEADER SETTINGS */
-
 const header = appearance?.header || {};
-
-/* THEME MAP */
 
 const themeMap={
 
@@ -224,8 +192,6 @@ background:"var(--bg)",
 color:"var(--text)",
 fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
-
-{/* SIDEBAR */}
 
 <div style={{
 width:260,
@@ -364,8 +330,6 @@ style={item}
 
 </div>
 
-{/* MAIN + PHONE */}
-
 <div style={{flex:1,display:"flex"}}>
 
 <div style={{flex:1,padding:40,position:"relative"}}>
@@ -408,8 +372,6 @@ justifyContent:"center"
 
 </div>
 
-{/* PHONE PREVIEW */}
-
 {showPreview && profile && (
 
 <div style={{
@@ -440,94 +402,11 @@ overflow:"auto",
 color: theme === "Minimal" ? "#111" : "#fff"
 }}>
 
-{/* HEADER */}
-
-{header.layout === "hero" ? (
-
-<div style={{marginBottom:20}}>
-
-<div style={{
-height:120,
-borderRadius:16,
-background: themeMap[theme] || "#222",
-marginBottom:-40
-}}/>
-
 <div style={{
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-textAlign:"center"
-}}>
-
-<div style={{
-width:80,
-height:80,
-borderRadius:"50%",
-overflow:"hidden",
-background:"#222",
-border:"4px solid white"
-}}>
-
-<img
-src={profile?.avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
-
-</div>
-
-{header.showDisplayName !== false && (
-
-<div style={{
-marginTop:10,
-fontFamily: header.font || "Inter",
-fontWeight: header.fontWeight || 600,
-fontSize: header.fontSize || 22
-}}>
-{profile?.display_name}
-</div>
-
-)}
-
-{header.showUsername !== false && (
-
-<div style={{
-opacity:.7,
-fontSize:14
-}}>
-@{profile?.username}
-</div>
-
-)}
-
-<div style={{
-marginTop:6,
-opacity:.7,
-fontSize:14
-}}>
-{profile?.bio}
-</div>
-
-</div>
-
-</div>
-
-) : (
-
-<div style={{
-display:"flex",
-flexDirection:"column",
-alignItems:
-header.alignment==="left"
-? "flex-start"
-: header.alignment==="right"
-? "flex-end"
-: "center",
-textAlign: header.alignment || "center",
+textAlign:"center",
 marginBottom:20
 }}>
 
@@ -554,9 +433,9 @@ objectFit:"cover"
 {header.showDisplayName !== false && (
 
 <div style={{
-fontFamily: header.font || "Inter",
-fontWeight: header.fontWeight || 600,
-fontSize: header.fontSize || 22
+fontFamily: header.displayFont || "Poppins",
+fontWeight:600,
+fontSize: header.displaySize || 22
 }}>
 {profile?.display_name}
 </div>
@@ -566,8 +445,9 @@ fontSize: header.fontSize || 22
 {header.showUsername !== false && (
 
 <div style={{
-opacity:.7,
-fontSize:14
+fontFamily: header.usernameFont || "Roboto",
+fontSize: header.usernameSize || 14,
+opacity:.7
 }}>
 @{profile?.username}
 </div>
@@ -575,17 +455,16 @@ fontSize:14
 )}
 
 <div style={{
-marginTop:6,
+fontFamily: header.bioFont || "Lora",
+fontSize: header.bioSize || 15,
 opacity:.7,
-fontSize:14,
+marginTop:6,
 maxWidth:220
 }}>
 {profile?.bio}
 </div>
 
 </div>
-
-)}
 
 {blocks.map(block=>(
 
