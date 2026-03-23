@@ -78,6 +78,27 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
+const arrow={
+width:32,
+height:32,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+};
+
+const backArrow={
+width:34,
+height:34,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer"
+};
+
 const card={
 background:"var(--card)",
 padding:"18px",
@@ -118,7 +139,7 @@ color:"var(--text)"
 
 <h2 style={{marginBottom:15}}>Theme</h2>
 
-<Link href="/dashboard/appearance/themes" style={{textDecoration:"none"}}>
+<Link href="/dashboard/appearance/themes" style={{textDecoration:"none",color:"var(--text)"}}>
 
 <div style={{
 background:"var(--card)",
@@ -146,7 +167,7 @@ border:"1px solid var(--border)"
 
 </div>
 
-<div style={{opacity:.7}}>More →</div>
+<div style={arrow}>→</div>
 
 </div>
 
@@ -161,10 +182,9 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
-
 {/* HEADER */}
 
-<Link href="/dashboard/appearance/header" style={{textDecoration:"none"}}>
+<Link href="/dashboard/appearance/header" style={{textDecoration:"none",color:"var(--text)"}}>
 
 <div style={card}>
 
@@ -173,12 +193,11 @@ Customize theme
 <div>Header</div>
 </div>
 
-<div>→</div>
+<div style={arrow}>→</div>
 
 </div>
 
 </Link>
-
 
 {/* WALLPAPER */}
 
@@ -189,10 +208,9 @@ Customize theme
 <div>Wallpaper</div>
 </div>
 
-<div>→</div>
+<div style={arrow}>→</div>
 
 </div>
-
 
 {/* BUTTONS */}
 
@@ -203,10 +221,9 @@ Customize theme
 <div>Buttons</div>
 </div>
 
-<div>→</div>
+<div style={arrow}>→</div>
 
 </div>
-
 
 {/* TEXT */}
 
@@ -217,10 +234,9 @@ Customize theme
 <div>Text</div>
 </div>
 
-<div>→</div>
+<div style={arrow}>→</div>
 
 </div>
-
 
 {/* COLORS */}
 
@@ -231,7 +247,7 @@ Customize theme
 <div>Colors</div>
 </div>
 
-<div>→</div>
+<div style={arrow}>→</div>
 
 </div>
 
@@ -252,8 +268,8 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Wallpaper
+<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
+<div style={backArrow}>←</div>
 </div>
 
 <h3>Wallpaper Style</h3>
@@ -286,8 +302,8 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Buttons
+<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
+<div style={backArrow}>←</div>
 </div>
 
 <h3>Button Style</h3>
@@ -322,8 +338,8 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Text
+<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
+<div style={backArrow}>←</div>
 </div>
 
 <h3>Font</h3>
@@ -339,7 +355,7 @@ return(
 
 <div style={inputRow}>
 <div>#FFFFFF</div>
-<div>→</div>
+<div style={arrow}>→</div>
 </div>
 
 </div>
@@ -357,21 +373,21 @@ return(
 
 <div style={{padding:20,maxWidth:650}}>
 
-<div onClick={()=>setEditor("main")} style={{cursor:"pointer",marginBottom:20}}>
-← Colors
+<div onClick={()=>setEditor("main")} style={{marginBottom:20}}>
+<div style={backArrow}>←</div>
 </div>
 
 <h3>Buttons</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+<div style={inputRow}><div>#FFFFFF</div><div style={arrow}>→</div></div>
 
 <h3>Button Text</h3>
-<div style={inputRow}><div>#000000</div><div>→</div></div>
+<div style={inputRow}><div>#000000</div><div style={arrow}>→</div></div>
 
 <h3>Page Text</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+<div style={inputRow}><div>#FFFFFF</div><div style={arrow}>→</div></div>
 
 <h3>Title Text</h3>
-<div style={inputRow}><div>#FFFFFF</div><div>→</div></div>
+<div style={inputRow}><div>#FFFFFF</div><div style={arrow}>→</div></div>
 
 </div>
 
