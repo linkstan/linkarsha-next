@@ -2,21 +2,29 @@
 
 import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function HeaderEditor(){
 
+const router = useRouter();
+
 const [settings,setSettings]=useState({
 layout:"classic",
+
 showDisplayName:true,
 showUsername:true,
-font:"Inter",
-fontWeight:"bold",
-fontSize:22,
+
+displayFont:"Poppins",
+usernameFont:"Roboto",
+bioFont:"Lora",
+
+displaySize:22,
+usernameSize:14,
+bioSize:15,
+
 alignment:"center",
-backgroundType:"transparent",
-backgroundColor:"#000000",
-backgroundGradient:["#141e30","#243b55"],
-backgroundImage:""
+
+advancedFonts:false
 });
 
 const [avatar,setAvatar]=useState(null);
@@ -97,7 +105,7 @@ await supabase
 
 }
 
-/* AVATAR UPLOAD */
+/* AVATAR */
 
 async function uploadAvatar(e){
 
@@ -129,27 +137,6 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 
 }
 
-/* REMOVE AVATAR */
-
-async function removeAvatar(){
-
-const {data:{session}}=await supabase.auth.getSession();
-
-await supabase
-.from("profiles")
-.update({avatar:null})
-.eq("id",session.user.id);
-
-setAvatar(null);
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{avatar:null}})
-);
-
-}
-
-/* UI STYLES */
-
 const section={
 background:"var(--card)",
 border:"1px solid var(--border)",
@@ -158,12 +145,12 @@ padding:20,
 marginBottom:20
 };
 
-const optionButton=(active)=>({
+const btn=(active)=>({
 padding:"8px 16px",
 borderRadius:20,
 border:"1px solid var(--border)",
-background:active ? "var(--text)" : "var(--card)",
-color:active ? "#fff" : "var(--text)",
+background:active?"var(--text)":"var(--card)",
+color:active?"#fff":"var(--text)",
 cursor:"pointer"
 });
 
@@ -171,40 +158,56 @@ return(
 
 <div style={{maxWidth:650}}>
 
-<h2 style={{marginBottom:20}}>Header</h2>
+{/* HEADER */}
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:12,
+marginBottom:20
+}}>
+
+<div
+onClick={()=>router.back()}
+style={{
+width:36,
+height:36,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer"
+}}
+>
+←
+</div>
+
+<h2>Header</h2>
+
+</div>
 
 {/* PROFILE IMAGE */}
 
 <div style={section}>
 
-<h3 style={{marginBottom:10}}>Profile Image</h3>
+<h3>Profile Image</h3>
 
-<div style={{
-display:"flex",
-alignItems:"center",
-gap:20
-}}>
+<div style={{display:"flex",gap:20,alignItems:"center"}}>
 
 <div style={{
 width:70,
 height:70,
 borderRadius:"50%",
-background:"#ccc",
 overflow:"hidden"
 }}>
 
 <img
 src={avatar || "/default-avatar.png"}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 
 </div>
-
-<div style={{display:"flex",flexDirection:"column",gap:10}}>
 
 <label style={{
 padding:"8px 14px",
@@ -221,20 +224,6 @@ style={{display:"none"}}
 />
 </label>
 
-<button
-onClick={removeAvatar}
-style={{
-padding:"8px 14px",
-border:"1px solid var(--border)",
-borderRadius:20,
-cursor:"pointer"
-}}
->
-Remove
-</button>
-
-</div>
-
 </div>
 
 </div>
@@ -243,20 +232,20 @@ Remove
 
 <div style={section}>
 
-<h3 style={{marginBottom:10}}>Layout</h3>
+<h3>Layout</h3>
 
 <div style={{display:"flex",gap:10}}>
 
 <button
 onClick={()=>updateSetting("layout","classic")}
-style={optionButton(settings.layout==="classic")}
+style={btn(settings.layout==="classic")}
 >
 Classic
 </button>
 
 <button
 onClick={()=>updateSetting("layout","hero")}
-style={optionButton(settings.layout==="hero")}
+style={btn(settings.layout==="hero")}
 >
 Hero
 </button>
@@ -265,57 +254,134 @@ Hero
 
 </div>
 
-{/* DISPLAY OPTIONS */}
+{/* DISPLAY */}
 
 <div style={section}>
 
-<h3 style={{marginBottom:10}}>Display</h3>
-
-<label style={{display:"block",marginBottom:10}}>
-
+<label>
 <input
 type="checkbox"
 checked={settings.showDisplayName}
 onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 />
-
  Show Display Name
-
 </label>
 
-<label>
+<br/>
 
+<label>
 <input
 type="checkbox"
 checked={settings.showUsername}
 onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 />
-
  Show Username
-
 </label>
 
 </div>
 
-{/* FONT */}
+{/* FONTS */}
 
 <div style={section}>
 
-<h3 style={{marginBottom:10}}>Font</h3>
+<h3>Fonts</h3>
+
+<label>
+<input
+type="checkbox"
+checked={settings.advancedFonts}
+onChange={(e)=>updateSetting("advancedFonts",e.target.checked)}
+/>
+ Show advanced font options
+</label>
+
+{settings.advancedFonts && (
+
+<div style={{marginTop:15}}>
+
+<h4>Display Name Font</h4>
 
 <select
-value={settings.font}
-onChange={(e)=>updateSetting("font",e.target.value)}
+value={settings.displayFont}
+onChange={(e)=>updateSetting("displayFont",e.target.value)}
 >
 
-<option>Inter</option>
-<option>Poppins</option>
+<option>Default</option>
 <option>Montserrat</option>
+<option>Poppins</option>
 <option>Playfair Display</option>
+<option>Raleway</option>
+<option>Rubik</option>
+<option>Josefin Sans</option>
 <option>Oswald</option>
-<option>Manrope</option>
+<option>Spectral</option>
+<option>Lora</option>
+<option>Bitter</option>
+<option>Source Code Pro</option>
+<option>Inconsolata</option>
+<option>Roboto Condensed</option>
+<option>Encode Sans Semi Condensed</option>
+<option>Asap Condensed</option>
+<option>Allura</option>
+<option>Great Vibes</option>
+<option>Pinyon Script</option>
+<option>Dancing Script</option>
+<option>Pacifico</option>
+<option>Sacramento</option>
 
 </select>
+
+<h4>Username Font</h4>
+
+<select
+value={settings.usernameFont}
+onChange={(e)=>updateSetting("usernameFont",e.target.value)}
+>
+
+<option>Default</option>
+<option>Roboto</option>
+<option>Open Sans</option>
+<option>Lato</option>
+<option>Nunito</option>
+<option>Source Sans 3</option>
+<option>Karla</option>
+<option>Assistant</option>
+<option>Work Sans</option>
+<option>Cabin</option>
+<option>Rubik</option>
+
+</select>
+
+<h4>Bio Font</h4>
+
+<select
+value={settings.bioFont}
+onChange={(e)=>updateSetting("bioFont",e.target.value)}
+>
+
+<option>Default</option>
+<option>Merriweather</option>
+<option>Lora</option>
+<option>PT Serif</option>
+<option>Crimson Text</option>
+<option>Libre Baskerville</option>
+<option>Spectral</option>
+<option>Domine</option>
+<option>Gelasio</option>
+<option>Alegreya</option>
+<option>Bitter</option>
+<option>Allura</option>
+<option>Great Vibes</option>
+<option>Pinyon Script</option>
+<option>Dancing Script</option>
+<option>Pacifico</option>
+<option>Sacramento</option>
+
+</select>
+
+</div>
+
+)}
 
 </div>
 
@@ -323,68 +389,37 @@ onChange={(e)=>updateSetting("font",e.target.value)}
 
 <div style={section}>
 
-<h3 style={{marginBottom:10}}>Font Size</h3>
+<h3>Font Size</h3>
+
+Display Name
 
 <input
 type="range"
 min="16"
 max="40"
-value={settings.fontSize}
-onChange={(e)=>updateSetting("fontSize",Number(e.target.value))}
+value={settings.displaySize}
+onChange={(e)=>updateSetting("displaySize",Number(e.target.value))}
 />
 
-</div>
+Username
 
-{/* ALIGNMENT */}
+<input
+type="range"
+min="10"
+max="20"
+value={settings.usernameSize}
+onChange={(e)=>updateSetting("usernameSize",Number(e.target.value))}
+/>
 
-<div style={section}>
+Bio
 
-<h3 style={{marginBottom:10}}>Alignment</h3>
-
-<div style={{display:"flex",gap:10}}>
-
-<button
-onClick={()=>updateSetting("alignment","left")}
-style={optionButton(settings.alignment==="left")}
->
-⬅ Left
-</button>
-
-<button
-onClick={()=>updateSetting("alignment","center")}
-style={optionButton(settings.alignment==="center")}
->
-⬤ Center
-</button>
-
-<button
-onClick={()=>updateSetting("alignment","right")}
-style={optionButton(settings.alignment==="right")}
->
-➡ Right
-</button>
-
-</div>
-
-</div>
-
-{/* HEADER BACKGROUND */}
-
-<div style={section}>
-
-<h3 style={{marginBottom:10}}>Header Background</h3>
-
-<select
-value={settings.backgroundType}
-onChange={(e)=>updateSetting("backgroundType",e.target.value)}
->
-
-<option value="transparent">Transparent</option>
-<option value="solid">Solid</option>
-<option value="gradient">Gradient</option>
-<option value="image">Image</option>
-
-</select>
+<input
+type="range"
+min="10"
+max="20"
+value={settings.bioSize}
+onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
+/>
 
 </div>
 
