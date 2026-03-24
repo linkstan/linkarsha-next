@@ -161,7 +161,7 @@ fontFamily: header.usernameFont || "Roboto",
 fontSize: header.usernameSize || 14,
 opacity: 0.7
 }}>
->
+
 @{profile.username}
 </div>
 )}
@@ -172,7 +172,7 @@ fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15,
 opacity: 0.7
 }}>
->
+
 {profile.bio}
 </p>
 
