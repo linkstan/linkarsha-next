@@ -118,8 +118,8 @@ bottom:0,
 backgroundImage:`url(${profile.avatar})`,
 backgroundSize:"cover",
 backgroundPosition:"center",
-WebkitMaskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
-maskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0))"
+WebkitMaskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0))",
+maskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0))"
 }}/>
 
 </div>
