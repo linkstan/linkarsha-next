@@ -109,8 +109,6 @@ position:"relative",
 overflow:"hidden"
 }}>
 
-{/* hero image with fade */}
-
 <div style={{
 position:"absolute",
 top:0,
@@ -120,23 +118,8 @@ bottom:0,
 backgroundImage:`url(${profile.avatar})`,
 backgroundSize:"cover",
 backgroundPosition:"center",
-WebkitMaskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0))",
-maskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0))",
-zIndex:2
-}}/>
-
-{/* blurred theme glow */}
-
-<div style={{
-position:"absolute",
-left:0,
-right:0,
-bottom:-40,
-height:120,
-background: themeBackground,
-filter:"blur(60px)",
-opacity:.8,
-zIndex:1
+WebkitMaskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
+maskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0))"
 }}/>
 
 </div>
