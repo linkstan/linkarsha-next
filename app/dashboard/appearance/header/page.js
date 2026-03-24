@@ -553,19 +553,43 @@ marginTop:10
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("display","up")}>↑</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("display","up")}
+>
+↑
+</button>
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("display","left")}>←</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("display","left")}
+>
+←
+</button>
 
 <button style={arrow} disabled>•</button>
 
-<button style={arrow} onClick={()=>move("display","right")}>→</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("display","right")}
+>
+→
+</button>
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("display","down")}>↓</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("display","down")}
+>
+↓
+</button>
 
 <div></div>
 
@@ -584,19 +608,43 @@ marginTop:10
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("username","up")}>↑</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("username","up")}
+>
+↑
+</button>
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("username","left")}>←</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("username","left")}
+>
+←
+</button>
 
 <button style={arrow} disabled>•</button>
 
-<button style={arrow} onClick={()=>move("username","right")}>→</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("username","right")}
+>
+→
+</button>
 
 <div></div>
 
-<button style={arrow} onClick={()=>move("username","down")}>↓</button>
+<button
+style={arrow}
+disabled={!settings.displayAdvanced}
+onClick={()=>move("username","down")}
+>
+↓
+</button>
 
 <div></div>
 
