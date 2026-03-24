@@ -135,21 +135,25 @@ await supabase
 /* AVATAR UPLOAD */
 function move(type,dir){
 
-let align=settings[type+"Align"] || {x:0,y:0};
+let align={...(settings[type+"Align"] || {x:0,y:0})};
 
 if(dir==="up") align.y -= 5;
 if(dir==="down") align.y += 5;
 if(dir==="left") align.x -= 5;
 if(dir==="right") align.x += 5;
 
-updateSetting(type+"Align",align);
-
-window.dispatchEvent(new CustomEvent("appearance-update",{
-detail:{header:{
+const newSettings={
 ...settings,
 [type+"Align"]:align
-}}
-}));
+};
+
+setSettings(newSettings);
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{header:newSettings}})
+);
+
+updateSetting(type+"Align",align);
 
 }
 async function uploadAvatar(e){
@@ -191,7 +195,15 @@ borderRadius:14,
 padding:20,
 marginBottom:20
 };
-
+const arrow={
+width:40,
+height:40,
+borderRadius:10,
+border:"1px solid var(--border)",
+background:"var(--card)",
+cursor:"pointer",
+fontSize:16
+};
 const btn=(active)=>({
 padding:"8px 16px",
 borderRadius:20,
@@ -527,14 +539,33 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 
 <h4>Display Alignment</h4>
 
-<button onClick={()=>move("display","up")}>↑</button>
+<div style={{
+display:"grid",
+gridTemplateColumns:"40px 40px 40px",
+gap:6,
+justifyContent:"center",
+marginTop:10
+}}>
 
-<div>
-<button onClick={()=>move("display","left")}>←</button>
-<button onClick={()=>move("display","right")}>→</button>
+<div></div>
+
+<button style={arrow} onClick={()=>move("display","up")}>↑</button>
+
+<div></div>
+
+<button style={arrow} onClick={()=>move("display","left")}>←</button>
+
+<button style={arrow} disabled>•</button>
+
+<button style={arrow} onClick={()=>move("display","right")}>→</button>
+
+<div></div>
+
+<button style={arrow} onClick={()=>move("display","down")}>↓</button>
+
+<div></div>
+
 </div>
-
-<button onClick={()=>move("display","down")}>↓</button>
 
 
 <h4 style={{marginTop:20}}>Username Alignment</h4>
