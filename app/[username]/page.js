@@ -47,6 +47,7 @@ setBlocks(blockData || []);
 if (!profile) return null;
 
 const header = appearance?.header || {};
+const heroTextOffset = header.layout === "hero" ? -40 : 0;
 
 const themeMap={
 
