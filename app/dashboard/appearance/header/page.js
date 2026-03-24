@@ -570,14 +570,33 @@ marginTop:10
 
 <h4 style={{marginTop:20}}>Username Alignment</h4>
 
-<button onClick={()=>move("username","up")}>↑</button>
+<div style={{
+display:"grid",
+gridTemplateColumns:"40px 40px 40px",
+gap:6,
+justifyContent:"center",
+marginTop:10
+}}>
 
-<div>
-<button onClick={()=>move("username","left")}>←</button>
-<button onClick={()=>move("username","right")}>→</button>
+<div></div>
+
+<button style={arrow} onClick={()=>move("username","up")}>↑</button>
+
+<div></div>
+
+<button style={arrow} onClick={()=>move("username","left")}>←</button>
+
+<button style={arrow} disabled>•</button>
+
+<button style={arrow} onClick={()=>move("username","right")}>→</button>
+
+<div></div>
+
+<button style={arrow} onClick={()=>move("username","down")}>↓</button>
+
+<div></div>
+
 </div>
-
-<button onClick={()=>move("username","down")}>↓</button>
 
 </div>
 
