@@ -518,9 +518,20 @@ type="radio"
 name="alignmentMode"
 checked={!settings.displayAdvanced}
 onChange={()=>{
+const newSettings={
+...settings,
+displayAdvanced:false,
+displayAlign:{x:0,y:0},
+usernameAlign:{x:0,y:0}
+};
+
+setSettings(newSettings);
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{header:newSettings}})
+);
+
 updateSetting("displayAdvanced",false);
-updateSetting("displayAlign",{x:0,y:0});
-updateSetting("usernameAlign",{x:0,y:0});
 }}
 />
  Default
