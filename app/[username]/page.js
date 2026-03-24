@@ -173,6 +173,7 @@ transform: header.layout==="hero"
 </div>
 )}
 
+{header.showBio !== false && (
 <p style={{
 fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15,
@@ -183,6 +184,7 @@ transform: header.layout==="hero"
 }}>
 {profile.bio}
 </p>
+)}
 
 </div>
 
