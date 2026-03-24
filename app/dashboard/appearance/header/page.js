@@ -484,6 +484,7 @@ Bio ({settings.bioSize}px)
 </div>
 
 <input
+<input
 type="range"
 min="10"
 max="20"
@@ -525,114 +526,29 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 
 <div style={{marginTop:15}}>
 
-<div
-style={{
-width:140,
-height:140,
-border:"1px solid var(--border)",
-borderRadius:12,
-position:"relative",
-marginTop:15,
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}
+<h4>Display Alignment</h4>
 
-onMouseMove={(e)=>{
+<button onClick={()=>move("display","up")}>↑</button>
 
-if(!dragDisplay) return;
-
-const rect=e.currentTarget.getBoundingClientRect();
-
-const x=e.clientX-rect.left-70;
-const y=e.clientY-rect.top-70;
-
-updateSetting("displayAlign",{x,y});
-
-window.dispatchEvent(new CustomEvent("appearance-update",{
-detail:{header:{
-...settings,
-displayAlign:{x,y}
-}}
-}));
-
-}}
-
-onMouseDown={()=>setDragDisplay(true)}
-onMouseUp={()=>setDragDisplay(false)}
-onMouseLeave={()=>setDragDisplay(false)}
-
->
-
-<div
-style={{
-width:18,
-height:18,
-borderRadius:"50%",
-background:"var(--text)",
-cursor:"grab",
-position:"absolute",
-left:70+(settings.displayAlign?.x||0),
-top:70+(settings.displayAlign?.y||0)
-}}
-/>
-
+<div>
+<button onClick={()=>move("display","left")}>←</button>
+<button onClick={()=>move("display","right")}>→</button>
 </div>
+
+<button onClick={()=>move("display","down")}>↓</button>
+
+
 <h4 style={{marginTop:20}}>Username Alignment</h4>
 
-<div
-style={{
-width:140,
-height:140,
-border:"1px solid var(--border)",
-borderRadius:12,
-position:"relative",
-marginTop:10,
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}
+<button onClick={()=>move("username","up")}>↑</button>
 
-onMouseMove={(e)=>{
-
-if(!dragUsername) return;
-
-const rect=e.currentTarget.getBoundingClientRect();
-
-const x=e.clientX-rect.left-70;
-const y=e.clientY-rect.top-70;
-
-updateSetting("usernameAlign",{x,y});
-
-window.dispatchEvent(new CustomEvent("appearance-update",{
-detail:{header:{
-...settings,
-usernameAlign:{x,y}
-}}
-}));
-
-}}
-
-onMouseDown={()=>setDragUsername(true)}
-onMouseUp={()=>setDragUsername(false)}
-onMouseLeave={()=>setDragUsername(false)}
-
->
-
-<div
-style={{
-width:18,
-height:18,
-borderRadius:"50%",
-background:"var(--text)",
-cursor:"grab",
-position:"absolute",
-left:70+(settings.usernameAlign?.x||0),
-top:70+(settings.usernameAlign?.y||0)
-}}
-/>
-
+<div>
+<button onClick={()=>move("username","left")}>←</button>
+<button onClick={()=>move("username","right")}>→</button>
 </div>
+
+<button onClick={()=>move("username","down")}>↓</button>
+
 </div>
 
 )}
