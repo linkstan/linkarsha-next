@@ -513,7 +513,7 @@ onChange={()=>updateSetting("displayAdvanced",false)}
 <label>
 <input
 type="checkbox"
-checked={settings.displayAdvanced===true}
+checked={settings.displayAdvanced === true}
 onChange={()=>updateSetting("displayAdvanced",true)}
 />
  Advanced Font Alignment
@@ -533,6 +533,9 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 <button onClick={()=>move("display","down")}>↓</button>
 
 </div>
+
+)}
+
 </div>
 
 )}
