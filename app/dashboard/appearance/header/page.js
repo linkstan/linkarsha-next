@@ -271,8 +271,9 @@ cursor:"pointer"
 
 <h2>Header</h2>
 
-{/* PROFILE IMAGE */}
+</div>
 
+{/* PROFILE IMAGE */}
 <div style={section}>
 
 <h3>Profile Image</h3>
