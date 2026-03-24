@@ -135,52 +135,8 @@ await supabase
 
 }
 
-let newSettings={
-...settings,
-[key]:value
-};
+/* ALIGNMENT MOVE */
 
-/* DEFAULT FONT LOGIC */
-
-if(key==="useDefaultFonts" && value===true){
-newSettings.displayFont="Poppins";
-newSettings.usernameFont="Roboto";
-newSettings.bioFont="Lora";
-newSettings.advancedFonts=false;
-}
-
-if(key==="advancedFonts" && value===true){
-newSettings.useDefaultFonts=false;
-}
-
-setSettings(newSettings);
-
-/* LIVE PREVIEW */
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{header:newSettings}})
-);
-
-const {data:{session}}=await supabase.auth.getSession();
-
-const {data:profile}=await supabase
-.from("profiles")
-.select("profile_settings")
-.eq("id",session.user.id)
-.single();
-
-const allSettings=profile?.profile_settings || {};
-
-allSettings.header=newSettings;
-
-await supabase
-.from("profiles")
-.update({profile_settings:allSettings})
-.eq("id",session.user.id);
-
-}
-
-/* AVATAR UPLOAD */
 function move(type,dir){
 
 let align={...(settings[type+"Align"] || {x:0,y:0})};
@@ -204,6 +160,27 @@ new CustomEvent("appearance-update",{detail:{header:newSettings}})
 updateSetting(type+"Align",align);
 
 }
+
+/* HOLD ARROW MOVEMENT */
+
+let holdTimer=null;
+
+function startMove(type,dir){
+
+move(type,dir);
+
+holdTimer=setInterval(()=>{
+move(type,dir);
+},80);
+
+}
+
+function stopMove(){
+clearInterval(holdTimer);
+}
+
+/* AVATAR UPLOAD */
+
 async function uploadAvatar(e){
 
 const file=e.target.files[0];
@@ -243,6 +220,7 @@ borderRadius:14,
 padding:20,
 marginBottom:20
 };
+
 const arrow={
 width:40,
 height:40,
@@ -252,6 +230,7 @@ background:"var(--card)",
 cursor:"pointer",
 fontSize:16
 };
+
 const btn=(active)=>({
 padding:"8px 16px",
 borderRadius:20,
@@ -291,8 +270,6 @@ cursor:"pointer"
 </div>
 
 <h2>Header</h2>
-
-</div>
 
 {/* PROFILE IMAGE */}
 
