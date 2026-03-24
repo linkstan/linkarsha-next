@@ -516,14 +516,13 @@ onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
 
 <label>
 <input
-type="checkbox"
+type="radio"
+name="alignmentMode"
 checked={!settings.displayAdvanced}
 onChange={()=>{
-if(settings.displayAdvanced){
 updateSetting("displayAdvanced",false);
 updateSetting("displayAlign",{x:0,y:0});
 updateSetting("usernameAlign",{x:0,y:0});
-}
 }}
 />
  Default
@@ -533,7 +532,8 @@ updateSetting("usernameAlign",{x:0,y:0});
 
 <label>
 <input
-type="checkbox"
+type="radio"
+name="alignmentMode"
 checked={settings.displayAdvanced === true}
 onChange={()=>updateSetting("displayAdvanced",true)}
 />
