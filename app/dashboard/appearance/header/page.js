@@ -59,6 +59,7 @@ if(data?.profile_settings?.header){
 
 setSettings(prev=>({
 ...prev,
+displayAdvanced:false,
 ...data.profile_settings.header
 }));
 
