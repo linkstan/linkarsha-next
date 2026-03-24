@@ -35,10 +35,6 @@ usernameSize:14,
 bioSize:15
 });
 
-const [dragDisplay,setDragDisplay]=useState(false);
-const [dragUsername,setDragUsername]=useState(false);
-const [avatar,setAvatar]=useState(null);
-
 useEffect(()=>{
 loadSettings();
 loadProfile();
