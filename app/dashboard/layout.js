@@ -455,7 +455,10 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 {header.showDisplayName !== false && (
 <div style={{
 fontFamily: header.displayFont || "Poppins",
-fontSize: header.displaySize || 22
+fontSize: header.displaySize || 22,
+transform: header.layout==="hero"
+? `translate(${header.displayAlign?.x||0}px, ${header.displayAlign?.y||0}px)`
+: "none"
 }}>
 {profile?.display_name}
 </div>
@@ -464,18 +467,23 @@ fontSize: header.displaySize || 22
 {header.showUsername !== false && (
 <div style={{
 fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14
+fontSize: header.usernameSize || 14,
+transform: header.layout==="hero"
+? `translate(${header.usernameAlign?.x||0}px, ${header.usernameAlign?.y||0}px)`
+: "none"
 }}>
 @{profile?.username}
 </div>
 )}
 
+{header.showBio !== false && (
 <div style={{
 fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15
 }}>
 {profile?.bio}
 </div>
+)}
 
 </div>
 
