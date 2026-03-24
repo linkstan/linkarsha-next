@@ -501,14 +501,32 @@ href={block.data_json?.url}
 target="_blank"
 style={{
 display:"block",
-background:"rgba(0,0,0,.25)",
 padding:12,
-borderRadius:10,
 marginTop:10,
 textDecoration:"none",
-color:"inherit"
+
+background:
+buttons.style==="outline"
+? "transparent"
+: (buttons.colorMode==="theme"
+? "rgba(0,0,0,.35)"
+: buttons.color),
+
+border:
+buttons.style==="outline"
+? "1px solid rgba(255,255,255,.6)"
+: "none",
+
+borderRadius:
+buttons.radius==="square"?4:
+buttons.radius==="round"?10:
+buttons.radius==="rounder"?18:999,
+
+color:
+buttons.textMode==="theme"
+? "#ffffff"
+: buttons.textColor
 }}
->
 {block.data_json?.title}
 </a>
 
