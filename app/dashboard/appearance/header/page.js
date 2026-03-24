@@ -519,9 +519,11 @@ onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
 type="checkbox"
 checked={!settings.displayAdvanced}
 onChange={()=>{
+if(settings.displayAdvanced){
 updateSetting("displayAdvanced",false);
 updateSetting("displayAlign",{x:0,y:0});
 updateSetting("usernameAlign",{x:0,y:0});
+}
 }}
 />
  Default
