@@ -152,7 +152,7 @@ window.location="/login";
 
 const theme = liveTheme || profile?.theme;
 const header = appearance?.header || {};
-
+const buttons = appearance?.buttons || {};
 const themeMap={
 
 Minimal:"#ffffff",
