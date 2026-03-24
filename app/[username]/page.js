@@ -145,34 +145,33 @@ style={{ width: "100%", height: "100%", objectFit: "cover" }}
 )}
 
 {header.showDisplayName !== false && (
-<h1
-style={{
+<h1 style={{
+marginTop: heroTextOffset,
 fontFamily: header.displayFont || "Poppins",
 fontSize: header.displaySize || 22
-}}
->
+}}>
 {profile.display_name}
 </h1>
 )}
 
 {header.showUsername !== false && (
-<div
-style={{
+<div style={{
+marginTop: heroTextOffset,
 fontFamily: header.usernameFont || "Roboto",
 fontSize: header.usernameSize || 14,
 opacity: 0.7
-}}
+}}>
 >
 @{profile.username}
 </div>
 )}
 
-<p
-style={{
+<p style={{
+marginTop: heroTextOffset,
 fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15,
 opacity: 0.7
-}}
+}}>
 >
 {profile.bio}
 </p>
