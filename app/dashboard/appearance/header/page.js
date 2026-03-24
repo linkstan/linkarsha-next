@@ -538,7 +538,7 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 
 </div>
 
-)}
+</div>
 
 );
 
