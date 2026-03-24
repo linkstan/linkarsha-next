@@ -533,10 +533,6 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 <button onClick={()=>move("display","down")}>↓</button>
 
 </div>
-
-)}
-
-</div>
 </div>
 
 )}
