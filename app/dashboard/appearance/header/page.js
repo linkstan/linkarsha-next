@@ -86,6 +86,55 @@ setAvatar(data.avatar);
 
 async function updateSetting(key,value){
 
+const newSettings={
+...settings,
+[key]:value
+};
+
+/* DEFAULT FONT LOGIC */
+
+if(key==="useDefaultFonts" && value===true){
+newSettings.displayFont="Poppins";
+newSettings.usernameFont="Roboto";
+newSettings.bioFont="Lora";
+newSettings.advancedFonts=false;
+}
+
+if(key==="advancedFonts" && value===true){
+newSettings.useDefaultFonts=false;
+}
+
+/* UPDATE LOCAL STATE FIRST */
+
+setSettings(newSettings);
+
+/* LIVE PREVIEW */
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{header:newSettings}})
+);
+
+/* SAVE TO DATABASE */
+
+const {data:{session}}=await supabase.auth.getSession();
+if(!session) return;
+
+const {data:profile}=await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const allSettings=profile?.profile_settings || {};
+allSettings.header=newSettings;
+
+await supabase
+.from("profiles")
+.update({profile_settings:allSettings})
+.eq("id",session.user.id);
+
+}
+
 let newSettings={
 ...settings,
 [key]:value
