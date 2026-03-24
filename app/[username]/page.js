@@ -144,9 +144,12 @@ style={{ width: "100%", height: "100%", objectFit: "cover" }}
 
 )}
 
+{/* TEXT BLOCK */}
+
+<div style={{ marginTop: heroTextOffset, textAlign:"center" }}>
+
 {header.showDisplayName !== false && (
 <h1 style={{
-marginTop: heroTextOffset,
 fontFamily: header.displayFont || "Poppins",
 fontSize: header.displaySize || 22
 }}>
@@ -156,25 +159,23 @@ fontSize: header.displaySize || 22
 
 {header.showUsername !== false && (
 <div style={{
-marginTop: heroTextOffset,
 fontFamily: header.usernameFont || "Roboto",
 fontSize: header.usernameSize || 14,
 opacity: 0.7
 }}>
-
 @{profile.username}
 </div>
 )}
 
 <p style={{
-marginTop: heroTextOffset,
 fontFamily: header.bioFont || "Lora",
 fontSize: header.bioSize || 15,
 opacity: 0.7
 }}>
-
 {profile.bio}
 </p>
+
+</div>
 
 <div style={{ marginTop: 40, width: 320 }}>
 
