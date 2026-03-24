@@ -450,7 +450,11 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 
 )}
 
-<div style={{textAlign:"center",marginTop:10}}>
+<div style={{
+textAlign:"center",
+marginTop:10,
+position:"relative"
+}}>
 
 {header.showDisplayName !== false && (
 <div style={{
