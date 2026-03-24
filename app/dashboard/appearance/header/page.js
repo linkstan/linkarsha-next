@@ -484,7 +484,6 @@ Bio ({settings.bioSize}px)
 </div>
 
 <input
-<input
 type="range"
 min="10"
 max="20"
