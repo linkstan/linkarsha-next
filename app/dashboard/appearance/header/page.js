@@ -35,6 +35,8 @@ usernameSize:14,
 bioSize:15
 });
 
+const [avatar,setAvatar]=useState(null);
+
 useEffect(()=>{
 loadSettings();
 loadProfile();
