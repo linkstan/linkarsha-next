@@ -13,6 +13,15 @@ layout:"classic",
 
 showDisplayName:true,
 showUsername:true,
+showBio:true,
+
+displayAlign:{x:0,y:0},
+usernameAlign:{x:0,y:0},
+bioAlign:{x:0,y:0},
+
+displayAdvanced:false,
+usernameAdvanced:false,
+bioAdvanced:false,
 
 useDefaultFonts:true,
 advancedFonts:false,
@@ -122,7 +131,25 @@ await supabase
 }
 
 /* AVATAR UPLOAD */
+function move(type,dir){
 
+let align=settings[type+"Align"] || {x:0,y:0};
+
+if(dir==="up") align.y -= 5;
+if(dir==="down") align.y += 5;
+if(dir==="left") align.x -= 5;
+if(dir==="right") align.x += 5;
+
+updateSetting(type+"Align",align);
+
+window.dispatchEvent(new CustomEvent("appearance-update",{
+detail:{header:{
+...settings,
+[type+"Align"]:align
+}}
+}));
+
+}
 async function uploadAvatar(e){
 
 const file=e.target.files[0];
@@ -282,7 +309,16 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 />
  Show Display Name
 </label>
+<br/>
 
+<label>
+<input
+type="checkbox"
+checked={settings.showBio}
+onChange={(e)=>updateSetting("showBio",e.target.checked)}
+/>
+ Show Bio
+</label>
 <br/>
 
 <label>
@@ -455,7 +491,57 @@ onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
 
 </div>
 
+{/* FONT ALIGNMENT */}
+
+{settings.layout === "hero" && (
+
+<div style={section}>
+
+<h3>Font Alignment</h3>
+
+<label>
+<input
+type="checkbox"
+checked={!settings.displayAdvanced}
+onChange={()=>updateSetting("displayAdvanced",false)}
+/>
+ Default
+</label>
+
+<br/>
+
+<label>
+<input
+type="checkbox"
+checked={settings.displayAdvanced===true}
+onChange={()=>updateSetting("displayAdvanced",true)}
+/>
+ Advanced Font Alignment
+</label>
+
+{settings.displayAdvanced && (
+
+<div style={{marginTop:15}}>
+
+<button onClick={()=>move("display","up")}>↑</button>
+
+<div>
+<button onClick={()=>move("display","left")}>←</button>
+<button onClick={()=>move("display","right")}>→</button>
 </div>
+
+<button onClick={()=>move("display","down")}>↓</button>
+
+</div>
+
+)}
+
+</div>
+</div>
+
+</div>
+
+)}
 
 );
 
