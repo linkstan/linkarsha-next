@@ -20,16 +20,16 @@ loadSettings();
 
 async function loadSettings(){
 
-const {data:{session}}=await supabase.auth.getSession();
+const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
-const {data}=await supabase
+const {data} = await supabase
 .from("profiles")
 .select("profile_settings")
 .eq("id",session.user.id)
 .single();
 
-const btn=data?.profile_settings?.buttons;
+const btn = data?.profile_settings?.buttons;
 
 if(btn){
 setSettings(btn);
@@ -44,27 +44,34 @@ const newSettings={
 [key]:value
 };
 
+/* UPDATE LOCAL STATE /
+
 setSettings(newSettings);
 
-/* LIVE PREVIEW */
+/ LIVE PREVIEW EVENT /
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{buttons:newSettings}})
+new CustomEvent("appearance-update",{
+detail:{
+buttons:newSettings
+}
+})
 );
 
-/* SAVE TO DATABASE */
+/ SAVE TO DATABASE /
 
-const {data:{session}}=await supabase.auth.getSession();
+const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
-const {data:profile}=await supabase
+const {data:profile} = await supabase
 .from("profiles")
 .select("profile_settings")
 .eq("id",session.user.id)
 .single();
 
-const allSettings=profile?.profile_settings || {};
-allSettings.buttons=newSettings;
+const allSettings = profile?.profile_settings || {};
+
+allSettings.buttons = newSettings;
 
 await supabase
 .from("profiles")
@@ -97,6 +104,8 @@ return(
 
 <h2>Buttons</h2>
 
+{/ BUTTON STYLE /}
+
 <div style={section}>
 
 <h3>Button Style</h3>
@@ -123,6 +132,8 @@ Outline
 </button>
 
 </div>
+
+{/ CORNER RADIUS /}
 
 <div style={section}>
 
@@ -158,6 +169,8 @@ Full
 
 </div>
 
+{/ BUTTON COLOR /}
+
 <div style={section}>
 
 <h3>Button Color</h3>
@@ -188,11 +201,14 @@ onChange={()=>updateSetting("colorMode","custom")}
 type="color"
 value={settings.color}
 onChange={(e)=>updateSetting("color",e.target.value)}
+style={{marginTop:10}}
 />
 
 )}
 
 </div>
+
+{/ TEXT COLOR */}
 
 <div style={section}>
 
@@ -224,6 +240,7 @@ onChange={()=>updateSetting("textMode","custom")}
 type="color"
 value={settings.textColor}
 onChange={(e)=>updateSetting("textColor",e.target.value)}
+style={{marginTop:10}}
 />
 
 )}
