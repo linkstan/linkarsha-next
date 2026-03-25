@@ -230,6 +230,12 @@ onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
 <label style={{display:"block",marginTop:6}}>
 <input
 type="checkbox"
+checked={settings.motionPhysics}
+onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
+/>
+ Motion physics
+</label>
+
 <div style={{marginTop:15}}>
 
 <h3>Motion strength</h3>
@@ -263,6 +269,7 @@ onChange={(e)=>updateSetting("useDefaultMotion",e.target.checked)}
  Use default motion
 </label>
 
+</div>
 </div>
 checked={settings.motionPhysics}
 onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
