@@ -2,8 +2,11 @@
 
 import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function Buttons(){
+
+const router = useRouter();
 
 const [settings,setSettings]=useState({
 style:"solid",
@@ -44,9 +47,13 @@ const newSettings={
 
 setSettings(newSettings);
 
+/* LIVE PREVIEW */
+
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{buttons:newSettings}})
 );
+
+/* SAVE */
 
 const {data:{session}}=await supabase.auth.getSession();
 if(!session) return;
@@ -67,24 +74,121 @@ await supabase
 
 }
 
+const section={
+background:"var(--card)",
+border:"1px solid var(--border)",
+borderRadius:14,
+padding:20,
+marginBottom:20
+};
+
+const btn=(active)=>({
+padding:"6px 14px",
+borderRadius:20,
+border:"1px solid var(--border)",
+background:active?"var(--text)":"var(--card)",
+color:active?"#fff":"var(--text)",
+cursor:"pointer",
+marginRight:8
+});
+
 return(
 
 <div style={{maxWidth:650,padding:20}}>
 
+{/* HEADER */}
+
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:12,
+marginBottom:20
+}}>
+
+<div
+onClick={()=>router.back()}
+style={{
+width:36,
+height:36,
+borderRadius:"50%",
+border:"1px solid var(--border)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer"
+}}
+>
+←
+</div>
+
 <h2>Buttons</h2>
+
+</div>
+
+{/* STYLE */}
+
+<div style={section}>
 
 <h3>Style</h3>
 
-<button onClick={()=>updateSetting("style","solid")}>Solid</button>
-<button onClick={()=>updateSetting("style","glass")}>Glass</button>
-<button onClick={()=>updateSetting("style","outline")}>Outline</button>
+<button
+style={btn(settings.style==="solid")}
+onClick={()=>updateSetting("style","solid")}
+>
+Solid
+</button>
 
-<h3 style={{marginTop:25}}>Radius</h3>
+<button
+style={btn(settings.style==="glass")}
+onClick={()=>updateSetting("style","glass")}
+>
+Glass
+</button>
 
-<button onClick={()=>updateSetting("radius","square")}>Square</button>
-<button onClick={()=>updateSetting("radius","round")}>Round</button>
-<button onClick={()=>updateSetting("radius","rounder")}>Rounder</button>
-<button onClick={()=>updateSetting("radius","full")}>Full</button>
+<button
+style={btn(settings.style==="outline")}
+onClick={()=>updateSetting("style","outline")}
+>
+Outline
+</button>
+
+</div>
+
+{/* RADIUS */}
+
+<div style={section}>
+
+<h3>Radius</h3>
+
+<button
+style={btn(settings.radius==="square")}
+onClick={()=>updateSetting("radius","square")}
+>
+Square
+</button>
+
+<button
+style={btn(settings.radius==="round")}
+onClick={()=>updateSetting("radius","round")}
+>
+Round
+</button>
+
+<button
+style={btn(settings.radius==="rounder")}
+onClick={()=>updateSetting("radius","rounder")}
+>
+Rounder
+</button>
+
+<button
+style={btn(settings.radius==="full")}
+onClick={()=>updateSetting("radius","full")}
+>
+Full
+</button>
+
+</div>
 
 </div>
 
