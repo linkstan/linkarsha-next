@@ -389,14 +389,17 @@ borderRadius:30,
 padding:18
 }}>
 
-<div style={{
+<div
+key={JSON.stringify(buttons)}
+style={{
 width:"100%",
 height:"100%",
 background: themeMap[theme] || "#0b0b12",
 borderRadius:20,
 overflow:"auto",
 color:"#fff"
-}}>
+}}
+>
 
 {header.layout==="hero" ? (
 
