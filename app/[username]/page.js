@@ -238,7 +238,9 @@ buttons.style==="outline"
 : buttons.style==="glass"
 ? "rgba(255,255,255,0.12)"
 : (buttons.colorMode==="theme"
-? "rgba(0,0,0,.35)"
+? themeBackground.includes("gradient")
+? "rgba(0,0,0,0.25)"
+: themeBackground
 : buttons.color),
 
 border:
