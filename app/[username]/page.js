@@ -90,17 +90,15 @@ return (
 
 <div
 style={{
-minHeight: "100vh",
-background: themeBackground,
-color: "#fff",
-display: "flex",
-flexDirection: "column",
-alignItems: "center",
-paddingTop: 0
+minHeight:"100vh",
+background:themeBackground,
+color:"#fff",
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+paddingTop:0
 }}
 >
-
-{/* HERO */}
 
 {header.layout === "hero" ? (
 
@@ -130,30 +128,28 @@ maskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0))"
 
 <div
 style={{
-width: 110,
-height: 110,
-borderRadius: "50%",
-overflow: "hidden",
-marginBottom: 20
+width:110,
+height:110,
+borderRadius:"50%",
+overflow:"hidden",
+marginBottom:20
 }}
 >
 <img
 src={profile.avatar}
-style={{ width: "100%", height: "100%", objectFit: "cover" }}
+style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 </div>
 
 )}
 
-{/* TEXT BLOCK */}
-
-<div style={{ marginTop: heroTextOffset, textAlign:"center" }}>
+<div style={{marginTop:heroTextOffset,textAlign:"center"}}>
 
 {header.showDisplayName !== false && (
 <h1 style={{
-fontFamily: header.displayFont || "Poppins",
-fontSize: header.displaySize || 22,
-transform: header.layout==="hero"
+fontFamily:header.displayFont || "Poppins",
+fontSize:header.displaySize || 22,
+transform:header.layout==="hero"
 ? `translate(${header.displayAlign?.x||0}px, ${header.displayAlign?.y||0}px)`
 : "none"
 }}>
@@ -163,10 +159,10 @@ transform: header.layout==="hero"
 
 {header.showUsername !== false && (
 <div style={{
-fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14,
-opacity: 0.7,
-transform: header.layout==="hero"
+fontFamily:header.usernameFont || "Roboto",
+fontSize:header.usernameSize || 14,
+opacity:0.7,
+transform:header.layout==="hero"
 ? `translate(${header.usernameAlign?.x||0}px, ${header.usernameAlign?.y||0}px)`
 : "none"
 }}>
@@ -176,10 +172,10 @@ transform: header.layout==="hero"
 
 {header.showBio !== false && (
 <p style={{
-fontFamily: header.bioFont || "Lora",
-fontSize: header.bioSize || 15,
-opacity: 0.7,
-transform: header.layout==="hero"
+fontFamily:header.bioFont || "Lora",
+fontSize:header.bioSize || 15,
+opacity:0.7,
+transform:header.layout==="hero"
 ? `translate(${header.bioAlign?.x||0}px, ${header.bioAlign?.y||0}px)`
 : "none"
 }}>
@@ -189,22 +185,52 @@ transform: header.layout==="hero"
 
 </div>
 
-<div style={{ marginTop: 40, width: 320 }}>
+<div style={{marginTop:40,width:320}}>
 
-{blocks.map((block) => (
+{blocks.map((block)=>(
 
 <a
 key={block.id}
 href={block.data_json?.url}
 target="_blank"
 style={{
-display: "block",
-background: "rgba(255,255,255,.08)",
-padding: 14,
-borderRadius: 10,
-marginBottom: 10,
-textDecoration: "none",
-color: "#fff"
+display:"block",
+padding:14,
+marginBottom:10,
+textDecoration:"none",
+
+background:
+buttons.style==="outline"
+? "transparent"
+: buttons.style==="glass"
+? "rgba(255,255,255,0.12)"
+: (buttons.colorMode==="theme"
+? "rgba(0,0,0,.35)"
+: buttons.color),
+
+border:
+buttons.style==="outline"
+? "1px solid rgba(255,255,255,.6)"
+: buttons.style==="glass"
+? "1px solid rgba(255,255,255,.25)"
+: "none",
+
+backdropFilter:
+buttons.style==="glass"
+? "blur(12px)"
+: "none",
+
+borderRadius:
+buttons.radius==="square"?4:
+buttons.radius==="round"?10:
+buttons.radius==="rounder"?18:999,
+
+color:
+buttons.textMode==="theme"
+? "#ffffff"
+: buttons.textColor,
+
+transition:"all .2s ease"
 }}
 >
 {block.data_json?.title}
