@@ -18,7 +18,8 @@ textColor:"#ffffff",
 hoverEffect:true,
 pressEffect:true,
 shadowLift:true,
-depthEffect:true
+depthEffect:true,
+motionPhysics:true
 });
 
 useEffect(()=>{
@@ -222,6 +223,15 @@ checked={settings.depthEffect}
 onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
 />
  Depth effect
+</label>
+ 
+<label style={{display:"block",marginTop:6}}>
+<input
+type="checkbox"
+checked={settings.motionPhysics}
+onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
+/>
+ Motion physics
 </label>
 
 </div>
