@@ -187,7 +187,7 @@ target="_blank"
 
 onMouseEnter={(e)=>{
 if(buttons.hoverEffect){
-e.currentTarget.style.transform="translateY(-4px)";
+e.currentTarget.style.transform="translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)";
 }
 }}
 
