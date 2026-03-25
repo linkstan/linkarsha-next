@@ -230,6 +230,40 @@ onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
 <label style={{display:"block",marginTop:6}}>
 <input
 type="checkbox"
+<div style={{marginTop:15}}>
+
+<h3>Motion strength</h3>
+
+<div style={{display:"flex",alignItems:"center",gap:10,marginTop:8}}>
+
+<button
+onClick={()=>updateSetting("motionStrength",Math.max(1,settings.motionStrength-1))}
+style={{padding:"4px 10px"}}
+>
+-
+</button>
+
+<div>{settings.motionStrength}</div>
+
+<button
+onClick={()=>updateSetting("motionStrength",settings.motionStrength+1)}
+style={{padding:"4px 10px"}}
+>
++
+</button>
+
+</div>
+
+<label style={{display:"block",marginTop:8}}>
+<input
+type="checkbox"
+checked={settings.useDefaultMotion}
+onChange={(e)=>updateSetting("useDefaultMotion",e.target.checked)}
+/>
+ Use default motion
+</label>
+
+</div>
 checked={settings.motionPhysics}
 onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
 />
