@@ -16,7 +16,9 @@ color:"#ffffff",
 textMode:"theme",
 textColor:"#ffffff",
 hoverEffect:true,
-pressEffect:true
+pressEffect:true,
+shadowLift:true,
+depthEffect:true
 });
 
 useEffect(()=>{
@@ -35,7 +37,11 @@ const {data}=await supabase
 .single();
 
 if(data?.profile_settings?.buttons){
-setSettings(data.profile_settings.buttons);
+setSettings({
+shadowLift:true,
+depthEffect:true,
+...data.profile_settings.buttons
+});
 }
 
 }
@@ -198,6 +204,24 @@ checked={settings.pressEffect}
 onChange={(e)=>updateSetting("pressEffect",e.target.checked)}
 />
  Press effect
+</label>
+
+<label style={{display:"block",marginTop:6}}>
+<input
+type="checkbox"
+checked={settings.shadowLift}
+onChange={(e)=>updateSetting("shadowLift",e.target.checked)}
+/>
+ Shadow lift
+</label>
+
+<label style={{display:"block",marginTop:6}}>
+<input
+type="checkbox"
+checked={settings.depthEffect}
+onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
+/>
+ Depth effect
 </label>
 
 </div>
