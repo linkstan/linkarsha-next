@@ -510,6 +510,8 @@ textDecoration:"none",
 background:
 buttons.style==="outline"
 ? "transparent"
+: buttons.style==="glass"
+? "rgba(255,255,255,0.12)"
 : (buttons.colorMode==="theme"
 ? "rgba(0,0,0,.35)"
 : buttons.color),
@@ -517,6 +519,13 @@ buttons.style==="outline"
 border:
 buttons.style==="outline"
 ? "1px solid rgba(255,255,255,.6)"
+: buttons.style==="glass"
+? "1px solid rgba(255,255,255,.25)"
+: "none",
+
+backdropFilter:
+buttons.style==="glass"
+? "blur(12px)"
 : "none",
 
 borderRadius:
@@ -527,12 +536,13 @@ buttons.radius==="rounder"?18:999,
 color:
 buttons.textMode==="theme"
 ? "#ffffff"
-: buttons.textColor
+: buttons.textColor,
+
+transition:"all .2s ease"
 }}
 >
 {block.data_json?.title}
 </a>
-
 ))}
 
 </div>
