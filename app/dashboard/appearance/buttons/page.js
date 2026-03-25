@@ -19,7 +19,9 @@ hoverEffect:true,
 pressEffect:true,
 shadowLift:true,
 depthEffect:true,
-motionPhysics:true
+motionPhysics:true,
+motionStrength:4,
+useDefaultMotion:true
 });
 
 useEffect(()=>{
