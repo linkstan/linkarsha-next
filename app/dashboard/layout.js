@@ -60,15 +60,17 @@ useEffect(()=>{
 
 function handleAppearance(e){
 
+const data=e.detail || {};
+
 setAppearance(prev=>({
 ...prev,
-...e.detail
+...data
 }));
 
-if(e.detail?.avatar!==undefined){
+if(data.avatar!==undefined){
 setProfile(prev=>({
 ...prev,
-avatar:e.detail.avatar
+avatar:data.avatar
 }));
 }
 
