@@ -221,10 +221,11 @@ e.currentTarget.style.transform="scale(1)";
 
 style={{
 display:"block",
-padding:14,
-marginBottom:10,
+padding:12,
+marginTop:10,
 textDecoration:"none",
 transform:"translateY(0)",
+
 background:
 buttons.style==="outline"
 ? "transparent"
@@ -256,7 +257,12 @@ buttons.textMode==="theme"
 ? "#ffffff"
 : buttons.textColor,
 
-transition:"transform .15s ease, all .2s ease"
+boxShadow:
+buttons.shadowLift
+? "0 10px 25px rgba(0,0,0,0.25)"
+: "none",
+
+transition:"transform .15s ease, box-shadow .2s ease"
 }}
 >
 {block.data_json?.title}
