@@ -527,6 +527,7 @@ buttons.textMode==="theme"
 ? "#ffffff"
 : buttons.textColor
 }}
+>
 {block.data_json?.title}
 </a>
 
