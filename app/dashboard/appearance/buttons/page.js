@@ -44,21 +44,17 @@ const newSettings={
 [key]:value
 };
 
-/* UPDATE LOCAL STATE /
-
 setSettings(newSettings);
 
-/ LIVE PREVIEW EVENT /
+/* LIVE PREVIEW */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{
-detail:{
-buttons:newSettings
-}
+detail:{buttons:newSettings}
 })
 );
 
-/ SAVE TO DATABASE /
+/* SAVE TO DATABASE */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -70,7 +66,6 @@ const {data:profile} = await supabase
 .single();
 
 const allSettings = profile?.profile_settings || {};
-
 allSettings.buttons = newSettings;
 
 await supabase
@@ -104,8 +99,6 @@ return(
 
 <h2>Buttons</h2>
 
-{/ BUTTON STYLE /}
-
 <div style={section}>
 
 <h3>Button Style</h3>
@@ -132,8 +125,6 @@ Outline
 </button>
 
 </div>
-
-{/ CORNER RADIUS /}
 
 <div style={section}>
 
@@ -168,8 +159,6 @@ Full
 </button>
 
 </div>
-
-{/ BUTTON COLOR /}
 
 <div style={section}>
 
@@ -207,8 +196,6 @@ style={{marginTop:10}}
 )}
 
 </div>
-
-{/ TEXT COLOR */}
 
 <div style={section}>
 
