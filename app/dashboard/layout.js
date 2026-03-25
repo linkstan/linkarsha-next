@@ -518,25 +518,31 @@ e.currentTarget.style.transform="translateY(0)";
 
 onMouseDown={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="scale(0.95)";
+e.currentTarget.style.transform=
+buttons.depthEffect
+? "translateY(3px) scale(0.97)"
+: "scale(0.95)";
 }
 }}
 
 onMouseUp={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="scale(1)";
+e.currentTarget.style.transform="translateY(0) scale(1)";
 }
 }}
 
 onTouchStart={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="scale(0.95)";
+e.currentTarget.style.transform=
+buttons.depthEffect
+? "translateY(3px) scale(0.97)"
+: "scale(0.95)";
 }
 }}
 
 onTouchEnd={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="scale(1)";
+e.currentTarget.style.transform="translateY(0) scale(1)";
 }
 }}
 
@@ -581,9 +587,14 @@ buttons.textMode==="theme"
 boxShadow:
 buttons.shadowLift
 ? "0 10px 25px rgba(0,0,0,0.25)"
+: buttons.depthEffect
+? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
 
-transition:"transform .15s ease, box-shadow .2s ease"
+transition:
+buttons.motionPhysics
+? "transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease"
+: "transform .15s ease, box-shadow .2s ease"
 }}
 >
 {block.data_json?.title}
