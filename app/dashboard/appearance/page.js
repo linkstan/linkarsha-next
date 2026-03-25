@@ -206,45 +206,6 @@ color:"var(--text)"
 
 </Link>
 
-
-{/* WALLPAPER */}
-
-<div style={card} onClick={()=>setEditor("wallpaper")}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{
-width:36,
-height:36,
-borderRadius:"10px",
-background:"linear-gradient(45deg,#ff7a18,#ffd000)"
-}}/>
-<div>Wallpaper</div>
-</div>
-
-<div style={arrow}>→</div>
-
-</div>
-
-
-{/* BUTTONS */}
-
-<div style={card} onClick={()=>setEditor("buttons")}>
-
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{
-width:38,
-height:18,
-border:"2px solid var(--text)",
-borderRadius:"6px"
-}}/>
-<div>Buttons</div>
-</div>
-
-<div style={arrow}>→</div>
-
-</div>
-
-
 {/* TEXT */}
 
 <div style={card} onClick={()=>setEditor("text")}>
