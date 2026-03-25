@@ -505,7 +505,84 @@ fontSize: header.bioSize || 15
 key={block.id}
 href={block.data_json?.url}
 target="_blank"
+
+onMouseEnter={(e)=>{
+if(buttons.hoverEffect){
+e.currentTarget.style.transform="translateY(-4px)";
+}
+}}
+
+onMouseLeave={(e)=>{
+e.currentTarget.style.transform="translateY(0)";
+}}
+
+onMouseDown={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(0.95)";
+}
+}}
+
+onMouseUp={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(1)";
+}
+}}
+
+onTouchStart={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(0.95)";
+}
+}}
+
+onTouchEnd={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(1)";
+}
+}}
+
 style={{
+display:"block",
+padding:12,
+marginTop:10,
+textDecoration:"none",
+transform:"translateY(0)",
+
+background:
+buttons.style==="outline"
+? "transparent"
+: buttons.style==="glass"
+? "rgba(255,255,255,0.12)"
+: (buttons.colorMode==="theme"
+? "rgba(0,0,0,.35)"
+: buttons.color),
+
+border:
+buttons.style==="outline"
+? "1px solid rgba(255,255,255,.6)"
+: buttons.style==="glass"
+? "1px solid rgba(255,255,255,.25)"
+: "none",
+
+backdropFilter:
+buttons.style==="glass"
+? "blur(12px)"
+: "none",
+
+borderRadius:
+buttons.radius==="square"?4:
+buttons.radius==="round"?10:
+buttons.radius==="rounder"?18:999,
+
+color:
+buttons.textMode==="theme"
+? "#ffffff"
+: buttons.textColor,
+
+transition:"transform .15s ease, all .2s ease"
+}}
+>
+{block.data_json?.title}
+</a>
 display:"block",
 padding:12,
 marginTop:10,
