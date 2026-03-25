@@ -49,13 +49,9 @@ const newSettings={
 
 setSettings(newSettings);
 
-/* LIVE PREVIEW */
-
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{buttons:newSettings}})
 );
-
-/* SAVE */
 
 const {data:{session}}=await supabase.auth.getSession();
 if(!session) return;
@@ -98,8 +94,6 @@ return(
 
 <div style={{maxWidth:650,padding:20}}>
 
-{/* HEADER */}
-
 <div style={{
 display:"flex",
 alignItems:"center",
@@ -127,8 +121,6 @@ cursor:"pointer"
 
 </div>
 
-{/* STYLE */}
-
 <div style={section}>
 
 <h3>Style</h3>
@@ -155,8 +147,6 @@ Outline
 </button>
 
 </div>
-
-{/* RADIUS */}
 
 <div style={section}>
 
@@ -189,6 +179,7 @@ onClick={()=>updateSetting("radius","full")}
 >
 Full
 </button>
+
 <h3 style={{marginTop:25}}>Effects</h3>
 
 <label style={{display:"block",marginTop:10}}>
@@ -208,6 +199,7 @@ onChange={(e)=>updateSetting("pressEffect",e.target.checked)}
 />
  Press effect
 </label>
+
 </div>
 
 </div>
