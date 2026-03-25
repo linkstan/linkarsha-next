@@ -148,10 +148,7 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 {header.showDisplayName !== false && (
 <h1 style={{
 fontFamily:header.displayFont || "Poppins",
-fontSize:header.displaySize || 22,
-transform:header.layout==="hero"
-? `translate(${header.displayAlign?.x||0}px, ${header.displayAlign?.y||0}px)`
-: "none"
+fontSize:header.displaySize || 22
 }}>
 {profile.display_name}
 </h1>
@@ -161,10 +158,7 @@ transform:header.layout==="hero"
 <div style={{
 fontFamily:header.usernameFont || "Roboto",
 fontSize:header.usernameSize || 14,
-opacity:0.7,
-transform:header.layout==="hero"
-? `translate(${header.usernameAlign?.x||0}px, ${header.usernameAlign?.y||0}px)`
-: "none"
+opacity:0.7
 }}>
 @{profile.username}
 </div>
@@ -174,10 +168,7 @@ transform:header.layout==="hero"
 <p style={{
 fontFamily:header.bioFont || "Lora",
 fontSize:header.bioSize || 15,
-opacity:0.7,
-transform:header.layout==="hero"
-? `translate(${header.bioAlign?.x||0}px, ${header.bioAlign?.y||0}px)`
-: "none"
+opacity:0.7
 }}>
 {profile.bio}
 </p>
@@ -201,9 +192,7 @@ e.currentTarget.style.transform="translateY(-4px)";
 }}
 
 onMouseLeave={(e)=>{
-if(buttons.hoverEffect){
 e.currentTarget.style.transform="translateY(0)";
-}
 }}
 
 onMouseDown={(e)=>{
