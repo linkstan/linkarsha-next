@@ -197,11 +197,23 @@ e.currentTarget.style.transform="translateY(0)";
 
 onMouseDown={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="scale(0.96)";
+e.currentTarget.style.transform="scale(0.95)";
 }
 }}
 
 onMouseUp={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(1)";
+}
+}}
+
+onTouchStart={(e)=>{
+if(buttons.pressEffect){
+e.currentTarget.style.transform="scale(0.95)";
+}
+}}
+
+onTouchEnd={(e)=>{
 if(buttons.pressEffect){
 e.currentTarget.style.transform="scale(1)";
 }
@@ -212,7 +224,7 @@ display:"block",
 padding:14,
 marginBottom:10,
 textDecoration:"none",
-
+transform:"translateY(0)",
 background:
 buttons.style==="outline"
 ? "transparent"
@@ -244,7 +256,7 @@ buttons.textMode==="theme"
 ? "#ffffff"
 : buttons.textColor,
 
-transition:"all .2s ease"
+transition:"transform .15s ease, all .2s ease"
 }}
 >
 {block.data_json?.title}
