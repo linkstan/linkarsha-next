@@ -206,6 +206,34 @@ color:"var(--text)"
 
 </Link>
 
+{/* BUTTONS */}
+
+<Link
+href="/dashboard/appearance/buttons"
+style={{
+textDecoration:"none",
+color:"var(--text)"
+}}
+>
+
+<div style={card}>
+
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{
+width:38,
+height:18,
+border:"2px solid var(--text)",
+borderRadius:"6px"
+}}/>
+<div>Buttons</div>
+</div>
+
+<div style={arrow}>→</div>
+
+</div>
+
+</Link>
+
 {/* TEXT */}
 
 <div style={card} onClick={()=>setEditor("text")}>
