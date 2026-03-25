@@ -14,7 +14,9 @@ radius:"round",
 colorMode:"theme",
 color:"#ffffff",
 textMode:"theme",
-textColor:"#ffffff"
+textColor:"#ffffff",
+hoverEffect:true,
+pressEffect:true
 });
 
 useEffect(()=>{
@@ -187,7 +189,25 @@ onClick={()=>updateSetting("radius","full")}
 >
 Full
 </button>
+<h3 style={{marginTop:25}}>Effects</h3>
 
+<label style={{display:"block",marginTop:10}}>
+<input
+type="checkbox"
+checked={settings.hoverEffect}
+onChange={(e)=>updateSetting("hoverEffect",e.target.checked)}
+/>
+ Hover effect
+</label>
+
+<label style={{display:"block",marginTop:6}}>
+<input
+type="checkbox"
+checked={settings.pressEffect}
+onChange={(e)=>updateSetting("pressEffect",e.target.checked)}
+/>
+ Press effect
+</label>
 </div>
 
 </div>
