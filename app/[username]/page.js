@@ -238,11 +238,11 @@ buttons.style==="outline"
 ? "transparent"
 : buttons.style==="glass"
 ? "rgba(255,255,255,0.12)"
-: (buttons.colorMode==="theme"
-? themeBackground.includes("gradient")
-? "rgba(0,0,0,0.25)"
-: themeBackground
-: buttons.color),
+: buttons.colorMode==="theme"
+? themeBackground.includes("linear-gradient")
+? themeBackground
+: `linear-gradient(135deg, ${themeBackground}, ${themeBackground}dd)`
+: buttons.color,
 
 border:
 buttons.style==="outline"
