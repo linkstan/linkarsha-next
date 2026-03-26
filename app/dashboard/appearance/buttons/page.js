@@ -203,33 +203,6 @@ onChange={(e)=>updateSetting("hoverEffect",e.target.checked)}
 <label style={{display:"block",marginTop:6}}>
 <input
 type="checkbox"
-checked={settings.pressEffect}
-onChange={(e)=>updateSetting("pressEffect",e.target.checked)}
-/>
- Press effect
-</label>
-
-<label style={{display:"block",marginTop:6}}>
-<input
-type="checkbox"
-checked={settings.shadowLift}
-onChange={(e)=>updateSetting("shadowLift",e.target.checked)}
-/>
- Shadow lift
-</label>
-
-<label style={{display:"block",marginTop:6}}>
-<input
-type="checkbox"
-checked={settings.depthEffect}
-onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
-/>
- Depth effect
-</label>
- 
-<label style={{display:"block",marginTop:6}}>
-<input
-type="checkbox"
 checked={settings.motionPhysics}
 onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
 />
