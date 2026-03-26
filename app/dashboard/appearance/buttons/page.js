@@ -243,12 +243,6 @@ onChange={(e)=>updateSetting("useDefaultMotion",e.target.checked)}
 </label>
 
 </div>
-</div>
-checked={settings.motionPhysics}
-onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
-/>
- Motion physics
-</label>
 
 </div>
 
