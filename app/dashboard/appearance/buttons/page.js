@@ -203,43 +203,28 @@ onChange={(e)=>updateSetting("hoverEffect",e.target.checked)}
 <label style={{display:"block",marginTop:6}}>
 <input
 type="checkbox"
-checked={settings.motionPhysics}
-onChange={(e)=>updateSetting("motionPhysics",e.target.checked)}
+checked={settings.pressEffect}
+onChange={(e)=>updateSetting("pressEffect",e.target.checked)}
 />
- Motion physics
+ Press effect
 </label>
 
-<div style={{marginTop:15}}>
-
-<h3>Motion strength</h3>
-
-<div style={{display:"flex",alignItems:"center",gap:10,marginTop:8}}>
-
-<button
-onClick={()=>updateSetting("motionStrength",Math.max(1,settings.motionStrength-1))}
-style={{padding:"4px 10px"}}
->
--
-</button>
-
-<div>{settings.motionStrength}</div>
-
-<button
-onClick={()=>updateSetting("motionStrength",settings.motionStrength+1)}
-style={{padding:"4px 10px"}}
->
-+
-</button>
-
-</div>
-
-<label style={{display:"block",marginTop:8}}>
+<label style={{display:"block",marginTop:6}}>
 <input
 type="checkbox"
-checked={settings.useDefaultMotion}
-onChange={(e)=>updateSetting("useDefaultMotion",e.target.checked)}
+checked={settings.shadowLift}
+onChange={(e)=>updateSetting("shadowLift",e.target.checked)}
 />
- Use default motion
+ Shadow lift
+</label>
+
+<label style={{display:"block",marginTop:6}}>
+<input
+type="checkbox"
+checked={settings.depthEffect}
+onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
+/>
+ Depth effect
 </label>
 
 </div>
