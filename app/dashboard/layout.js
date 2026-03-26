@@ -591,10 +591,7 @@ buttons.shadowLift
 ? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
 
-transition:
-buttons.motionPhysics
-? "transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease"
-: "transform .15s ease, box-shadow .2s ease"
+transition:"transform .15s ease, box-shadow .2s ease"
 }}
 >
 {block.data_json?.title}
