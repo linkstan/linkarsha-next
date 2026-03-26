@@ -508,41 +508,41 @@ target="_blank"
 
 onMouseEnter={(e)=>{
 if(buttons.hoverEffect){
-e.currentTarget.style.transform="translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)";
+e.currentTarget.style.transform = `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)`;
 }
 }}
 
 onMouseLeave={(e)=>{
-e.currentTarget.style.transform="translateY(0)";
+e.currentTarget.style.transform = "translateY(0)";
 }}
 
 onMouseDown={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform=
+e.currentTarget.style.transform =
 buttons.depthEffect
-? `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)` scale(0.97)
+? `translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)`
 : "scale(0.95)";
 }
 }}
 
 onMouseUp={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="translateY(0) scale(1)";
+e.currentTarget.style.transform = "translateY(0) scale(1)";
 }
 }}
 
 onTouchStart={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform=
+e.currentTarget.style.transform =
 buttons.depthEffect
-? `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)` scale(0.97)
+? `translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)`
 : "scale(0.95)";
 }
 }}
 
 onTouchEnd={(e)=>{
 if(buttons.pressEffect){
-e.currentTarget.style.transform="translateY(0) scale(1)";
+e.currentTarget.style.transform = "translateY(0) scale(1)";
 }
 }}
 
@@ -601,6 +601,7 @@ buttons.motionPhysics
 </a>
 
 ))}
+
 </div>
 
 </div>
