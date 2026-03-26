@@ -188,7 +188,7 @@ target="_blank"
 
 onMouseEnter={(e)=>{
 if(buttons.hoverEffect){
-e.currentTarget.style.transform = `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)`;
+e.currentTarget.style.transform = "translateY(-4px)";
 }
 }}
 
@@ -200,7 +200,7 @@ onMouseDown={(e)=>{
 if(buttons.pressEffect){
 e.currentTarget.style.transform =
 buttons.depthEffect
-? `translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)`
+? "translateY(3px) scale(0.97)"
 : "scale(0.95)";
 }
 }}
@@ -215,7 +215,7 @@ onTouchStart={(e)=>{
 if(buttons.pressEffect){
 e.currentTarget.style.transform =
 buttons.depthEffect
-? `translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)`
+? "translateY(3px) scale(0.97)"
 : "scale(0.95)";
 }
 }}
@@ -238,11 +238,11 @@ buttons.style==="outline"
 ? "transparent"
 : buttons.style==="glass"
 ? "rgba(255,255,255,0.12)"
-: buttons.colorMode==="theme"
-? themeBackground.includes("linear-gradient")
-? themeBackground
-: `linear-gradient(135deg, ${themeBackground}, ${themeBackground}dd)`
-: buttons.color,
+: (buttons.colorMode==="theme"
+? themeBackground.includes("gradient")
+? "rgba(0,0,0,0.25)"
+: themeBackground
+: buttons.color),
 
 border:
 buttons.style==="outline"
@@ -268,9 +268,7 @@ buttons.textMode==="theme"
 
 boxShadow:
 buttons.shadowLift
-? themeBackground.includes("gradient")
-  ? "0 10px 25px rgba(0,0,0,0.25), 0 0 12px rgba(255,255,255,0.15)"
-  : "0 10px 25px rgba(0,0,0,0.25)"
+? "0 10px 25px rgba(0,0,0,0.25)"
 : buttons.depthEffect
 ? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
