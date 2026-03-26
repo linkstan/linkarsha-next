@@ -559,9 +559,7 @@ buttons.style==="outline"
 : buttons.style==="glass"
 ? "rgba(255,255,255,0.12)"
 : buttons.colorMode==="theme"
-? themeBackground.includes("linear-gradient")
-? themeBackground
-: `linear-gradient(135deg, ${themeBackground}, ${themeBackground}dd)`
+? "rgba(0,0,0,.35)"
 : buttons.color,
 
 border:
