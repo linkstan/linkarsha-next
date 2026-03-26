@@ -520,7 +520,7 @@ onMouseDown={(e)=>{
 if(buttons.pressEffect){
 e.currentTarget.style.transform=
 buttons.depthEffect
-? "translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)"
+? `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)` scale(0.97)
 : "scale(0.95)";
 }
 }}
@@ -535,7 +535,7 @@ onTouchStart={(e)=>{
 if(buttons.pressEffect){
 e.currentTarget.style.transform=
 buttons.depthEffect
-? "translateY(${buttons.useDefaultMotion ? 3 : Math.max(1,buttons.motionStrength-1)}px) scale(0.97)"
+? `translateY(-${buttons.useDefaultMotion ? 4 : buttons.motionStrength}px)` scale(0.97)
 : "scale(0.95)";
 }
 }}
