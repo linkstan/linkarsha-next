@@ -62,9 +62,7 @@ buttons?.style==="outline"
 : buttons?.style==="glass"
 ? "rgba(255,255,255,0.12)"
 : buttons?.colorMode==="theme"
-? themeBackground
-? themeBackground
-: "rgba(0,0,0,.35)"
+? (themeBackground || "rgba(0,0,0,.35)")
 : buttons?.color,
 
 border:
