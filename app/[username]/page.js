@@ -268,7 +268,9 @@ buttons.textMode==="theme"
 
 boxShadow:
 buttons.shadowLift
-? "0 10px 25px rgba(0,0,0,0.25)"
+? themeBackground.includes("gradient")
+  ? "0 10px 25px rgba(0,0,0,0.25), 0 0 12px rgba(255,255,255,0.15)"
+  : "0 10px 25px rgba(0,0,0,0.25)"
 : buttons.depthEffect
 ? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
