@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -100,12 +100,14 @@ return(
 
 <div style={{maxWidth:650,padding:20}}>
 
-<div style={{
+<div
+style={{
 display:"flex",
 alignItems:"center",
 gap:12,
 marginBottom:20
-}}>
+}}
+>
 
 <div
 onClick={()=>router.back()}
@@ -223,8 +225,6 @@ onChange={(e)=>updateSetting("depthEffect",e.target.checked)}
 />
  Depth effect
 </label>
-
-</div>
 
 </div>
 
