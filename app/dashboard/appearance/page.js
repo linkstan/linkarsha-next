@@ -182,7 +182,6 @@ marginBottom:"10px"
 Customize theme
 </h3>
 
-
 {/* HEADER */}
 
 <Link
@@ -247,6 +246,8 @@ borderRadius:"6px"
 
 </div>
 
+{/* LINK PREVIEW IMAGE */}
+
 <div
 style={card}
 onClick={async ()=>{
@@ -263,7 +264,8 @@ const {data} = await supabase
 const settings = data?.profile_settings || {};
 const seo = settings.seo || {};
 
-seo.showPreviewImage = !seo.showPreviewImage;
+const current = seo.showPreviewImage !== false;
+seo.showPreviewImage = !current;
 
 settings.seo = seo;
 
