@@ -247,6 +247,46 @@ borderRadius:"6px"
 
 </div>
 
+<div
+style={card}
+onClick={async ()=>{
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const {data} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const settings = data?.profile_settings || {};
+const seo = settings.seo || {};
+
+seo.showPreviewImage = !seo.showPreviewImage;
+
+settings.seo = seo;
+
+await supabase
+.from("profiles")
+.update({profile_settings:settings})
+.eq("id",session.user.id);
+
+alert(seo.showPreviewImage
+? "Preview image enabled"
+: "Preview image disabled");
+
+}}
+>
+
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{fontSize:20}}>🔗</div>
+<div>Link Preview Image</div>
+</div>
+
+<div style={arrow}>→</div>
+
+</div>
 
 {/* COLORS */}
 
@@ -320,7 +360,6 @@ marginBottom:20
 );
 
 }
-
 
 /* COLORS */
 
