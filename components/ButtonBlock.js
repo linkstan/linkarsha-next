@@ -95,7 +95,11 @@ textDecoration:"none",
 transform:"translateY(0)",
 
 background:
-buttons?.style==="outline"
+block?.data_json?.title?.toLowerCase().includes("premium")
+? "linear-gradient(135deg,#ff9966,#ff5e62)"
+: block?.data_json?.title?.toLowerCase().includes("vip")
+? "linear-gradient(135deg,#f953c6,#b91d73)"
+: buttons?.style==="outline"
 ? "transparent"
 : buttons?.style==="glass"
 ? "rgba(255,255,255,0.12)"
