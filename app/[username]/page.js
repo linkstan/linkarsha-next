@@ -1,25 +1,14 @@
-"use client";
-
 import ButtonBlock from "../../components/ButtonBlock";
-import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+
+export const revalidate = 60;
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export default function PublicProfile({ params }) {
-
-const [profile, setProfile] = useState(null);
-const [blocks, setBlocks] = useState([]);
-const [appearance, setAppearance] = useState({});
-
-useEffect(() => {
-load();
-}, []);
-
-async function load() {
+export default async function PublicProfile({ params }) {
 
 const username = params.username;
 
@@ -29,23 +18,7 @@ const { data: prof } = await supabase
 .eq("username", username)
 .single();
 
-if (!prof) return;
-
-setProfile(prof);
-
-setAppearance(prof.profile_settings || {});
-
-const { data: blockData } = await supabase
-.from("blocks")
-.select("*")
-.eq("user_id", prof.id)
-.order("position", { ascending: true });
-
-setBlocks(blockData || []);
-
-}
-
-if (!profile) {
+if (!prof) {
 return (
 <div style={{
 minHeight:"100vh",
@@ -59,12 +32,22 @@ Profile not found
 );
 }
 
+const profile = prof;
+const appearance = prof.profile_settings || {};
+
+const { data: blockData } = await supabase
+.from("blocks")
+.select("*")
+.eq("user_id", prof.id)
+.order("position", { ascending: true });
+
+const blocks = blockData || [];
+
 const header = appearance?.header || {};
 const buttons = appearance?.buttons || {};
 const heroTextOffset = header.layout === "hero" ? -40 : 0;
 
-const themeMap={
-
+const themeMap = {
 Minimal:"#ffffff",
 Paper:"#fafafa",
 Clean:"#f4f4f4",
