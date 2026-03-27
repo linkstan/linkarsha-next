@@ -130,7 +130,9 @@ buttons?.textMode==="theme"
 : buttons?.textColor,
 
 boxShadow:
-buttons?.shadowLift
+block?.data_json?.title?.toLowerCase().includes("vip")
+? "0 0 20px rgba(255,0,150,0.7)"
+: buttons?.shadowLift
 ? "0 10px 25px rgba(0,0,0,0.25)"
 : buttons?.depthEffect
 ? "0 6px 0 rgba(0,0,0,0.35)"
