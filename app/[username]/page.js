@@ -37,7 +37,7 @@ const appearance = prof.profile_settings || {};
 
 const { data: blockData } = await supabase
 .from("blocks")
-.select("*")
+.select("id,data_json,position")
 .eq("user_id", prof.id)
 .order("position", { ascending: true });
 
