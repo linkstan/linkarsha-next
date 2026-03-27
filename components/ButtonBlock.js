@@ -42,8 +42,9 @@ return title;
 return(
 
 <a
-href={block.data_json?.url}
+href={block?.data_json?.url || "#"}
 target="_blank"
+rel="noopener noreferrer"
 
 onMouseEnter={(e)=>{
 if(buttons?.hoverEffect){
