@@ -98,7 +98,7 @@ transition:"transform .15s ease, box-shadow .2s ease"
 }}
 >
 
-{block.data_json?.title}
+{block?.data_json?.title || "Link"}
 
 </a>
 
