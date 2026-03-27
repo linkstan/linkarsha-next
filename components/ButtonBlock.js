@@ -1,20 +1,18 @@
 "use client";
 
 export default function ButtonBlock({ block, buttons, themeBackground }) {
+
 buttons = buttons || {};
-  function formatTitle(title){
+
+function formatTitle(title){
 
 if(!title) return "Link";
-
-/* emoji support */
 
 const emojiMatch = title.match(/^(\p{Emoji}|\p{Extended_Pictographic})/u);
 
 if(emojiMatch){
 return title;
 }
-
-/* icon keyword support */
 
 const icons = {
 youtube:"▶️",
@@ -40,10 +38,10 @@ return icons[key] + " " + title;
 return title;
 
 }
+
 return(
 
 <a
-key={block.id}
 href={block.data_json?.url}
 target="_blank"
 
@@ -95,9 +93,9 @@ textDecoration:"none",
 transform:"translateY(0)",
 
 background:
-block?.data_json?.title?.toLowerCase().includes("premium")
+block?.data_json?.title?.toLowerCase()?.includes("premium")
 ? "linear-gradient(135deg,#ff9966,#ff5e62)"
-: block?.data_json?.title?.toLowerCase().includes("vip")
+: block?.data_json?.title?.toLowerCase()?.includes("vip")
 ? "linear-gradient(135deg,#f953c6,#b91d73)"
 : buttons?.style==="outline"
 ? "transparent"
@@ -130,9 +128,7 @@ buttons?.textMode==="theme"
 : buttons?.textColor,
 
 boxShadow:
-block?.data_json?.title?.toLowerCase().includes("vip")
-? "0 0 20px rgba(255,0,150,0.7)"
-: buttons?.shadowLift
+buttons?.shadowLift
 ? "0 10px 25px rgba(0,0,0,0.25)"
 : buttons?.depthEffect
 ? "0 6px 0 rgba(0,0,0,0.35)"
