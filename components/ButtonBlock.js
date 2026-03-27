@@ -2,6 +2,44 @@
 
 export default function ButtonBlock({ block, buttons, themeBackground }) {
 buttons = buttons || {};
+  function formatTitle(title){
+
+if(!title) return "Link";
+
+/* emoji support */
+
+const emojiMatch = title.match(/^(\p{Emoji}|\p{Extended_Pictographic})/u);
+
+if(emojiMatch){
+return title;
+}
+
+/* icon keyword support */
+
+const icons = {
+youtube:"▶️",
+instagram:"📸",
+twitter:"🐦",
+x:"🐦",
+tiktok:"🎵",
+telegram:"✈️",
+github:"💻",
+website:"🌐",
+store:"🛒",
+email:"✉️"
+};
+
+const lower = title.toLowerCase();
+
+for(const key in icons){
+if(lower.includes(key)){
+return icons[key] + " " + title;
+}
+}
+
+return title;
+
+}
 return(
 
 <a
