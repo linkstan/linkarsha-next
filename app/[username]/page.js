@@ -10,7 +10,7 @@ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export default async function PublicProfile({ params }) {
 
-const username = params.username;
+const username = params?.username;
 
 const { data: prof } = await supabase
 .from("profiles")
@@ -77,10 +77,9 @@ Vivid:"linear-gradient(135deg,#f83600,#f9d423)",
 Energy:"linear-gradient(135deg,#f953c6,#b91d73)",
 Skyline:"linear-gradient(135deg,#4facfe,#00f2fe)",
 Dream:"linear-gradient(135deg,#a18cd1,#fbc2eb)"
-
 };
 
-const themeBackground = themeMap[profile.theme] || "#0b0b12";
+const themeBackground = themeMap[profile?.theme] || "#0b0b12";
 
 return (
 
@@ -111,7 +110,7 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-backgroundImage:`url(${profile.avatar})`,
+backgroundImage:`url(${profile?.avatar || ""})`,
 backgroundSize:"cover",
 backgroundPosition:"center",
 WebkitMaskImage:"linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0))",
@@ -132,7 +131,7 @@ marginBottom:20
 }}
 >
 <img
-src={profile.avatar}
+src={profile?.avatar || ""}
 style={{width:"100%",height:"100%",objectFit:"cover"}}
 />
 </div>
@@ -146,7 +145,7 @@ style={{width:"100%",height:"100%",objectFit:"cover"}}
 fontFamily:header.displayFont || "Poppins",
 fontSize:header.displaySize || 22
 }}>
-{profile.display_name}
+{profile?.display_name}
 </h1>
 )}
 
@@ -156,7 +155,7 @@ fontFamily:header.usernameFont || "Roboto",
 fontSize:header.usernameSize || 14,
 opacity:0.7
 }}>
-@{profile.username}
+@{profile?.username}
 </div>
 )}
 
@@ -166,7 +165,7 @@ fontFamily:header.bioFont || "Lora",
 fontSize:header.bioSize || 15,
 opacity:0.7
 }}>
-{profile.bio}
+{profile?.bio}
 </p>
 )}
 
@@ -182,6 +181,7 @@ buttons={buttons}
 themeBackground={themeBackground}
 />
 ))}
+
 </div>
 
 </div>
