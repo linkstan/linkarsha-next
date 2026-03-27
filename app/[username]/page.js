@@ -191,7 +191,7 @@ opacity:0.7
 
 <div style={{marginTop:40,width:320}}>
 
-{blocks.map((block)=>(
+{(blocks || []).map((block)=>(
 <ButtonBlock
 key={block.id}
 block={block}
