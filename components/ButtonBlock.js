@@ -1,7 +1,7 @@
 "use client";
 
 export default function ButtonBlock({ block, buttons, themeBackground }) {
-
+buttons = buttons || {};
 return(
 
 <a
