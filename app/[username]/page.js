@@ -8,6 +8,67 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+/* SEO + SOCIAL PREVIEW */
+
+export async function generateMetadata({ params }) {
+
+const username = params?.username;
+
+const { data: prof } = await supabase
+.from("profiles")
+.select("display_name,username,bio,avatar,profile_settings")
+.eq("username", username)
+.single();
+
+if (!prof) {
+return {
+title: "Profile",
+description: "User profile"
+};
+}
+
+const title = prof.display_name || prof.username;
+const description = prof.bio || "Visit my profile";
+
+/* preview image toggle */
+
+const previewEnabled =
+prof?.profile_settings?.seo?.showPreviewImage !== false;
+
+const metadata = {
+title: `${title} | Linkarsha`,
+description: description
+};
+
+if (previewEnabled && prof.avatar) {
+
+metadata.openGraph = {
+title: title,
+description: description,
+images: [
+{
+url: prof.avatar,
+width: 800,
+height: 800
+}
+]
+};
+
+metadata.twitter = {
+card: "summary_large_image",
+title: title,
+description: description,
+images: [prof.avatar]
+};
+
+}
+
+return metadata;
+
+}
+
+/* PROFILE PAGE */
+
 export default async function PublicProfile({ params }) {
 
 const username = params?.username;
