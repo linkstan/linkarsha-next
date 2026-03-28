@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -8,11 +8,40 @@ export default function Login(){
 const [login,setLogin]=useState("");
 const [password,setPassword]=useState("");
 const [msg,setMsg]=useState("");
+const [loading,setLoading]=useState(false);
+
 const router = useRouter();
+
+/* auto redirect if already logged in */
+
+useEffect(()=>{
+checkSession();
+},[]);
+
+async function checkSession(){
+
+const { data:{session} } = await supabase.auth.getSession();
+
+if(session){
+router.push("/dashboard");
+}
+
+}
 
 async function handleLogin(){
 
-let emailToUse = login;
+if(loading) return;
+
+/* prevent empty fields */
+
+if(!login || !password){
+setMsg("Enter email/username and password");
+return;
+}
+
+setLoading(true);
+
+let emailToUse = login.trim().toLowerCase();
 
 /* allow login using username */
 
@@ -21,11 +50,12 @@ if(!login.includes("@")){
 const { data: userRow } = await supabase
 .from("profiles")
 .select("email")
-.eq("username", login)
+.eq("username", login.toLowerCase())
 .maybeSingle();
 
 if(!userRow){
 setMsg("Invalid credentials");
+setLoading(false);
 return;
 }
 
@@ -40,6 +70,7 @@ password
 
 if(error){
 setMsg("Invalid credentials");
+setLoading(false);
 return;
 }
 
@@ -120,6 +151,7 @@ color:"white"
 
 <button
 onClick={handleLogin}
+disabled={loading}
 style={{
 marginTop:20,
 padding:14,
@@ -128,10 +160,11 @@ background:"white",
 color:"black",
 borderRadius:10,
 fontWeight:600,
-cursor:"pointer"
+cursor:"pointer",
+opacity:loading?0.6:1
 }}
 >
-Log in
+{loading ? "Logging in..." : "Log in"}
 </button>
 
 <div style={{marginTop:14}}>
