@@ -545,7 +545,9 @@ buttons={buttons}
 
 {isMobile && (
 
-<>
+<div>
+
+{/* Bottom Navigation */}
 
 <div style={{
 position:"fixed",
@@ -600,7 +602,7 @@ left:0,
 right:0,
 bottom:0,
 background:"rgba(0,0,0,0.3)",
-zIndex:99
+zIndex:150
 }}
 >
 
@@ -615,7 +617,9 @@ height:"100%",
 background:"var(--sidebar)",
 padding:20,
 borderLeft:"1px solid var(--border)"
-}}>
+}}
+>
+
 <h3 style={{marginBottom:20}}>Menu</h3>
 
 <div style={dropdownItem}>Blocks</div>
@@ -651,9 +655,11 @@ Close
 
 </div>
 
+</div>
+
 )}
 
-</>
+</div>
 
 )}
 
