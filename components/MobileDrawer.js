@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function MobileDrawer({
 openMore,
@@ -19,21 +20,25 @@ if(!openMore) return null;
 
 const item={
 padding:"12px 10px",
-borderRadius:8,
+borderRadius:10,
 cursor:"pointer",
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center"
+alignItems:"center",
+transition:"0.15s"
 };
 
 const highlight={
-background:"var(--card)"
+background:"rgba(255,255,255,0.08)"
 };
 
 const subItem={
-padding:"10px 18px",
-opacity:0.85,
-cursor:"pointer"
+padding:"10px 20px",
+opacity:0.9,
+cursor:"pointer",
+display:"block",
+textDecoration:"none",
+color:"var(--text)"
 };
 
 return(
@@ -62,7 +67,9 @@ height:"100%",
 background:"var(--sidebar)",
 padding:20,
 borderLeft:"1px solid var(--border)",
-overflowY:"auto"
+overflowY:"auto",
+transform: openMore ? "translateX(0)" : "translateX(100%)",
+transition:"transform 0.25s ease"
 }}
 >
 
@@ -105,9 +112,9 @@ linkarsha.com/{profile?.username}
 
 {/* BLOCKS */}
 
-<div style={item}>
+<Link href="/dashboard/blocks" style={subItem}>
 Blocks
-</div>
+</Link>
 
 {/* TOOLS */}
 
@@ -120,7 +127,7 @@ style={{
 >
 
 <span>Tools</span>
-<span>{openSection==="tools" ? "v" : ">"}</span>
+<span>{openSection==="tools" ? "▼" : ">"}</span>
 
 </div>
 
@@ -128,9 +135,17 @@ style={{
 
 <div>
 
-<div style={subItem}>Bio Generator</div>
-<div style={subItem}>QR Code Generator</div>
-<div style={subItem}>Export Data</div>
+<Link href="/dashboard/tools/ai-bio-generator" style={subItem}>
+AI Bio Generator
+</Link>
+
+<Link href="/dashboard/tools/qr-code" style={subItem}>
+QR Code Generator
+</Link>
+
+<Link href="/dashboard/tools/export-data" style={subItem}>
+Export Data
+</Link>
 
 </div>
 
@@ -147,7 +162,7 @@ style={{
 >
 
 <span>Account</span>
-<span>{openSection==="account" ? "v" : ">"}</span>
+<span>{openSection==="account" ? "▼" : ">"}</span>
 
 </div>
 
@@ -155,8 +170,13 @@ style={{
 
 <div>
 
-<div style={subItem}>Referrals</div>
-<div style={subItem}>Settings</div>
+<Link href="/dashboard/referrals" style={subItem}>
+Referrals
+</Link>
+
+<Link href="/dashboard/settings" style={subItem}>
+Settings
+</Link>
 
 </div>
 
@@ -175,7 +195,7 @@ style={{
 >
 
 <span>Support</span>
-<span>{openSection==="support" ? "v" : ">"}</span>
+<span>{openSection==="support" ? "▼" : ">"}</span>
 
 </div>
 
