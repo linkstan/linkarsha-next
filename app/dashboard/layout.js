@@ -349,7 +349,11 @@ style={item}
 
 <div style={{flex:1,display:"flex"}}>
 
-<div style={{flex:1,padding:40,position:"relative"}}>
+<div style={{
+flex:1,
+padding:isMobile ? "20px 20px 90px 20px" : 40,
+position:"relative"
+}}>
 
 <div
 onClick={toggleTheme}
@@ -554,7 +558,7 @@ borderTop:"1px solid var(--border)",
 display:"flex",
 justifyContent:"space-around",
 alignItems:"center",
-zIndex:50
+zIndex:200
 }}>
 
 <Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)"}}>
@@ -587,18 +591,31 @@ More
 
 {openMore && (
 
-<div style={{
+<div
+onClick={()=>setOpenMore(false)}
+style={{
 position:"fixed",
+top:0,
+left:0,
+right:0,
+bottom:0,
+background:"rgba(0,0,0,0.3)",
+zIndex:99
+}}
+>
+
+<div
+onClick={(e)=>e.stopPropagation()}
+style={{
+position:"absolute",
 top:0,
 right:0,
 width:260,
 height:"100%",
 background:"var(--sidebar)",
 padding:20,
-borderLeft:"1px solid var(--border)",
-zIndex:100
+borderLeft:"1px solid var(--border)"
 }}>
-
 <h3 style={{marginBottom:20}}>Menu</h3>
 
 <div style={dropdownItem}>Blocks</div>
