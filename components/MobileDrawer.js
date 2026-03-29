@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 export default function MobileDrawer({
 openMore,
 setOpenMore,
@@ -7,7 +9,32 @@ profile,
 logout
 }){
 
+const [openSection,setOpenSection] = useState("");
+
+function toggle(section){
+setOpenSection(openSection === section ? "" : section);
+}
+
 if(!openMore) return null;
+
+const item={
+padding:"12px 10px",
+borderRadius:8,
+cursor:"pointer",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
+};
+
+const highlight={
+background:"var(--card)"
+};
+
+const subItem={
+padding:"10px 18px",
+opacity:0.85,
+cursor:"pointer"
+};
 
 return(
 
@@ -35,14 +62,18 @@ height:"100%",
 background:"var(--sidebar)",
 padding:20,
 borderLeft:"1px solid var(--border)",
-transform:"translateX(0)",
-transition:"0.25s ease"
+overflowY:"auto"
 }}
 >
 
 {/* PROFILE */}
 
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:15}}>
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:10,
+marginBottom:10
+}}>
 
 <img
 src={profile?.avatar || "/default-avatar.png"}
@@ -59,7 +90,10 @@ borderRadius:"50%"
 {profile?.username}
 </div>
 
-<div style={{fontSize:12,opacity:0.7}}>
+<div style={{
+fontSize:12,
+opacity:0.7
+}}>
 linkarsha.com/{profile?.username}
 </div>
 
@@ -69,31 +103,106 @@ linkarsha.com/{profile?.username}
 
 <hr style={{margin:"15px 0"}}/>
 
-<div style={{padding:"10px 0"}}>Blocks</div>
+{/* BLOCKS */}
 
-<div style={{padding:"10px 0"}}>Bio Generator</div>
-<div style={{padding:"10px 0"}}>QR Code Generator</div>
-<div style={{padding:"10px 0"}}>Export Data</div>
+<div style={item}>
+Blocks
+</div>
+
+{/* TOOLS */}
+
+<div
+onClick={()=>toggle("tools")}
+style={{
+...item,
+...(openSection==="tools" ? highlight : {})
+}}
+>
+
+<span>Tools</span>
+<span>{openSection==="tools" ? "v" : ">"}</span>
+
+</div>
+
+{openSection==="tools" && (
+
+<div>
+
+<div style={subItem}>Bio Generator</div>
+<div style={subItem}>QR Code Generator</div>
+<div style={subItem}>Export Data</div>
+
+</div>
+
+)}
+
+{/* ACCOUNT */}
+
+<div
+onClick={()=>toggle("account")}
+style={{
+...item,
+...(openSection==="account" ? highlight : {})
+}}
+>
+
+<span>Account</span>
+<span>{openSection==="account" ? "v" : ">"}</span>
+
+</div>
+
+{openSection==="account" && (
+
+<div>
+
+<div style={subItem}>Referrals</div>
+<div style={subItem}>Settings</div>
+
+</div>
+
+)}
 
 <hr style={{margin:"15px 0"}}/>
 
-<div style={{padding:"10px 0"}}>Referrals</div>
-<div style={{padding:"10px 0"}}>Settings</div>
+{/* SUPPORT */}
 
-<hr style={{margin:"15px 0"}}/>
+<div
+onClick={()=>toggle("support")}
+style={{
+...item,
+...(openSection==="support" ? highlight : {})
+}}
+>
 
-<div style={{padding:"10px 0"}}>Ask Question</div>
-<div style={{padding:"10px 0"}}>Help Center</div>
-<div style={{padding:"10px 0"}}>Contact Support</div>
+<span>Support</span>
+<span>{openSection==="support" ? "v" : ">"}</span>
+
+</div>
+
+{openSection==="support" && (
+
+<div>
+
+<div style={subItem}>Ask Question</div>
+<div style={subItem}>Help Center</div>
+<div style={subItem}>Contact Support</div>
+
+</div>
+
+)}
+
+{/* SIGN OUT */}
 
 <div
 onClick={logout}
 style={{
-marginTop:20,
-padding:"10px 12px",
-color:"#ff5e5e",
+marginTop:25,
+padding:"12px",
+borderRadius:10,
 cursor:"pointer",
-borderRadius:8
+color:"#ff5e5e",
+textAlign:"center",
+border:"1px solid rgba(255,0,0,0.25)"
 }}
 >
 Sign Out
