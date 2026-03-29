@@ -389,7 +389,7 @@ justifyContent:"center"
 
 {/* PHONE PREVIEW */}
 
-{showPreview && profile && (
+{!isMobile && showPreview && profile && (
 
 <div style={{
 width:360,
@@ -536,7 +536,48 @@ buttons={buttons}
 )}
 
 </div>
+{isMobile && (
 
+<div style={{
+position:"fixed",
+bottom:0,
+left:0,
+right:0,
+height:60,
+background:"var(--sidebar)",
+borderTop:"1px solid var(--border)",
+display:"flex",
+justifyContent:"space-around",
+alignItems:"center",
+zIndex:50
+}}>
+
+<Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)"}}>
+Home
+</Link>
+
+<Link href="/dashboard/links" style={{textDecoration:"none",color:"var(--text)"}}>
+My Linkarsha
+</Link>
+
+<Link href="/dashboard/appearance" style={{textDecoration:"none",color:"var(--text)"}}>
+Appearance
+</Link>
+
+<Link href="/dashboard/analytics" style={{textDecoration:"none",color:"var(--text)"}}>
+Analytics
+</Link>
+
+<div
+onClick={()=>setOpenMore(true)}
+style={{cursor:"pointer"}}
+>
+More
+</div>
+
+</div>
+
+)}
 </div>
 
 );
