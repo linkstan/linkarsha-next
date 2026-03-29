@@ -17,6 +17,8 @@ const [openUser,setOpenUser] = useState(false);
 const [profile,setProfile] = useState(null);
 const [blocks,setBlocks] = useState([]);
 const [mode,setMode] = useState("light");
+const [isMobile,setIsMobile] = useState(false);
+const [openMore,setOpenMore] = useState(false);
 
 const [liveTheme,setLiveTheme] = useState(null);
 const [appearance,setAppearance] = useState({});
@@ -90,6 +92,19 @@ window.removeEventListener("appearance-update",handleAppearance);
 
 useEffect(()=>{
 loadPreview();
+},[]);
+useEffect(()=>{
+
+function handleResize(){
+setIsMobile(window.innerWidth <= 767);
+}
+
+handleResize();
+
+window.addEventListener("resize",handleResize);
+
+return ()=>window.removeEventListener("resize",handleResize);
+
 },[]);
 
 async function loadPreview(){
@@ -202,6 +217,8 @@ fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif"
 }}>
 
 {/* SIDEBAR */}
+
+{!isMobile && (
 
 <div style={{
 width:260,
