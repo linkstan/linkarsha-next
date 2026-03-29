@@ -343,6 +343,8 @@ style={item}
 
 </div>
 
+)}
+
 {/* MAIN */}
 
 <div style={{flex:1,display:"flex"}}>
