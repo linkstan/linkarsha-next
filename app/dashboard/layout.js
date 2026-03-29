@@ -1,9 +1,9 @@
 "use client";
 
-import MobileBottomNav from "../../components/MobileBottomNav";
-import MobileDrawer from "../../components/MobileDrawer";
 import ButtonBlock from "../../components/ButtonBlock";
 import Link from "next/link";
+import MobileBottomNav from "../../components/MobileBottomNav";
+import MobileDrawer from "../../components/MobileDrawer";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
@@ -546,102 +546,15 @@ buttons={buttons}
 {/* MOBILE LAYOUT */}
 
 {isMobile && (
-
-<div>
-
-<div style={{
-position:"fixed",
-bottom:0,
-left:0,
-right:0,
-height:60,
-background:"var(--sidebar)",
-borderTop:"1px solid var(--border)",
-display:"flex",
-justifyContent:"space-around",
-alignItems:"center",
-zIndex:200
-}}>
-
-<Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)"}}>Home</Link>
-<Link href="/dashboard/links" style={{textDecoration:"none",color:"var(--text)"}}>My Linkarsha</Link>
-<Link href="/dashboard/appearance" style={{textDecoration:"none",color:"var(--text)"}}>Appearance</Link>
-<Link href="/dashboard/analytics" style={{textDecoration:"none",color:"var(--text)"}}>Analytics</Link>
-
-<div
-onClick={()=>setOpenMore(true)}
-style={{cursor:"pointer",color:"var(--text)"}}
->
-More
-</div>
-
-</div>
-
-{openMore && (
-
-<div
-onClick={()=>setOpenMore(false)}
-style={{
-position:"fixed",
-top:0,
-left:0,
-right:0,
-bottom:0,
-background:"rgba(0,0,0,0.3)",
-zIndex:150
-}}
->
-
-<div
-onClick={(e)=>e.stopPropagation()}
-style={{
-position:"absolute",
-top:0,
-right:0,
-width:260,
-height:"100%",
-background:"var(--sidebar)",
-padding:20,
-borderLeft:"1px solid var(--border)"
-}}
->
-
-<h3 style={{marginBottom:20}}>Menu</h3>
-
-<div style={dropdownItem}>Blocks</div>
-<div style={dropdownItem}>AI Bio Generator</div>
-<div style={dropdownItem}>QR Code Generator</div>
-<div style={dropdownItem}>Export Data</div>
-
-<hr style={{margin:"20px 0"}}/>
-
-<div style={dropdownItem}>Referrals</div>
-<div style={dropdownItem}>Settings</div>
-
-<hr style={{margin:"20px 0"}}/>
-
-<div style={dropdownItem}>Ask Question</div>
-<div style={dropdownItem}>Help Center</div>
-<div style={dropdownItem}>Contact Support</div>
-
-<div
-onClick={logout}
-style={{...dropdownItem,color:"#ff6b6b"}}
->
-Sign Out
-</div>
-
-<div
-onClick={()=>setOpenMore(false)}
-style={{marginTop:20,cursor:"pointer"}}
->
-Close
-</div>
-
-</div>
-
-</div>
-
+<>
+<MobileBottomNav setOpenMore={setOpenMore}/>
+<MobileDrawer
+openMore={openMore}
+setOpenMore={setOpenMore}
+profile={profile}
+logout={logout}
+/>
+</>
 )}
 
 </div>
