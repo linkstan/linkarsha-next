@@ -537,8 +537,11 @@ buttons={buttons}
 
 )}
 
-</div>
+{/* MOBILE BOTTOM NAVIGATION */}
+
 {isMobile && (
+
+<>
 
 <div style={{
 position:"fixed",
@@ -572,14 +575,71 @@ Analytics
 
 <div
 onClick={()=>setOpenMore(true)}
-style={{cursor:"pointer"}}
+style={{cursor:"pointer",color:"var(--text)"}}
 >
 More
 </div>
 
 </div>
 
+
+{/* MOBILE MORE DRAWER */}
+
+{openMore && (
+
+<div style={{
+position:"fixed",
+top:0,
+right:0,
+width:260,
+height:"100%",
+background:"var(--sidebar)",
+padding:20,
+borderLeft:"1px solid var(--border)",
+zIndex:100
+}}>
+
+<h3 style={{marginBottom:20}}>Menu</h3>
+
+<div style={dropdownItem}>Blocks</div>
+
+<div style={dropdownItem}>AI Bio Generator</div>
+<div style={dropdownItem}>QR Code Generator</div>
+<div style={dropdownItem}>Export Data</div>
+
+<hr style={{margin:"20px 0"}}/>
+
+<div style={dropdownItem}>Referrals</div>
+<div style={dropdownItem}>Settings</div>
+
+<hr style={{margin:"20px 0"}}/>
+
+<div style={dropdownItem}>Ask Question</div>
+<div style={dropdownItem}>Help Center</div>
+<div style={dropdownItem}>Contact Support</div>
+
+<div
+onClick={logout}
+style={{...dropdownItem,color:"#ff6b6b"}}
+>
+Sign Out
+</div>
+
+<div
+onClick={()=>setOpenMore(false)}
+style={{marginTop:20,cursor:"pointer"}}
+>
+Close
+</div>
+
+</div>
+
 )}
+
+</>
+
+)}
+
 </div>
 
 );
