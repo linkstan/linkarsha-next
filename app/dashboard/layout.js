@@ -541,13 +541,11 @@ buttons={buttons}
 
 )}
 
-{/* MOBILE BOTTOM NAVIGATION */}
+{/* MOBILE LAYOUT */}
 
 {isMobile && (
 
 <div>
-
-{/* Bottom Navigation */}
 
 <div style={{
 position:"fixed",
@@ -563,21 +561,10 @@ alignItems:"center",
 zIndex:200
 }}>
 
-<Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)"}}>
-Home
-</Link>
-
-<Link href="/dashboard/links" style={{textDecoration:"none",color:"var(--text)"}}>
-My Linkarsha
-</Link>
-
-<Link href="/dashboard/appearance" style={{textDecoration:"none",color:"var(--text)"}}>
-Appearance
-</Link>
-
-<Link href="/dashboard/analytics" style={{textDecoration:"none",color:"var(--text)"}}>
-Analytics
-</Link>
+<Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)"}}>Home</Link>
+<Link href="/dashboard/links" style={{textDecoration:"none",color:"var(--text)"}}>My Linkarsha</Link>
+<Link href="/dashboard/appearance" style={{textDecoration:"none",color:"var(--text)"}}>Appearance</Link>
+<Link href="/dashboard/analytics" style={{textDecoration:"none",color:"var(--text)"}}>Analytics</Link>
 
 <div
 onClick={()=>setOpenMore(true)}
@@ -587,9 +574,6 @@ More
 </div>
 
 </div>
-
-
-{/* MOBILE MORE DRAWER */}
 
 {openMore && (
 
@@ -623,7 +607,6 @@ borderLeft:"1px solid var(--border)"
 <h3 style={{marginBottom:20}}>Menu</h3>
 
 <div style={dropdownItem}>Blocks</div>
-
 <div style={dropdownItem}>AI Bio Generator</div>
 <div style={dropdownItem}>QR Code Generator</div>
 <div style={dropdownItem}>Export Data</div>
@@ -662,6 +645,8 @@ Close
 </div>
 
 )}
+
+</div>
 
 </div>
 
