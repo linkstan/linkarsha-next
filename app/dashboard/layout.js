@@ -1,5 +1,7 @@
 "use client";
 
+import MobileBottomNav from "../../components/MobileBottomNav";
+import MobileDrawer from "../../components/MobileDrawer";
 import ButtonBlock from "../../components/ButtonBlock";
 import Link from "next/link";
 import { useState, useEffect } from "react";
