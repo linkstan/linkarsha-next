@@ -1,8 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function MobileBottomNav({ setOpenMore }) {
+
+const pathname = usePathname();
+
+function active(path){
+return pathname.startsWith(path);
+}
+
+const itemStyle = (path) => ({
+textDecoration:"none",
+color: active(path) ? "#4da3ff" : "var(--text)",
+textAlign:"center",
+fontWeight: active(path) ? "600" : "400"
+});
 
 return (
 
@@ -20,7 +34,7 @@ alignItems:"center",
 zIndex:200
 }}>
 
-<Link href="/dashboard" style={{textDecoration:"none",color:"var(--text)",textAlign:"center"}}>
+<Link href="/dashboard" style={itemStyle("/dashboard")}>
 <div>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <path d="M3 12l9-9 9 9"></path>
@@ -30,7 +44,7 @@ zIndex:200
 </div>
 </Link>
 
-<Link href="/dashboard/links" style={{textDecoration:"none",color:"var(--text)",textAlign:"center"}}>
+<Link href="/dashboard/links" style={itemStyle("/dashboard/links")}>
 <div>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1"></path>
@@ -40,17 +54,17 @@ zIndex:200
 </div>
 </Link>
 
-<Link href="/dashboard/appearance" style={{textDecoration:"none",color:"var(--text)",textAlign:"center"}}>
+<Link href="/dashboard/appearance" style={itemStyle("/dashboard/appearance")}>
 <div>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="3"></circle>
-<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06"></path>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"></path>
 </svg>
 <div style={{fontSize:11}}>Appearance</div>
 </div>
 </Link>
 
-<Link href="/dashboard/analytics" style={{textDecoration:"none",color:"var(--text)",textAlign:"center"}}>
+<Link href="/dashboard/analytics" style={itemStyle("/dashboard/analytics")}>
 <div>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -63,7 +77,11 @@ zIndex:200
 
 <div
 onClick={()=>setOpenMore(true)}
-style={{cursor:"pointer",color:"var(--text)",textAlign:"center"}}
+style={{
+cursor:"pointer",
+color:"var(--text)",
+textAlign:"center"
+}}
 >
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="1"></circle>
