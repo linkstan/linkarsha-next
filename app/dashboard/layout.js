@@ -491,10 +491,7 @@ position:"relative"
 {header.showDisplayName !== false && (
 <div style={{
 fontFamily: header.displayFont || "Poppins",
-fontSize: header.displaySize || 22,
-transform: header.layout==="hero"
-? `translate(${header.displayAlign?.x||0}px, ${header.displayAlign?.y||0}px)`
-: "none"
+fontSize: header.displaySize || 22
 }}>
 {profile?.display_name}
 </div>
@@ -503,10 +500,7 @@ transform: header.layout==="hero"
 {header.showUsername !== false && (
 <div style={{
 fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14,
-transform: header.layout==="hero"
-? `translate(${header.usernameAlign?.x||0}px, ${header.usernameAlign?.y||0}px)`
-: "none"
+fontSize: header.usernameSize || 14
 }}>
 @{profile?.username}
 </div>
@@ -543,11 +537,10 @@ buttons={buttons}
 
 )}
 
-{/* MOBILE LAYOUT */}
-
 {isMobile && (
 <>
 <MobileBottomNav setOpenMore={setOpenMore}/>
+
 <MobileDrawer
 openMore={openMore}
 setOpenMore={setOpenMore}
@@ -555,10 +548,6 @@ profile={profile}
 logout={logout}
 />
 </>
-)}
-
-</div>
-
 )}
 
 </div>
