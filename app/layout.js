@@ -1,3 +1,4 @@
+import "../styles/responsive.css";
 import "react-easy-crop/react-easy-crop.css";
 import "./globals.css";
 
