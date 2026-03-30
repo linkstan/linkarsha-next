@@ -42,15 +42,9 @@ textDecoration:"none",
 
 color:active(path) ? "#3b82f6" : "var(--text)",
 
-transform:active(path) ? "translateY(2px)" : "none",
-
-boxShadow:active(path)
-? "inset 0 6px 10px rgba(0,0,0,0.25)"
-: "none",
-
 height:"100%",
 
-transition:"all .15s ease"
+transition:"color .15s ease"
 
 });
 
@@ -61,11 +55,10 @@ marginBottom:4
 };
 
 const divider={
-width:2,
-height:"100%",
-background:"linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(255,255,255,0.7), rgba(0,0,0,0.4))",
-boxShadow:"0 0 6px rgba(0,0,0,0.35), inset 0 0 4px rgba(255,255,255,0.5)",
-opacity:0.9
+width:1,
+height:40,
+background:"linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(255,255,255,0.6), rgba(0,0,0,0.35))",
+opacity:0.8
 };
 
 return(
@@ -97,7 +90,7 @@ Home
 
 <Link href="/dashboard/links" style={item("/dashboard/links")}>
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 
 <path d="M8 13a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1"/>
 <path d="M16 11a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1"/>
