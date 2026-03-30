@@ -7,9 +7,19 @@ export default function MobileBottomNav({ setOpenMore }) {
 
 const pathname = usePathname();
 
-function active(path){
-return pathname === path || pathname.startsWith(path + "/");
+/* ACTIVE PAGE CHECK */
+
+function isActive(path){
+
+if(path === "/dashboard"){
+return pathname === "/dashboard";
 }
+
+return pathname.startsWith(path);
+
+}
+
+/* NAV STYLE */
 
 const navStyle={
 position:"fixed",
@@ -23,9 +33,11 @@ borderRadius:22,
 display:"flex",
 justifyContent:"space-around",
 alignItems:"center",
-boxShadow:"0 10px 30px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.1)",
+boxShadow:"0 8px 24px rgba(0,0,0,0.45), inset 0 1px rgba(255,255,255,0.08)",
 zIndex:200
 };
+
+/* BUTTON STYLE */
 
 const button=(path)=>({
 
@@ -39,19 +51,19 @@ borderRadius:14,
 fontSize:11,
 textDecoration:"none",
 
-color: active(path) ? "#3b82f6" : "#bbb",
+color: isActive(path) ? "#3b82f6" : "#bbb",
 
-transform: active(path) ? "translateY(-4px)" : "none",
+transform: isActive(path) ? "translateY(-1.5px)" : "none",
 
-background: active(path)
-? "rgba(255,255,255,0.08)"
+background: isActive(path)
+? "rgba(255,255,255,0.06)"
 : "transparent",
 
-boxShadow: active(path)
-? "0 6px 18px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.15)"
+boxShadow: isActive(path)
+? "0 3px 8px rgba(0,0,0,0.35)"
 : "none",
 
-transition:"all 0.2s ease"
+transition:"all 0.15s ease"
 
 });
 
