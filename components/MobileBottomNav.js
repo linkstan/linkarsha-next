@@ -61,10 +61,11 @@ marginBottom:4
 };
 
 const divider={
-width:1,
-height:48,
-background:"linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(255,255,255,0.6), rgba(0,0,0,0.35))",
-boxShadow:"0 0 4px rgba(0,0,0,0.35)"
+width:2,
+height:"100%",
+background:"linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(255,255,255,0.7), rgba(0,0,0,0.4))",
+boxShadow:"0 0 6px rgba(0,0,0,0.35), inset 0 0 4px rgba(255,255,255,0.5)",
+opacity:0.9
 };
 
 return(
@@ -96,14 +97,14 @@ Home
 
 <Link href="/dashboard/links" style={item("/dashboard/links")}>
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
 
-<path d="M10 13a5 5 0 017 0l1 1a5 5 0 01-7 7l-1-1"/>
-<path d="M14 11a5 5 0 00-7 0l-1-1a5 5 0 017-7l1 1"/>
+<path d="M8 13a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1"/>
+<path d="M16 11a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1"/>
 
-<circle cx="19" cy="5" r="3"/>
-<line x1="19" y1="3.5" x2="19" y2="6.5"/>
-<line x1="17.5" y1="5" x2="20.5" y2="5"/>
+<circle cx="19" cy="17" r="3"/>
+<line x1="19" y1="15.5" x2="19" y2="18.5"/>
+<line x1="17.5" y1="17" x2="20.5" y2="17"/>
 
 </svg>
 
@@ -117,9 +118,8 @@ My Links
 
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 
-<rect x="4" y="5" width="12" height="14" rx="2"/>
-<rect x="8" y="7" width="12" height="14" rx="2"/>
-<rect x="12" y="9" width="12" height="14" rx="2"/>
+<rect x="4" y="6" width="12" height="14" rx="2"/>
+<rect x="8" y="4" width="12" height="14" rx="2"/>
 
 </svg>
 
