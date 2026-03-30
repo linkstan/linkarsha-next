@@ -11,22 +11,25 @@ function active(path){
 return pathname === path || pathname.startsWith(path + "/");
 }
 
-const navItem = (path) => ({
+const button = (path) => ({
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
 justifyContent:"center",
-gap:4,
-padding:"8px 12px",
-borderRadius:12,
+padding:"8px 14px",
+borderRadius:14,
 textDecoration:"none",
-color: active(path) ? "#4da3ff" : "var(--text)",
-background: active(path) ? "rgba(77,163,255,0.12)" : "transparent",
+color: active(path) ? "#3b82f6" : "var(--text)",
+background: active(path)
+? "rgba(59,130,246,0.08)"
+: "transparent",
 boxShadow: active(path)
-? "0 4px 12px rgba(77,163,255,0.35)"
+? "0 4px 12px rgba(0,0,0,0.25)"
 : "none",
 transform: active(path) ? "translateY(-2px)" : "none",
-transition:"all 0.15s ease"
+transition:"all 0.15s ease",
+fontSize:11,
+minWidth:60
 });
 
 return (
@@ -45,41 +48,63 @@ alignItems:"center",
 zIndex:200
 }}>
 
-<Link href="/dashboard" style={navItem("/dashboard")}>
-
+<Link href="/dashboard" style={button("/dashboard")}>
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M3 11l9-8 9 8"></path>
-<path d="M5 10v10h14V10"></path>
+<path d="M3 12l9-9 9 9"></path>
+<path d="M9 21V9h6v12"></path>
 </svg>
-
-<div style={{fontSize:11}}>Home</div>
-
+Home
 </Link>
 
-
-<Link href="/dashboard/links" style={navItem("/dashboard/links")}>
-
+<Link href="/dashboard/links" style={button("/dashboard/links")}>
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1"/>
-<path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1"/>
+<path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1"></path>
+<path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1"></path>
 </svg>
-
-<div style={{fontSize:11}}>My Linkarsha</div>
-
+Links
 </Link>
 
-
-<Link href="/dashboard/appearance" style={navItem("/dashboard/appearance")}>
-
+<Link href="/dashboard/appearance" style={button("/dashboard/appearance")}>
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<circle cx="12" cy="12" r="3"/>
-<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/>
-<path d="M4.6 9a1.65 1.65 0 0 0-.33-1.82"/>
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"></path>
 </svg>
-
-<div style={{fontSize:11}}>Appearance</div>
-
+Appearance
 </Link>
 
+<Link href="/dashboard/analytics" style={button("/dashboard/analytics")}>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<line x1="18" y1="20" x2="18" y2="10"></line>
+<line x1="12" y1="20" x2="12" y2="4"></line>
+<line x1="6" y1="20" x2="6" y2="14"></line>
+</svg>
+Analytics
+</Link>
 
-<Link href="/dashboard/analytics" style={
+<div
+onClick={()=>setOpenMore(true)}
+style={{
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer",
+fontSize:11
+}}
+>
+
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<circle cx="12" cy="12" r="1"></circle>
+<circle cx="19" cy="12" r="1"></circle>
+<circle cx="5" cy="12" r="1"></circle>
+</svg>
+
+More
+
+</div>
+
+</div>
+
+);
+
+}
