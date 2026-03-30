@@ -17,19 +17,22 @@ position:"fixed",
 bottom:18,
 left:18,
 right:18,
-height:70,
+height:72,
 
 background:"rgba(255,255,255,0.08)",
-backdropFilter:"blur(18px)",
+backdropFilter:"blur(20px)",
 
-borderRadius:22,
+borderRadius:26,
 
 display:"flex",
 alignItems:"center",
 justifyContent:"space-around",
 
-boxShadow:"0 8px 24px rgba(0,0,0,0.25)",
-zIndex:200
+boxShadow:"0 10px 28px rgba(0,0,0,0.25)",
+
+zIndex:200,
+
+WebkitTapHighlightColor:"transparent"
 };
 
 const item=(path)=>({
@@ -42,37 +45,41 @@ alignItems:"center",
 justifyContent:"center",
 
 fontSize:11,
-padding:"6px 0",
 
 textDecoration:"none",
+
+padding:"8px 0",
 
 color:active(path) ? "#3b82f6" : "var(--text)",
 
 transform:active(path) ? "translateY(2px)" : "translateY(0)",
 
-textShadow:active(path)
-? "0 2px 2px rgba(0,0,0,0.35)"
+boxShadow:active(path)
+? "inset 0 3px 6px rgba(0,0,0,0.25)"
 : "none",
 
-transition:"all .15s ease"
+borderRadius:12,
 
+transition:"all .15s ease",
+
+WebkitTapHighlightColor:"transparent"
 });
 
 const icon={
-width:22,
-height:22,
-marginBottom:3
+width:24,
+height:24,
+marginBottom:4
 };
 
 const divider={
 width:1,
-height:32,
+height:46,
 
-background:"linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(255,255,255,0.35), rgba(0,0,0,0.25))",
+background:"linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(255,255,255,0.6), rgba(0,0,0,0.35))",
 
-boxShadow:"0 0 2px rgba(0,0,0,0.3), inset 0 1px rgba(255,255,255,0.35)",
+boxShadow:"0 0 4px rgba(0,0,0,0.35)",
 
-opacity:0.8
+opacity:.9
 };
 
 return(
@@ -104,20 +111,16 @@ Home
 
 <Link href="/dashboard/links" style={item("/dashboard/links")}>
 
-{active("/dashboard/links") ? (
-
-<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
-<path d="M10 13a5 5 0 017 0l1 1a5 5 0 01-7 7l-1-1z"/>
-</svg>
-
-):( 
-
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M10 13a5 5 0 017 0l1 1"/>
-<path d="M14 11a5 5 0 00-7 0l-1-1"/>
-</svg>
 
-)}
+<path d="M10 13a5 5 0 017 0l1 1a5 5 0 01-7 7l-1-1"/>
+<path d="M14 11a5 5 0 00-7 0l-1-1a5 5 0 017-7l1 1"/>
+
+<circle cx="19" cy="5" r="3"/>
+<line x1="19" y1="3.5" x2="19" y2="6.5"/>
+<line x1="17.5" y1="5" x2="20.5" y2="5"/>
+
+</svg>
 
 My Links
 
@@ -127,20 +130,12 @@ My Links
 
 <Link href="/dashboard/appearance" style={item("/dashboard/appearance")}>
 
-{active("/dashboard/appearance") ? (
-
-<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
-<path d="M12 4a8 8 0 100 16 4 4 0 010-8 4 4 0 000-8z"/>
-</svg>
-
-):( 
-
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<circle cx="12" cy="12" r="3"/>
-<path d="M19 12a7 7 0 11-7-7"/>
-</svg>
 
-)}
+<rect x="3" y="4" width="14" height="16" rx="2"/>
+<rect x="7" y="7" width="14" height="16" rx="2"/>
+
+</svg>
 
 Appearance
 
@@ -183,8 +178,9 @@ flexDirection:"column",
 alignItems:"center",
 justifyContent:"center",
 fontSize:11,
+cursor:"pointer",
 color:"var(--text)",
-cursor:"pointer"
+WebkitTapHighlightColor:"transparent"
 }}
 >
 
