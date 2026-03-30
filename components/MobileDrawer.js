@@ -19,7 +19,15 @@ setOpenSection(openSection === section ? "" : section);
 if(!openMore) return null;
 
 const item={
-padding:"12px 10px",
+padding:"12px 14px",
+borderRadius:10,
+marginBottom:6,
+background:"var(--card)",
+cursor:"pointer",
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center"
+};
 borderRadius:10,
 cursor:"pointer",
 display:"flex",
