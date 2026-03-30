@@ -29,30 +29,26 @@ zIndex:200
 };
 
 const item=(path)=>({
-
 flex:1,
-
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
 justifyContent:"center",
-
 fontSize:11,
 textDecoration:"none",
-
 color:active(path) ? "#3b82f6" : "var(--text)",
-
 height:"100%",
-
-transition:"color .15s ease"
-
+transition:"color .15s ease",
+WebkitTapHighlightColor:"transparent"
 });
 
-const icon={
+const icon=(path)=>({
 width:26,
 height:26,
-marginBottom:4
-};
+marginBottom:4,
+transition:"transform .15s ease",
+transform:active(path) ? "scale(1.15)" : "scale(1)"
+});
 
 const divider={
 width:1,
@@ -69,13 +65,13 @@ return(
 
 {active("/dashboard") ? (
 
-<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<svg style={icon("/dashboard")} viewBox="0 0 24 24" fill="currentColor">
 <path d="M12 3l9 8v10h-6v-6H9v6H3V11z"/>
 </svg>
 
 ):( 
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("/dashboard")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <path d="M3 11l9-8 9 8"/>
 <path d="M5 10v10h5v-6h4v6h5V10"/>
 </svg>
@@ -90,7 +86,7 @@ Home
 
 <Link href="/dashboard/links" style={item("/dashboard/links")}>
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("/dashboard/links")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 
 <path d="M8 13a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1"/>
 <path d="M16 11a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1"/>
@@ -109,7 +105,7 @@ My Links
 
 <Link href="/dashboard/appearance" style={item("/dashboard/appearance")}>
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("/dashboard/appearance")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 
 <rect x="4" y="6" width="12" height="14" rx="2"/>
 <rect x="8" y="4" width="12" height="14" rx="2"/>
@@ -126,7 +122,7 @@ Appearance
 
 {active("/dashboard/analytics") ? (
 
-<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<svg style={icon("/dashboard/analytics")} viewBox="0 0 24 24" fill="currentColor">
 <rect x="4" y="11" width="3" height="9"/>
 <rect x="10" y="4" width="3" height="16"/>
 <rect x="17" y="8" width="3" height="12"/>
@@ -134,7 +130,7 @@ Appearance
 
 ):( 
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("/dashboard/analytics")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <line x1="5" y1="20" x2="5" y2="11"/>
 <line x1="12" y1="20" x2="12" y2="4"/>
 <line x1="19" y1="20" x2="19" y2="8"/>
@@ -158,11 +154,12 @@ alignItems:"center",
 justifyContent:"center",
 fontSize:11,
 cursor:"pointer",
-color:"var(--text)"
+color:"var(--text)",
+WebkitTapHighlightColor:"transparent"
 }}
 >
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("more")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="1"/>
 <circle cx="19" cy="12" r="1"/>
 <circle cx="5" cy="12" r="1"/>
