@@ -18,21 +18,14 @@ bottom:18,
 left:18,
 right:18,
 height:72,
-
 background:"rgba(255,255,255,0.08)",
 backdropFilter:"blur(20px)",
-
 borderRadius:26,
-
 display:"flex",
 alignItems:"center",
 justifyContent:"space-around",
-
 boxShadow:"0 10px 28px rgba(0,0,0,0.25)",
-
-zIndex:200,
-
-WebkitTapHighlightColor:"transparent"
+zIndex:200
 };
 
 const item=(path)=>({
@@ -45,41 +38,33 @@ alignItems:"center",
 justifyContent:"center",
 
 fontSize:11,
-
 textDecoration:"none",
-
-padding:"8px 0",
 
 color:active(path) ? "#3b82f6" : "var(--text)",
 
-transform:active(path) ? "translateY(2px)" : "translateY(0)",
+transform:active(path) ? "translateY(2px)" : "none",
 
 boxShadow:active(path)
-? "inset 0 3px 6px rgba(0,0,0,0.25)"
+? "inset 0 6px 10px rgba(0,0,0,0.25)"
 : "none",
 
-borderRadius:12,
+height:"100%",
 
-transition:"all .15s ease",
+transition:"all .15s ease"
 
-WebkitTapHighlightColor:"transparent"
 });
 
 const icon={
-width:24,
-height:24,
+width:26,
+height:26,
 marginBottom:4
 };
 
 const divider={
 width:1,
-height:46,
-
+height:48,
 background:"linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(255,255,255,0.6), rgba(0,0,0,0.35))",
-
-boxShadow:"0 0 4px rgba(0,0,0,0.35)",
-
-opacity:.9
+boxShadow:"0 0 4px rgba(0,0,0,0.35)"
 };
 
 return(
@@ -132,8 +117,9 @@ My Links
 
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 
-<rect x="3" y="4" width="14" height="16" rx="2"/>
-<rect x="7" y="7" width="14" height="16" rx="2"/>
+<rect x="4" y="5" width="12" height="14" rx="2"/>
+<rect x="8" y="7" width="12" height="14" rx="2"/>
+<rect x="12" y="9" width="12" height="14" rx="2"/>
 
 </svg>
 
@@ -179,8 +165,7 @@ alignItems:"center",
 justifyContent:"center",
 fontSize:11,
 cursor:"pointer",
-color:"var(--text)",
-WebkitTapHighlightColor:"transparent"
+color:"var(--text)"
 }}
 >
 
