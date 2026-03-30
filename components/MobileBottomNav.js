@@ -25,7 +25,8 @@ display:"flex",
 alignItems:"center",
 justifyContent:"space-around",
 boxShadow:"0 10px 28px rgba(0,0,0,0.25)",
-zIndex:200
+zIndex:200,
+WebkitTapHighlightColor:"transparent"
 };
 
 const item=(path)=>({
@@ -39,7 +40,9 @@ textDecoration:"none",
 color:active(path) ? "#3b82f6" : "var(--text)",
 height:"100%",
 transition:"color .15s ease",
-WebkitTapHighlightColor:"transparent"
+WebkitTapHighlightColor:"transparent",
+background:"transparent",
+outline:"none"
 });
 
 const icon=(path)=>({
@@ -87,14 +90,11 @@ Home
 <Link href="/dashboard/links" style={item("/dashboard/links")}>
 
 <svg style={icon("/dashboard/links")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-
 <path d="M8 13a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1"/>
 <path d="M16 11a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1"/>
-
 <circle cx="19" cy="17" r="3"/>
 <line x1="19" y1="15.5" x2="19" y2="18.5"/>
 <line x1="17.5" y1="17" x2="20.5" y2="17"/>
-
 </svg>
 
 My Links
@@ -106,10 +106,8 @@ My Links
 <Link href="/dashboard/appearance" style={item("/dashboard/appearance")}>
 
 <svg style={icon("/dashboard/appearance")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-
 <rect x="4" y="6" width="12" height="14" rx="2"/>
 <rect x="8" y="4" width="12" height="14" rx="2"/>
-
 </svg>
 
 Appearance
@@ -155,7 +153,8 @@ justifyContent:"center",
 fontSize:11,
 cursor:"pointer",
 color:"var(--text)",
-WebkitTapHighlightColor:"transparent"
+WebkitTapHighlightColor:"transparent",
+background:"transparent"
 }}
 >
 
