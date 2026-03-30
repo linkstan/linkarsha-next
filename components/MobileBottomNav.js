@@ -11,74 +11,103 @@ function active(path){
 return pathname === path || pathname.startsWith(path + "/");
 }
 
-const button = (path) => ({
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-justifyContent:"center",
-padding:"8px 14px",
-borderRadius:14,
-textDecoration:"none",
-color: active(path) ? "#3b82f6" : "var(--text)",
-background: active(path)
-? "rgba(59,130,246,0.08)"
-: "transparent",
-boxShadow: active(path)
-? "0 4px 12px rgba(0,0,0,0.25)"
-: "none",
-transform: active(path) ? "translateY(-2px)" : "none",
-transition:"all 0.15s ease",
-fontSize:11,
-minWidth:60
-});
-
-return (
-
-<div style={{
+const navStyle={
 position:"fixed",
-bottom:0,
-left:0,
-right:0,
+bottom:18,
+left:18,
+right:18,
 height:70,
-background:"var(--sidebar)",
-borderTop:"1px solid var(--border)",
+background:"rgba(255,255,255,0.07)",
+backdropFilter:"blur(16px)",
+borderRadius:22,
 display:"flex",
 justifyContent:"space-around",
 alignItems:"center",
+boxShadow:"0 10px 30px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.1)",
 zIndex:200
-}}>
+};
+
+const button=(path)=>({
+
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+
+padding:"8px 14px",
+borderRadius:14,
+
+fontSize:11,
+textDecoration:"none",
+
+color: active(path) ? "#3b82f6" : "#bbb",
+
+transform: active(path) ? "translateY(-4px)" : "none",
+
+background: active(path)
+? "rgba(255,255,255,0.08)"
+: "transparent",
+
+boxShadow: active(path)
+? "0 6px 18px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.15)"
+: "none",
+
+transition:"all 0.2s ease"
+
+});
+
+const icon={
+width:22,
+height:22,
+marginBottom:3
+};
+
+return(
+
+<div style={navStyle}>
 
 <Link href="/dashboard" style={button("/dashboard")}>
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M3 12l9-9 9 9"></path>
-<path d="M9 21V9h6v12"></path>
+
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<path d="M3 12l9-9 9 9"/>
+<path d="M9 21V9h6v12"/>
 </svg>
+
 Home
+
 </Link>
 
 <Link href="/dashboard/links" style={button("/dashboard/links")}>
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1"></path>
-<path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1"></path>
+
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<path d="M10 13a5 5 0 0 1 7 0l1 1"/>
+<path d="M14 11a5 5 0 0 1-7 0l-1-1"/>
 </svg>
+
 Links
+
 </Link>
 
 <Link href="/dashboard/appearance" style={button("/dashboard/appearance")}>
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<circle cx="12" cy="12" r="3"></circle>
-<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"></path>
+
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<circle cx="12" cy="12" r="3"/>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/>
 </svg>
+
 Appearance
+
 </Link>
 
 <Link href="/dashboard/analytics" style={button("/dashboard/analytics")}>
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<line x1="18" y1="20" x2="18" y2="10"></line>
-<line x1="12" y1="20" x2="12" y2="4"></line>
-<line x1="6" y1="20" x2="6" y2="14"></line>
+
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<line x1="18" y1="20" x2="18" y2="10"/>
+<line x1="12" y1="20" x2="12" y2="4"/>
+<line x1="6" y1="20" x2="6" y2="14"/>
 </svg>
+
 Analytics
+
 </Link>
 
 <div
@@ -87,16 +116,16 @@ style={{
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-justifyContent:"center",
-cursor:"pointer",
-fontSize:11
+fontSize:11,
+color:"#bbb",
+cursor:"pointer"
 }}
 >
 
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<circle cx="12" cy="12" r="1"></circle>
-<circle cx="19" cy="12" r="1"></circle>
-<circle cx="5" cy="12" r="1"></circle>
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<circle cx="12" cy="12" r="1"/>
+<circle cx="19" cy="12" r="1"/>
+<circle cx="5" cy="12" r="1"/>
 </svg>
 
 More
