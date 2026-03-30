@@ -25,14 +25,33 @@ marginBottom:6,
 background:"var(--card)",
 cursor:"pointer",
 display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
-};
+const item={
+padding:"12px 14px",
+marginBottom:6,
 borderRadius:10,
+background:"var(--card)",
 cursor:"pointer",
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center",
+alignItems:"center"
+};
+
+const subItem={
+padding:"10px 18px",
+marginBottom:4,
+borderRadius:8,
+background:"rgba(255,255,255,0.04)",
+cursor:"pointer",
+display:"block",
+textDecoration:"none",
+color:"var(--text)"
+};
+
+const divider={
+margin:"18px 0",
+height:1,
+background:"var(--border)"
+};
 transition:"0.15s"
 };
 
@@ -109,7 +128,7 @@ borderRadius:"50%"
 fontSize:12,
 opacity:0.7
 }}>
-linkarsha.com/{profile?.username}
+linkarsh.com/{profile?.username}
 </div>
 
 </div>
