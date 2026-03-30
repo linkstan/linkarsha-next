@@ -20,20 +20,18 @@ if(!openMore) return null;
 
 const item={
 padding:"12px 14px",
-borderRadius:10,
-marginBottom:6,
-background:"var(--card)",
-cursor:"pointer",
-display:"flex",
-const item={
-padding:"12px 14px",
 marginBottom:6,
 borderRadius:10,
 background:"var(--card)",
 cursor:"pointer",
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center"
+alignItems:"center",
+transition:"0.15s"
+};
+
+const highlight={
+background:"rgba(255,255,255,0.08)"
 };
 
 const subItem={
@@ -51,21 +49,6 @@ const divider={
 margin:"18px 0",
 height:1,
 background:"var(--border)"
-};
-transition:"0.15s"
-};
-
-const highlight={
-background:"rgba(255,255,255,0.08)"
-};
-
-const subItem={
-padding:"10px 20px",
-opacity:0.9,
-cursor:"pointer",
-display:"block",
-textDecoration:"none",
-color:"var(--text)"
 };
 
 return(
@@ -95,12 +78,10 @@ background:"var(--sidebar)",
 padding:20,
 borderLeft:"1px solid var(--border)",
 overflowY:"auto",
-transform: openMore ? "translateX(0)" : "translateX(100%)",
+transform:"translateX(0)",
 transition:"transform 0.25s ease"
 }}
 >
-
-{/* PROFILE */}
 
 <div style={{
 display:"flex",
@@ -135,15 +116,11 @@ linkarsh.com/{profile?.username}
 
 </div>
 
-<hr style={{margin:"15px 0"}}/>
-
-{/* BLOCKS */}
+<div style={divider}/>
 
 <Link href="/dashboard/blocks" style={subItem}>
 Blocks
 </Link>
-
-{/* TOOLS */}
 
 <div
 onClick={()=>toggle("tools")}
@@ -178,8 +155,6 @@ Export Data
 
 )}
 
-{/* ACCOUNT */}
-
 <div
 onClick={()=>toggle("account")}
 style={{
@@ -209,9 +184,7 @@ Settings
 
 )}
 
-<hr style={{margin:"15px 0"}}/>
-
-{/* SUPPORT */}
+<div style={divider}/>
 
 <div
 onClick={()=>toggle("support")}
@@ -237,8 +210,6 @@ style={{
 </div>
 
 )}
-
-{/* SIGN OUT */}
 
 <div
 onClick={logout}
