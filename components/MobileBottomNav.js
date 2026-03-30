@@ -7,21 +7,12 @@ export default function MobileBottomNav({ setOpenMore }) {
 
 const pathname = usePathname();
 
-/* ACTIVE PAGE CHECK */
-
-function isActive(path){
-
-if(path === "/dashboard"){
-return pathname === "/dashboard";
-}
-
+function active(path){
+if(path === "/dashboard") return pathname === "/dashboard";
 return pathname.startsWith(path);
-
 }
 
-/* NAV STYLE */
-
-const navStyle={
+const nav={
 position:"fixed",
 bottom:18,
 left:18,
@@ -31,40 +22,24 @@ background:"rgba(255,255,255,0.07)",
 backdropFilter:"blur(16px)",
 borderRadius:22,
 display:"flex",
-justifyContent:"space-around",
 alignItems:"center",
-boxShadow:"0 8px 24px rgba(0,0,0,0.45), inset 0 1px rgba(255,255,255,0.08)",
+justifyContent:"space-around",
+boxShadow:"0 10px 28px rgba(0,0,0,0.45), inset 0 1px rgba(255,255,255,0.08)",
 zIndex:200
 };
 
-/* BUTTON STYLE */
-
-const button=(path)=>({
-
+const item=(path)=>({
+flex:1,
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-
-padding:"8px 14px",
-borderRadius:14,
-
+justifyContent:"center",
 fontSize:11,
+padding:"6px 0",
 textDecoration:"none",
-
-color: isActive(path) ? "#3b82f6" : "#bbb",
-
-transform: isActive(path) ? "translateY(-1.5px)" : "none",
-
-background: isActive(path)
-? "rgba(255,255,255,0.06)"
-: "transparent",
-
-boxShadow: isActive(path)
-? "0 3px 8px rgba(0,0,0,0.35)"
-: "none",
-
-transition:"all 0.15s ease"
-
+color:active(path) ? "#3b82f6" : "#bdbdbd",
+transform:active(path) ? "translateY(-2px)" : "none",
+transition:"all .15s ease"
 });
 
 const icon={
@@ -73,44 +48,97 @@ height:22,
 marginBottom:3
 };
 
+const divider={
+width:1,
+height:28,
+background:"linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05))",
+boxShadow:"0 0 4px rgba(255,255,255,0.15)"
+};
+
 return(
 
-<div style={navStyle}>
+<div style={nav}>
 
-<Link href="/dashboard" style={button("/dashboard")}>
+<Link href="/dashboard" style={item("/dashboard")}>
+
+{active("/dashboard") ? (
+
+<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<path d="M12 3l9 9h-3v9h-5v-6H11v6H6v-9H3z"/>
+</svg>
+
+):( 
 
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <path d="M3 12l9-9 9 9"/>
 <path d="M9 21V9h6v12"/>
 </svg>
 
+)}
+
 Home
 
 </Link>
 
-<Link href="/dashboard/links" style={button("/dashboard/links")}>
+<div style={divider}></div>
 
-<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-<path d="M10 13a5 5 0 0 1 7 0l1 1"/>
-<path d="M14 11a5 5 0 0 1-7 0l-1-1"/>
+<Link href="/dashboard/links" style={item("/dashboard/links")}>
+
+{active("/dashboard/links") ? (
+
+<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<path d="M10 13a5 5 0 017 0l1 1a5 5 0 01-7 7l-1-1z"/>
+<path d="M14 11a5 5 0 00-7 0l-1-1a5 5 0 017-7l1 1z"/>
 </svg>
 
-Links
+):( 
+
+<svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<path d="M10 13a5 5 0 017 0l1 1a5 5 0 01-7 7l-1-1"/>
+<path d="M14 11a5 5 0 00-7 0l-1-1a5 5 0 017-7l1 1"/>
+</svg>
+
+)}
+
+My Links
 
 </Link>
 
-<Link href="/dashboard/appearance" style={button("/dashboard/appearance")}>
+<div style={divider}></div>
+
+<Link href="/dashboard/appearance" style={item("/dashboard/appearance")}>
+
+{active("/dashboard/appearance") ? (
+
+<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="4"/>
+</svg>
+
+):( 
 
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="3"/>
-<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/>
 </svg>
+
+)}
 
 Appearance
 
 </Link>
 
-<Link href="/dashboard/analytics" style={button("/dashboard/analytics")}>
+<div style={divider}></div>
+
+<Link href="/dashboard/analytics" style={item("/dashboard/analytics")}>
+
+{active("/dashboard/analytics") ? (
+
+<svg style={icon} viewBox="0 0 24 24" fill="currentColor">
+<rect x="5" y="10" width="3" height="9"/>
+<rect x="10" y="4" width="3" height="15"/>
+<rect x="16" y="7" width="3" height="12"/>
+</svg>
+
+):( 
 
 <svg style={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <line x1="18" y1="20" x2="18" y2="10"/>
@@ -118,16 +146,22 @@ Appearance
 <line x1="6" y1="20" x2="6" y2="14"/>
 </svg>
 
+)}
+
 Analytics
 
 </Link>
 
+<div style={divider}></div>
+
 <div
 onClick={()=>setOpenMore(true)}
 style={{
+flex:1,
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
+justifyContent:"center",
 fontSize:11,
 color:"#bbb",
 cursor:"pointer"
