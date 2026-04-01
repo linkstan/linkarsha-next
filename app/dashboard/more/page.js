@@ -1,11 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
-export default function MorePage({ profile }) {
+const supabase = createClient(
+process.env.NEXT_PUBLIC_SUPABASE_URL,
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+export default function MorePage(){
 
 const [open,setOpen] = useState("");
+const [profile,setProfile] = useState(null);
+
+useEffect(()=>{
+async function load(){
+
+const { data:{ user } } = await supabase.auth.getUser();
+
+if(!user) return;
+
+const { data } = await supabase
+.from("profiles")
+.select("*")
+.eq("id",user.id)
+.single();
+
+setProfile(data);
+}
+
+load();
+},[]);
 
 function toggle(section){
 setOpen(open === section ? "" : section);
@@ -69,6 +95,7 @@ background:"var(--border)"
 };
 
 function signOut(){
+supabase.auth.signOut();
 window.location="/login";
 }
 
@@ -82,7 +109,12 @@ return(
 
 <img
 src={profile?.avatar || "/default-avatar.png"}
-style={{width:44,height:44,borderRadius:"50%",objectFit:"cover"}}
+style={{
+width:44,
+height:44,
+borderRadius:"50%",
+objectFit:"cover"
+}}
 />
 
 <div>
@@ -160,12 +192,10 @@ Blocks
 <div style={{display:"flex",alignItems:"center"}}>
 
 <svg style={icon("tools")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-
 <circle cx="6" cy="6" r="3"/>
 <polygon points="18,4 21,9 15,9"/>
 <polygon points="6,14 9,20 3,20"/>
 <rect x="15" y="14" width="6" height="6" transform="rotate(45 18 17)"/>
-
 </svg>
 
 Tools
@@ -196,8 +226,6 @@ Tools
 
 <svg style={icon("settings")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="3"/>
-<path d="M19.4 15a1.6 1.6 0 0 0 .33 1.82"/>
-<path d="M4.6 9a1.6 1.6 0 0 0-.33-1.82"/>
 <path d="M12 2v3"/>
 <path d="M12 19v3"/>
 <path d="M4.93 4.93l2.12 2.12"/>
