@@ -5,30 +5,27 @@ import Link from "next/link";
 
 export default function MorePage(){
 
-const [openSection,setOpenSection] = useState("");
+const [open,setOpen] = useState("");
 
 function toggle(section){
-setOpenSection(openSection === section ? "" : section);
+setOpen(open === section ? "" : section);
 }
 
-const item={
+const row={
 padding:"14px 16px",
-borderRadius:10,
+borderRadius:12,
 marginBottom:8,
 cursor:"pointer",
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center",
-textDecoration:"none",
-color:"var(--text)",
-fontSize:15
+fontSize:15,
+background:"var(--card)",
+color:"var(--text)"
 };
 
-const subItem={
-padding:"10px 18px",
-marginBottom:4,
-borderRadius:8,
-cursor:"pointer",
+const sub={
+padding:"10px 20px",
 display:"block",
 textDecoration:"none",
 color:"var(--text)",
@@ -44,8 +41,8 @@ background:"var(--border)"
 return(
 
 <div style={{
-padding:"20px",
-paddingBottom:"90px"
+padding:20,
+paddingBottom:90
 }}>
 
 {/* PROFILE */}
@@ -76,7 +73,7 @@ Username
 
 <div style={{
 fontSize:13,
-opacity:0.7
+opacity:.7
 }}>
 linkarsh.com/username
 </div>
@@ -90,40 +87,34 @@ linkarsh.com/username
 {/* MY LINKARSH */}
 
 <div
-onClick={()=>toggle("linkarsh")}
+onClick={()=>toggle("links")}
 style={{
-...item,
-color:openSection==="linkarsh" ? "#3b82f6" : "var(--text)"
+...row,
+color:open==="links" ? "#3b82f6" : "var(--text)"
 }}
 >
 
-<span>My Linkarsh</span>
+My Linkarsh
 
-<span style={{
-color:openSection==="linkarsh" ? "#3b82f6" : "var(--text)"
-}}>
-{openSection==="linkarsh" ? "▼" : ">"}
-</span>
+<span>{open==="links" ? "▼" : ">"}</span>
 
 </div>
 
-{openSection==="linkarsh" && (
+{open==="links" && (
 
 <div>
 
-<Link href="/dashboard/links" style={subItem}>
-My Links
-</Link>
+<Link href="/dashboard/links" style={sub}>My Links</Link>
 
-<Link href="/dashboard/social-links" style={subItem}>
+<Link href="/dashboard/social-links" style={sub}>
 Social Links
 </Link>
 
-<Link href="/dashboard/link-history" style={subItem}>
+<Link href="/dashboard/link-history" style={sub}>
 Link History
 </Link>
 
-<Link href="/dashboard/get-verified" style={subItem}>
+<Link href="/dashboard/get-verified" style={sub}>
 Get Verified
 </Link>
 
@@ -133,7 +124,7 @@ Get Verified
 
 {/* BLOCKS */}
 
-<Link href="/dashboard/blocks" style={item}>
+<Link href="/dashboard/blocks" style={row}>
 Blocks
 </Link>
 
@@ -142,34 +133,30 @@ Blocks
 <div
 onClick={()=>toggle("tools")}
 style={{
-...item,
-color:openSection==="tools" ? "#3b82f6" : "var(--text)"
+...row,
+color:open==="tools" ? "#3b82f6" : "var(--text)"
 }}
 >
 
-<span>Tools</span>
+Tools
 
-<span style={{
-color:openSection==="tools" ? "#3b82f6" : "var(--text)"
-}}>
-{openSection==="tools" ? "▼" : ">"}
-</span>
+<span>{open==="tools" ? "▼" : ">"}</span>
 
 </div>
 
-{openSection==="tools" && (
+{open==="tools" && (
 
 <div>
 
-<Link href="/dashboard/tools/ai-bio-generator" style={subItem}>
+<Link href="/dashboard/tools/ai-bio-generator" style={sub}>
 AI Bio Generator
 </Link>
 
-<Link href="/dashboard/tools/qr-code" style={subItem}>
+<Link href="/dashboard/tools/qr-code" style={sub}>
 QR Code Generator
 </Link>
 
-<Link href="/dashboard/tools/export-data" style={subItem}>
+<Link href="/dashboard/tools/export-data" style={sub}>
 Export Data
 </Link>
 
@@ -182,46 +169,42 @@ Export Data
 <div
 onClick={()=>toggle("settings")}
 style={{
-...item,
-color:openSection==="settings" ? "#3b82f6" : "var(--text)"
+...row,
+color:open==="settings" ? "#3b82f6" : "var(--text)"
 }}
 >
 
-<span>Settings</span>
+Settings
 
-<span style={{
-color:openSection==="settings" ? "#3b82f6" : "var(--text)"
-}}>
-{openSection==="settings" ? "▼" : ">"}
-</span>
+<span>{open==="settings" ? "▼" : ">"}</span>
 
 </div>
 
-{openSection==="settings" && (
+{open==="settings" && (
 
 <div>
 
-<Link href="/dashboard/account" style={subItem}>
+<Link href="/dashboard/account" style={sub}>
 My Account
 </Link>
 
-<Link href="/dashboard/billing" style={subItem}>
+<Link href="/dashboard/billing" style={sub}>
 Payment & Billing
 </Link>
 
-<Link href="/dashboard/terms" style={subItem}>
+<Link href="/dashboard/terms" style={sub}>
 Terms of Service
 </Link>
 
-<Link href="/dashboard/privacy" style={subItem}>
+<Link href="/dashboard/privacy" style={sub}>
 Privacy Policy
 </Link>
 
-<Link href="/dashboard/cookies" style={subItem}>
+<Link href="/dashboard/cookies" style={sub}>
 Cookies Policy
 </Link>
 
-<Link href="/dashboard/community" style={subItem}>
+<Link href="/dashboard/community" style={sub}>
 Community Standards
 </Link>
 
