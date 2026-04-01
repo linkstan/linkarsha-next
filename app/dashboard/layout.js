@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import ButtonBlock from "../../components/ButtonBlock";
 import Link from "next/link";
 import MobileBottomNav from "../../components/MobileBottomNav";
 import MobileDrawer from "../../components/MobileDrawer";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function DashboardLayout({ children }) {
@@ -117,8 +116,10 @@ window.removeEventListener("appearance-update",handleAppearance);
 /* LOAD USER */
 
 useEffect(()=>{
+if(authChecked){
 loadPreview();
-},[]);
+}
+},[authChecked]);
 useEffect(()=>{
 
 function handleResize(){
