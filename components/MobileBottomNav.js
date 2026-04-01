@@ -138,6 +138,10 @@ Appearance
 
 Analytics
 
+</Link>
+
+<div style={divider}></div>
+
 <Link href="/dashboard/more" style={item("/dashboard/more")}>
 
 <svg style={icon("/dashboard/more")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -149,7 +153,6 @@ Analytics
 More
 
 </Link>
-
 </div>
 
 );
