@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import ButtonBlock from "../../components/ButtonBlock";
 import Link from "next/link";
 import MobileBottomNav from "../../components/MobileBottomNav";
@@ -9,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function DashboardLayout({ children }) {
+const router = useRouter();
 
 const pathname = usePathname();
 
@@ -42,7 +44,29 @@ setOpenTools(true);
 }
 
 },[pathname]);
+  
+const [authChecked,setAuthChecked] = useState(false);
 
+useEffect(()=>{
+
+async function checkUser(){
+
+const { data:{ user } } = await supabase.auth.getUser();
+
+if(!user){
+router.replace("/login");
+return;
+}
+
+setAuthChecked(true);
+
+}
+
+checkUser();
+
+},[]);
+
+if(!authChecked) return null;
 /* LIVE THEME */
 
 useEffect(()=>{
