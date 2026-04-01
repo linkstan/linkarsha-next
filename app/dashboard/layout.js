@@ -168,7 +168,7 @@ await supabase
 
 async function logout(){
 await supabase.auth.signOut();
-location.href="/login";
+location.replace("/login");
 }
 
 const theme = liveTheme || profile?.theme;
