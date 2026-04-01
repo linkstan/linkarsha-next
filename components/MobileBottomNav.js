@@ -138,27 +138,9 @@ Appearance
 
 Analytics
 
-</Link>
+<Link href="/dashboard/more" style={item("/dashboard/more")}>
 
-<div style={divider}></div>
-
-<div
-onClick={()=>setOpenMore(true)}
-style={{
-flex:1,
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-justifyContent:"center",
-fontSize:11,
-cursor:"pointer",
-color:"var(--text)",
-WebkitTapHighlightColor:"transparent",
-background:"transparent"
-}}
->
-
-<svg style={icon("more")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<svg style={icon("/dashboard/more")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 <circle cx="12" cy="12" r="1"/>
 <circle cx="19" cy="12" r="1"/>
 <circle cx="5" cy="12" r="1"/>
@@ -166,7 +148,7 @@ background:"transparent"
 
 More
 
-</div>
+</Link>
 
 </div>
 
