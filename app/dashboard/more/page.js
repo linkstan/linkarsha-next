@@ -260,7 +260,10 @@ Settings
 <div style={{marginTop:20}}>
 
 <button
-onClick={signOut}
+onClick={async ()=>{
+await supabase.auth.signOut();
+location.replace("/login");
+}}
 style={{
 width:"100%",
 padding:"12px",
