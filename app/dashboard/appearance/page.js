@@ -245,12 +245,22 @@ borderRadius:"6px"
 <div style={arrow}>→</div>
 
 </div>
-<Link
-href="/dashboard/appearance/wallpaper"
-style={item}
->
-<span>Wallpaper</span>
-<span>›</span>
+
+{/* WALLPAPER */}
+
+<Link href="/dashboard/appearance/wallpaper" style={{textDecoration:"none"}}>
+
+<div style={card}>
+
+<div style={{display:"flex",alignItems:"center",gap:12}}>
+<div style={{fontSize:20}}>🖼️</div>
+<div>Wallpaper</div>
+</div>
+
+<div style={arrow}>→</div>
+
+</div>
+
 </Link>
 
 {/* LINK PREVIEW IMAGE */}
