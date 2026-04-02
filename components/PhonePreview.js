@@ -77,6 +77,17 @@ setTheme(e.detail);
 }
 
 window.addEventListener("theme-change",handleThemeChange);
+useEffect(()=>{
+
+function handleWallpaperChange(e){
+setWallpaper(e.detail);
+}
+
+window.addEventListener("wallpaper-change",handleWallpaperChange);
+
+return ()=>window.removeEventListener("wallpaper-change",handleWallpaperChange);
+
+},[]);
 
 return ()=>window.removeEventListener("theme-change",handleThemeChange);
 
@@ -92,7 +103,9 @@ height:520,
 borderRadius:30,
 border:"10px solid #111",
 overflow:"hidden",
-background:active.bg,
+background: wallpaper ? wallpaper : active.bg,
+backgroundSize:"cover",
+backgroundPosition:"center",
 color:active.text,
 display:"flex",
 flexDirection:"column",
