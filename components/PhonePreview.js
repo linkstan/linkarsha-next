@@ -3,6 +3,7 @@
 import { useEffect,useState } from "react";
 
 export default function PhonePreview(){
+
 const [wallpaper,setWallpaper]=useState(null);
 const [theme,setTheme]=useState("Minimal");
 
@@ -70,6 +71,8 @@ text:"#d4af37"
 
 };
 
+/* THEME LISTENER */
+
 useEffect(()=>{
 
 function handleThemeChange(e){
@@ -77,6 +80,15 @@ setTheme(e.detail);
 }
 
 window.addEventListener("theme-change",handleThemeChange);
+
+return ()=>{
+window.removeEventListener("theme-change",handleThemeChange);
+};
+
+},[]);
+
+/* WALLPAPER LISTENER */
+
 useEffect(()=>{
 
 function handleWallpaperChange(e){
@@ -85,11 +97,9 @@ setWallpaper(e.detail);
 
 window.addEventListener("wallpaper-change",handleWallpaperChange);
 
-return ()=>window.removeEventListener("wallpaper-change",handleWallpaperChange);
-
-},[]);
-
-return ()=>window.removeEventListener("theme-change",handleThemeChange);
+return ()=>{
+window.removeEventListener("wallpaper-change",handleWallpaperChange);
+};
 
 },[]);
 
@@ -141,7 +151,8 @@ gap:10
 }}>
 
 <button style={btn(active.text)}>
-My Website</button>
+My Website
+</button>
 
 <button style={btn(active.text)}>
 Instagram
