@@ -65,7 +65,12 @@ checkUser();
 
 },[router]);
 
-if(!authChecked) return null;
+useEffect(()=>{
+if(authChecked){
+loadPreview();
+}
+},[authChecked]);
+
 /* LIVE THEME */
 
 useEffect(()=>{
