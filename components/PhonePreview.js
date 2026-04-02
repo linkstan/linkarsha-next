@@ -3,7 +3,7 @@
 import { useEffect,useState } from "react";
 
 export default function PhonePreview(){
-
+const [wallpaper,setWallpaper]=useState(null);
 const [theme,setTheme]=useState("Minimal");
 
 const themes={
