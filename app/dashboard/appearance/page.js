@@ -245,6 +245,13 @@ borderRadius:"6px"
 <div style={arrow}>→</div>
 
 </div>
+<Link
+href="/dashboard/appearance/wallpaper"
+style={item}
+>
+<span>Wallpaper</span>
+<span>›</span>
+</Link>
 
 {/* LINK PREVIEW IMAGE */}
 
