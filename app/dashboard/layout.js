@@ -63,7 +63,7 @@ setAuthChecked(true);
 
 checkUser();
 
-},[]);
+},[router]);
 
 if(!authChecked) return null;
 /* LIVE THEME */
