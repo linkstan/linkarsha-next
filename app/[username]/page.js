@@ -140,7 +140,10 @@ Skyline:"linear-gradient(135deg,#4facfe,#00f2fe)",
 Dream:"linear-gradient(135deg,#a18cd1,#fbc2eb)"
 };
 
-const themeBackground = themeMap[profile?.theme] || "#0b0b12";
+const wallpaper = appearance?.wallpaper || null;
+const wallpaperBlur = appearance?.wallpaperBlur || 0;
+
+const themeBackground = wallpaper || themeMap[profile?.theme] || "#0b0b12";
 
 return (
 
