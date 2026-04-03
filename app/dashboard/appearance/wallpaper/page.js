@@ -319,15 +319,46 @@ background:"var(--card)"
 <div style={{
 height:90,
 borderRadius:12,
-background:"#eee",
+overflow:"hidden",
+background:"#111",
 display:"flex",
 alignItems:"center",
 justifyContent:"center"
 }}>
 
-<label style={{cursor:"pointer"}}>
+{customWallpaper ? (
 
-Upload
+<img
+src={customWallpaper}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+
+) : (
+
+<div style={{opacity:0.6}}>No wallpaper</div>
+
+)}
+
+</div>
+
+<label
+style={{
+display:"flex",
+alignItems:"center",
+gap:6,
+marginTop:10,
+cursor:"pointer",
+fontWeight:500
+}}
+>
+
+<span style={{fontSize:18}}>＋</span>
+
+Add Custom Wallpaper
 
 <input
 type="file"
@@ -338,11 +369,23 @@ onChange={uploadImage}
 
 </label>
 
-</div>
+<button
+onClick={()=>applyWallpaper(customWallpaper)}
+style={{
+marginTop:8,
+width:"100%",
+padding:"8px",
+borderRadius:10,
+border:"none",
+background: active===customWallpaper ? "#22c55e" : "#111",
+color:"#fff",
+cursor:"pointer"
+}}
+>
 
-<div style={{marginTop:10,fontWeight:500}}>
-Upload Image
-</div>
+{active===customWallpaper ? "Applied ✓" : "Apply"}
+
+</button>
 
 </div>
 
