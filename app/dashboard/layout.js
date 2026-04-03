@@ -478,12 +478,10 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background: wallpaper,
-backgroundSize:"cover",
-backgroundPosition:"center",
-filter:`blur(${wallpaperBlur}px)`,
-transform:"scale(1.05)",
-zIndex:0
+backdropFilter:`blur(${wallpaperBlur}px)`,
+WebkitBackdropFilter:`blur(${wallpaperBlur}px)`,
+pointerEvents:"none",
+zIndex:1
 }}
 />
 )}
