@@ -30,8 +30,6 @@ description: "User profile"
 const title = prof.display_name || prof.username;
 const description = prof.bio || "Visit my profile";
 
-/* preview image toggle */
-
 const previewEnabled =
 prof?.profile_settings?.seo?.showPreviewImage !== false;
 
@@ -157,9 +155,41 @@ color:"#fff",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-paddingTop:0
+paddingTop:0,
+position:"relative"
 }}
 >
+
+{/* BLUR LAYER */}
+
+{wallpaper && (
+<div style={{
+position:"fixed",
+top:0,
+left:0,
+right:0,
+bottom:0,
+backdropFilter:`blur(${wallpaperBlur}px)`,
+WebkitBackdropFilter:`blur(${wallpaperBlur}px)`,
+zIndex:0
+}}/>
+)}
+
+{/* DARK OVERLAY */}
+
+{wallpaper && (
+<div style={{
+position:"fixed",
+top:0,
+left:0,
+right:0,
+bottom:0,
+background:"rgba(0,0,0,0.25)",
+zIndex:0
+}}/>
+)}
+
+<div style={{position:"relative",zIndex:1,width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
 
 {header.layout === "hero" ? (
 
@@ -247,6 +277,8 @@ buttons={buttons}
 themeBackground={themeBackground}
 />
 ))}
+
+</div>
 
 </div>
 
