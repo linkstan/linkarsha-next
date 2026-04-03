@@ -5,69 +5,34 @@ import { useEffect,useState } from "react";
 export default function PhonePreview(){
 
 const [wallpaper,setWallpaper]=useState(null);
+const [blur,setBlur]=useState(0);
 const [theme,setTheme]=useState("Minimal");
 
 const themes={
 
-Minimal:{
-bg:"#ffffff",
-text:"#111"
-},
+Minimal:{ bg:"#ffffff", text:"#111" },
 
-Paper:{
-bg:"#fafafa",
-text:"#111"
-},
+Paper:{ bg:"#fafafa", text:"#111" },
 
-Clean:{
-bg:"#f4f4f4",
-text:"#111"
-},
+Clean:{ bg:"#f4f4f4", text:"#111" },
 
-Midnight:{
-bg:"#0b0b12",
-text:"#ffffff"
-},
+Midnight:{ bg:"#0b0b12", text:"#ffffff" },
 
-"Dark Pro":{
-bg:"#121212",
-text:"#ffffff"
-},
+"Dark Pro":{ bg:"#121212", text:"#ffffff" },
 
-Mono:{
-bg:"#111111",
-text:"#ffffff"
-},
+Mono:{ bg:"#111111", text:"#ffffff" },
 
-Ocean:{
-bg:"linear-gradient(135deg,#2193b0,#6dd5ed)",
-text:"#ffffff"
-},
+Ocean:{ bg:"linear-gradient(135deg,#2193b0,#6dd5ed)", text:"#ffffff" },
 
-Sunset:{
-bg:"linear-gradient(135deg,#ff7a18,#ffb347)",
-text:"#ffffff"
-},
+Sunset:{ bg:"linear-gradient(135deg,#ff7a18,#ffb347)", text:"#ffffff" },
 
-Neon:{
-bg:"linear-gradient(135deg,#00f2fe,#7c5cff)",
-text:"#ffffff"
-},
+Neon:{ bg:"linear-gradient(135deg,#00f2fe,#7c5cff)", text:"#ffffff" },
 
-Pastel:{
-bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)",
-text:"#111"
-},
+Pastel:{ bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)", text:"#111" },
 
-Royal:{
-bg:"linear-gradient(135deg,#141e30,#243b55)",
-text:"#ffffff"
-},
+Royal:{ bg:"linear-gradient(135deg,#141e30,#243b55)", text:"#ffffff" },
 
-Luxury:{
-bg:"#000000",
-text:"#d4af37"
-}
+Luxury:{ bg:"#000000", text:"#d4af37" }
 
 };
 
@@ -87,7 +52,7 @@ window.removeEventListener("theme-change",handleThemeChange);
 
 },[]);
 
-/* WALLPAPER LISTENER */
+/* WALLPAPER + BLUR LISTENER */
 
 useEffect(()=>{
 
@@ -95,10 +60,16 @@ function handleWallpaperChange(e){
 setWallpaper(e.detail);
 }
 
+function handleBlurChange(e){
+setBlur(e.detail);
+}
+
 window.addEventListener("wallpaper-change",handleWallpaperChange);
+window.addEventListener("wallpaper-blur",handleBlurChange);
 
 return ()=>{
 window.removeEventListener("wallpaper-change",handleWallpaperChange);
+window.removeEventListener("wallpaper-blur",handleBlurChange);
 };
 
 },[]);
@@ -113,16 +84,53 @@ height:520,
 borderRadius:30,
 border:"10px solid #111",
 overflow:"hidden",
+position:"relative",
 background: wallpaper ? wallpaper : active.bg,
 backgroundSize:"cover",
 backgroundPosition:"center",
-color:active.text,
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
 padding:"20px",
 fontFamily:"sans-serif",
 boxShadow:"0 25px 60px rgba(0,0,0,.35)"
+}}>
+
+{/* BLUR LAYER */}
+
+{wallpaper && (
+<div style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+backdropFilter:`blur(${blur}px)`
+}}/>
+)}
+
+{/* DARK OVERLAY */}
+
+{wallpaper && (
+<div style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+background:"rgba(0,0,0,0.25)"
+}}/>
+)}
+
+{/* CONTENT */}
+
+<div style={{
+position:"relative",
+zIndex:2,
+width:"100%",
+display:"flex",
+flexDirection:"column",
+alignItems:"center"
 }}>
 
 <div style={{
@@ -133,12 +141,15 @@ background:"#ccc",
 marginBottom:12
 }}/>
 
-<h3>@username</h3>
+<h3 style={{color:active.text}}>
+@username
+</h3>
 
 <p style={{
 opacity:.7,
 fontSize:13,
-marginBottom:20
+marginBottom:20,
+color:active.text
 }}>
 Creator bio preview
 </p>
@@ -161,6 +172,8 @@ Instagram
 <button style={btn(active.text)}>
 YouTube
 </button>
+
+</div>
 
 </div>
 
