@@ -554,7 +554,7 @@ fontSize: header.bioSize || 15
 
 </div>
 
-<div style={{padding:20}}>
+<div style={{padding:20, position:"relative", zIndex:2}}>
 
 {blocks.map((block)=>(
 <ButtonBlock
