@@ -204,6 +204,10 @@ location.replace("/login");
 const theme = liveTheme || profile?.theme;
 const header = appearance?.header || {};
 const buttons = appearance?.buttons || {};
+
+const wallpaper = appearance?.wallpaper || null;
+const wallpaperBlur = appearance?.wallpaperBlur || 0;
+const wallpaperOverlay = appearance?.wallpaperOverlay ?? 0.25;
 const themeMap={
 
 Minimal:"#ffffff",
