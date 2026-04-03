@@ -8,6 +8,7 @@ export default function WallpaperPage(){
 
 const [active,setActive]=useState(null);
 const [blur,setBlur]=useState(0);
+const [customWallpaper,setCustomWallpaper]=useState(null);
 
 const wallpapers=[
 
@@ -146,7 +147,9 @@ const {data} = supabase.storage
 .from("wallpapers")
 .getPublicUrl(filePath);
 
-const url=`url(${data.publicUrl})`;
+const url = `url(${data.publicUrl})`;
+
+setCustomWallpaper(data.publicUrl);
 
 applyWallpaper(url);
 
