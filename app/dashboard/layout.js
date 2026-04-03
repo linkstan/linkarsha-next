@@ -461,7 +461,8 @@ width:"100%",
 height:"100%",
 borderRadius:20,
 color:"#fff",
-position:"relative"
+position:"relative",
+overflow:"hidden"
 }}
 >
 
@@ -512,6 +513,14 @@ zIndex:1
 }}
 />
 )}
+
+{/* SCROLLABLE CONTENT */}
+<div style={{
+position:"relative",
+zIndex:2,
+height:"100%",
+overflowY:"auto"
+}}>
 
 {header.layout==="hero" ? (
 
@@ -603,7 +612,7 @@ fontSize: header.bioSize || 15
 
 </div>
 
-<div style={{padding:20, position:"relative", zIndex:2}}>
+<div style={{padding:20}}>
 
 {blocks.map((block)=>(
 <ButtonBlock
@@ -612,6 +621,8 @@ block={block}
 buttons={buttons}
 />
 ))}
+
+</div>
 
 </div>
 
