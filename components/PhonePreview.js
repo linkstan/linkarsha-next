@@ -11,27 +11,19 @@ const [theme,setTheme]=useState("Minimal");
 const themes={
 
 Minimal:{ bg:"#ffffff", text:"#111" },
-
 Paper:{ bg:"#fafafa", text:"#111" },
-
 Clean:{ bg:"#f4f4f4", text:"#111" },
 
 Midnight:{ bg:"#0b0b12", text:"#ffffff" },
-
 "Dark Pro":{ bg:"#121212", text:"#ffffff" },
-
 Mono:{ bg:"#111111", text:"#ffffff" },
 
 Ocean:{ bg:"linear-gradient(135deg,#2193b0,#6dd5ed)", text:"#ffffff" },
-
 Sunset:{ bg:"linear-gradient(135deg,#ff7a18,#ffb347)", text:"#ffffff" },
-
 Neon:{ bg:"linear-gradient(135deg,#00f2fe,#7c5cff)", text:"#ffffff" },
-
 Pastel:{ bg:"linear-gradient(135deg,#fbc2eb,#a6c1ee)", text:"#111" },
 
 Royal:{ bg:"linear-gradient(135deg,#141e30,#243b55)", text:"#ffffff" },
-
 Luxury:{ bg:"#000000", text:"#d4af37" }
 
 };
@@ -105,7 +97,8 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-backdropFilter:`blur(${blur}px)`
+backdropFilter:`blur(${blur}px)`,
+WebkitBackdropFilter:`blur(${blur}px)`
 }}/>
 )}
 
@@ -161,17 +154,9 @@ flexDirection:"column",
 gap:10
 }}>
 
-<button style={btn(active.text)}>
-My Website
-</button>
-
-<button style={btn(active.text)}>
-Instagram
-</button>
-
-<button style={btn(active.text)}>
-YouTube
-</button>
+<button style={btn(active.text)}>My Website</button>
+<button style={btn(active.text)}>Instagram</button>
+<button style={btn(active.text)}>YouTube</button>
 
 </div>
 
