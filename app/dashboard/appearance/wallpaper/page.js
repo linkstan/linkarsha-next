@@ -1,6 +1,6 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useEffect,useState } from "react";
 import Link from "next/link";
 import { supabase } from "../../../lib/supabase";
 
@@ -8,70 +8,29 @@ export default function WallpaperPage(){
 
 const [active,setActive]=useState(null);
 const [blur,setBlur]=useState(0);
-const [loading,setLoading]=useState(false);
 
 const wallpapers=[
 
-{
-name:"None",
-value:null,
-type:"none"
-},
-
-{
-name:"Upload Image",
-type:"upload"
-},
-
-{
-name:"Sunset",
-value:"linear-gradient(135deg,#ff7a18,#ffb347)"
-},
-
-{
-name:"Ocean",
-value:"linear-gradient(135deg,#2193b0,#6dd5ed)"
-},
-
-{
-name:"Neon",
-value:"linear-gradient(135deg,#00f2fe,#7c5cff)"
-},
-
-{
-name:"Pastel",
-value:"linear-gradient(135deg,#fbc2eb,#a6c1ee)"
-},
-
-{
-name:"Aurora",
-value:"linear-gradient(135deg,#00c6ff,#0072ff)"
-},
-
-{
-name:"Galaxy",
-value:"linear-gradient(135deg,#654ea3,#eaafc8)"
-},
-
-{
-name:"Royal",
-value:"linear-gradient(135deg,#141e30,#243b55)"
-},
-
-{
-name:"Midnight",
-value:"linear-gradient(135deg,#232526,#414345)"
-},
-
-{
-name:"Forest",
-value:"linear-gradient(135deg,#134e5e,#71b280)"
-},
-
-{
-name:"Fire",
-value:"linear-gradient(135deg,#f12711,#f5af19)"
-}
+{ name:"Sunset Sky", value:"linear-gradient(135deg,#ff7a18,#ffb347)" },
+{ name:"Ocean Waves", value:"linear-gradient(135deg,#2193b0,#6dd5ed)" },
+{ name:"Neon Glow", value:"linear-gradient(135deg,#00f2fe,#7c5cff)" },
+{ name:"Pastel Dream", value:"linear-gradient(135deg,#fbc2eb,#a6c1ee)" },
+{ name:"Aurora Lights", value:"linear-gradient(135deg,#00c6ff,#0072ff)" },
+{ name:"Galaxy Night", value:"linear-gradient(135deg,#654ea3,#eaafc8)" },
+{ name:"Royal Blue", value:"linear-gradient(135deg,#141e30,#243b55)" },
+{ name:"Midnight Fog", value:"linear-gradient(135deg,#232526,#414345)" },
+{ name:"Forest Mist", value:"linear-gradient(135deg,#134e5e,#71b280)" },
+{ name:"Fire Energy", value:"linear-gradient(135deg,#f12711,#f5af19)" },
+{ name:"Purple Haze", value:"linear-gradient(135deg,#5f2c82,#49a09d)" },
+{ name:"Cyber Grid", value:"linear-gradient(135deg,#0f2027,#2c5364)" },
+{ name:"Cloud Light", value:"linear-gradient(135deg,#e6dada,#274046)" },
+{ name:"Desert Sand", value:"linear-gradient(135deg,#d7d2cc,#304352)" },
+{ name:"Arctic Ice", value:"linear-gradient(135deg,#83a4d4,#b6fbff)" },
+{ name:"Pink Flame", value:"linear-gradient(135deg,#ff9966,#ff5e62)" },
+{ name:"Green Field", value:"linear-gradient(135deg,#56ab2f,#a8e063)" },
+{ name:"Deep Ocean", value:"linear-gradient(135deg,#373b44,#4286f4)" },
+{ name:"Cosmic Dust", value:"linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)" },
+{ name:"Dark Space", value:"linear-gradient(135deg,#000000,#434343)" }
 
 ];
 
@@ -105,6 +64,22 @@ window.dispatchEvent(
 new CustomEvent("wallpaper-change",{detail:value})
 );
 
+window.dispatchEvent(
+new CustomEvent("wallpaper-blur",{detail:blur})
+);
+
+/* auto brightness detection */
+
+let brightness="light";
+
+if(value && value.includes("#000") || value?.includes("#141e30") || value?.includes("#232526")){
+brightness="dark";
+}
+
+window.dispatchEvent(
+new CustomEvent("wallpaper-brightness",{detail:brightness})
+);
+
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
@@ -131,8 +106,6 @@ async function uploadImage(e){
 const file=e.target.files?.[0];
 if(!file) return;
 
-setLoading(true);
-
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
@@ -147,8 +120,6 @@ const {data}=supabase.storage
 .getPublicUrl(filePath);
 
 applyWallpaper(`url(${data.publicUrl})`);
-
-setLoading(false);
 
 }
 
@@ -180,14 +151,19 @@ marginBottom:24
 
 <Link href="/dashboard/appearance">
 
-<button style={{
-border:"none",
-background:"transparent",
-fontSize:22,
-cursor:"pointer"
+<div style={{
+width:36,
+height:36,
+borderRadius:"50%",
+background:"var(--card)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+cursor:"pointer",
+border:"1px solid var(--border)"
 }}>
 ←
-</button>
+</div>
 
 </Link>
 
@@ -197,18 +173,15 @@ Select Wallpaper
 
 </div>
 
-{/* BLUR CONTROL */}
+{/* BLUR */}
 
-<div style={{
-marginBottom:24
-}}>
+<div style={{marginBottom:24}}>
 
-<div style={{
-marginBottom:6,
-fontWeight:500
-}}>
+<div style={{marginBottom:6,fontWeight:500}}>
 Blur intensity
 </div>
+
+<div style={{display:"flex",alignItems:"center",gap:10}}>
 
 <input
 type="range"
@@ -216,12 +189,108 @@ min="0"
 max="20"
 value={blur}
 onChange={(e)=>updateBlur(e.target.value)}
-style={{width:"100%"}}
+style={{flex:1}}
 />
+
+<span>{blur}</span>
 
 </div>
 
-{/* GRID */}
+</div>
+
+{/* NONE + UPLOAD */}
+
+<div style={{
+display:"grid",
+gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",
+gap:18,
+marginBottom:30
+}}>
+
+{/* NONE */}
+
+<div style={{
+borderRadius:16,
+padding:14,
+border: active===null ? "2px solid #22c55e" : "1px solid var(--border)",
+background:"var(--card)"
+}}>
+
+<div style={{
+height:90,
+borderRadius:12,
+background:"#ddd",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+None
+</div>
+
+<div style={{marginTop:10,fontWeight:500}}>
+None
+</div>
+
+<button
+onClick={()=>applyWallpaper(null)}
+style={{
+marginTop:8,
+width:"100%",
+padding:"8px",
+borderRadius:10,
+border:"none",
+background: active===null ? "#22c55e" : "#111",
+color:"#fff",
+cursor:"pointer"
+}}
+>
+{active===null ? "Applied" : "Apply"}
+</button>
+
+</div>
+
+{/* UPLOAD */}
+
+<div style={{
+borderRadius:16,
+padding:14,
+border:"1px solid var(--border)",
+background:"var(--card)"
+}}>
+
+<div style={{
+height:90,
+borderRadius:12,
+background:"#eee",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+
+<label style={{cursor:"pointer"}}>
+
+Upload
+
+<input
+type="file"
+accept="image/*"
+style={{display:"none"}}
+onChange={uploadImage}
+/>
+
+</label>
+
+</div>
+
+<div style={{marginTop:10,fontWeight:500}}>
+Upload Image
+</div>
+
+</div>
+
+</div>
+
+{/* WALLPAPER GRID */}
 
 <div style={{
 display:"grid",
@@ -248,47 +317,11 @@ gap:10
 }}
 >
 
-{/* PREVIEW */}
-
 <div style={{
 height:90,
 borderRadius:12,
-background:wall.value || "#ddd",
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-overflow:"hidden"
-}}>
-
-{wall.type==="upload" && (
-
-<label style={{
-cursor:"pointer",
-fontSize:13
-}}>
-
-Upload
-
-<input
-type="file"
-accept="image/*"
-style={{display:"none"}}
-onChange={uploadImage}
-/>
-
-</label>
-
-)}
-
-{wall.type==="none" && (
-<span style={{fontSize:13}}>
-None
-</span>
-)}
-
-</div>
-
-{/* NAME */}
+background:wall.value
+}}/>
 
 <div style={{
 fontSize:14,
@@ -296,10 +329,6 @@ fontWeight:500
 }}>
 {wall.name}
 </div>
-
-{/* BUTTON */}
-
-{wall.type!=="upload" && (
 
 <button
 onClick={()=>applyWallpaper(wall.value)}
@@ -313,12 +342,8 @@ cursor:"pointer",
 fontSize:13
 }}
 >
-
 {applied ? "Applied" : "Apply"}
-
 </button>
-
-)}
 
 </div>
 
