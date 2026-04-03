@@ -464,6 +464,37 @@ position:"relative"
 }}
 >
 
+{/* BLUR */}
+{wallpaper && wallpaperBlur > 0 && (
+<div
+style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+backdropFilter:`blur(${wallpaperBlur}px)`,
+WebkitBackdropFilter:`blur(${wallpaperBlur}px)`
+}}
+/>
+)}
+
+{/* OVERLAY */}
+{wallpaper && wallpaperOverlay > 0 && (
+<div
+style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+background:`rgba(0,0,0,${wallpaperOverlay})`
+}}
+/>
+)}
+
+{header.layout==="hero" ? (
+
 {header.layout==="hero" ? (
 
 <div style={{
