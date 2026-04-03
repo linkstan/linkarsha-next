@@ -495,8 +495,6 @@ background:`rgba(0,0,0,${wallpaperOverlay})`
 
 {header.layout==="hero" ? (
 
-{header.layout==="hero" ? (
-
 <div style={{
 height:200,
 position:"relative",
