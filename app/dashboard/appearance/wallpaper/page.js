@@ -57,7 +57,11 @@ setBlur(settings.wallpaperBlur || 0);
 /* preview update */
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:settings})
+new CustomEvent("appearance-update",{detail:{
+...settings,
+wallpaper:settings.wallpaper || null,
+wallpaperBlur:settings.wallpaperBlur || 0
+}})
 );
 
 window.dispatchEvent(
@@ -84,6 +88,13 @@ window.dispatchEvent(
 new CustomEvent("wallpaper-blur",{detail:blur})
 );
 
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{
+wallpaper:value,
+wallpaperBlur:blur
+}})
+);
+
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
@@ -105,10 +116,14 @@ await supabase
 .update({profile_settings:settings})
 .eq("id",session.user.id);
 
-/* update preview */
+/* ensure preview stays synced */
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:settings})
+new CustomEvent("appearance-update",{detail:{
+...settings,
+wallpaper:value,
+wallpaperBlur:blur
+}})
 );
 
 }
@@ -150,7 +165,10 @@ new CustomEvent("wallpaper-blur",{detail:newBlur})
 /* update preview */
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{wallpaper:active, wallpaperBlur:newBlur}})
+new CustomEvent("appearance-update",{detail:{
+wallpaper:active,
+wallpaperBlur:newBlur
+}})
 );
 
 }
