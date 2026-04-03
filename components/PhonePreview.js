@@ -6,6 +6,7 @@ export default function PhonePreview(){
 
 const [wallpaper,setWallpaper]=useState(null);
 const [blur,setBlur]=useState(0);
+const [overlay,setOverlay]=useState(true);
 const [theme,setTheme]=useState("Minimal");
 
 const themes={
@@ -28,25 +29,11 @@ Luxury:{ bg:"#000000", text:"#d4af37" }
 
 };
 
-/* THEME LISTENER */
-
 useEffect(()=>{
 
 function handleThemeChange(e){
 setTheme(e.detail);
 }
-
-window.addEventListener("theme-change",handleThemeChange);
-
-return ()=>{
-window.removeEventListener("theme-change",handleThemeChange);
-};
-
-},[]);
-
-/* WALLPAPER + BLUR LISTENER */
-
-useEffect(()=>{
 
 function handleWallpaperChange(e){
 setWallpaper(e.detail);
@@ -56,12 +43,20 @@ function handleBlurChange(e){
 setBlur(e.detail);
 }
 
+function handleOverlayChange(e){
+setOverlay(e.detail);
+}
+
+window.addEventListener("theme-change",handleThemeChange);
 window.addEventListener("wallpaper-change",handleWallpaperChange);
 window.addEventListener("wallpaper-blur",handleBlurChange);
+window.addEventListener("wallpaper-overlay",handleOverlayChange);
 
 return ()=>{
+window.removeEventListener("theme-change",handleThemeChange);
 window.removeEventListener("wallpaper-change",handleWallpaperChange);
 window.removeEventListener("wallpaper-blur",handleBlurChange);
+window.removeEventListener("wallpaper-overlay",handleOverlayChange);
 };
 
 },[]);
@@ -88,9 +83,7 @@ fontFamily:"sans-serif",
 boxShadow:"0 25px 60px rgba(0,0,0,.35)"
 }}>
 
-{/* BLUR LAYER */}
-
-{wallpaper && (
+{wallpaper && blur>0 && (
 <div style={{
 position:"absolute",
 top:0,
@@ -102,9 +95,7 @@ WebkitBackdropFilter:`blur(${blur}px)`
 }}/>
 )}
 
-{/* DARK OVERLAY */}
-
-{wallpaper && (
+{wallpaper && overlay && (
 <div style={{
 position:"absolute",
 top:0,
@@ -114,8 +105,6 @@ bottom:0,
 background:"rgba(0,0,0,0.25)"
 }}/>
 )}
-
-{/* CONTENT */}
 
 <div style={{
 position:"relative",
