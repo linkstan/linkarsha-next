@@ -365,7 +365,7 @@ Add Custom Wallpaper
 
 <input
 type="file"
-accept="image/*"
+accept="image/png,image/jpeg,image/webp"
 style={{display:"none"}}
 onChange={uploadImage}
 />
