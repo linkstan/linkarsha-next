@@ -460,7 +460,6 @@ style={{
 width:"100%",
 height:"100%",
 borderRadius:20,
-overflow:"auto",
 color:"#fff",
 position:"relative"
 }}
