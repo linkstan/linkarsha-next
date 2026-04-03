@@ -392,6 +392,8 @@ cursor:"pointer"
 
 </div>
 
+</div>   {/* CLOSE NONE + UPLOAD GRID */}
+
 {/* WALLPAPER GRID */}
 
 <div style={{
