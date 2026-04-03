@@ -442,8 +442,11 @@ justifyContent:"center"
 width:360,
 display:"flex",
 justifyContent:"center",
-alignItems:"center",
-borderLeft:"1px solid var(--border)"
+alignItems:"flex-start",
+borderLeft:"1px solid var(--border)",
+position:"sticky",
+top:20,
+height:"100vh"
 }}>
 
 <div style={{
