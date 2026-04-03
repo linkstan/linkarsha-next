@@ -151,6 +151,8 @@ return (
 style={{
 minHeight:"100vh",
 background:themeBackground,
+backgroundSize:"cover",
+backgroundPosition:"center",
 color:"#fff",
 display:"flex",
 flexDirection:"column",
