@@ -459,9 +459,7 @@ key={JSON.stringify(buttons)}
 style={{
 width:"100%",
 height:"100%",
-background: wallpaper || themeMap[theme] || "#0b0b12",
-backgroundSize:"cover",
-backgroundPosition:"center",
+background: wallpaper ? "transparent" : themeMap[theme],
 borderRadius:20,
 overflow:"auto",
 color:"#fff",
@@ -478,10 +476,12 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-backdropFilter:`blur(${wallpaperBlur}px)`,
-WebkitBackdropFilter:`blur(${wallpaperBlur}px)`,
-pointerEvents:"none",
-zIndex:1
+background: wallpaper,
+backgroundSize:"cover",
+backgroundPosition:"center",
+filter:`blur(${wallpaperBlur}px)`,
+transform:"scale(1.05)",
+zIndex:0
 }}
 />
 )}
