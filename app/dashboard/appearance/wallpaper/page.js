@@ -54,10 +54,19 @@ const settings=data?.profile_settings || {};
 setActive(settings.wallpaper || null);
 setBlur(settings.wallpaperBlur || 0);
 
-/* update preview when page loads */
+/* preview update */
 
-window.dispatchEvent(new CustomEvent("wallpaper-change",{detail:settings.wallpaper || null}));
-window.dispatchEvent(new CustomEvent("wallpaper-blur",{detail:settings.wallpaperBlur || 0}));
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:settings})
+);
+
+window.dispatchEvent(
+new CustomEvent("wallpaper-change",{detail:settings.wallpaper || null})
+);
+
+window.dispatchEvent(
+new CustomEvent("wallpaper-blur",{detail:settings.wallpaperBlur || 0})
+);
 
 }
 
@@ -65,10 +74,15 @@ async function applyWallpaper(value){
 
 setActive(value);
 
-/* update preview instantly */
+/* instant preview */
 
-window.dispatchEvent(new CustomEvent("wallpaper-change",{detail:value}));
-window.dispatchEvent(new CustomEvent("wallpaper-blur",{detail:blur}));
+window.dispatchEvent(
+new CustomEvent("wallpaper-change",{detail:value})
+);
+
+window.dispatchEvent(
+new CustomEvent("wallpaper-blur",{detail:blur})
+);
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -84,10 +98,18 @@ const settings=data?.profile_settings || {};
 settings.wallpaper=value;
 settings.wallpaperBlur=blur;
 
+/* save */
+
 await supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
+
+/* update preview */
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:settings})
+);
 
 }
 
@@ -123,6 +145,12 @@ setBlur(newBlur);
 
 window.dispatchEvent(
 new CustomEvent("wallpaper-blur",{detail:newBlur})
+);
+
+/* update preview */
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{wallpaper:active, wallpaperBlur:newBlur}})
 );
 
 }
