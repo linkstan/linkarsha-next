@@ -459,7 +459,9 @@ key={JSON.stringify(buttons)}
 style={{
 width:"100%",
 height:"100%",
-background: wallpaper ? "transparent" : themeMap[theme],
+background: wallpaper ? wallpaper : themeMap[theme],
+backgroundSize:"cover",
+backgroundPosition:"center",
 borderRadius:20,
 overflow:"auto",
 color:"#fff",
