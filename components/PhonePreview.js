@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PhonePreview(){
 
 const [wallpaper,setWallpaper]=useState(null);
 const [blur,setBlur]=useState(0);
-const [overlay,setOverlay]=useState(true);
+const [overlay,setOverlay]=useState(0.25);
 const [theme,setTheme]=useState("Minimal");
 
 const themes={
@@ -95,14 +95,14 @@ WebkitBackdropFilter:`blur(${blur}px)`
 }}/>
 )}
 
-{wallpaper && overlay && (
+{wallpaper && overlay>0 && (
 <div style={{
 position:"absolute",
 top:0,
 left:0,
 right:0,
 bottom:0,
-background:"rgba(0,0,0,0.25)"
+background:`rgba(0,0,0,${overlay})`
 }}/>
 )}
 
