@@ -54,31 +54,21 @@ const settings=data?.profile_settings || {};
 setActive(settings.wallpaper || null);
 setBlur(settings.wallpaperBlur || 0);
 
+/* update preview when page loads */
+
+window.dispatchEvent(new CustomEvent("wallpaper-change",{detail:settings.wallpaper || null}));
+window.dispatchEvent(new CustomEvent("wallpaper-blur",{detail:settings.wallpaperBlur || 0}));
+
 }
 
 async function applyWallpaper(value){
 
 setActive(value);
 
-window.dispatchEvent(
-new CustomEvent("wallpaper-change",{detail:value})
-);
+/* update preview instantly */
 
-window.dispatchEvent(
-new CustomEvent("wallpaper-blur",{detail:blur})
-);
-
-/* auto brightness detection */
-
-let brightness="light";
-
-if(value && value.includes("#000") || value?.includes("#141e30") || value?.includes("#232526")){
-brightness="dark";
-}
-
-window.dispatchEvent(
-new CustomEvent("wallpaper-brightness",{detail:brightness})
-);
+window.dispatchEvent(new CustomEvent("wallpaper-change",{detail:value}));
+window.dispatchEvent(new CustomEvent("wallpaper-blur",{detail:blur}));
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -115,20 +105,24 @@ await supabase.storage
 .from("wallpapers")
 .upload(filePath,file);
 
-const {data}=supabase.storage
+const {data} = supabase.storage
 .from("wallpapers")
 .getPublicUrl(filePath);
 
-applyWallpaper(`url(${data.publicUrl})`);
+const url=`url(${data.publicUrl})`;
+
+applyWallpaper(url);
 
 }
 
 function updateBlur(value){
 
-setBlur(value);
+const newBlur=Number(value);
+
+setBlur(newBlur);
 
 window.dispatchEvent(
-new CustomEvent("wallpaper-blur",{detail:value})
+new CustomEvent("wallpaper-blur",{detail:newBlur})
 );
 
 }
@@ -149,7 +143,7 @@ gap:12,
 marginBottom:24
 }}>
 
-<Link href="/dashboard/appearance">
+<Link href="/dashboard/appearance" style={{textDecoration:"none"}}>
 
 <div style={{
 width:36,
@@ -160,7 +154,8 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center",
 cursor:"pointer",
-border:"1px solid var(--border)"
+border:"1px solid var(--border)",
+fontSize:18
 }}>
 ←
 </div>
