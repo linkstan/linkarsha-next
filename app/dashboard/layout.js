@@ -454,10 +454,13 @@ key={JSON.stringify(buttons)}
 style={{
 width:"100%",
 height:"100%",
-background: themeMap[theme] || "#0b0b12",
+background: wallpaper || themeMap[theme] || "#0b0b12",
+backgroundSize:"cover",
+backgroundPosition:"center",
 borderRadius:20,
 overflow:"auto",
-color:"#fff"
+color:"#fff",
+position:"relative"
 }}
 >
 
