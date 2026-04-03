@@ -152,17 +152,13 @@ applyWallpaper(url);
 
 }
 
-function updateBlur(value){
+async function updateBlur(value){
 
-const newBlur=Number(value);
+const newBlur = Number(value);
 
 setBlur(newBlur);
 
-window.dispatchEvent(
-new CustomEvent("wallpaper-blur",{detail:newBlur})
-);
-
-/* update preview */
+/* instant preview */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{
@@ -170,6 +166,27 @@ wallpaper:active,
 wallpaperBlur:newBlur
 }})
 );
+
+/* save blur */
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const {data} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const settings = data?.profile_settings || {};
+
+settings.wallpaper = active;
+settings.wallpaperBlur = newBlur;
+
+await supabase
+.from("profiles")
+.update({profile_settings:settings})
+.eq("id",session.user.id);
 
 }
 
