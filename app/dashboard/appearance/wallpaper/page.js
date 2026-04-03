@@ -389,8 +389,6 @@ cursor:"pointer"
 
 </div>
 
-</div>
-
 {/* WALLPAPER GRID */}
 
 <div style={{
