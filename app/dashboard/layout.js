@@ -97,8 +97,13 @@ const data = e.detail || {};
 
 setAppearance(prev => ({
 ...prev,
+
 header: data.header ?? prev.header,
-buttons: data.buttons ?? prev.buttons
+buttons: data.buttons ?? prev.buttons,
+
+wallpaper: data.wallpaper ?? prev.wallpaper,
+wallpaperBlur: data.wallpaperBlur ?? prev.wallpaperBlur,
+wallpaperOverlay: data.wallpaperOverlay ?? prev.wallpaperOverlay
 }));
 
 if(data.avatar !== undefined){
