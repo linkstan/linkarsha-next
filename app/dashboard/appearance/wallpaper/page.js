@@ -381,13 +381,13 @@ width:"100%",
 padding:"8px",
 borderRadius:10,
 border:"none",
-background: active===customWallpaper ? "#22c55e" : "#111",
+background: active===`url(${customWallpaper})` ? "#22c55e" : "#111",
 color:"#fff",
 cursor:"pointer"
 }}
 >
 
-{active===customWallpaper ? "Applied ✓" : "Apply"}
+{active===`url(${customWallpaper})` ? "Applied ✓" : "Apply"}
 
 </button>
 
