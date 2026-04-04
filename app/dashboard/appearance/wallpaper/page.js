@@ -217,9 +217,10 @@ width:36,
 height:36,
 borderRadius:"50%",
 background:"var(--card)",
+position:"relative",
 display:"flex",
 alignItems:"center",
-justifyContent:"center",
+justifyContent:"center"
 cursor:"pointer",
 border:"1px solid var(--border)",
 fontSize:18
