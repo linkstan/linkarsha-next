@@ -220,7 +220,7 @@ background:"var(--card)",
 position:"relative",
 display:"flex",
 alignItems:"center",
-justifyContent:"center"
+justifyContent:"center",
 cursor:"pointer",
 border:"1px solid var(--border)",
 fontSize:18
