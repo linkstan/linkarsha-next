@@ -326,6 +326,7 @@ height:90,
 borderRadius:12,
 overflow:"hidden",
 background:"#111",
+position:"relative",
 display:"flex",
 alignItems:"center",
 justifyContent:"center"
@@ -347,8 +348,6 @@ objectFit:"cover"
 <div style={{opacity:0.6}}>No wallpaper</div>
 
 )}
-
-</div>
 
 <label
 style={{
@@ -374,7 +373,10 @@ accept="image/png,image/jpeg,image/webp"
 style={{display:"none"}}
 onChange={uploadImage}
 />
+
 </label>
+
+</div>
 
 <span style={{fontSize:18}}>＋</span>
 
