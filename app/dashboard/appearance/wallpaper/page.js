@@ -374,7 +374,7 @@ onChange={uploadImage}
 </label>
 
 <button
-onClick={()=>applyWallpaper(customWallpaper)}
+onClick={()=>customWallpaper && applyWallpaper(customWallpaper)}
 style={{
 marginTop:8,
 width:"100%",
