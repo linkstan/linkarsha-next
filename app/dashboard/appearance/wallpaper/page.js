@@ -9,6 +9,8 @@ export default function WallpaperPage(){
 const [active,setActive]=useState(null);
 const [blur,setBlur]=useState(0);
 const [customWallpaper,setCustomWallpaper]=useState(null);
+const [uploading,setUploading]=useState(false);
+const [uploadProgress,setUploadProgress]=useState(0);
 
 const wallpapers=[
 
