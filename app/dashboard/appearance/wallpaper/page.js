@@ -12,6 +12,7 @@ const [customWallpaper,setCustomWallpaper]=useState(null);
 
 const [uploading,setUploading]=useState(false);
 const [uploadProgress,setUploadProgress]=useState(0);
+
 const [cropImage,setCropImage]=useState(null);
 const fileInputRef = useRef(null);
 
@@ -107,6 +108,14 @@ async function uploadImage(e){
 const file=e.target.files?.[0];
 if(!file) return;
 
+setCropImage(URL.createObjectURL(file));
+
+}
+
+async function confirmUpload(){
+
+if(!cropImage) return;
+
 setUploading(true);
 setUploadProgress(0);
 
@@ -115,29 +124,20 @@ if(!session) return;
 
 const filePath=`${session.user.id}-${Date.now()}`;
 
-const upload = supabase.storage
+const blob = await fetch(cropImage).then(r=>r.blob());
+
+await supabase.storage
 .from("wallpapers")
-.upload(filePath,file);
-
-const interval=setInterval(()=>{
-setUploadProgress(p=>Math.min(p+10,90));
-},200);
-
-await upload;
-
-clearInterval(interval);
-
-setUploadProgress(100);
+.upload(filePath,blob);
 
 const {data}=supabase.storage
 .from("wallpapers")
 .getPublicUrl(filePath);
 
-setTimeout(()=>{
 setUploading(false);
 setUploadProgress(0);
+
 setCustomWallpaper(data.publicUrl);
-},500);
 
 }
 
@@ -239,7 +239,7 @@ style={{flex:1}}
 
 <div style={{
 display:"grid",
-gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",
+gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",
 gap:18,
 marginBottom:30
 }}>
@@ -277,8 +277,7 @@ padding:"8px",
 borderRadius:10,
 border:"none",
 background: active===null ? "#22c55e" : "#111",
-color:"#fff",
-cursor:"pointer"
+color:"#fff"
 }}
 >
 {active===null ? "Applied" : "Apply"}
@@ -307,15 +306,6 @@ justifyContent:"center",
 cursor:"pointer"
 }}>
 
-<label style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-cursor:"pointer"
-}}>
-
 <input
 ref={fileInputRef}
 type="file"
@@ -324,7 +314,16 @@ style={{display:"none"}}
 onChange={uploadImage}
 />
 
-</label>
+<div
+onClick={()=>fileInputRef.current.click()}
+style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0
+}}
+/>
 
 {customWallpaper && !uploading && (
 <img
@@ -348,28 +347,8 @@ bottom:0,
 left:0,
 height:4,
 width:`${uploadProgress}%`,
-background:"#22c55e",
-transition:"width 0.2s"
+background:"#22c55e"
 }}/>
-)}
-
-{!uploading && uploadProgress===0 && customWallpaper && (
-<div style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-background:"rgba(0,0,0,0.4)",
-color:"#22c55e",
-fontWeight:600,
-fontSize:14
-}}>
-✓ Wallpaper uploaded
-</div>
 )}
 
 <div style={{
@@ -384,20 +363,14 @@ display:"flex",
 alignItems:"center",
 justifyContent:"center",
 color:"#fff",
-fontWeight:700,
-boxShadow:"0 4px 8px rgba(0,0,0,0.4)",
-fontSize:18
+fontWeight:700
 }}>
 +
 </div>
 
 </div>
 
-<div style={{
-marginTop:8,
-fontSize:13,
-opacity:0.8
-}}>
+<div style={{marginTop:8,fontSize:13,opacity:0.8}}>
 Add Custom Wallpaper
 </div>
 
@@ -410,8 +383,7 @@ padding:"8px",
 borderRadius:10,
 border:"none",
 background: active===`url(${customWallpaper})` ? "#22c55e" : "#111",
-color:"#fff",
-cursor:"pointer"
+color:"#fff"
 }}
 >
 {active===`url(${customWallpaper})` ? "Applied ✓" : "Apply"}
@@ -423,7 +395,7 @@ cursor:"pointer"
 
 <div style={{
 display:"grid",
-gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))",
+gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",
 gap:18
 }}>
 
@@ -466,9 +438,7 @@ padding:"8px",
 borderRadius:10,
 border:"none",
 background: applied ? "#22c55e" : "#111",
-color:"#fff",
-cursor:"pointer",
-fontSize:13
+color:"#fff"
 }}
 >
 {applied ? "Applied" : "Apply"}
@@ -481,6 +451,82 @@ fontSize:13
 })}
 
 </div>
+
+{cropImage && (
+
+<div style={{
+position:"fixed",
+top:0,
+left:0,
+right:0,
+bottom:0,
+background:"rgba(0,0,0,0.7)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+zIndex:1000
+}}>
+
+<div style={{
+background:"#111",
+padding:20,
+borderRadius:12,
+maxWidth:400,
+width:"90%"
+}}>
+
+<img
+src={cropImage}
+style={{
+width:"100%",
+borderRadius:8
+}}
+/>
+
+<div style={{
+display:"flex",
+gap:10,
+marginTop:12
+}}>
+
+<button
+onClick={()=>setCropImage(null)}
+style={{
+flex:1,
+padding:10,
+borderRadius:8,
+border:"none",
+background:"#444",
+color:"#fff"
+}}
+>
+Cancel
+</button>
+
+<button
+onClick={()=>{
+confirmUpload();
+setCropImage(null);
+}}
+style={{
+flex:1,
+padding:10,
+borderRadius:8,
+border:"none",
+background:"#22c55e",
+color:"#fff"
+}}
+>
+Upload
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+)}
 
 </div>
 
