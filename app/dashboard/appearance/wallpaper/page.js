@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect,useState } from "react";
+import { useEffect,useState,useRef } from "react";
 import Link from "next/link";
 import { supabase } from "../../../lib/supabase";
 
@@ -12,6 +12,8 @@ const [customWallpaper,setCustomWallpaper]=useState(null);
 
 const [uploading,setUploading]=useState(false);
 const [uploadProgress,setUploadProgress]=useState(0);
+const [cropImage,setCropImage]=useState(null);
+const fileInputRef = useRef(null);
 
 const wallpapers=[
 
@@ -315,6 +317,7 @@ cursor:"pointer"
 }}>
 
 <input
+ref={fileInputRef}
 type="file"
 accept="image/png,image/jpeg,image/webp"
 style={{display:"none"}}
