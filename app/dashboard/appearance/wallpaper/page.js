@@ -351,14 +351,29 @@ objectFit:"cover"
 
 <label
 style={{
+position:"absolute",
+bottom:6,
+right:6,
+width:26,
+height:26,
+borderRadius:"50%",
+background:"#000",
+color:"#fff",
 display:"flex",
 alignItems:"center",
-gap:6,
-marginTop:10,
+justifyContent:"center",
 cursor:"pointer",
-fontWeight:500
+fontSize:18
 }}
 >
++
+<input
+type="file"
+accept="image/png,image/jpeg,image/webp"
+style={{display:"none"}}
+onChange={uploadImage}
+/>
+</label>
 
 <span style={{fontSize:18}}>＋</span>
 
