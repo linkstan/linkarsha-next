@@ -9,6 +9,7 @@ export default function WallpaperPage(){
 const [active,setActive]=useState(null);
 const [blur,setBlur]=useState(0);
 const [customWallpaper,setCustomWallpaper]=useState(null);
+
 const [uploading,setUploading]=useState(false);
 const [uploadProgress,setUploadProgress]=useState(0);
 
@@ -57,8 +58,6 @@ const settings=data?.profile_settings || {};
 setActive(settings.wallpaper || null);
 setBlur(settings.wallpaperBlur || 0);
 
-/* preview update */
-
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{
 ...settings,
@@ -67,30 +66,11 @@ wallpaperBlur:settings.wallpaperBlur || 0
 }})
 );
 
-window.dispatchEvent(
-new CustomEvent("wallpaper-change",{detail:settings.wallpaper || null})
-);
-
-window.dispatchEvent(
-new CustomEvent("wallpaper-blur",{detail:settings.wallpaperBlur || 0})
-);
-
 }
 
 async function applyWallpaper(value){
 
 setActive(value);
-setCustomWallpaper(value===null?null:value);
-
-/* instant preview */
-
-window.dispatchEvent(
-new CustomEvent("wallpaper-change",{detail:value})
-);
-
-window.dispatchEvent(
-new CustomEvent("wallpaper-blur",{detail:blur})
-);
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{
@@ -113,22 +93,10 @@ const settings=data?.profile_settings || {};
 settings.wallpaper=value;
 settings.wallpaperBlur=blur;
 
-/* save */
-
 await supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
-
-/* ensure preview stays synced */
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{
-...settings,
-wallpaper:value,
-wallpaperBlur:blur
-}})
-);
 
 }
 
@@ -137,24 +105,37 @@ async function uploadImage(e){
 const file=e.target.files?.[0];
 if(!file) return;
 
+setUploading(true);
+setUploadProgress(0);
+
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
 const filePath=`${session.user.id}-${Date.now()}`;
 
-await supabase.storage
+const upload = supabase.storage
 .from("wallpapers")
 .upload(filePath,file);
 
-const {data} = supabase.storage
+const interval=setInterval(()=>{
+setUploadProgress(p=>Math.min(p+10,90));
+},200);
+
+await upload;
+
+clearInterval(interval);
+
+setUploadProgress(100);
+
+const {data}=supabase.storage
 .from("wallpapers")
 .getPublicUrl(filePath);
 
-const url = `url(${data.publicUrl})`;
-
+setTimeout(()=>{
+setUploading(false);
+setUploadProgress(0);
 setCustomWallpaper(data.publicUrl);
-
-applyWallpaper(url);
+},500);
 
 }
 
@@ -164,16 +145,12 @@ const newBlur = Number(value);
 
 setBlur(newBlur);
 
-/* instant preview */
-
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{
 wallpaper:active,
 wallpaperBlur:newBlur
 }})
 );
-
-/* save blur */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -203,8 +180,6 @@ padding:"24px",
 maxWidth:900
 }}>
 
-{/* HEADER */}
-
 <div style={{
 display:"flex",
 alignItems:"center",
@@ -219,7 +194,6 @@ width:36,
 height:36,
 borderRadius:"50%",
 background:"var(--card)",
-position:"relative",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
@@ -237,8 +211,6 @@ Select Wallpaper
 </h2>
 
 </div>
-
-{/* BLUR */}
 
 <div style={{marginBottom:24}}>
 
@@ -262,8 +234,6 @@ style={{flex:1}}
 </div>
 
 </div>
-
-{/* NONE + UPLOAD */}
 
 <div style={{
 display:"grid",
@@ -314,12 +284,12 @@ cursor:"pointer"
 
 </div>
 
-{/* UPLOAD */}
+{/* CUSTOM WALLPAPER */}
 
 <div style={{
 borderRadius:16,
 padding:14,
-border:"1px solid var(--border)",
+border: active===`url(${customWallpaper})` ? "2px solid #22c55e" : "1px solid var(--border)",
 background:"var(--card)"
 }}>
 
@@ -331,43 +301,18 @@ background:"#111",
 position:"relative",
 display:"flex",
 alignItems:"center",
-justifyContent:"center"
+justifyContent:"center",
+cursor:"pointer"
 }}>
-
-{customWallpaper ? (
-
-<img
-src={customWallpaper}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
-
-) : (
-
-<div style={{opacity:0.6}}>No wallpaper</div>
-
-)}
 
 <label style={{
 position:"absolute",
-bottom:6,
-right:6,
-width:26,
-height:26,
-borderRadius:"50%",
-background:"#000",
-color:"#fff",
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-cursor:"pointer",
-fontSize:18
+top:0,
+left:0,
+right:0,
+bottom:0,
+cursor:"pointer"
 }}>
-
-+
 
 <input
 type="file"
@@ -378,12 +323,66 @@ onChange={uploadImage}
 
 </label>
 
+{customWallpaper && !uploading && (
+<img
+src={customWallpaper}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+)}
+
+{!customWallpaper && !uploading && (
+<div style={{opacity:0.6}}>Tap to upload</div>
+)}
+
+{uploading && (
+<div style={{
+position:"absolute",
+bottom:0,
+left:0,
+height:4,
+width:`${uploadProgress}%`,
+background:"#22c55e",
+transition:"width 0.2s"
+}}/>
+)}
+
+<div style={{
+position:"absolute",
+bottom:6,
+right:6,
+width:30,
+height:30,
+borderRadius:"50%",
+background:"linear-gradient(145deg,#22c55e,#16a34a)",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+color:"#fff",
+fontWeight:700,
+boxShadow:"0 4px 8px rgba(0,0,0,0.4)",
+fontSize:18
+}}>
++
+</div>
+
+</div>
+
+<div style={{
+marginTop:8,
+fontSize:13,
+opacity:0.8
+}}>
+Add Custom Wallpaper
 </div>
 
 <button
 onClick={()=>customWallpaper && applyWallpaper(`url(${customWallpaper})`)}
 style={{
-marginTop:10,
+marginTop:8,
 width:"100%",
 padding:"8px",
 borderRadius:10,
@@ -393,16 +392,12 @@ color:"#fff",
 cursor:"pointer"
 }}
 >
-
 {active===`url(${customWallpaper})` ? "Applied ✓" : "Apply"}
-
 </button>
 
 </div>
 
-</div>   {/* CLOSE NONE + UPLOAD GRID */}
-
-{/* WALLPAPER GRID */}
+</div>
 
 <div style={{
 display:"grid",
