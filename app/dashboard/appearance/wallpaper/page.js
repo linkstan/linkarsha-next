@@ -350,6 +350,25 @@ transition:"width 0.2s"
 }}/>
 )}
 
+{!uploading && uploadProgress===0 && customWallpaper && (
+<div style={{
+position:"absolute",
+top:0,
+left:0,
+right:0,
+bottom:0,
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+background:"rgba(0,0,0,0.4)",
+color:"#22c55e",
+fontWeight:600,
+fontSize:14
+}}>
+✓ Wallpaper uploaded
+</div>
+)}
+
 <div style={{
 position:"absolute",
 bottom:6,
