@@ -349,8 +349,7 @@ objectFit:"cover"
 
 )}
 
-<label
-style={{
+<label style={{
 position:"absolute",
 bottom:6,
 right:6,
@@ -364,9 +363,10 @@ alignItems:"center",
 justifyContent:"center",
 cursor:"pointer",
 fontSize:18
-}}
->
+}}>
+
 +
+
 <input
 type="file"
 accept="image/png,image/jpeg,image/webp"
@@ -378,23 +378,10 @@ onChange={uploadImage}
 
 </div>
 
-<span style={{fontSize:18}}>＋</span>
-
-Add Custom Wallpaper
-
-<input
-type="file"
-accept="image/png,image/jpeg,image/webp"
-style={{display:"none"}}
-onChange={uploadImage}
-/>
-
-</label>
-
 <button
-onClick={()=>customWallpaper && applyWallpaper(customWallpaper)}
+onClick={()=>customWallpaper && applyWallpaper(`url(${customWallpaper})`)}
 style={{
-marginTop:8,
+marginTop:10,
 width:"100%",
 padding:"8px",
 borderRadius:10,
