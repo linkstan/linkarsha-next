@@ -78,6 +78,7 @@ new CustomEvent("wallpaper-blur",{detail:settings.wallpaperBlur || 0})
 async function applyWallpaper(value){
 
 setActive(value);
+setCustomWallpaper(value===null?null:value);
 
 /* instant preview */
 
