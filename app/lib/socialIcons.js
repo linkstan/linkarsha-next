@@ -94,6 +94,96 @@ email: (
 <svg viewBox="0 0 24 24" fill="currentColor">
 <path d="M2 4h20v16H2zM22 4l-10 9L2 4"/>
 </svg>
+),
+
+vk: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<rect x="3" y="3" width="18" height="18" rx="4"/>
+</svg>
+),
+
+onlyfans: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+discord: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+reddit: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+tinder: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<path d="M12 2C7 7 6 10 6 13a6 6 0 0012 0c0-3-2-6-6-11z"/>
+</svg>
+),
+
+bumble: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+koo: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+ok: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+sharechat: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+qq: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+weibo: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+douyin: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+wordpress: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+signal: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+dailymotion: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<rect x="4" y="6" width="16" height="12" rx="2"/>
+</svg>
 )
 
 };
