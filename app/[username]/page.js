@@ -140,6 +140,47 @@ opacity:.8
 }}>
 {profile.bio}
 </p>
+{showSocialIcons && socialPosition==="header" && activeSocial.length>0 && (
+
+<div style={{
+display:"flex",
+gap:14,
+marginTop:16,
+flexWrap:"wrap",
+justifyContent:"center"
+}}>
+
+{activeSocial.map(([platform,url])=>{
+
+const Icon = socialIcons[platform];
+
+return(
+
+<a
+key={platform}
+href={url}
+target="_blank"
+style={{
+width:28,
+height:28,
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+color:"#fff"
+}}
+>
+
+{Icon}
+
+</a>
+
+);
+
+})}
+
+</div>
+
+)}
 
 <div style={{marginTop:40,width:320}}>
 
