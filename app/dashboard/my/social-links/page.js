@@ -65,22 +65,35 @@ const platforms=[
 "youtube",
 "twitter",
 "snapchat",
+"vk",
 "pinterest",
 "linkedin",
 "telegram",
 "whatsapp",
-"github",
-"reddit",
+"onlyfans",
 "discord",
+"reddit",
 "threads",
 "twitch",
 "tumblr",
 "medium",
+"github",
 "website",
-"email"
+"email",
+"onlyfans",
+"tinder",
+"bumble",
+"koo",
+"ok",
+"sharechat",
+"qq",
+"weibo",
+"douyin",
+"wordpress",
+"signal",
+"dailymotion"
 
 ];
-
 return(
 
 <div style={{
