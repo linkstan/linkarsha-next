@@ -34,6 +34,12 @@ Profile not found
 
 const profile = prof;
 const appearance = profile.profile_settings || {};
+const header = appearance.header || {};
+const socialLinks = appearance.social_links || {};
+const showSocialIcons = header.showSocialIcons;
+const socialPosition = header.socialPosition || "header";
+const activeSocial = Object.entries(socialLinks)
+.filter(([k,v]) => v && socialIcons[k]);
 
 const wallpaper = appearance.wallpaper || null;
 const blur = appearance.wallpaperBlur || 0;
