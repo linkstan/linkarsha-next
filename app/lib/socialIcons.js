@@ -64,6 +64,36 @@ github: (
 <svg viewBox="0 0 24 24" fill="currentColor">
 <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.3c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.7-1.4-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1.6 2.1 3.4 1.5.1-.7.4-1.2.7-1.5-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 011.2-3.2 4.3 4.3 0 01.1-3.1s1-.3 3.3 1.2a11.6 11.6 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.5 1.3.2 2.3.1 3.1a4.7 4.7 0 011.2 3.2c0 4.7-2.9 5.7-5.7 6 .5.4.8 1.1.8 2.3v3.4c0 .3.2.7.8.6A12 12 0 0012 .5z"/>
 </svg>
+),
+
+threads: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="9"/>
+</svg>
+),
+
+twitch: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<path d="M4 2l-2 4v14h6v2h2l2-2h4l6-6V2H4z"/>
+</svg>
+),
+
+tumblr: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<path d="M15 17c-1.2 0-1.5-.8-1.5-1.9V9h3V6h-3V2h-3c0 3-1.4 4.2-3 4.6V9h2v6.3c0 3 1.7 4.7 4.6 4.7 1.3 0 2.4-.3 3-.7v-2.6c-.5.2-1.2.3-1.8.3z"/>
+</svg>
+),
+
+website: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<circle cx="12" cy="12" r="10"/>
+</svg>
+),
+
+email: (
+<svg viewBox="0 0 24 24" fill="currentColor">
+<path d="M2 4h20v16H2zM22 4l-10 9L2 4"/>
+</svg>
 )
 
 };
