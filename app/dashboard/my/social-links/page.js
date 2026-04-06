@@ -80,7 +80,6 @@ const platforms=[
 "github",
 "website",
 "email",
-"onlyfans",
 "tinder",
 "bumble",
 "koo",
