@@ -349,6 +349,7 @@ style={item}
 
 <div style={submenu}>
 <Link href="/dashboard/links" style={subitem}>My Links</Link>
+<Link href="/dashboard/my/social-links" style={subitem}>Social Links</Link>
 <Link href="/dashboard/link-history" style={subitem}>Link History</Link>
 <Link href="/dashboard/get-verified" style={subitem}>Get Verified</Link>
 </div>
