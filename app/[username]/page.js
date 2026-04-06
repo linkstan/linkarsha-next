@@ -1,5 +1,6 @@
 import ButtonBlock from "../../components/ButtonBlock";
 import { createClient } from "@supabase/supabase-js";
+import { socialIcons } from "../lib/socialIcons";
 
 export const revalidate = 60;
 
