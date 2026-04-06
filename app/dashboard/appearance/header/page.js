@@ -15,6 +15,9 @@ showDisplayName:true,
 showUsername:true,
 showBio:true,
 
+showSocialIcons:false,
+socialPosition:"header",
+
 displayAlign:{x:0,y:0},
 usernameAlign:{x:0,y:0},
 bioAlign:{x:0,y:0},
@@ -380,7 +383,7 @@ onChange={()=>updateSetting("socialPosition","bottom")}
 
 )}
 
-</div
+</div>
 
 {/* DISPLAY OPTIONS */}
 
