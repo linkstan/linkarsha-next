@@ -3,13 +3,18 @@
 import { useEffect,useState } from "react";
 import { supabase } from "../app/lib/supabase";
 import ButtonBlock from "./ButtonBlock";
+import { socialIcons } from "../app/lib/socialIcons";
 
 export default function PhonePreview(){
 
 const [profile,setProfile]=useState(null);
 const [blocks,setBlocks]=useState([]);
 const [appearance,setAppearance]=useState({});
-
+const header = appearance?.header || {};
+const socialLinks = appearance?.social_links || {};
+const activeSocial = Object.entries(socialLinks || {})
+.filter(([k,v]) => v && socialIcons[k]);
+  
 /* LOAD DATA */
 
 useEffect(()=>{
