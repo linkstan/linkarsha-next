@@ -250,11 +250,61 @@ textAlign:"center"
 }}
 >
 {profile?.bio}
+{header.showSocialIcons && header.socialPosition==="header" && activeSocial.length>0 && (
+
+<div style={{
+display:"flex",
+gap:12,
+marginBottom:20,
+flexWrap:"wrap",
+justifyContent:"center"
+}}>
+
+{activeSocial.map(([platform,url])=>{
+
+const Icon=socialIcons[platform];
+
+return(
+<div key={platform} style={{width:24,height:24}}>
+{Icon}
+</div>
+);
+
+})}
+
+</div>
+
+)}
 </p>
 
 
 {/* BLOCKS */}
+{header.showSocialIcons && header.socialPosition==="bottom" && activeSocial.length>0 && (
 
+<div style={{
+display:"flex",
+gap:12,
+marginTop:20,
+flexWrap:"wrap",
+justifyContent:"center"
+}}>
+
+{activeSocial.map(([platform,url])=>{
+
+const Icon=socialIcons[platform];
+
+return(
+<div key={platform} style={{width:24,height:24}}>
+{Icon}
+</div>
+);
+
+})}
+
+</div>
+
+)}
+  
 <div
 style={{
 width:"100%",
