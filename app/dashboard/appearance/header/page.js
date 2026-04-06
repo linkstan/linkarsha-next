@@ -337,6 +337,51 @@ Hero
 
 </div>
 
+{/* SOCIAL ICONS */}
+
+<div style={section}>
+
+<h3>Social Icons</h3>
+
+<label>
+<input
+type="checkbox"
+checked={settings.showSocialIcons}
+onChange={(e)=>updateSetting("showSocialIcons",e.target.checked)}
+/>
+ Show Social Icons
+</label>
+
+{settings.showSocialIcons && (
+
+<div style={{marginTop:12}}>
+
+<div style={{fontSize:14,marginBottom:6}}>Show in:</div>
+
+<label style={{marginRight:12}}>
+<input
+type="radio"
+checked={settings.socialPosition==="header"}
+onChange={()=>updateSetting("socialPosition","header")}
+/>
+ Header
+</label>
+
+<label>
+<input
+type="radio"
+checked={settings.socialPosition==="bottom"}
+onChange={()=>updateSetting("socialPosition","bottom")}
+/>
+ Bottom of Links
+</label>
+
+</div>
+
+)}
+
+</div
+
 {/* DISPLAY OPTIONS */}
 
 <div style={section}>
