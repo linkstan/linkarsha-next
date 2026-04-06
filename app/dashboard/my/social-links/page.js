@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect,useState } from "react";
-import { supabase } from "../../../../lib/supabase";
-import { socialIcons } from "../../../../lib/socialIcons";
+import { supabase } from "../../../lib/supabase";
+import { socialIcons } from "../../../lib/socialIcons";
 
 export default function SocialLinksPage(){
 
