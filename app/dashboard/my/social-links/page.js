@@ -326,3 +326,55 @@ Remove
 })}
 
 </div>
+
+{Object.entries(links).map(([platform,list])=>{
+
+const Icon=socialIcons[platform];
+
+return list.map((username,i)=>(
+
+<div
+key={platform+i}
+style={{
+display:"flex",
+alignItems:"center",
+gap:12,
+border:"1px solid var(--border)",
+padding:"10px 14px",
+borderRadius:12,
+background:"var(--card)"
+}}
+>
+
+<div style={{width:24,height:24}}>
+{Icon}
+</div>
+
+<div style={{flex:1}}>
+{platform} / {username}
+</div>
+
+<button
+onClick={()=>remove(platform,i)}
+style={{
+border:"none",
+background:"transparent",
+cursor:"pointer"
+}}
+>
+Remove
+</button>
+
+</div>
+
+));
+
+})}
+
+</div>
+
+</div>
+
+);
+
+}
