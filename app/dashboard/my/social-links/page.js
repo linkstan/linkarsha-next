@@ -37,15 +37,15 @@ const updated = {...links,[platform]:value};
 
 setLinks(updated);
 
-/* SEND LIVE PREVIEW UPDATE */
+/* LIVE PREVIEW */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{
-detail:{
-social_links:updated
-}
+detail:{ social_links:updated }
 })
 );
+
+/* SAVE TO DATABASE */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -59,25 +59,6 @@ const {data}=await supabase
 const settings=data?.profile_settings || {};
 
 settings.social_links = updated;
-
-await supabase
-.from("profiles")
-.update({profile_settings:settings})
-.eq("id",session.user.id);
-
-}
-
-if(!session) return;
-
-const {data}=await supabase
-.from("profiles")
-.select("profile_settings")
-.eq("id",session.user.id)
-.single();
-
-const settings=data?.profile_settings || {};
-
-settings.social_links=updated;
 
 await supabase
 .from("profiles")
@@ -122,6 +103,7 @@ const platforms=[
 "dailymotion"
 
 ];
+
 return(
 
 <div style={{
