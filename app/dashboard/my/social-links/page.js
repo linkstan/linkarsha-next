@@ -3,11 +3,11 @@
 import { useEffect,useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import { socialIcons } from "../../../lib/socialIcons";
+import extractUsername from "../../../lib/extractUsername";
 
 export default function SocialLinksPage(){
 
 const [links,setLinks]=useState({});
-const [loading,setLoading]=useState(true);
 
 useEffect(()=>{
 loadLinks();
@@ -27,13 +27,14 @@ const {data}=await supabase
 const settings=data?.profile_settings || {};
 
 setLinks(settings.social_links || {});
-setLoading(false);
 
 }
 
 async function updateLink(platform,value){
 
-const updated = {...links,[platform]:value};
+const username=extractUsername(value);
+
+const updated={...links,[platform]:username};
 
 setLinks(updated);
 
@@ -41,11 +42,11 @@ setLinks(updated);
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{
-detail:{ social_links:updated }
+detail:{social_links:updated}
 })
 );
 
-/* SAVE TO DATABASE */
+/* SAVE */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -58,7 +59,7 @@ const {data}=await supabase
 
 const settings=data?.profile_settings || {};
 
-settings.social_links = updated;
+settings.social_links=updated;
 
 await supabase
 .from("profiles")
@@ -106,14 +107,9 @@ const platforms=[
 
 return(
 
-<div style={{
-padding:"24px",
-maxWidth:720
-}}>
+<div style={{padding:24,maxWidth:720}}>
 
-<h2 style={{marginBottom:20}}>
-Social Links
-</h2>
+<h2 style={{marginBottom:20}}>Social Links</h2>
 
 <div style={{
 display:"flex",
@@ -140,17 +136,14 @@ background:"var(--card)"
 }}
 >
 
-<div style={{
-width:24,
-height:24
-}}>
+<div style={{width:24,height:24}}>
 {Icon}
 </div>
 
 <input
 value={links[platform] || ""}
 onChange={(e)=>updateLink(platform,e.target.value)}
-placeholder={`Add ${platform} link`}
+placeholder={`Enter ${platform} username`}
 style={{
 flex:1,
 border:"none",
