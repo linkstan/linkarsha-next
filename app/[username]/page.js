@@ -223,15 +223,15 @@ flexWrap:"wrap",
 justifyContent:"center"
 }}>
 
-{activeSocial.map(([platform,url])=>{
+{activeSocial.map(({platform,username},i)=>{
 
 const Icon = socialIcons[platform];
 
 return(
 
 <a
-key={platform}
-href={buildSocialUrl(platform,url)}
+key={platform+i}
+href={buildSocialUrl(platform,username)}
 target="_blank"
 style={{
 width:28,
@@ -250,7 +250,6 @@ color:"#fff"
 );
 
 })}
-
 </div>
 
 )}
