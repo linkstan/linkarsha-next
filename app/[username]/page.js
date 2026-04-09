@@ -9,6 +9,35 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+/* BUILD SOCIAL URL FROM USERNAME */
+
+function buildSocialUrl(platform,username){
+
+if(!username) return "#";
+
+const map={
+
+instagram:`https://instagram.com/${username}`,
+facebook:`https://facebook.com/${username}`,
+youtube:`https://youtube.com/${username}`,
+twitter:`https://x.com/${username}`,
+tiktok:`https://tiktok.com/@${username}`,
+snapchat:`https://snapchat.com/add/${username}`,
+telegram:`https://t.me/${username}`,
+linkedin:`https://linkedin.com/in/${username}`,
+pinterest:`https://pinterest.com/${username}`,
+reddit:`https://reddit.com/u/${username}`,
+github:`https://github.com/${username}`,
+medium:`https://medium.com/@${username}`,
+website:username,
+email:`mailto:${username}`
+
+};
+
+return map[platform] || username;
+
+}
+
 export default async function PublicProfile({ params }) {
 
 const username = params?.username;
@@ -38,6 +67,7 @@ const header = appearance.header || {};
 const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
 const socialPosition = header.socialPosition || "header";
+
 const activeSocial = Object.entries(socialLinks)
 .filter(([k,v]) => v && socialIcons[k]);
 
@@ -140,6 +170,7 @@ opacity:.8
 }}>
 {profile.bio}
 </p>
+
 {showSocialIcons && socialPosition==="header" && activeSocial.length>0 && (
 
 <div style={{
@@ -158,7 +189,7 @@ return(
 
 <a
 key={platform}
-href={url}
+href={buildSocialUrl(platform,url)}
 target="_blank"
 style={{
 width:28,
@@ -192,6 +223,7 @@ block={block}
 ))}
 
 </div>
+
 {showSocialIcons && socialPosition==="bottom" && activeSocial.length>0 && (
 
 <div style={{
@@ -210,7 +242,7 @@ return(
 
 <a
 key={platform}
-href={url}
+href={buildSocialUrl(platform,url)}
 target="_blank"
 style={{
 width:28,
@@ -233,6 +265,7 @@ color:"#fff"
 </div>
 
 )}
+
 </div>
 
 </div>
