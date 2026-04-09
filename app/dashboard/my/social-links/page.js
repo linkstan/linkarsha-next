@@ -78,9 +78,9 @@ await supabase
 
 }
 
-/* DETECT PREVIEW */
+/* DETECT PREVIEW + FETCH PROFILE DATA */
 
-function detectPreview(value){
+async function detectPreview(value){
 
 setInput(value);
 
@@ -98,9 +98,22 @@ return;
 
 const username=extractUsername(value);
 
+let meta=null;
+
+try{
+
+const res = await fetch(`/api/link-preview?url=${encodeURIComponent(value)}`);
+meta = await res.json();
+
+}catch(e){
+meta=null;
+}
+
 setPreview({
 platform,
-username
+username,
+title:meta?.title || username,
+image:meta?.image || null
 });
 
 }
@@ -180,31 +193,53 @@ border:"1px solid var(--border)"
 }}
 />
 
-{/* PREVIEW */}
+{/* PREVIEW CARD */}
 
 {preview && !preview.error && (
 
 <div style={{
 marginTop:12,
 display:"flex",
+gap:12,
 alignItems:"center",
-gap:10,
 background:"var(--card)",
-padding:"10px 14px",
-borderRadius:10,
+padding:"12px",
+borderRadius:12,
 border:"1px solid var(--border)"
 }}>
 
-<div style={{width:24,height:24}}>
+{/* PROFILE IMAGE */}
+
+{preview.image ? (
+
+<img
+src={preview.image}
+style={{
+width:40,
+height:40,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+) : (
+
+<div style={{width:40,height:40}}>
 {socialIcons[preview.platform]}
 </div>
 
+)}
+
 <div style={{flex:1}}>
-<b>{preview.platform}</b> ✔ detected
-<br/>
-<span style={{fontSize:12,opacity:.7}}>
-{preview.username}
-</span>
+
+<div style={{fontWeight:600}}>
+{preview.title}
+</div>
+
+<div style={{fontSize:12,opacity:.7}}>
+{preview.platform}
+</div>
+
 </div>
 
 <button
