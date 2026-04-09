@@ -29,7 +29,27 @@ const {data}=await supabase
 
 const settings=data?.profile_settings || {};
 
-setLinks(settings.social_links || {});
+let saved=settings.social_links || {};
+
+/* convert old string format to array format */
+
+const converted={};
+
+Object.entries(saved).forEach(([platform,value])=>{
+
+if(Array.isArray(value)){
+
+converted[platform]=value;
+
+}else if(typeof value==="string"){
+
+converted[platform]=[value];
+
+}
+
+});
+
+setLinks(converted);
 
 }
 
@@ -65,7 +85,7 @@ await supabase
 
 }
 
-/* HANDLE PASTE */
+/* HANDLE URL */
 
 async function handlePaste(value){
 
@@ -121,8 +141,6 @@ save(updated);
 
 }
 
-/* UI */
-
 return(
 
 <div style={{
@@ -134,7 +152,7 @@ maxWidth:720
 Social Links
 </h2>
 
-{/* AUTO DETECT INPUT */}
+{/* INPUT */}
 
 <div style={{marginBottom:25}}>
 
