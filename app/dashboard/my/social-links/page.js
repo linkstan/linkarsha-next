@@ -11,6 +11,7 @@ export default function SocialLinksPage(){
 const [links,setLinks]=useState({});
 const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
+const [preview,setPreview]=useState(null);
 
 useEffect(()=>{
 loadLinks();
@@ -77,21 +78,40 @@ await supabase
 
 }
 
-/* AUTO PASTE */
+/* DETECT PREVIEW */
 
-function handlePaste(value){
+function detectPreview(value){
 
-if(!value) return;
+setInput(value);
+
+if(!value){
+setPreview(null);
+return;
+}
 
 const platform=detectPlatform(value);
 
 if(!platform){
-setMessage("⚠ Could not detect platform");
+setPreview({error:true});
 return;
 }
 
 const username=extractUsername(value);
-const existing=links[platform] || [];
+
+setPreview({
+platform,
+username
+});
+
+}
+
+/* ADD LINK FROM PREVIEW */
+
+function addPreview(){
+
+if(!preview) return;
+
+const existing=links[preview.platform] || [];
 
 if(existing.length>=3){
 setMessage("⚠ Maximum 3 links allowed for this platform");
@@ -100,13 +120,14 @@ return;
 
 const updated={
 ...links,
-[platform]:[...existing,username]
+[preview.platform]:[...existing,preview.username]
 };
 
-setMessage(`✔ ${platform} detected`);
-
 save(updated);
+
+setPreview(null);
 setInput("");
+setMessage(`✔ ${preview.platform} added`);
 
 }
 
@@ -140,8 +161,7 @@ Social Links
 
 <input
 value={input}
-onChange={(e)=>setInput(e.target.value)}
-onBlur={()=>handlePaste(input)}
+onChange={(e)=>detectPreview(e.target.value)}
 placeholder="Paste your social profile URL"
 style={{
 width:"100%",
@@ -150,6 +170,63 @@ borderRadius:10,
 border:"1px solid var(--border)"
 }}
 />
+
+{/* PREVIEW */}
+
+{preview && !preview.error && (
+
+<div style={{
+marginTop:12,
+display:"flex",
+alignItems:"center",
+gap:10,
+background:"var(--card)",
+padding:"10px 14px",
+borderRadius:10,
+border:"1px solid var(--border)"
+}}>
+
+<div style={{width:24,height:24}}>
+{socialIcons[preview.platform]}
+</div>
+
+<div style={{flex:1}}>
+<b>{preview.platform}</b> ✔ detected
+<br/>
+<span style={{fontSize:12,opacity:.7}}>
+{preview.username}
+</span>
+</div>
+
+<button
+onClick={addPreview}
+style={{
+padding:"6px 12px",
+borderRadius:6,
+border:"none",
+background:"#16a34a",
+color:"#fff",
+cursor:"pointer"
+}}
+>
+Add
+</button>
+
+</div>
+
+)}
+
+{preview && preview.error && (
+
+<div style={{
+marginTop:10,
+fontSize:13,
+color:"#ef4444"
+}}>
+Platform not detected. Use manual fields below.
+</div>
+
+)}
 
 <div style={{marginTop:8,fontSize:13,opacity:.8}}>
 {message}
