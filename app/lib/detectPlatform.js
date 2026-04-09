@@ -1,40 +1,47 @@
 export function detectPlatform(url){
 
+if(!url) return null;
+
 const u = url.toLowerCase();
 
-if(u.includes("instagram.com")) return "instagram";
-if(u.includes("youtube.com") || u.includes("youtu.be")) return "youtube";
-if(u.includes("tiktok.com")) return "tiktok";
-if(u.includes("facebook.com")) return "facebook";
-if(u.includes("vk.com")) return "vk";
-if(u.includes("twitter.com") || u.includes("x.com")) return "twitter";
-if(u.includes("snapchat.com")) return "snapchat";
-if(u.includes("pinterest.com")) return "pinterest";
-if(u.includes("twitch.tv")) return "twitch";
-if(u.includes("reddit.com")) return "reddit";
-if(u.includes("threads.net")) return "threads";
-if(u.includes("discord.com")) return "discord";
-if(u.includes("github.com")) return "github";
-if(u.includes("medium.com")) return "medium";
-if(u.includes("tumblr.com")) return "tumblr";
-if(u.includes("linkedin.com")) return "linkedin";
-if(u.includes("t.me")) return "telegram";
-if(u.includes("wa.me") || u.includes("whatsapp")) return "whatsapp";
-if(u.includes("onlyfans.com")) return "onlyfans";
-if(u.includes("tinder.com")) return "tinder";
-if(u.includes("bumble.com")) return "bumble";
-if(u.includes("kooapp.com")) return "koo";
-if(u.includes("ok.ru")) return "ok";
-if(u.includes("sharechat.com")) return "sharechat";
-if(u.includes("qq.com")) return "qq";
-if(u.includes("weibo.com")) return "weibo";
-if(u.includes("douyin.com")) return "douyin";
-if(u.includes("wordpress.com")) return "wordpress";
-if(u.includes("signal.org")) return "signal";
-if(u.includes("dailymotion.com")) return "dailymotion";
+/* PLATFORM DETECTION */
 
-if(u.includes("@")) return "email";
-if(u.includes("http")) return "website";
+if(u.includes("instagram")) return "instagram";
+if(u.includes("facebook")) return "facebook";
+if(u.includes("tiktok")) return "tiktok";
+if(u.includes("youtube") || u.includes("youtu.be")) return "youtube";
+if(u.includes("twitter") || u.includes("x.com")) return "twitter";
+if(u.includes("snapchat")) return "snapchat";
+if(u.includes("vk.com")) return "vk";
+if(u.includes("pinterest")) return "pinterest";
+if(u.includes("linkedin")) return "linkedin";
+if(u.includes("telegram")) return "telegram";
+if(u.includes("whatsapp")) return "whatsapp";
+if(u.includes("onlyfans")) return "onlyfans";
+if(u.includes("discord")) return "discord";
+if(u.includes("reddit")) return "reddit";
+if(u.includes("threads")) return "threads";
+if(u.includes("twitch")) return "twitch";
+if(u.includes("tumblr")) return "tumblr";
+if(u.includes("medium")) return "medium";
+if(u.includes("github")) return "github";
+if(u.includes("koo")) return "koo";
+if(u.includes("ok.ru")) return "ok";
+if(u.includes("sharechat")) return "sharechat";
+if(u.includes("qq.com")) return "qq";
+if(u.includes("weibo")) return "weibo";
+if(u.includes("douyin")) return "douyin";
+if(u.includes("wordpress")) return "wordpress";
+if(u.includes("signal")) return "signal";
+if(u.includes("dailymotion")) return "dailymotion";
+
+/* EMAIL */
+
+if(u.includes("@") && !u.includes("http")) return "email";
+
+/* WEBSITE FALLBACK */
+
+if(u.includes(".")) return "website";
 
 return null;
 
