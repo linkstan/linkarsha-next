@@ -111,7 +111,16 @@ function addPreview(){
 
 if(!preview) return;
 
-const existing=links[preview.platform] || [];
+const existing = links[preview.platform] || [];
+
+/* DUPLICATE CHECK */
+
+if(existing.includes(preview.username)){
+setMessage("⚠ This account is already added");
+return;
+}
+
+/* MAX 3 CHECK */
 
 if(existing.length>=3){
 setMessage("⚠ Maximum 3 links allowed for this platform");
