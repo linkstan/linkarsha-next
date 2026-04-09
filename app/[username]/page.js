@@ -40,8 +40,25 @@ const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
 const socialPosition = header.socialPosition || "header";
 
-const activeSocial = Object.entries(socialLinks)
-.filter(([k,v]) => v && socialIcons[k]);
+const activeSocial = [];
+
+Object.entries(socialLinks).forEach(([platform,list])=>{
+
+if(!socialIcons[platform]) return;
+
+if(Array.isArray(list)){
+
+list.forEach(username=>{
+activeSocial.push({platform,username});
+});
+
+}else if(list){
+
+activeSocial.push({platform,username:list});
+
+}
+
+});
 
 const wallpaper = appearance.wallpaper || null;
 const blur = appearance.wallpaperBlur || 0;
@@ -153,7 +170,7 @@ flexWrap:"wrap",
 justifyContent:"center"
 }}>
 
-{activeSocial.map(([platform,url])=>{
+activeSocial.map(({platform,username},i)=>{
 
 const Icon = socialIcons[platform];
 
