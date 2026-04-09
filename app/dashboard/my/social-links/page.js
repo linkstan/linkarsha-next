@@ -28,23 +28,16 @@ const {data}=await supabase
 .single();
 
 const settings=data?.profile_settings || {};
-
-let saved=settings.social_links || {};
-
-/* convert old string format to array format */
+const saved=settings.social_links || {};
 
 const converted={};
 
 Object.entries(saved).forEach(([platform,value])=>{
 
 if(Array.isArray(value)){
-
 converted[platform]=value;
-
 }else if(typeof value==="string"){
-
 converted[platform]=[value];
-
 }
 
 });
@@ -75,7 +68,6 @@ const {data}=await supabase
 .single();
 
 const settings=data?.profile_settings || {};
-
 settings.social_links=updated;
 
 await supabase
@@ -85,30 +77,25 @@ await supabase
 
 }
 
-/* HANDLE URL */
+/* AUTO PASTE */
 
-async function handlePaste(value){
+function handlePaste(value){
 
 if(!value) return;
 
 const platform=detectPlatform(value);
 
 if(!platform){
-
-setMessage("⚠ We could not detect the platform. Please use manual fields below.");
+setMessage("⚠ Could not detect platform");
 return;
-
 }
 
 const username=extractUsername(value);
-
 const existing=links[platform] || [];
 
 if(existing.length>=3){
-
-setMessage("⚠ Maximum 3 links allowed for this platform.");
+setMessage("⚠ Maximum 3 links allowed for this platform");
 return;
-
 }
 
 const updated={
@@ -119,7 +106,6 @@ const updated={
 setMessage(`✔ ${platform} detected`);
 
 save(updated);
-
 setInput("");
 
 }
@@ -129,7 +115,6 @@ setInput("");
 function remove(platform,index){
 
 const arr=[...links[platform]];
-
 arr.splice(index,1);
 
 const updated={
@@ -143,16 +128,13 @@ save(updated);
 
 return(
 
-<div style={{
-padding:"24px",
-maxWidth:720
-}}>
+<div style={{padding:"24px",maxWidth:720}}>
 
 <h2 style={{marginBottom:20}}>
 Social Links
 </h2>
 
-{/* INPUT */}
+{/* AUTO INPUT */}
 
 <div style={{marginBottom:25}}>
 
@@ -169,17 +151,13 @@ border:"1px solid var(--border)"
 }}
 />
 
-<div style={{
-marginTop:8,
-fontSize:13,
-opacity:.8
-}}>
+<div style={{marginTop:8,fontSize:13,opacity:.8}}>
 {message}
 </div>
 
 </div>
 
-{/* OR DIVIDER */}
+{/* OR */}
 
 <div style={{
 display:"flex",
@@ -191,14 +169,9 @@ margin:"25px 0"
 <div style={{flex:1,height:1,background:"var(--border)"}}/>
 </div>
 
+{/* MANUAL INPUTS */}
 
-{/* MANUAL SOCIAL LINKS */}
-
-<div style={{
-display:"flex",
-flexDirection:"column",
-gap:12
-}}>
+<div style={{display:"flex",flexDirection:"column",gap:12}}>
 
 {Object.keys(socialIcons).map((platform)=>{
 
@@ -249,7 +222,6 @@ const updated={
 };
 
 save(updated);
-
 e.target.value="";
 
 }
@@ -271,7 +243,6 @@ background:"transparent"
 
 </div>
 
-
 {/* SAVED LINKS */}
 
 <div style={{
@@ -280,52 +251,6 @@ display:"flex",
 flexDirection:"column",
 gap:14
 }}>
-
-{Object.entries(links).map(([platform,list])=>{
-
-const Icon=socialIcons[platform];
-
-return list.map((username,i)=>(
-
-<div
-key={platform+i}
-style={{
-display:"flex",
-alignItems:"center",
-gap:12,
-border:"1px solid var(--border)",
-padding:"10px 14px",
-borderRadius:12,
-background:"var(--card)"
-}}
->
-
-<div style={{width:24,height:24}}>
-{Icon}
-</div>
-
-<div style={{flex:1}}>
-{platform} / {username}
-</div>
-
-<button
-onClick={()=>remove(platform,i)}
-style={{
-border:"none",
-background:"transparent",
-cursor:"pointer"
-}}
->
-Remove
-</button>
-
-</div>
-
-));
-
-})}
-
-</div>
 
 {Object.entries(links).map(([platform,list])=>{
 
