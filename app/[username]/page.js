@@ -38,7 +38,9 @@ const appearance = profile.profile_settings || {};
 const header = appearance.header || {};
 const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
-const socialPosition = header.socialPosition || "header";
+
+/* FORCE ICON POSITION UNDER BIO */
+const socialPosition = "header";
 
 const activeSocial = [];
 
@@ -213,7 +215,8 @@ block={block}
 
 </div>
 
-{showSocialIcons && socialPosition==="bottom" && activeSocial.length>0 && (
+{/* BOTTOM BLOCK KEPT BUT DISABLED */}
+{false && showSocialIcons && socialPosition==="bottom" && activeSocial.length>0 && (
 
 <div style={{
 display:"flex",
