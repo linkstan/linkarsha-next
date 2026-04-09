@@ -33,6 +33,40 @@ setLoading(false);
 
 async function updateLink(platform,value){
 
+const updated = {...links,[platform]:value};
+
+setLinks(updated);
+
+/* SEND LIVE PREVIEW UPDATE */
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{
+detail:{
+social_links:updated
+}
+})
+);
+
+const {data:{session}} = await supabase.auth.getSession();
+if(!session) return;
+
+const {data}=await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const settings=data?.profile_settings || {};
+
+settings.social_links = updated;
+
+await supabase
+.from("profiles")
+.update({profile_settings:settings})
+.eq("id",session.user.id);
+
+}
+
 const updated={...links,[platform]:value};
 
 setLinks(updated);
