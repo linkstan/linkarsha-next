@@ -179,9 +179,103 @@ opacity:.8
 
 </div>
 
+{/* OR DIVIDER */}
+
+<div style={{
+display:"flex",
+alignItems:"center",
+margin:"25px 0"
+}}>
+<div style={{flex:1,height:1,background:"var(--border)"}}/>
+<div style={{padding:"0 10px",fontSize:13,opacity:.6}}>OR</div>
+<div style={{flex:1,height:1,background:"var(--border)"}}/>
+</div>
+
+
+{/* MANUAL SOCIAL LINKS */}
+
+<div style={{
+display:"flex",
+flexDirection:"column",
+gap:12
+}}>
+
+{Object.keys(socialIcons).map((platform)=>{
+
+const Icon=socialIcons[platform];
+const existing=links[platform] || [];
+
+if(existing.length>=3) return null;
+
+return(
+
+<div
+key={platform}
+style={{
+display:"flex",
+alignItems:"center",
+gap:12,
+border:"1px solid var(--border)",
+padding:"10px 14px",
+borderRadius:12,
+background:"var(--card)"
+}}
+>
+
+<div style={{width:24,height:24}}>
+{Icon}
+</div>
+
+<div style={{
+width:120,
+fontSize:14,
+textTransform:"capitalize"
+}}>
+{platform}
+</div>
+
+<input
+placeholder="username"
+onKeyDown={(e)=>{
+
+if(e.key==="Enter"){
+
+const username=e.target.value.trim();
+if(!username) return;
+
+const updated={
+...links,
+[platform]:[...(links[platform] || []),username]
+};
+
+save(updated);
+
+e.target.value="";
+
+}
+
+}}
+style={{
+flex:1,
+border:"none",
+outline:"none",
+background:"transparent"
+}}
+/>
+
+</div>
+
+);
+
+})}
+
+</div>
+
+
 {/* SAVED LINKS */}
 
 <div style={{
+marginTop:30,
 display:"flex",
 flexDirection:"column",
 gap:14
@@ -232,9 +326,3 @@ Remove
 })}
 
 </div>
-
-</div>
-
-);
-
-}
