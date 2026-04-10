@@ -53,6 +53,8 @@ useEffect(()=>{
 loadLinks();
 },[]);
 
+/* LOAD LINKS */
+
 async function loadLinks(){
 
 const {data:{session}} = await supabase.auth.getSession();
@@ -123,7 +125,7 @@ u="https://"+u;
 return u;
 }
 
-/* CHECK URL */
+/* CHECK URL FROM PASTE */
 
 async function checkUrl(){
 
@@ -131,42 +133,7 @@ if(!input || input.trim()===""){
 setPreview(null);
 return;
 }
-/* CHECK MANUAL PLATFORM */
 
-async function checkManual(platform){
-
-const value=manualInputs[platform];
-
-if(!value) return;
-
-setChecking(true);
-setPreview(null);
-setMessage("");
-
-const username=extractUsername(value);
-
-let meta=null;
-
-try{
-
-const url=`https://${platform}.com/${username}`;
-const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
-meta=await res.json();
-
-}catch(e){
-meta=null;
-}
-
-setPreview({
-platform,
-username,
-title:meta?.title || username,
-image:meta?.image || null
-});
-
-setChecking(false);
-
-}
 setChecking(true);
 setPreview(null);
 setMessage("");
@@ -188,6 +155,41 @@ let meta=null;
 try{
 const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
 meta=await res.json();
+}catch(e){
+meta=null;
+}
+
+setPreview({
+platform,
+username,
+title:meta?.title || username,
+image:meta?.image || null
+});
+
+setChecking(false);
+}
+
+/* CHECK MANUAL PLATFORM */
+
+async function checkManual(platform){
+
+const value=manualInputs[platform];
+if(!value) return;
+
+setChecking(true);
+setPreview(null);
+setMessage("");
+
+const username=extractUsername(value);
+
+let meta=null;
+
+try{
+
+const url=`https://${platform}.com/${username}`;
+const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+meta=await res.json();
+
 }catch(e){
 meta=null;
 }
@@ -302,8 +304,6 @@ minWidth:80
 )}
 
 </div>
-
-{/* SPINNER STYLE */}
 
 <style jsx>{`
 .spinner{
@@ -505,6 +505,7 @@ Check
 </div>
 
 );
+
 })}
 
 </div>
@@ -559,6 +560,7 @@ Remove
 </div>
 
 ));
+
 })}
 
 </div>
