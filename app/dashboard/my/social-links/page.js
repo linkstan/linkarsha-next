@@ -6,6 +6,41 @@ import { detectPlatform } from "../../../lib/detectPlatform";
 import extractUsername from "../../../lib/extractUsername";
 import { socialIcons } from "../../../lib/socialIcons";
 
+const platformPlaceholders = {
+
+instagram:"username",
+facebook:"username or profile id",
+tiktok:"username",
+youtube:"channel handle",
+twitter:"username",
+snapchat:"username",
+pinterest:"username",
+linkedin:"profile slug",
+telegram:"username",
+whatsapp:"phone number with country code",
+github:"username",
+threads:"username",
+twitch:"username",
+tumblr:"username",
+website:"website URL",
+email:"email address",
+vk:"username or id",
+onlyfans:"username",
+discord:"user id",
+reddit:"username",
+tinder:"profile id",
+bumble:"profile id",
+koo:"username",
+ok:"profile id",
+sharechat:"username",
+qq:"numeric id",
+weibo:"username or uid",
+douyin:"user id",
+wordpress:"site URL",
+signal:"phone number with country code",
+dailymotion:"channel name"
+
+};
 export default function SocialLinksPage(){
 
 const [links,setLinks]=useState({});
