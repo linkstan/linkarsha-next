@@ -234,21 +234,88 @@ border:"1px solid var(--border)"
 }}
 />
 
-{/* PREVIEW CARD */}
-
 {preview && !preview.error && (
 
 <div style={{
 marginTop:12,
 display:"flex",
-gap:12,
+gap:14,
 alignItems:"center",
 background:"var(--card)",
-padding:"12px",
-borderRadius:12,
-border:"1px solid var(--border)"
+padding:"14px",
+borderRadius:14,
+border:"1px solid var(--border)",
+boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
 }}>
 
+{/* PROFILE IMAGE */}
+
+{preview.image ? (
+
+<img
+src={preview.image}
+style={{
+width:48,
+height:48,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+) : (
+
+<div style={{
+width:48,
+height:48,
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}>
+{socialIcons[preview.platform]}
+</div>
+
+)}
+
+{/* PROFILE TEXT */}
+
+<div style={{flex:1}}>
+
+<div style={{
+fontWeight:600,
+fontSize:15
+}}>
+{preview.title}
+</div>
+
+<div style={{
+fontSize:12,
+opacity:.6
+}}>
+{preview.platform} • @{preview.username}
+</div>
+
+</div>
+
+{/* ADD BUTTON */}
+
+<button
+onClick={addPreview}
+style={{
+padding:"8px 14px",
+borderRadius:8,
+border:"none",
+background:"#22c55e",
+color:"#fff",
+cursor:"pointer",
+fontWeight:600
+}}
+>
+Add
+</button>
+
+</div>
+
+)}
 {/* PROFILE IMAGE */}
 
 {preview.image ? (
