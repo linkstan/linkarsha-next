@@ -316,36 +316,6 @@ Add
 
 )}
 
-<div style={{flex:1}}>
-
-<div style={{fontWeight:600}}>
-{preview.title}
-</div>
-
-<div style={{fontSize:12,opacity:.7}}>
-{preview.platform}
-</div>
-
-</div>
-
-<button
-onClick={addPreview}
-style={{
-padding:"6px 12px",
-borderRadius:6,
-border:"none",
-background:"#16a34a",
-color:"#fff",
-cursor:"pointer"
-}}
->
-Add
-</button>
-
-</div>
-
-)}
-
 {preview && preview.error && (
 
 <div style={{
