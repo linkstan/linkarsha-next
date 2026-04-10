@@ -1,63 +1,71 @@
-export function buildSocialUrl(platform,username){
+export function buildSocialUrl(platform, identifier){
 
-if(!username) return "";
+if(!identifier) return "#";
 
-switch(platform){
+const id = identifier.trim();
 
-case "instagram":
-return `https://instagram.com/${username}`;
+const map = {
 
-case "facebook":
-return `https://facebook.com/${username}`;
+instagram: `https://instagram.com/${id}`,
 
-case "tiktok":
-return `https://tiktok.com/@${username}`;
+facebook: `https://facebook.com/${id}`,
 
-case "youtube":
-return `https://youtube.com/${username}`;
+whatsapp: `https://wa.me/${id}`,
 
-case "twitter":
-return `https://x.com/${username}`;
+tiktok: `https://tiktok.com/@${id}`,
 
-case "telegram":
-return `https://t.me/${username}`;
+youtube: `https://youtube.com/@${id}`,
 
-case "reddit":
-return `https://reddit.com/u/${username}`;
+twitter: `https://x.com/${id}`,
 
-case "threads":
-return `https://threads.net/@${username}`;
+snapchat: `https://snapchat.com/add/${id}`,
 
-case "github":
-return `https://github.com/${username}`;
+pinterest: `https://pinterest.com/${id}`,
 
-case "linkedin":
-return `https://linkedin.com/in/${username}`;
+linkedin: `https://linkedin.com/in/${id}`,
 
-case "pinterest":
-return `https://pinterest.com/${username}`;
+telegram: id.startsWith("+")
+? `https://t.me/${id}`
+: `https://t.me/${id}`,
 
-case "twitch":
-return `https://twitch.tv/${username}`;
+github: `https://github.com/${id}`,
 
-case "medium":
-return `https://medium.com/@${username}`;
+threads: `https://threads.net/@${id}`,
 
-case "tumblr":
-return `https://${username}.tumblr.com`;
+twitch: `https://twitch.tv/${id}`,
 
-case "whatsapp":
-return `https://wa.me/${username}`;
+tumblr: `https://${id}.tumblr.com`,
 
-case "email":
-return `mailto:${username}`;
+vk: `https://vk.com/${id}`,
 
-case "website":
-return username;
+onlyfans: `https://onlyfans.com/${id}`,
 
-default:
-return username;
+reddit: `https://reddit.com/u/${id}`,
 
-}
+discord: `https://discord.com/users/${id}`,
+
+koo: `https://kooapp.com/profile/${id}`,
+
+ok: `https://ok.ru/profile/${id}`,
+
+sharechat: `https://sharechat.com/profile/${id}`,
+
+qq: `https://user.qzone.qq.com/${id}`,
+
+weibo: `https://weibo.com/${id}`,
+
+douyin: `https://www.douyin.com/user/${id}`,
+
+signal: `https://signal.me/#p/+${id}`,
+
+dailymotion: `https://www.dailymotion.com/${id}`,
+
+website: id.startsWith("http") ? id : `https://${id}`,
+
+email: `mailto:${id}`
+
+};
+
+return map[platform] || id;
 
 }
