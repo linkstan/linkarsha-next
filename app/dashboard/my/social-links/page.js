@@ -225,7 +225,14 @@ return(
 
 <input
 value={input}
-onChange={(e)=>setInput(e.target.value)}
+onChange={(e)=>{
+const value=e.target.value;
+setInput(value);
+
+if(!value){
+setPreview(null);
+}
+}}
 placeholder="Paste your social profile URL"
 style={{
 flex:1,
@@ -297,7 +304,8 @@ boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
 
 <img
 src={preview.image}
-onError={(e)=>{e.target.style.display="none"}} alt={preview.title}
+alt={preview.title}
+onError={(e)=>{e.target.src="";}}
 style={{
 width:48,
 height:48,
@@ -457,22 +465,7 @@ Check
 )}
 
 </div>
-onKeyDown={(e)=>{
 
-if(e.key==="Enter"){
-
-const username=e.target.value.trim();
-if(!username) return;
-
-const updated={
-...links,
-[platform]:[...(links[platform] || []),username]
-};
-
-save(updated);
-e.target.value="";
-}
-}}
 style={{
 flex:1,
 border:"none",
