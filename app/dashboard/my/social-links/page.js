@@ -6,7 +6,7 @@ import { detectPlatform } from "../../../lib/detectPlatform";
 import extractUsername from "../../../lib/extractUsername";
 import { socialIcons } from "../../../lib/socialIcons";
 
-const platformPlaceholders = {
+const platformPlaceholders={
 instagram:"username",
 facebook:"username or profile id",
 tiktok:"username",
@@ -47,7 +47,9 @@ const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
 const [preview,setPreview]=useState(null);
 const [checking,setChecking]=useState(false);
+
 const [manualInputs,setManualInputs]=useState({});
+const [manualPreview,setManualPreview]=useState({});
 
 useEffect(()=>{
 loadLinks();
@@ -57,7 +59,7 @@ loadLinks();
 
 async function loadLinks(){
 
-const {data:{session}} = await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
 if(!session) return;
 
 const {data}=await supabase
@@ -66,8 +68,8 @@ const {data}=await supabase
 .eq("id",session.user.id)
 .single();
 
-const settings=data?.profile_settings || {};
-const saved=settings.social_links || {};
+const settings=data?.profile_settings||{};
+const saved=settings.social_links||{};
 
 const converted={};
 
@@ -89,12 +91,10 @@ async function save(updated){
 setLinks(updated);
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{
-detail:{social_links:updated}
-})
+new CustomEvent("appearance-update",{detail:{social_links:updated}})
 );
 
-const {data:{session}} = await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
 if(!session) return;
 
 const {data}=await supabase
@@ -103,40 +103,53 @@ const {data}=await supabase
 .eq("id",session.user.id)
 .single();
 
-const settings=data?.profile_settings || {};
+const settings=data?.profile_settings||{};
 settings.social_links=updated;
 
 await supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
+
 }
 
-/* NORMALIZE URL */
+/* NORMALIZE */
 
 function normalizeUrl(url){
 
 let u=url.trim();
 
-if(!u.startsWith("http://") && !u.startsWith("https://")){
+if(!u.startsWith("http")){
 u="https://"+u;
 }
 
 return u;
 }
 
-/* CHECK URL FROM PASTE */
+/* CLEAN USERNAME */
+
+function cleanUsername(username){
+
+if(!username) return "";
+
+username=username.split("?")[0];
+username=username.replace("@","");
+
+return username;
+
+}
+
+/* AUTO URL CHECK */
 
 async function checkUrl(){
 
-if(!input || input.trim()===""){
+if(!input){
 setPreview(null);
 return;
 }
 
 setChecking(true);
 setPreview(null);
-setMessage("");
 
 const url=normalizeUrl(input);
 
@@ -148,16 +161,14 @@ setPreview({error:true});
 return;
 }
 
-const username=extractUsername(url);
+let username=cleanUsername(extractUsername(url));
 
 let meta=null;
 
 try{
 const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
 meta=await res.json();
-}catch(e){
-meta=null;
-}
+}catch(e){}
 
 setPreview({
 platform,
@@ -169,7 +180,7 @@ image:meta?.image || null
 setChecking(false);
 }
 
-/* CHECK MANUAL PLATFORM */
+/* MANUAL CHECK */
 
 async function checkManual(platform){
 
@@ -177,10 +188,8 @@ const value=manualInputs[platform];
 if(!value) return;
 
 setChecking(true);
-setPreview(null);
-setMessage("");
 
-const username=extractUsername(value);
+let username=cleanUsername(extractUsername(value));
 
 let meta=null;
 
@@ -190,11 +199,9 @@ const url=`https://${platform}.com/${username}`;
 const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
 meta=await res.json();
 
-}catch(e){
-meta=null;
-}
+}catch(e){}
 
-setPreview({
+setManualPreview({
 platform,
 username,
 title:meta?.title || username,
@@ -202,17 +209,16 @@ image:meta?.image || null
 });
 
 setChecking(false);
+
 }
 
 /* ADD LINK */
 
-function addPreview(){
+function addPreview(data){
 
-if(!preview) return;
+const existing=links[data.platform]||[];
 
-const existing=links[preview.platform] || [];
-
-if(existing.includes(preview.username)){
+if(existing.includes(data.username)){
 setMessage("⚠ This account is already added");
 return;
 }
@@ -224,14 +230,15 @@ return;
 
 const updated={
 ...links,
-[preview.platform]:[...existing,preview.username]
+[data.platform]:[...existing,data.username]
 };
 
 save(updated);
 
 setPreview(null);
+setManualPreview({});
 setInput("");
-setMessage(`✔ ${preview.platform} added`);
+setManualInputs({});
 }
 
 /* REMOVE */
@@ -247,6 +254,7 @@ const updated={
 };
 
 save(updated);
+
 }
 
 return(
@@ -264,12 +272,9 @@ return(
 <input
 value={input}
 onChange={(e)=>{
-const value=e.target.value;
-setInput(value);
-
-if(!value){
-setPreview(null);
-}
+const v=e.target.value;
+setInput(v);
+if(!v) setPreview(null);
 }}
 placeholder="Paste your social profile URL"
 style={{
@@ -290,8 +295,7 @@ borderRadius:8,
 border:"none",
 background:"#2563eb",
 color:"#fff",
-cursor:"pointer",
-minWidth:80
+cursor:"pointer"
 }}
 >
 
@@ -320,8 +324,6 @@ to{transform:rotate(360deg)}
 }
 `}</style>
 
-{/* PREVIEW CARD */}
-
 {preview && !preview.error && (
 
 <div style={{
@@ -332,8 +334,7 @@ alignItems:"center",
 background:"var(--card)",
 padding:"14px",
 borderRadius:14,
-border:"1px solid var(--border)",
-boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
+border:"1px solid var(--border)"
 }}>
 
 {preview.image ? (
@@ -350,42 +351,32 @@ objectFit:"cover"
 }}
 />
 
-) : (
+):(
 
-<div style={{
-width:48,
-height:48,
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}>
+<div style={{width:48,height:48}}>
 {socialIcons[preview.platform]}
 </div>
 
 )}
 
 <div style={{flex:1}}>
-
-<div style={{fontWeight:600,fontSize:15}}>
+<div style={{fontWeight:600}}>
 {preview.title}
 </div>
-
 <div style={{fontSize:12,opacity:.6}}>
 {preview.platform} • @{preview.username}
 </div>
-
 </div>
 
 <button
-onClick={addPreview}
+onClick={()=>addPreview(preview)}
 style={{
 padding:"8px 14px",
 borderRadius:8,
 border:"none",
 background:"#22c55e",
 color:"#fff",
-cursor:"pointer",
-fontWeight:600
+cursor:"pointer"
 }}
 >
 Add
@@ -394,22 +385,6 @@ Add
 </div>
 
 )}
-
-{preview && preview.error && (
-
-<div style={{
-marginTop:10,
-fontSize:13,
-color:"#ef4444"
-}}>
-We couldn't detect that profile. Please check the URL or use manual fields below.
-</div>
-
-)}
-
-<div style={{marginTop:8,fontSize:13,opacity:.8}}>
-{message}
-</div>
 
 </div>
 
@@ -432,14 +407,15 @@ margin:"25px 0"
 {Object.keys(socialIcons).map((platform)=>{
 
 const Icon=socialIcons[platform];
-const existing=links[platform] || [];
+const existing=links[platform]||[];
 
 if(existing.length>=3) return null;
 
 return(
 
+<div key={platform}>
+
 <div
-key={platform}
 style={{
 display:"flex",
 alignItems:"center",
@@ -455,19 +431,15 @@ background:"var(--card)"
 {Icon}
 </div>
 
-<div style={{
-width:120,
-fontSize:14,
-textTransform:"capitalize"
-}}>
+<div style={{width:120,textTransform:"capitalize"}}>
 {platform}
 </div>
 
 <div style={{display:"flex",flex:1,gap:8}}>
 
 <input
-placeholder={platformPlaceholders[platform] || "value"}
-value={manualInputs[platform] || ""}
+placeholder={platformPlaceholders[platform]}
+value={manualInputs[platform]||""}
 onChange={(e)=>{
 setManualInputs({
 ...manualInputs,
@@ -501,6 +473,51 @@ Check
 )}
 
 </div>
+
+</div>
+
+{/* MANUAL PREVIEW */}
+
+{manualPreview.platform===platform && (
+
+<div style={{
+marginTop:8,
+display:"flex",
+gap:14,
+alignItems:"center",
+background:"var(--card)",
+padding:"12px",
+borderRadius:12,
+border:"1px solid var(--border)"
+}}>
+
+<div style={{width:40}}>
+{socialIcons[platform]}
+</div>
+
+<div style={{flex:1}}>
+<div>{manualPreview.title}</div>
+<div style={{fontSize:12,opacity:.6}}>
+@{manualPreview.username}
+</div>
+</div>
+
+<button
+onClick={()=>addPreview(manualPreview)}
+style={{
+padding:"6px 12px",
+borderRadius:6,
+border:"none",
+background:"#22c55e",
+color:"#fff"
+}}
+>
+Add
+</button>
+
+</div>
+
+)}
 
 </div>
 
@@ -538,7 +555,7 @@ background:"var(--card)"
 }}
 >
 
-<div style={{width:24,height:24}}>
+<div style={{width:24}}>
 {Icon}
 </div>
 
@@ -566,5 +583,6 @@ Remove
 </div>
 
 </div>
+
 );
 }
