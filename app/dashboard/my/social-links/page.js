@@ -252,8 +252,7 @@ boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
 
 {preview.image ? (
 
-<img
-src={preview.image}
+<img src={preview.image} alt={preview.title}
 style={{
 width:48,
 height:48,
@@ -313,27 +312,6 @@ fontWeight:600
 Add
 </button>
 
-</div>
-
-)}
-{/* PROFILE IMAGE */}
-
-{preview.image ? (
-
-<img
-src={preview.image}
-style={{
-width:40,
-height:40,
-borderRadius:"50%",
-objectFit:"cover"
-}}
-/>
-
-) : (
-
-<div style={{width:40,height:40}}>
-{socialIcons[preview.platform]}
 </div>
 
 )}
