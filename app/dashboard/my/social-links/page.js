@@ -47,6 +47,7 @@ const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
 const [preview,setPreview]=useState(null);
 const [checking,setChecking]=useState(false);
+const [manualInputs,setManualInputs]=useState({});
 
 useEffect(()=>{
 loadLinks();
@@ -466,13 +467,9 @@ Check
 
 </div>
 
-style={{
-flex:1,
-border:"none",
-outline:"none",
-background:"transparent"
-}}
-/>
+</div>
+
+</div>
 
 </div>
 
