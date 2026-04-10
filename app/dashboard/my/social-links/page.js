@@ -126,7 +126,10 @@ return u;
 
 async function checkUrl(){
 
-if(!input) return;
+if(!input || input.trim()===""){
+setPreview(null);
+return;
+}
 
 setChecking(true);
 setPreview(null);
@@ -292,7 +295,9 @@ boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
 
 {preview.image ? (
 
-<img src={preview.image} alt={preview.title}
+<img
+src={preview.image}
+onError={(e)=>{e.target.style.display="none"}} alt={preview.title}
 style={{
 width:48,
 height:48,
@@ -414,8 +419,44 @@ textTransform:"capitalize"
 {platform}
 </div>
 
+<div style={{display:"flex",flex:1,gap:8}}>
+
 <input
 placeholder={platformPlaceholders[platform] || "value"}
+value={manualInputs[platform] || ""}
+onChange={(e)=>{
+setManualInputs({
+...manualInputs,
+[platform]:e.target.value
+});
+}}
+style={{
+flex:1,
+border:"none",
+outline:"none",
+background:"transparent"
+}}
+/>
+
+{manualInputs[platform] && (
+
+<button
+onClick={()=>checkManual(platform)}
+style={{
+padding:"6px 12px",
+borderRadius:8,
+border:"none",
+background:"#2563eb",
+color:"#fff",
+cursor:"pointer"
+}}
+>
+Check
+</button>
+
+)}
+
+</div>
 onKeyDown={(e)=>{
 
 if(e.key==="Enter"){
