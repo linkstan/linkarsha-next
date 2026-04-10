@@ -131,7 +131,42 @@ if(!input || input.trim()===""){
 setPreview(null);
 return;
 }
+/* CHECK MANUAL PLATFORM */
 
+async function checkManual(platform){
+
+const value=manualInputs[platform];
+
+if(!value) return;
+
+setChecking(true);
+setPreview(null);
+setMessage("");
+
+const username=extractUsername(value);
+
+let meta=null;
+
+try{
+
+const url=`https://${platform}.com/${username}`;
+const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+meta=await res.json();
+
+}catch(e){
+meta=null;
+}
+
+setPreview({
+platform,
+username,
+title:meta?.title || username,
+image:meta?.image || null
+});
+
+setChecking(false);
+
+}
 setChecking(true);
 setPreview(null);
 setMessage("");
@@ -464,10 +499,6 @@ Check
 </button>
 
 )}
-
-</div>
-
-</div>
 
 </div>
 
