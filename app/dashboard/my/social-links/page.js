@@ -218,7 +218,13 @@ Social Links
 
 <input
 value={input}
-onChange={(e)=>detectPreview(e.target.value)}
+onChange={(e)=>setInput(e.target.value)}
+onKeyDown={(e)=>{
+if(e.key==="Enter"){
+detectPreview(input);
+}
+}}
+onBlur={()=>detectPreview(input)}
 placeholder="Paste your social profile URL"
 style={{
 width:"100%",
