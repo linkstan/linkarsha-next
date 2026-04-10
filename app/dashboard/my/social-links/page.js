@@ -7,7 +7,6 @@ import extractUsername from "../../../lib/extractUsername";
 import { socialIcons } from "../../../lib/socialIcons";
 
 const platformPlaceholders = {
-
 instagram:"username",
 facebook:"username or profile id",
 tiktok:"username",
@@ -39,14 +38,15 @@ douyin:"user id",
 wordpress:"site URL",
 signal:"phone number with country code",
 dailymotion:"channel name"
-
 };
+
 export default function SocialLinksPage(){
 
 const [links,setLinks]=useState({});
 const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
 const [preview,setPreview]=useState(null);
+const [checking,setChecking]=useState(false);
 
 useEffect(()=>{
 loadLinks();
@@ -69,17 +69,14 @@ const saved=settings.social_links || {};
 const converted={};
 
 Object.entries(saved).forEach(([platform,value])=>{
-
 if(Array.isArray(value)){
 converted[platform]=value;
 }else if(typeof value==="string"){
 converted[platform]=[value];
 }
-
 });
 
 setLinks(converted);
-
 }
 
 /* SAVE */
@@ -110,36 +107,48 @@ await supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
-
 }
 
-/* DETECT PREVIEW + FETCH PROFILE DATA */
+/* NORMALIZE URL */
 
-async function detectPreview(value){
+function normalizeUrl(url){
 
-setInput(value);
+let u=url.trim();
 
-if(!value){
+if(!u.startsWith("http://") && !u.startsWith("https://")){
+u="https://"+u;
+}
+
+return u;
+}
+
+/* CHECK URL */
+
+async function checkUrl(){
+
+if(!input) return;
+
+setChecking(true);
 setPreview(null);
-return;
-}
+setMessage("");
 
-const platform=detectPlatform(value);
+const url=normalizeUrl(input);
+
+const platform=detectPlatform(url);
 
 if(!platform){
+setChecking(false);
 setPreview({error:true});
 return;
 }
 
-const username=extractUsername(value);
+const username=extractUsername(url);
 
 let meta=null;
 
 try{
-
-const res = await fetch(`/api/link-preview?url=${encodeURIComponent(value)}`);
-meta = await res.json();
-
+const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+meta=await res.json();
 }catch(e){
 meta=null;
 }
@@ -151,24 +160,21 @@ title:meta?.title || username,
 image:meta?.image || null
 });
 
+setChecking(false);
 }
 
-/* ADD LINK FROM PREVIEW */
+/* ADD LINK */
 
 function addPreview(){
 
 if(!preview) return;
 
-const existing = links[preview.platform] || [];
-
-/* DUPLICATE CHECK */
+const existing=links[preview.platform] || [];
 
 if(existing.includes(preview.username)){
 setMessage("⚠ This account is already added");
 return;
 }
-
-/* MAX 3 CHECK */
 
 if(existing.length>=3){
 setMessage("⚠ Maximum 3 links allowed for this platform");
@@ -185,7 +191,6 @@ save(updated);
 setPreview(null);
 setInput("");
 setMessage(`✔ ${preview.platform} added`);
-
 }
 
 /* REMOVE */
@@ -201,38 +206,75 @@ const updated={
 };
 
 save(updated);
-
 }
 
 return(
 
 <div style={{padding:"24px",maxWidth:720}}>
 
-<h2 style={{marginBottom:20}}>
-Social Links
-</h2>
+<h2 style={{marginBottom:20}}>Social Links</h2>
 
 {/* AUTO INPUT */}
 
 <div style={{marginBottom:25}}>
 
+<div style={{display:"flex",gap:8}}>
+
 <input
 value={input}
 onChange={(e)=>setInput(e.target.value)}
-onKeyDown={(e)=>{
-if(e.key==="Enter"){
-detectPreview(input);
-}
-}}
-onBlur={()=>detectPreview(input)}
 placeholder="Paste your social profile URL"
 style={{
-width:"100%",
+flex:1,
 padding:"12px",
 borderRadius:10,
 border:"1px solid var(--border)"
 }}
 />
+
+{input && (
+
+<button
+onClick={checkUrl}
+style={{
+padding:"10px 14px",
+borderRadius:8,
+border:"none",
+background:"#2563eb",
+color:"#fff",
+cursor:"pointer",
+minWidth:80
+}}
+>
+
+{checking ? (
+<span className="spinner"></span>
+) : "Check"}
+
+</button>
+
+)}
+
+</div>
+
+{/* SPINNER STYLE */}
+
+<style jsx>{`
+.spinner{
+width:16px;
+height:16px;
+border:2px solid rgba(255,255,255,0.3);
+border-top-color:#fff;
+border-radius:50%;
+display:inline-block;
+animation:spin .7s linear infinite;
+}
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
+`}</style>
+
+{/* PREVIEW CARD */}
 
 {preview && !preview.error && (
 
@@ -247,8 +289,6 @@ borderRadius:14,
 border:"1px solid var(--border)",
 boxShadow:"0 2px 10px rgba(0,0,0,0.15)"
 }}>
-
-{/* PROFILE IMAGE */}
 
 {preview.image ? (
 
@@ -275,27 +315,17 @@ justifyContent:"center"
 
 )}
 
-{/* PROFILE TEXT */}
-
 <div style={{flex:1}}>
 
-<div style={{
-fontWeight:600,
-fontSize:15
-}}>
+<div style={{fontWeight:600,fontSize:15}}>
 {preview.title}
 </div>
 
-<div style={{
-fontSize:12,
-opacity:.6
-}}>
+<div style={{fontSize:12,opacity:.6}}>
 {preview.platform} • @{preview.username}
 </div>
 
 </div>
-
-{/* ADD BUTTON */}
 
 <button
 onClick={addPreview}
@@ -323,7 +353,7 @@ marginTop:10,
 fontSize:13,
 color:"#ef4444"
 }}>
-Platform not detected. Use manual fields below.
+We couldn't detect that profile. Please check the URL or use manual fields below.
 </div>
 
 )}
@@ -400,9 +430,7 @@ const updated={
 
 save(updated);
 e.target.value="";
-
 }
-
 }}
 style={{
 flex:1,
@@ -415,7 +443,6 @@ background:"transparent"
 </div>
 
 );
-
 })}
 
 </div>
@@ -470,13 +497,10 @@ Remove
 </div>
 
 ));
-
 })}
 
 </div>
 
 </div>
-
 );
-
 }
