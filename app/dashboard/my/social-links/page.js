@@ -364,7 +364,7 @@ textTransform:"capitalize"
 </div>
 
 <input
-placeholder="username"
+placeholder={platformPlaceholders[platform] || "value"}
 onKeyDown={(e)=>{
 
 if(e.key==="Enter"){
