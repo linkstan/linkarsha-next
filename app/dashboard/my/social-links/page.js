@@ -544,7 +544,7 @@ objectFit:"cover"
 
 <div style={{width:48,height:48}}>
 <img
-src={platformLogos[data.platform]}
+src={`/icons/${data.platform}.png`}
 style={{
 width:40,
 height:40,
