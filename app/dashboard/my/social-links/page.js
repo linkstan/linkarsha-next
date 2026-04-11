@@ -507,6 +507,22 @@ Remove
 
 </div>
 
+<style jsx>{`
+.spinner{
+width:16px;
+height:16px;
+border:2px solid rgba(255,255,255,0.3);
+border-top-color:#fff;
+border-radius:50%;
+display:inline-block;
+animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
+`}</style>
+
 );
 
 }
@@ -582,23 +598,8 @@ cursor:"pointer"
 >
 Add
 </button>
+
 </div>
-
-<style jsx>{`
-.spinner{
-width:16px;
-height:16px;
-border:2px solid rgba(255,255,255,0.3);
-border-top-color:#fff;
-border-radius:50%;
-display:inline-block;
-animation:spin .7s linear infinite;
-}
-
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
-`}</style>
 
 );
 
