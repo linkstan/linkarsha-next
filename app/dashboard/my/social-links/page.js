@@ -253,6 +253,7 @@ setManualPreview(null);
 
 setInput("");
 setManualInputs({});
+setMessage("");
 
 }
 
@@ -544,6 +545,7 @@ objectFit:"cover"
 <div style={{width:48,height:48}}>
 <img
 src={`/icons/${data.platform==="twitter"?"x":data.platform}.png`}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 style={{
 width:40,
 height:40,
