@@ -326,7 +326,7 @@ cursor:"pointer"
 }}
 >
 
-{checking ? (
+{checkingTop ? (
 <span className="spinner"></span>
 ) : "Check"}
 
@@ -440,7 +440,9 @@ color:"#fff",
 cursor:"pointer"
 }}
 >
-Check
+{checkingManual===platform ? (
+<span className="spinner"></span>
+) : "Check"}
 </button>
 
 )}
