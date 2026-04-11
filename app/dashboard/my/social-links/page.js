@@ -47,7 +47,8 @@ const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
 
 const [preview,setPreview]=useState(null);
-const [checking,setChecking]=useState(false);
+const [checkingTop,setCheckingTop]=useState(false);
+const [checkingManual,setCheckingManual]=useState(null);
 
 const [manualInputs,setManualInputs]=useState({});
 const [manualPreview,setManualPreview]=useState(null);
@@ -122,9 +123,10 @@ function cleanUsername(username){
 if(!username) return "";
 
 username=username.split("?")[0];
+username=username.split("#")[0];
 username=username.replace("@","");
 
-return username;
+return username.trim();
 
 }
 
@@ -170,7 +172,7 @@ setPreview(null);
 return;
 }
 
-setChecking(true);
+setCheckingTop(true);
 setManualPreview(null);
 
 const url=normalizeUrl(input);
@@ -179,7 +181,7 @@ const platform=detectPlatform(url);
 
 if(!platform){
 setPreview({error:true});
-setChecking(false);
+setCheckingTop(false);
 return;
 }
 
@@ -205,7 +207,7 @@ async function checkManual(platform){
 const value=manualInputs[platform];
 if(!value) return;
 
-setChecking(true);
+setCheckingManual(platform);
 setPreview(null);
 
 let username=cleanUsername(extractUsername(value));
@@ -221,7 +223,7 @@ title:meta?.title || username,
 image:meta?.image || null
 });
 
-setChecking(false);
+setCheckingManual(null);
 
 }
 
