@@ -45,11 +45,12 @@ export default function SocialLinksPage(){
 const [links,setLinks]=useState({});
 const [input,setInput]=useState("");
 const [message,setMessage]=useState("");
+
 const [preview,setPreview]=useState(null);
 const [checking,setChecking]=useState(false);
 
 const [manualInputs,setManualInputs]=useState({});
-const [manualPreview,setManualPreview]=useState({});
+const [manualPreview,setManualPreview]=useState(null);
 
 useEffect(()=>{
 loadLinks();
@@ -82,6 +83,7 @@ converted[platform]=[value];
 });
 
 setLinks(converted);
+
 }
 
 /* SAVE */
@@ -113,19 +115,6 @@ await supabase
 
 }
 
-/* NORMALIZE */
-
-function normalizeUrl(url){
-
-let u=url.trim();
-
-if(!u.startsWith("http")){
-u="https://"+u;
-}
-
-return u;
-}
-
 /* CLEAN USERNAME */
 
 function cleanUsername(username){
@@ -139,7 +128,40 @@ return username;
 
 }
 
-/* AUTO URL CHECK */
+/* NORMALIZE URL */
+
+function normalizeUrl(url){
+
+let u=url.trim();
+
+if(!u.startsWith("http")){
+u="https://"+u;
+}
+
+return u;
+
+}
+
+/* FETCH PROFILE META */
+
+async function getMeta(url){
+
+try{
+
+const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+const meta=await res.json();
+
+return meta;
+
+}catch{
+
+return null;
+
+}
+
+}
+
+/* AUTO INPUT CHECK */
 
 async function checkUrl(){
 
@@ -149,26 +171,21 @@ return;
 }
 
 setChecking(true);
-setPreview(null);
+setManualPreview(null);
 
 const url=normalizeUrl(input);
 
 const platform=detectPlatform(url);
 
 if(!platform){
-setChecking(false);
 setPreview({error:true});
+setChecking(false);
 return;
 }
 
 let username=cleanUsername(extractUsername(url));
 
-let meta=null;
-
-try{
-const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
-meta=await res.json();
-}catch(e){}
+const meta=await getMeta(url);
 
 setPreview({
 platform,
@@ -178,6 +195,7 @@ image:meta?.image || null
 });
 
 setChecking(false);
+
 }
 
 /* MANUAL CHECK */
@@ -188,18 +206,13 @@ const value=manualInputs[platform];
 if(!value) return;
 
 setChecking(true);
+setPreview(null);
 
 let username=cleanUsername(extractUsername(value));
 
-let meta=null;
-
-try{
-
 const url=`https://${platform}.com/${username}`;
-const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
-meta=await res.json();
 
-}catch(e){}
+const meta=await getMeta(url);
 
 setManualPreview({
 platform,
@@ -219,12 +232,12 @@ function addPreview(data){
 const existing=links[data.platform]||[];
 
 if(existing.includes(data.username)){
-setMessage("⚠ This account is already added");
+setMessage("⚠ Already added");
 return;
 }
 
 if(existing.length>=3){
-setMessage("⚠ Maximum 3 links allowed for this platform");
+setMessage("⚠ Maximum 3 allowed");
 return;
 }
 
@@ -236,9 +249,11 @@ const updated={
 save(updated);
 
 setPreview(null);
-setManualPreview({});
+setManualPreview(null);
+
 setInput("");
 setManualInputs({});
+
 }
 
 /* REMOVE */
@@ -263,7 +278,7 @@ return(
 
 <h2 style={{marginBottom:20}}>Social Links</h2>
 
-{/* AUTO INPUT */}
+{/* TOP INPUT */}
 
 <div style={{marginBottom:25}}>
 
@@ -272,9 +287,17 @@ return(
 <input
 value={input}
 onChange={(e)=>{
+
 const v=e.target.value;
+
 setInput(v);
-if(!v) setPreview(null);
+
+if(v){
+setManualPreview(null);
+}else{
+setPreview(null);
+}
+
 }}
 placeholder="Paste your social profile URL"
 style={{
@@ -299,9 +322,7 @@ cursor:"pointer"
 }}
 >
 
-{checking ? (
-<span className="spinner"></span>
-) : "Check"}
+{checking ? "..." : "Check"}
 
 </button>
 
@@ -309,80 +330,11 @@ cursor:"pointer"
 
 </div>
 
-<style jsx>{`
-.spinner{
-width:16px;
-height:16px;
-border:2px solid rgba(255,255,255,0.3);
-border-top-color:#fff;
-border-radius:50%;
-display:inline-block;
-animation:spin .7s linear infinite;
-}
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
-`}</style>
+{/* AUTO PREVIEW */}
 
 {preview && !preview.error && (
 
-<div style={{
-marginTop:12,
-display:"flex",
-gap:14,
-alignItems:"center",
-background:"var(--card)",
-padding:"14px",
-borderRadius:14,
-border:"1px solid var(--border)"
-}}>
-
-{preview.image ? (
-
-<img
-src={preview.image}
-alt={preview.title}
-onError={(e)=>{e.target.src="";}}
-style={{
-width:48,
-height:48,
-borderRadius:"50%",
-objectFit:"cover"
-}}
-/>
-
-):(
-
-<div style={{width:48,height:48}}>
-{socialIcons[preview.platform]}
-</div>
-
-)}
-
-<div style={{flex:1}}>
-<div style={{fontWeight:600}}>
-{preview.title}
-</div>
-<div style={{fontSize:12,opacity:.6}}>
-{preview.platform} • @{preview.username}
-</div>
-</div>
-
-<button
-onClick={()=>addPreview(preview)}
-style={{
-padding:"8px 14px",
-borderRadius:8,
-border:"none",
-background:"#22c55e",
-color:"#fff",
-cursor:"pointer"
-}}
->
-Add
-</button>
-
-</div>
+<PreviewCard data={preview} add={addPreview}/>
 
 )}
 
@@ -415,8 +367,7 @@ return(
 
 <div key={platform}>
 
-<div
-style={{
+<div style={{
 display:"flex",
 alignItems:"center",
 gap:12,
@@ -424,8 +375,7 @@ border:"1px solid var(--border)",
 padding:"10px 14px",
 borderRadius:12,
 background:"var(--card)"
-}}
->
+}}>
 
 <div style={{width:24,height:24}}>
 {Icon}
@@ -441,10 +391,20 @@ background:"var(--card)"
 placeholder={platformPlaceholders[platform]}
 value={manualInputs[platform]||""}
 onChange={(e)=>{
+
+const v=e.target.value;
+
 setManualInputs({
 ...manualInputs,
-[platform]:e.target.value
+[platform]:v
 });
+
+if(v){
+setPreview(null);
+}else{
+setManualPreview(null);
+}
+
 }}
 style={{
 flex:1,
@@ -476,46 +436,9 @@ Check
 
 </div>
 
-{/* MANUAL PREVIEW */}
+{manualPreview && manualPreview.platform===platform && (
 
-{manualPreview.platform===platform && (
-
-<div style={{
-marginTop:8,
-display:"flex",
-gap:14,
-alignItems:"center",
-background:"var(--card)",
-padding:"12px",
-borderRadius:12,
-border:"1px solid var(--border)"
-}}>
-
-<div style={{width:40}}>
-{socialIcons[platform]}
-</div>
-
-<div style={{flex:1}}>
-<div>{manualPreview.title}</div>
-<div style={{fontSize:12,opacity:.6}}>
-@{manualPreview.username}
-</div>
-</div>
-
-<button
-onClick={()=>addPreview(manualPreview)}
-style={{
-padding:"6px 12px",
-borderRadius:6,
-border:"none",
-background:"#22c55e",
-color:"#fff"
-}}
->
-Add
-</button>
-
-</div>
+<PreviewCard data={manualPreview} add={addPreview}/>
 
 )}
 
@@ -542,9 +465,7 @@ const Icon=socialIcons[platform];
 
 return list.map((username,i)=>(
 
-<div
-key={platform+i}
-style={{
+<div key={platform+i} style={{
 display:"flex",
 alignItems:"center",
 gap:12,
@@ -552,15 +473,14 @@ border:"1px solid var(--border)",
 padding:"10px 14px",
 borderRadius:12,
 background:"var(--card)"
-}}
->
+}}>
 
-<div style={{width:24}}>
+<div style={{width:24,height:24}}>
 {Icon}
 </div>
 
 <div style={{flex:1}}>
-{platform} / {username}
+{platform} • @{username}
 </div>
 
 <button
@@ -585,4 +505,74 @@ Remove
 </div>
 
 );
+
+}
+
+/* PREVIEW CARD COMPONENT */
+
+function PreviewCard({data,add}){
+
+return(
+
+<div style={{
+marginTop:12,
+display:"flex",
+gap:14,
+alignItems:"center",
+background:"var(--card)",
+padding:"14px",
+borderRadius:14,
+border:"1px solid var(--border)"
+}}>
+
+{data.image ? (
+
+<img
+src={data.image}
+style={{
+width:48,
+height:48,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
+
+):( 
+
+<div style={{width:48,height:48}}>
+{socialIcons[data.platform]}
+</div>
+
+)}
+
+<div style={{flex:1}}>
+
+<div style={{fontWeight:600}}>
+{data.title}
+</div>
+
+<div style={{fontSize:12,opacity:.6}}>
+{data.platform} • @{data.username}
+</div>
+
+</div>
+
+<button
+onClick={()=>add(data)}
+style={{
+padding:"8px 14px",
+borderRadius:8,
+border:"none",
+background:"#22c55e",
+color:"#fff",
+cursor:"pointer"
+}}
+>
+Add
+</button>
+
+</div>
+
+);
+
 }
