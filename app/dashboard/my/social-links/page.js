@@ -541,7 +541,15 @@ objectFit:"cover"
 ):( 
 
 <div style={{width:48,height:48}}>
-{socialIcons[data.platform]}
+<img
+src={platformLogos[data.platform]}
+style={{
+width:40,
+height:40,
+borderRadius:"50%",
+objectFit:"cover"
+}}
+/>
 </div>
 
 )}
