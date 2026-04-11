@@ -275,6 +275,7 @@ save(updated);
 
 return(
 
+<>
 <div style={{padding:"24px",maxWidth:720}}>
 
 <h2 style={{marginBottom:20}}>Social Links</h2>
@@ -523,6 +524,7 @@ to{transform:rotate(360deg)}
 }
 `}</style>
 
+</>
 );
 
 }
