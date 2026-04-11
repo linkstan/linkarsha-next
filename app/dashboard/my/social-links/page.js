@@ -56,6 +56,11 @@ const [manualPreview,setManualPreview]=useState(null);
 useEffect(()=>{
 loadLinks();
 },[]);
+useEffect(()=>{
+if(preview){
+setCheckingTop(false);
+}
+},[preview]);
 
 /* LOAD LINKS */
 
@@ -122,11 +127,16 @@ function cleanUsername(username){
 
 if(!username) return "";
 
+username=username.trim();
+
 username=username.split("?")[0];
 username=username.split("#")[0];
-username=username.replace("@","");
+username=username.split("&")[0];
 
-return username.trim();
+username=username.replace("@","");
+username=username.replace(/\/+$/,"");
+
+return username;
 
 }
 
@@ -196,7 +206,7 @@ title:meta?.title || username,
 image:meta?.image || null
 });
 
-setChecking(false);
+setCheckingTop(false);
 
 }
 
