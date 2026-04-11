@@ -362,7 +362,6 @@ margin:"25px 0"
 
 {Object.keys(socialIcons).map((platform)=>{
 
-const Icon=socialIcons[platform];
 const existing=links[platform]||[];
 
 if(existing.length>=3) return null;
@@ -382,7 +381,15 @@ background:"var(--card)"
 }}>
 
 <div style={{width:24,height:24}}>
-{Icon}
+<img
+src={`/icons/${platform==="twitter"?"x":platform}.png`}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
+style={{
+width:20,
+height:20,
+objectFit:"contain"
+}}
+/>
 </div>
 
 <div style={{width:120,textTransform:"capitalize"}}>
