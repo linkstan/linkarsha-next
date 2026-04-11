@@ -323,7 +323,9 @@ cursor:"pointer"
 }}
 >
 
-{checking ? "..." : "Check"}
+{checking ? (
+<span className="spinner"></span>
+) : "Check"}
 
 </button>
 
