@@ -548,6 +548,7 @@ border:"1px solid var(--border)"
 
 <img
 src={data.image}
+alt={data.username}
 style={{
 width:48,
 height:48,
@@ -561,6 +562,7 @@ objectFit:"cover"
 <div style={{width:48,height:48}}>
 <img
 src={`/icons/${data.platform==="twitter"?"x":data.platform}.png`}
+alt={data.platform}
 onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 style={{
 width:40,
