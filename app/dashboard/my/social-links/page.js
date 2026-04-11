@@ -1,6 +1,5 @@
 "use client";
 
-import { platformLogos } from "../../../lib/platformLogos";
 import { useEffect,useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import { detectPlatform } from "../../../lib/detectPlatform";
