@@ -544,7 +544,7 @@ objectFit:"cover"
 
 <div style={{width:48,height:48}}>
 <img
-src={`/icons/${data.platform}.png`}
+src={`/icons/${data.platform==="twitter"?"x":data.platform}.png`}
 style={{
 width:40,
 height:40,
@@ -581,27 +581,6 @@ cursor:"pointer"
 >
 Add
 </button>
-</div>
-
-<style jsx>{`
-.spinner{
-width:16px;
-height:16px;
-border:2px solid rgba(255,255,255,0.3);
-border-top-color:#fff;
-border-radius:50%;
-display:inline-block;
-animation:spin .7s linear infinite;
-}
-
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
-`}</style>
-
-);
-
-}
 </div>
 
 );
