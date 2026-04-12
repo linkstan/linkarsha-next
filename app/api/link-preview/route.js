@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
 import * as cheerio from "cheerio"
 
+/* SIMPLE MEMORY CACHE */
+const previewCache = new Map()
+
 export async function GET(req){
 
   const { searchParams } = new URL(req.url)
@@ -8,6 +11,11 @@ export async function GET(req){
 
   if(!url){
     return NextResponse.json({})
+  }
+
+  /* CACHE CHECK */
+  if(previewCache.has(url)){
+    return NextResponse.json(previewCache.get(url))
   }
 
   try{
@@ -75,10 +83,20 @@ export async function GET(req){
       }catch{}
     }
 
-    return NextResponse.json({
+    const result = {
       title,
       image
-    })
+    }
+
+    /* SAVE RESULT IN CACHE */
+    previewCache.set(url, result)
+
+    /* REMOVE CACHE AFTER 10 MINUTES */
+    setTimeout(()=>{
+      previewCache.delete(url)
+    },600000)
+
+    return NextResponse.json(result)
 
   }catch{
 
