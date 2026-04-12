@@ -121,7 +121,8 @@ const background = wallpaper || themeMap[profile.theme] || "#0b0b12";
 
 /* BLOCKS */
 
-const blockData = await getBlocks(profile.id);
+const blocksPromise = getBlocks(profile.id);
+const blockData = await blocksPromise;
 const blocks = blockData || [];
 
 /* ---------------- RENDER ---------------- */
