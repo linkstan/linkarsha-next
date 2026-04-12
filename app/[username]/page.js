@@ -40,7 +40,6 @@ const header = appearance.header || {};
 const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
 
-/* FORCE ICON POSITION UNDER BIO */
 const socialPosition = "header";
 
 const activeSocial = [];
@@ -178,7 +177,6 @@ maxWidth:280
 {activeSocial.map(({platform,username},i)=>{
 
 const Icon = socialIcons[platform];
-
 const IconElement = Icon || null;
 
 return(
@@ -188,17 +186,6 @@ key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
-
-onTouchStart={(e)=>{
-e.currentTarget.style.transform="scale(1.15)";
-e.currentTarget.style.boxShadow="0 0 12px rgba(255,255,255,0.35)";
-}}
-
-onTouchEnd={(e)=>{
-e.currentTarget.style.transform="scale(1)";
-e.currentTarget.style.boxShadow="0 0 0 rgba(255,255,255,0)";
-}}
-
 style={{
 width:38,
 height:38,
@@ -208,9 +195,8 @@ justifyContent:"center",
 color:"rgba(255,255,255,0.95)",
 fontSize:22,
 borderRadius:"50%",
-transition:"all .18s ease",
-cursor:"pointer",
-boxShadow:"0 0 0 rgba(255,255,255,0)"
+transition:"transform .18s ease, opacity .18s ease",
+cursor:"pointer"
 }}
 >
 
@@ -227,6 +213,7 @@ justifyContent:"center"
 </div>
 
 </a>
+
 );
 
 })}
@@ -245,57 +232,6 @@ block={block}
 ))}
 
 </div>
-
-{/* BOTTOM BLOCK KEPT BUT DISABLED */}
-{false && showSocialIcons && socialPosition==="bottom" && activeSocial.length>0 && (
-
-<div style={{
-display:"flex",
-gap:14,
-marginTop:30,
-flexWrap:"wrap",
-justifyContent:"center"
-}}>
-
-{activeSocial.map(({platform,username},i)=>{
-
-const Icon = socialIcons[platform];
-
-const IconElement = Icon
-? React.cloneElement(Icon,{
-width:22,
-height:22,
-style:{display:"block"}
-})
-: null;
-
-return(
-
-<a
-key={platform+i}
-href={buildSocialUrl(platform,username)}
-target="_blank"
-rel="noopener noreferrer"
-style={{
-width:28,
-height:28,
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-color:"#fff"
-}}
->
-
-{IconElement}
-
-</a>
-
-);
-
-})}
-</div>
-
-)}
 
 </div>
 
