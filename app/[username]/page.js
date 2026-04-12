@@ -184,19 +184,30 @@ href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 style={{
-width:28,
-height:28,
+width:32,
+height:32,
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
-color:"#fff"
+color:"rgba(255,255,255,0.95)",
+transition:"transform .18s ease, opacity .18s ease",
+opacity:0.9
 }}
 >
 
+<div
+style={{
+width:26,
+height:26,
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}
+>
 {Icon}
+</div>
 
 </a>
-
 );
 
 })}
