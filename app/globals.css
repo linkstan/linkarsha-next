@@ -90,3 +90,13 @@ opacity:1;
 .social-icon:active{
 transform:scale(0.96);
 }
+.social-icon{
+animation:iconFade .4s ease forwards;
+opacity:0;
+}
+
+@keyframes iconFade{
+to{
+opacity:0.9;
+}
+}
