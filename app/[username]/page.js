@@ -194,16 +194,29 @@ key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
+
+onTouchStart={(e)=>{
+e.currentTarget.style.transform="scale(1.15)";
+e.currentTarget.style.boxShadow="0 0 12px rgba(255,255,255,0.35)";
+}}
+
+onTouchEnd={(e)=>{
+e.currentTarget.style.transform="scale(1)";
+e.currentTarget.style.boxShadow="0 0 0 rgba(255,255,255,0)";
+}}
+
 style={{
-width:32,
-height:32,
+width:38,
+height:38,
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
 color:"rgba(255,255,255,0.95)",
-transition:"transform .18s ease, opacity .18s ease",
-opacity:0.9,
-cursor:"pointer"
+fontSize:22,
+borderRadius:"50%",
+transition:"all .18s ease",
+cursor:"pointer",
+boxShadow:"0 0 0 rgba(255,255,255,0)"
 }}
 >
 
