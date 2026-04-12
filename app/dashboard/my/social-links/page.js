@@ -128,6 +128,69 @@ return u;
 
 }
 
+/* EXTRACT USERNAME FROM URL */
+
+function extractUsername(url){
+
+try{
+
+const u=new URL(url);
+
+let path=u.pathname.replace(/^\/+/,"").replace(/\/$/,"");
+
+if(path.includes("/")){
+path=path.split("/")[0];
+}
+
+return cleanUsername(path);
+
+}catch{
+
+return cleanUsername(url);
+
+}
+
+}
+
+/* CANONICAL PROFILE URL */
+
+function buildProfileUrl(platform,username){
+
+username=cleanUsername(username);
+
+switch(platform){
+
+case "instagram":
+return `https://www.instagram.com/${username}/`;
+
+case "facebook":
+return `https://www.facebook.com/${username}`;
+
+case "youtube":
+return `https://www.youtube.com/@${username}`;
+
+case "twitter":
+return `https://x.com/${username}`;
+
+case "tiktok":
+return `https://www.tiktok.com/@${username}`;
+
+case "pinterest":
+return `https://www.pinterest.com/${username}`;
+
+case "telegram":
+return `https://t.me/${username}`;
+
+case "github":
+return `https://github.com/${username}`;
+
+default:
+return `https://${platform}.com/${username}`;
+
+}
+
+}
+
 /* CLEAN TITLE */
 
 function cleanTitle(title,username){
@@ -136,22 +199,13 @@ if(!title) return username;
 
 let t=title;
 
-/* Instagram */
 if(t.includes("Instagram")){
-const match=t.match(/^(.+?)\s\(@/);
-if(match) return match[1];
+const m=t.match(/^(.+?)\s\(@/);
+if(m) return m[1];
 }
 
-/* Youtube */
-if(t.includes("YouTube")){
 t=t.replace("- YouTube","");
-}
-
-/* Twitter */
-if(t.includes(" on X")){
 t=t.replace(" on X","");
-}
-
 t=t.split("|")[0];
 t=t.split("•")[0];
 t=t.split("(")[0];
@@ -162,46 +216,6 @@ return username;
 }
 
 return t;
-
-}
-
-/* NORMALIZE URL */
-
-function normalizeUrl(url){
-
-let u=url.trim();
-
-if(!u.startsWith("http")){
-u="https://"+u;
-}
-
-return u;
-
-}
-
-/* EXTRACT USERNAME FROM URL */
-
-function extractFromUrl(url){
-
-try{
-
-const u=new URL(url);
-
-let path=u.pathname.replace(/^\/+/,"").replace(/\/$/,"");
-
-let username=path.split("/")[0];
-
-if(u.hostname.includes("snapchat.com") && path.startsWith("t/")){
-username=path.split("/")[1];
-}
-
-return cleanUsername(username);
-
-}catch{
-
-return cleanUsername(url);
-
-}
 
 }
 
@@ -223,6 +237,25 @@ return null;
 
 }
 
+/* PROCESS PREVIEW */
+
+async function generatePreview(platform,username){
+
+const url=buildProfileUrl(platform,username);
+
+const meta=await getMeta(url);
+
+const title=cleanTitle(meta?.title,username);
+
+return{
+platform,
+username,
+title,
+image:meta?.image||null
+};
+
+}
+
 /* TOP URL CHECK */
 
 async function checkUrl(){
@@ -235,7 +268,7 @@ return;
 setCheckingTop(true);
 setManualPreview(null);
 
-const url=normalizeUrl(input);
+const url=input.trim();
 const platform=detectPlatform(url);
 
 if(!platform){
@@ -244,26 +277,11 @@ setCheckingTop(false);
 return;
 }
 
-let username=extractFromUrl(url);
+const username=extractUsername(url);
 
-/* facebook fix */
+const data=await generatePreview(platform,username);
 
-let fetchUrl=url;
-
-if(platform==="facebook"){
-fetchUrl=`https://www.facebook.com/${username}`;
-}
-
-const meta=await getMeta(fetchUrl);
-
-const title=cleanTitle(meta?.title,username);
-
-setPreview({
-platform,
-username,
-title,
-image:meta?.image||null
-});
+setPreview(data);
 
 setCheckingTop(false);
 
@@ -279,30 +297,11 @@ if(!value) return;
 setCheckingManual(platform);
 setPreview(null);
 
-let username=cleanUsername(value);
+const username=cleanUsername(value);
 
-let url;
+const data=await generatePreview(platform,username);
 
-if(platform==="twitter"){
-url=`https://x.com/${username}`;
-}
-else if(platform==="youtube"){
-url=`https://youtube.com/@${username}`;
-}
-else{
-url=`https://${platform}.com/${username}`;
-}
-
-const meta=await getMeta(url);
-
-const title=cleanTitle(meta?.title,username);
-
-setManualPreview({
-platform,
-username,
-title,
-image:meta?.image||null
-});
+setManualPreview(data);
 
 setCheckingManual(null);
 
@@ -583,7 +582,6 @@ border-radius:50%;
 display:inline-block;
 animation:spin .7s linear infinite;
 }
-
 @keyframes spin{
 to{transform:rotate(360deg)}
 }
