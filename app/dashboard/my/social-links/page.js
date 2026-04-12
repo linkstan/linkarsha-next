@@ -3,7 +3,6 @@
 import { useEffect,useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import { detectPlatform } from "../../../lib/detectPlatform";
-import extractUsername from "../../../lib/extractUsername";
 import { socialIcons } from "../../../lib/socialIcons";
 
 const platformPlaceholders={
@@ -44,23 +43,15 @@ export default function SocialLinksPage(){
 
 const [links,setLinks]=useState({});
 const [input,setInput]=useState("");
-const [message,setMessage]=useState("");
-
 const [preview,setPreview]=useState(null);
 const [checkingTop,setCheckingTop]=useState(false);
 const [checkingManual,setCheckingManual]=useState(null);
-
 const [manualInputs,setManualInputs]=useState({});
 const [manualPreview,setManualPreview]=useState(null);
 
 useEffect(()=>{
 loadLinks();
 },[]);
-useEffect(()=>{
-if(preview){
-setCheckingTop(false);
-}
-},[preview]);
 
 /* LOAD LINKS */
 
@@ -127,18 +118,18 @@ function cleanUsername(username){
 
 if(!username) return "";
 
-username=username.trim();
+let u=username.trim();
 
-username=username.split("?")[0];
-username=username.split("#")[0];
-username=username.split("&")[0];
+u=u.replace(/[?#&].*/,"");
+u=u.replace("@","");
+u=u.replace(/\/+$/,"");
 
-username=username.replace("@","");
-username=username.replace(/\/+$/,"");
-
-return username;
+return u;
 
 }
+
+/* CLEAN TITLE */
+
 function cleanTitle(title,username){
 
 if(!title) return username;
@@ -150,6 +141,7 @@ t=t.split("|")[0];
 t=t.split("•")[0];
 t=t.split(" on ")[0];
 t=t.split(" - ")[0];
+t=t.replace("Profile / X","");
 t=t.trim();
 
 if(!t || t.toLowerCase()===username.toLowerCase()){
@@ -159,6 +151,7 @@ return username;
 return t;
 
 }
+
 /* NORMALIZE URL */
 
 function normalizeUrl(url){
@@ -173,7 +166,33 @@ return u;
 
 }
 
-/* FETCH PROFILE META */
+/* UNIVERSAL USERNAME EXTRACTOR */
+
+function extractFromUrl(url){
+
+try{
+
+const u=new URL(url);
+
+let path=u.pathname.replace(/^\/+/,"").replace(/\/$/,"");
+
+let username=path.split("/")[0];
+
+if(u.hostname.includes("snapchat.com") && path.startsWith("t/")){
+username=path.split("/")[1];
+}
+
+return cleanUsername(username);
+
+}catch{
+
+return cleanUsername(url);
+
+}
+
+}
+
+/* FETCH META */
 
 async function getMeta(url){
 
@@ -181,7 +200,6 @@ try{
 
 const res=await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
 const meta=await res.json();
-
 return meta;
 
 }catch{
@@ -192,7 +210,7 @@ return null;
 
 }
 
-/* AUTO INPUT CHECK */
+/* TOP URL CHECK */
 
 async function checkUrl(){
 
@@ -205,24 +223,21 @@ setCheckingTop(true);
 setManualPreview(null);
 
 const url=normalizeUrl(input);
-
 const platform=detectPlatform(url);
 
 if(!platform){
-setPreview({error:true});
+setPreview(null);
 setCheckingTop(false);
 return;
 }
 
-let raw = extractUsername(url);
-let username = cleanUsername(raw);
-
-if(!username || username.includes("igsh")){
-const parts = url.split("/");
-username = cleanUsername(parts[parts.length-1]);
-}
+let username=extractFromUrl(url);
 
 const meta=await getMeta(url);
+
+if(platform==="snapchat" && meta?.title){
+username=meta.title.toLowerCase().replace(/\s+/g,"");
+}
 
 const title=cleanTitle(meta?.title,username);
 
@@ -230,8 +245,9 @@ setPreview({
 platform,
 username,
 title,
-image:meta?.image || null
+image:meta?.image||null
 });
+
 setCheckingTop(false);
 
 }
@@ -246,41 +262,39 @@ if(!value) return;
 setCheckingManual(platform);
 setPreview(null);
 
-let raw = extractUsername(value);
-let username = cleanUsername(raw);
+let username=cleanUsername(value);
 
-const url=`https://${platform}.com/${username}`;
+let url;
+
+if(platform==="twitter"){
+url=`https://x.com/${username}`;
+}else{
+url=`https://${platform}.com/${username}`;
+}
 
 const meta=await getMeta(url);
-
 const title=cleanTitle(meta?.title,username);
 
 setManualPreview({
 platform,
 username,
 title,
-image:meta?.image || null
+image:meta?.image||null
 });
 
 setCheckingManual(null);
 
 }
 
-/* ADD LINK */
+/* ADD */
 
 function addPreview(data){
 
 const existing=links[data.platform]||[];
 
-if(existing.includes(data.username)){
-setMessage("⚠ Already added");
-return;
-}
+if(existing.includes(data.username)) return;
 
-if(existing.length>=3){
-setMessage("⚠ Maximum 3 allowed");
-return;
-}
+if(existing.length>=3) return;
 
 const updated={
 ...links,
@@ -291,10 +305,8 @@ save(updated);
 
 setPreview(null);
 setManualPreview(null);
-
 setInput("");
 setManualInputs({});
-setMessage("");
 
 }
 
@@ -332,7 +344,6 @@ value={input}
 onChange={(e)=>{
 
 const v=e.target.value;
-
 setInput(v);
 
 if(v){
@@ -375,12 +386,8 @@ cursor:"pointer"
 
 </div>
 
-{/* AUTO PREVIEW */}
-
-{preview && !preview.error && (
-
+{preview && (
 <PreviewCard data={preview} add={addPreview}/>
-
 )}
 
 </div>
@@ -397,14 +404,13 @@ margin:"25px 0"
 <div style={{flex:1,height:1,background:"var(--border)"}}/>
 </div>
 
-{/* MANUAL INPUTS */}
+{/* MANUAL */}
 
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
 
 {Object.keys(socialIcons).map((platform)=>{
 
 const existing=links[platform]||[];
-
 if(existing.length>=3) return null;
 
 return(
@@ -425,11 +431,7 @@ background:"var(--card)"
 <img
 src={`/icons/${platform==="twitter"?"x":platform}.png`}
 onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
-style={{
-width:20,
-height:20,
-objectFit:"contain"
-}}
+style={{width:20,height:20}}
 />
 </div>
 
@@ -479,9 +481,11 @@ color:"#fff",
 cursor:"pointer"
 }}
 >
+
 {checkingManual===platform ? (
 <span className="spinner"></span>
 ) : "Check"}
+
 </button>
 
 )}
@@ -491,9 +495,7 @@ cursor:"pointer"
 </div>
 
 {manualPreview && manualPreview.platform===platform && (
-
 <PreviewCard data={manualPreview} add={addPreview}/>
-
 )}
 
 </div>
@@ -504,7 +506,7 @@ cursor:"pointer"
 
 </div>
 
-{/* SAVED LINKS */}
+{/* SAVED */}
 
 <div style={{
 marginTop:30,
@@ -579,7 +581,7 @@ to{transform:rotate(360deg)}
 
 }
 
-/* PREVIEW CARD COMPONENT */
+/* PREVIEW CARD */
 
 function PreviewCard({data,add}){
 
