@@ -1,3 +1,4 @@
+import React from "react";
 import ButtonBlock from "../../components/ButtonBlock";
 import { createClient } from "@supabase/supabase-js";
 import { socialIcons } from "../lib/socialIcons";
@@ -176,6 +177,14 @@ justifyContent:"center"
 
 const Icon = socialIcons[platform];
 
+const IconElement = Icon
+? React.cloneElement(Icon,{
+width:22,
+height:22,
+style:{display:"block"}
+})
+: null;
+
 return(
 
 <a
@@ -191,7 +200,8 @@ alignItems:"center",
 justifyContent:"center",
 color:"rgba(255,255,255,0.95)",
 transition:"transform .18s ease, opacity .18s ease",
-opacity:0.9
+opacity:0.9,
+cursor:"pointer"
 }}
 >
 
@@ -204,7 +214,7 @@ alignItems:"center",
 justifyContent:"center"
 }}
 >
-{Icon}
+{IconElement}
 </div>
 
 </a>
@@ -242,6 +252,14 @@ justifyContent:"center"
 
 const Icon = socialIcons[platform];
 
+const IconElement = Icon
+? React.cloneElement(Icon,{
+width:22,
+height:22,
+style:{display:"block"}
+})
+: null;
+
 return(
 
 <a
@@ -259,7 +277,7 @@ color:"#fff"
 }}
 >
 
-{Icon}
+{IconElement}
 
 </a>
 
