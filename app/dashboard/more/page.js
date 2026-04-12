@@ -158,7 +158,7 @@ My Linkarsh
 <div>
 
 <Link href="/dashboard/links" style={sub}>My Links</Link>
-<Link href="/dashboard/social-links" style={sub}>Social Links</Link>
+<Link href="/dashboard/my/social-links" style={sub}>Social Links</Link>
 <Link href="/dashboard/link-history" style={sub}>Link History</Link>
 <Link href="/dashboard/get-verified" style={sub}>Get Verified</Link>
 
