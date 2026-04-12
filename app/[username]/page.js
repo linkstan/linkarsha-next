@@ -12,9 +12,7 @@ process.env.NEXT_PUBLIC_SUPABASE_URL,
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export default async function PublicProfile({ params }) {
-
-const username = params?.username;
+/* ---------------- PROFILE CACHE ---------------- */
 
 const getProfile = cache(async (username) => {
 
@@ -28,9 +26,31 @@ return data;
 
 });
 
-const prof = await getProfile(username);
+/* ---------------- BLOCKS CACHE ---------------- */
 
-if (!prof) {
+const getBlocks = cache(async (id)=>{
+
+const { data } = await supabase
+.from("blocks")
+.select("*")
+.eq("user_id",id)
+.order("position",{ascending:true});
+
+return data;
+
+});
+
+/* ---------------- PAGE ---------------- */
+
+export default async function PublicProfile({ params }) {
+
+const username = params?.username;
+
+/* PROFILE */
+
+const profile = await getProfile(username);
+
+if (!profile) {
 return (
 <div style={{
 minHeight:"100vh",
@@ -43,13 +63,16 @@ Profile not found
 );
 }
 
-const profile = prof;
+/* SETTINGS */
+
 const appearance = profile.profile_settings || {};
 const header = appearance.header || {};
 const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
 
 const socialPosition = "header";
+
+/* SOCIAL LINKS */
 
 const activeSocial = [];
 
@@ -71,9 +94,13 @@ activeSocial.push({platform,username:list});
 
 });
 
+/* WALLPAPER */
+
 const wallpaper = appearance.wallpaper || null;
 const blur = appearance.wallpaperBlur || 0;
 const overlay = appearance.wallpaperOverlay !== false;
+
+/* THEMES */
 
 const themeMap={
 Minimal:"#ffffff",
@@ -90,23 +117,14 @@ Royal:"linear-gradient(135deg,#141e30,#243b55)",
 Luxury:"#000000"
 };
 
-const background=wallpaper || themeMap[profile.theme] || "#0b0b12";
+const background = wallpaper || themeMap[profile.theme] || "#0b0b12";
 
-const getBlocks = cache(async (id)=>{
-
-const { data } = await supabase
-.from("blocks")
-.select("*")
-.eq("user_id",id)
-.order("position",{ascending:true});
-
-return data;
-
-});
+/* BLOCKS */
 
 const blockData = await getBlocks(profile.id);
+const blocks = blockData || [];
 
-const blocks=blockData || [];
+/* ---------------- RENDER ---------------- */
 
 return(
 
@@ -213,7 +231,6 @@ justifyContent:"center",
 color:"rgba(255,255,255,0.95)",
 fontSize:22,
 borderRadius:"50%",
-transition:"transform .18s ease, opacity .18s ease",
 cursor:"pointer"
 }}
 >
