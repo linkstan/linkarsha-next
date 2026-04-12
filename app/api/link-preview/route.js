@@ -58,6 +58,34 @@ image = icon.startsWith("http")
 
 }
 
+/* CLEARBIT LOGO FALLBACK */
+
+if(!image){
+
+try{
+const u = new URL(url)
+image = `https://logo.clearbit.com/${u.hostname}`
+}catch{}
+
+}
+
+}
+
+const icon =
+$('link[rel="icon"]').attr("href") ||
+$('link[rel="shortcut icon"]').attr("href")
+
+if(icon){
+
+try{
+const u = new URL(url)
+image = icon.startsWith("http")
+? icon
+: `${u.origin}${icon}`
+}catch{}
+
+}
+
 }
 
 /* ABSOLUTE URL FIX */
