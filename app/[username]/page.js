@@ -232,7 +232,7 @@ justifyContent:"center",
 color:"rgba(255,255,255,0.95)",
 fontSize:22,
 borderRadius:"50%",
-cursor:"pointer"
+cursor:"pointer",
 backdropFilter:"blur(8px)",
 background:"rgba(255,255,255,0.08)"
 }}
