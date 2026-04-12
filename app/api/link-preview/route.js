@@ -3,111 +3,87 @@ import * as cheerio from "cheerio"
 
 export async function GET(req){
 
-const { searchParams } = new URL(req.url)
-const url = searchParams.get("url")
+  const { searchParams } = new URL(req.url)
+  const url = searchParams.get("url")
 
-if(!url){
-return NextResponse.json({})
-}
+  if(!url){
+    return NextResponse.json({})
+  }
 
-try{
+  try{
 
-const res = await fetch(url,{
-headers:{
-"User-Agent":
-"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-},
-redirect:"follow"
-})
+    const res = await fetch(url,{
+      headers:{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      },
+      redirect:"follow"
+    })
 
-const html = await res.text()
-const $ = cheerio.load(html)
+    const html = await res.text()
+    const $ = cheerio.load(html)
 
-/* TITLE */
+    /* TITLE */
 
-let title =
-$('meta[property="og:title"]').attr("content") ||
-$('meta[name="twitter:title"]').attr("content") ||
-$("title").text() ||
-""
+    let title =
+      $('meta[property="og:title"]').attr("content") ||
+      $('meta[name="twitter:title"]').attr("content") ||
+      $("title").text() ||
+      ""
 
-/* IMAGE */
+    /* IMAGE */
 
-let image =
-$('meta[property="og:image"]').attr("content") ||
-$('meta[name="twitter:image"]').attr("content") ||
-$('link[rel="image_src"]').attr("href") ||
-""
+    let image =
+      $('meta[property="og:image"]').attr("content") ||
+      $('meta[name="twitter:image"]').attr("content") ||
+      $('link[rel="image_src"]').attr("href") ||
+      ""
 
-/* FAVICON FALLBACK */
+    /* FAVICON FALLBACK */
 
-if(!image){
+    if(!image){
 
-const icon =
-$('link[rel="icon"]').attr("href") ||
-$('link[rel="shortcut icon"]').attr("href")
+      const icon =
+        $('link[rel="icon"]').attr("href") ||
+        $('link[rel="shortcut icon"]').attr("href")
 
-if(icon){
+      if(icon){
+        try{
+          const u = new URL(url)
+          image = icon.startsWith("http")
+            ? icon
+            : `${u.origin}${icon}`
+        }catch{}
+      }
 
-try{
-const u = new URL(url)
-image = icon.startsWith("http")
-? icon
-: `${u.origin}${icon}`
-}catch{}
+    }
 
-}
+    /* CLEARBIT FALLBACK */
 
-/* CLEARBIT LOGO FALLBACK */
+    if(!image){
+      try{
+        const u = new URL(url)
+        image = `https://logo.clearbit.com/${u.hostname}`
+      }catch{}
+    }
 
-if(!image){
+    /* ABSOLUTE URL FIX */
 
-try{
-const u = new URL(url)
-image = `https://logo.clearbit.com/${u.hostname}`
-}catch{}
+    if(image && !image.startsWith("http")){
+      try{
+        const u = new URL(url)
+        image = `${u.origin}${image}`
+      }catch{}
+    }
 
-}
+    return NextResponse.json({
+      title,
+      image
+    })
 
-}
+  }catch{
 
-const icon =
-$('link[rel="icon"]').attr("href") ||
-$('link[rel="shortcut icon"]').attr("href")
+    return NextResponse.json({})
 
-if(icon){
-
-try{
-const u = new URL(url)
-image = icon.startsWith("http")
-? icon
-: `${u.origin}${icon}`
-}catch{}
-
-}
-
-}
-
-/* ABSOLUTE URL FIX */
-
-if(image && !image.startsWith("http")){
-
-try{
-const u = new URL(url)
-image = `${u.origin}${image}`
-}catch{}
-
-}
-
-return NextResponse.json({
-title,
-image
-})
-
-}catch{
-
-return NextResponse.json({})
-
-}
+  }
 
 }
