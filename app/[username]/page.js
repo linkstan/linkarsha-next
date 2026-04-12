@@ -1,3 +1,4 @@
+import { cache } from "react";
 import React from "react";
 import ButtonBlock from "../../components/ButtonBlock";
 import { createClient } from "@supabase/supabase-js";
@@ -15,11 +16,19 @@ export default async function PublicProfile({ params }) {
 
 const username = params?.username;
 
-const { data: prof } = await supabase
+const getProfile = cache(async (username) => {
+
+const { data } = await supabase
 .from("profiles")
 .select("*")
 .eq("username", username)
 .single();
+
+return data;
+
+});
+
+const prof = await getProfile(username);
 
 if (!prof) {
 return (
@@ -83,11 +92,19 @@ Luxury:"#000000"
 
 const background=wallpaper || themeMap[profile.theme] || "#0b0b12";
 
-const { data: blockData } = await supabase
+const getBlocks = cache(async (id)=>{
+
+const { data } = await supabase
 .from("blocks")
 .select("*")
-.eq("user_id",profile.id)
+.eq("user_id",id)
 .order("position",{ascending:true});
+
+return data;
+
+});
+
+const blockData = await getBlocks(profile.id);
 
 const blocks=blockData || [];
 
@@ -186,6 +203,7 @@ key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
+className="social-icon"
 style={{
 width:38,
 height:38,
