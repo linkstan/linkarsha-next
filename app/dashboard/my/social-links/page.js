@@ -139,7 +139,26 @@ username=username.replace(/\/+$/,"");
 return username;
 
 }
+function cleanTitle(title,username){
 
+if(!title) return username;
+
+let t=title;
+
+t=t.split("(")[0];
+t=t.split("|")[0];
+t=t.split("•")[0];
+t=t.split(" on ")[0];
+t=t.split(" - ")[0];
+t=t.trim();
+
+if(!t || t.toLowerCase()===username.toLowerCase()){
+return username;
+}
+
+return t;
+
+}
 /* NORMALIZE URL */
 
 function normalizeUrl(url){
@@ -199,13 +218,14 @@ let username=cleanUsername(extractUsername(url));
 
 const meta=await getMeta(url);
 
+const title=cleanTitle(meta?.title,username);
+
 setPreview({
 platform,
 username,
-title:meta?.title || username,
+title,
 image:meta?.image || null
 });
-
 setCheckingTop(false);
 
 }
@@ -226,10 +246,12 @@ const url=`https://${platform}.com/${username}`;
 
 const meta=await getMeta(url);
 
+const title=cleanTitle(meta?.title,username);
+
 setManualPreview({
 platform,
 username,
-title:meta?.title || username,
+title,
 image:meta?.image || null
 });
 
