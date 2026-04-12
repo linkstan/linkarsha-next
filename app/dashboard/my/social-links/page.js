@@ -351,10 +351,10 @@ return(
 <>
 <div
 style={{
-padding:"16px",
-maxWidth:720,
+width:"100%",
+maxWidth:"720px",
 margin:"0 auto",
-width:"100%"
+padding:"clamp(14px,3vw,24px)"
 }}
 >
 
