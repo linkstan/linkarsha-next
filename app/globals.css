@@ -74,3 +74,19 @@ display:block;
 a:hover{
 background:var(--hover);
 }
+/* SOCIAL ICON ANIMATION */
+
+.social-icon{
+transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+opacity:0.9;
+}
+
+.social-icon:hover{
+transform:scale(1.12);
+box-shadow:0 0 12px rgba(255,255,255,0.35);
+opacity:1;
+}
+
+.social-icon:active{
+transform:scale(0.96);
+}
