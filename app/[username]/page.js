@@ -179,13 +179,7 @@ maxWidth:280
 
 const Icon = socialIcons[platform];
 
-const IconElement = Icon
-? React.cloneElement(Icon,{
-width:22,
-height:22,
-style:{display:"block"}
-})
-: null;
+const IconElement = Icon || null;
 
 return(
 
