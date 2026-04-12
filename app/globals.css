@@ -63,7 +63,14 @@ border-radius:10px;
 a{
 transition:background .15s ease;
 }
+/* GLOBAL SVG SIZE FIX */
 
+svg{
+width:1em;
+height:1em;
+flex-shrink:0;
+display:block;
+}
 a:hover{
 background:var(--hover);
 }
