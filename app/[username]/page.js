@@ -182,6 +182,7 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
+rel="noopener noreferrer"
 style={{
 width:28,
 height:28,
@@ -236,6 +237,7 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
+rel="noopener noreferrer"
 style={{
 width:28,
 height:28,
