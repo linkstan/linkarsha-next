@@ -167,10 +167,12 @@ opacity:.8
 
 <div style={{
 display:"flex",
-gap:14,
-marginTop:16,
+gap:18,
+marginTop:20,
 flexWrap:"wrap",
-justifyContent:"center"
+justifyContent:"center",
+alignItems:"center",
+maxWidth:280
 }}>
 
 {activeSocial.map(({platform,username},i)=>{
