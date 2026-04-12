@@ -349,7 +349,14 @@ save(updated);
 return(
 
 <>
-<div style={{padding:"24px",maxWidth:720}}>
+<div
+style={{
+padding:"16px",
+maxWidth:720,
+margin:"0 auto",
+width:"100%"
+}}
+>
 
 <h2 style={{marginBottom:20}}>Social Links</h2>
 
@@ -449,7 +456,7 @@ style={{width:20,height:20}}
 />
 </div>
 
-<div style={{width:120,textTransform:"capitalize"}}>
+<div style={{width:100,textTransform:"capitalize"}}>
 {platform}
 </div>
 
