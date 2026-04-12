@@ -60,7 +60,7 @@ border-radius:10px;
 
 /* sidebar hover animation */
 
-a{
+.sidebar a{
 transition:background .15s ease;
 }
 /* GLOBAL SVG SIZE FIX */
