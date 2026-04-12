@@ -214,7 +214,13 @@ setCheckingTop(false);
 return;
 }
 
-let username=cleanUsername(extractUsername(url));
+let raw = extractUsername(url);
+let username = cleanUsername(raw);
+
+if(!username || username.includes("igsh")){
+const parts = url.split("/");
+username = cleanUsername(parts[parts.length-1]);
+}
 
 const meta=await getMeta(url);
 
@@ -240,7 +246,8 @@ if(!value) return;
 setCheckingManual(platform);
 setPreview(null);
 
-let username=cleanUsername(extractUsername(value));
+let raw = extractUsername(value);
+let username = cleanUsername(raw);
 
 const url=`https://${platform}.com/${username}`;
 
