@@ -136,12 +136,25 @@ if(!title) return username;
 
 let t=title;
 
-t=t.split("(")[0];
+/* Instagram */
+if(t.includes("Instagram")){
+const match=t.match(/^(.+?)\s\(@/);
+if(match) return match[1];
+}
+
+/* Youtube */
+if(t.includes("YouTube")){
+t=t.replace("- YouTube","");
+}
+
+/* Twitter */
+if(t.includes(" on X")){
+t=t.replace(" on X","");
+}
+
 t=t.split("|")[0];
 t=t.split("•")[0];
-t=t.split(" on ")[0];
-t=t.split(" - ")[0];
-t=t.replace("Profile / X","");
+t=t.split("(")[0];
 t=t.trim();
 
 if(!t || t.toLowerCase()===username.toLowerCase()){
@@ -166,7 +179,7 @@ return u;
 
 }
 
-/* UNIVERSAL USERNAME EXTRACTOR */
+/* EXTRACT USERNAME FROM URL */
 
 function extractFromUrl(url){
 
@@ -233,11 +246,15 @@ return;
 
 let username=extractFromUrl(url);
 
-const meta=await getMeta(url);
+/* facebook fix */
 
-if(platform==="snapchat" && meta?.title){
-username=meta.title.toLowerCase().replace(/\s+/g,"");
+let fetchUrl=url;
+
+if(platform==="facebook"){
+fetchUrl=`https://www.facebook.com/${username}`;
 }
+
+const meta=await getMeta(fetchUrl);
 
 const title=cleanTitle(meta?.title,username);
 
@@ -268,11 +285,16 @@ let url;
 
 if(platform==="twitter"){
 url=`https://x.com/${username}`;
-}else{
+}
+else if(platform==="youtube"){
+url=`https://youtube.com/@${username}`;
+}
+else{
 url=`https://${platform}.com/${username}`;
 }
 
 const meta=await getMeta(url);
+
 const title=cleanTitle(meta?.title,username);
 
 setManualPreview({
@@ -293,7 +315,6 @@ function addPreview(data){
 const existing=links[data.platform]||[];
 
 if(existing.includes(data.username)) return;
-
 if(existing.length>=3) return;
 
 const updated={
@@ -332,8 +353,6 @@ return(
 <div style={{padding:"24px",maxWidth:720}}>
 
 <h2 style={{marginBottom:20}}>Social Links</h2>
-
-{/* TOP INPUT */}
 
 <div style={{marginBottom:25}}>
 
@@ -392,8 +411,6 @@ cursor:"pointer"
 
 </div>
 
-{/* OR */}
-
 <div style={{
 display:"flex",
 alignItems:"center",
@@ -403,8 +420,6 @@ margin:"25px 0"
 <div style={{padding:"0 10px",fontSize:13,opacity:.6}}>OR</div>
 <div style={{flex:1,height:1,background:"var(--border)"}}/>
 </div>
-
-{/* MANUAL */}
 
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
 
@@ -505,8 +520,6 @@ cursor:"pointer"
 })}
 
 </div>
-
-{/* SAVED */}
 
 <div style={{
 marginTop:30,
