@@ -72,7 +72,7 @@ setSelected(name);
 setLoading(true);
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{theme:name}})
+new CustomEvent("theme-change",{detail:name})
 );
 
 const {data:{session}}=await supabase.auth.getSession();
