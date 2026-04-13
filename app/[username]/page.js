@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { socialIcons } from "../lib/socialIcons";
 import { buildSocialUrl } from "../lib/buildSocialUrl";
 
-export const revalidate = 300;
+export const revalidate = 120;
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
