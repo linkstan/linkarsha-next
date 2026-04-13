@@ -187,24 +187,7 @@ border:"1px solid var(--border)"
 }}/>
 
 <div>{theme}</div>
-<button
-onClick={saveAppearance}
-style={{
-position:"fixed",
-right:30,
-bottom:30,
-padding:"12px 22px",
-borderRadius:"30px",
-border:"none",
-background:"#22c55e",
-color:"#fff",
-fontWeight:600,
-cursor:"pointer",
-boxShadow:"0 10px 30px rgba(0,0,0,.25)"
-}}
->
-Save Changes
-</button>
+
 </div>
 
 <div style={arrow}>→</div>
