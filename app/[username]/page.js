@@ -6,6 +6,7 @@ import { socialIcons } from "../lib/socialIcons";
 import { buildSocialUrl } from "../lib/buildSocialUrl";
 
 export const revalidate = 120;
+export const dynamic = "force-static";
 
 const supabase = createClient(
 process.env.NEXT_PUBLIC_SUPABASE_URL,
