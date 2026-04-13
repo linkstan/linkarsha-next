@@ -10,11 +10,13 @@ export default function PhonePreview(){
 const [profile,setProfile]=useState(null);
 const [blocks,setBlocks]=useState([]);
 const [appearance,setAppearance]=useState({});
+
 const header = appearance?.header || {};
 const socialLinks = appearance?.social_links || {};
+
 const activeSocial = Object.entries(socialLinks || {})
 .filter(([k,v]) => v && socialIcons[k]);
-  
+
 /* LOAD DATA */
 
 useEffect(()=>{
@@ -37,7 +39,12 @@ const {data:prof}=await supabase
 .single();
 
 setProfile(prof);
-setAppearance(prof?.profile_settings || {});
+
+/* store theme inside appearance for live editing */
+setAppearance({
+...(prof?.profile_settings || {}),
+theme: prof?.theme
+});
 
 /* BLOCKS */
 
@@ -78,11 +85,18 @@ function updateOverlay(e){
 setAppearance(prev=>({...prev, wallpaperOverlay:Number(e.detail)}));
 }
 
+/* LISTEN FOR THEME CHANGE */
+
+function updateTheme(e){
+setAppearance(prev=>({...prev, theme:e.detail}));
+}
+
 window.addEventListener("appearance-update",updateAppearance);
 window.addEventListener("blocks-update",updateBlocks);
 window.addEventListener("wallpaper-change",updateWallpaper);
 window.addEventListener("wallpaper-blur",updateBlur);
 window.addEventListener("wallpaper-overlay",updateOverlay);
+window.addEventListener("theme-change",updateTheme);
 
 return ()=>{
 window.removeEventListener("appearance-update",updateAppearance);
@@ -90,6 +104,7 @@ window.removeEventListener("blocks-update",updateBlocks);
 window.removeEventListener("wallpaper-change",updateWallpaper);
 window.removeEventListener("wallpaper-blur",updateBlur);
 window.removeEventListener("wallpaper-overlay",updateOverlay);
+window.removeEventListener("theme-change",updateTheme);
 };
 
 },[]);
@@ -121,7 +136,9 @@ const wallpaper = appearance?.wallpaper || null;
 const blur = appearance?.wallpaperBlur || 0;
 const overlay = appearance?.wallpaperOverlay ?? 0.25;
 
-const background = wallpaper || themeMap[profile?.theme] || "#0b0b12";
+/* USE LIVE THEME */
+
+const background = wallpaper || themeMap[appearance?.theme] || "#0b0b12";
 
 if(!profile) return null;
 
@@ -250,6 +267,11 @@ textAlign:"center"
 }}
 >
 {profile?.bio}
+</p>
+
+
+{/* HEADER SOCIAL */}
+
 {header.showSocialIcons && header.socialPosition==="header" && activeSocial.length>0 && (
 
 <div style={{
@@ -275,10 +297,33 @@ return(
 </div>
 
 )}
-</p>
 
 
-{/* BLOCKS */}
+/* BLOCKS */
+
+<div
+style={{
+width:"100%",
+display:"flex",
+flexDirection:"column",
+gap:10
+}}
+>
+
+{blocks.map((block)=>(
+<ButtonBlock
+key={block.id}
+block={block}
+buttons={appearance?.buttons || {}}
+themeBackground={background}
+/>
+))}
+
+</div>
+
+
+{/* BOTTOM SOCIAL */}
+
 {header.showSocialIcons && header.socialPosition==="bottom" && activeSocial.length>0 && (
 
 <div style={{
@@ -304,27 +349,6 @@ return(
 </div>
 
 )}
-  
-<div
-style={{
-width:"100%",
-display:"flex",
-flexDirection:"column",
-gap:10
-}}
->
-
-{blocks.map((block)=>(
-<ButtonBlock
-key={block.id}
-block={block}
-buttons={appearance?.buttons || {}}
-themeBackground={background}
-/>
-))}
-
-</div>
-
 
 </div>
 
