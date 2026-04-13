@@ -8,7 +8,6 @@ export default function Appearance(){
 
 const [editor,setEditor] = useState("main");
 const [theme,setTheme] = useState("Minimal");
-const [appearanceSettings,setAppearanceSettings] = useState({});
 
 async function saveAppearance(){
 
