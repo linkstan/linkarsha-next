@@ -9,22 +9,6 @@ export default function Appearance(){
 const [editor,setEditor] = useState("main");
 const [theme,setTheme] = useState("Minimal");
 
-async function saveAppearance(){
-
-const {data:{session}} = await supabase.auth.getSession();
-if(!session) return;
-
-await supabase
-.from("profiles")
-.update({
-theme:theme,
-profile_settings:appearanceSettings
-})
-.eq("id",session.user.id);
-
-alert("Changes saved");
-
-}
 const themePreview={
 
 Minimal:"#ffffff",
