@@ -60,6 +60,12 @@ const {data}=await supabase
 
 if(data?.theme){
 setTheme(data.theme);
+
+/* send live preview update */
+window.dispatchEvent(
+new CustomEvent("theme-change",{detail:data.theme})
+);
+
 }
 
 }
