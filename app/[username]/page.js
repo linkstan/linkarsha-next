@@ -19,7 +19,7 @@ const getProfile = cache(async (username) => {
 
 const { data } = await supabase
 .from("profiles")
-.select("*")
+.select("id,username,display_name,bio,avatar,theme,profile_settings")
 .eq("username", username)
 .single();
 
