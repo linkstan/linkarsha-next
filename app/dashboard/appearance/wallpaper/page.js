@@ -75,12 +75,16 @@ async function applyWallpaper(value){
 
 setActive(value);
 
+/* update preview instantly */
+
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{
 wallpaper:value,
 wallpaperBlur:blur
 }})
 );
+
+/* save in background */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -96,7 +100,7 @@ const settings=data?.profile_settings || {};
 settings.wallpaper=value;
 settings.wallpaperBlur=blur;
 
-await supabase
+supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
