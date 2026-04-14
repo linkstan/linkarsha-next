@@ -71,20 +71,19 @@ wallpaperBlur:settings.wallpaperBlur || 0
 
 }
 
-async function applyWallpaper(value){
+async function applyWallpaper(url){
 
-setActive(value);
-
-/* update preview instantly */
+/* instant preview */
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{
-wallpaper:value,
-wallpaperBlur:blur
-}})
+new CustomEvent("appearance-update",{detail:{wallpaper:url}})
 );
 
-/* save in background */
+/* local state */
+
+setActive(url);
+
+/* save */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
@@ -96,11 +95,9 @@ const {data} = await supabase
 .single();
 
 const settings=data?.profile_settings || {};
+settings.wallpaper=url;
 
-settings.wallpaper=value;
-settings.wallpaperBlur=blur;
-
-supabase
+await supabase
 .from("profiles")
 .update({profile_settings:settings})
 .eq("id",session.user.id);
