@@ -138,7 +138,9 @@ const overlay = appearance?.wallpaperOverlay ?? 0.25;
 
 /* USE LIVE THEME */
 
-const background = wallpaper || themeMap[appearance?.theme] || "#0b0b12";
+const background = appearance?.wallpaper
+? appearance.wallpaper
+: themeMap[appearance?.theme] || "#0b0b12";
 
 if(!profile) return null;
 
