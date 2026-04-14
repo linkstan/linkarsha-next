@@ -68,20 +68,19 @@ setSelected(data.theme);
 
 async function applyTheme(name){
 
-/* update UI instantly */
-
+/* 1 — instant preview */
 setSelected(name);
 
 window.dispatchEvent(
 new CustomEvent("theme-change",{detail:name})
 );
 
-/* save in background */
+/* 2 — save to database */
 
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
-supabase
+await supabase
 .from("profiles")
 .update({theme:name})
 .eq("id",session.user.id);
