@@ -291,6 +291,7 @@ justifyContent:"center"
 <ButtonBlock
 key={block.id}
 block={block}
+themeName={themeName}
 />
 ))}
 
