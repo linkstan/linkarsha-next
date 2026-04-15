@@ -42,8 +42,9 @@ avatarOverlap:true
 },
 
 hero:{
-height:220,
+height:260,
 text:"Hi there!",
+image:"/samira-hero.jpg",
 overlay:"rgba(255,255,255,0.6)"
 },
 
