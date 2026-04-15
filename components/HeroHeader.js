@@ -37,8 +37,8 @@ left:0,
 right:0,
 bottom:0,
 background:appearance?.heroImage
-? `url(${appearance.heroImage}) center/cover`
-: "#d8d8d8"
+? `url(${appearance.heroImage}) center/cover no-repeat`
+: theme.background || "#d8d8d8"
 }}
 />
 
