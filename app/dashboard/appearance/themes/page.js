@@ -41,7 +41,7 @@ const themes=[
 {name:"Vivid",category:"Creator",bg:"linear-gradient(45deg,#f83600,#f9d423)"},
 {name:"Energy",category:"Creator",bg:"linear-gradient(45deg,#f953c6,#b91d73)"},
 {name:"Skyline",category:"Creator",bg:"linear-gradient(45deg,#4facfe,#00f2fe)"},
-{name:"Dream",category:"Creator",bg:"linear-gradient(45deg,#a18cd1,#fbc2eb)"}
+{name:"Dream",category:"Creator",bg:"linear-gradient(45deg,#a18cd1,#fbc2eb)"},
 
 {name:"samira",category:"Creator",bg:"#e9ded9"}
 ];
