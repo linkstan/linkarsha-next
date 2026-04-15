@@ -76,7 +76,7 @@ async function applyWallpaper(url){
 /* instant preview */
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{wallpaper:url}})
+new CustomEvent("wallpaper-change",{detail:url})
 );
 
 /* local state */
@@ -149,10 +149,7 @@ const newBlur = Number(value);
 setBlur(newBlur);
 
 window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{
-wallpaper:active,
-wallpaperBlur:newBlur
-}})
+new CustomEvent("wallpaper-blur",{detail:newBlur})
 );
 
 const {data:{session}} = await supabase.auth.getSession();
