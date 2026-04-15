@@ -418,7 +418,7 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
  Show Username
 </label>
 
-<h4 style={{marginTop:20}}>Subtitle</h4>
+<h4 style={{marginTop:18}}>Subtitle</h4>
 
 <input
 type="text"
