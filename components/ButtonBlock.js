@@ -9,6 +9,8 @@ const theme = themes[themeName] || themes.minimal;
 /* appearance settings override theme buttons */
 buttons = buttons || theme.buttons || {};
 
+const isCTA = block?.data_json?.type === "cta";
+
 function formatTitle(title){
 
 if(!title) return "Link";
@@ -93,13 +95,15 @@ e.currentTarget.style.transform = "translateY(0) scale(1)";
 
 style={{
 display:"block",
-padding:12,
-marginTop:10,
+padding:isCTA ? 28 : (buttons?.padding || 12),
+marginTop:buttons?.spacing || 10,
 textDecoration:"none",
 transform:"translateY(0)",
 
 background:
-block?.data_json?.title?.toLowerCase()?.includes("premium")
+isCTA
+? "#e3a9a9"
+: block?.data_json?.title?.toLowerCase()?.includes("premium")
 ? "linear-gradient(135deg,#ff9966,#ff5e62)"
 : block?.data_json?.title?.toLowerCase()?.includes("vip")
 ? "linear-gradient(135deg,#f953c6,#b91d73)"
@@ -109,7 +113,7 @@ block?.data_json?.title?.toLowerCase()?.includes("premium")
 ? "rgba(255,255,255,0.12)"
 : buttons?.colorMode==="theme"
 ? (themeBackground || theme?.background || "rgba(0,0,0,.35)")
-: buttons?.color,
+: buttons?.bg,
 
 border:
 buttons?.style==="outline"
@@ -126,22 +130,26 @@ buttons?.style==="glass"
 borderRadius:
 buttons?.radius==="square"?4:
 buttons?.radius==="round"?10:
-buttons?.radius==="rounder"?18:999,
+buttons?.radius==="rounder"?18:
+buttons?.radius ?? 999,
 
 color:
 buttons?.textMode==="theme"
 ? "#ffffff"
-: buttons?.textColor,
+: buttons?.text || "#ffffff",
 
 boxShadow:
-buttons?.shadowLift
+isCTA
+? "0 10px 30px rgba(0,0,0,0.25)"
+: buttons?.shadowLift
 ? "0 10px 25px rgba(0,0,0,0.25)"
 : buttons?.depthEffect
 ? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
 
 transition:"transform .15s ease, box-shadow .2s ease",
-fontFamily:theme?.fonts?.buttons || "Inter"
+fontFamily:theme?.fonts?.buttons || "Inter",
+fontWeight:buttons?.fontWeight || 600
 }}
 >
 
