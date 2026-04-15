@@ -67,12 +67,10 @@ bg:"#e8bcbc",
 text:"#2d2d2d",
 shadow:false,
 spacing:16,
-padding:"16px",
+padding:16,
 fontWeight:600
 }
 
 }
-
-
 
 };
