@@ -159,6 +159,7 @@ if(!profile) return null;
 return(
 
 <div
+className="phone-preview"
 style={{
 width:260,
 height:520,
