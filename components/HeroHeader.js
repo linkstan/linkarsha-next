@@ -13,16 +13,16 @@ return(
 <div
 style={{
 width:"100%",
-height:hero.height || 220,
+height:hero.height || 260,
 position:"relative",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
 overflow:"hidden",
 
-/* curved hero bottom */
-borderBottomLeftRadius:"40% 80px",
-borderBottomRightRadius:"40% 80px"
+/* deep curved bottom like samira theme */
+borderBottomLeftRadius:"50% 120px",
+borderBottomRightRadius:"50% 120px"
 }}
 >
 
@@ -68,9 +68,9 @@ background:hero.overlay
 style={{
 position:"relative",
 zIndex:2,
-fontSize:28,
-fontWeight:600,
-fontFamily:"var(--font-playfair)",
+fontSize:36,
+fontWeight:400,
+fontFamily:"Dancing Script, cursive",
 textAlign:"center"
 }}
 >
