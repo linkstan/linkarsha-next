@@ -43,6 +43,7 @@ const themes=[
 {name:"Skyline",category:"Creator",bg:"linear-gradient(45deg,#4facfe,#00f2fe)"},
 {name:"Dream",category:"Creator",bg:"linear-gradient(45deg,#a18cd1,#fbc2eb)"}
 
+{name:"samira",category:"Creator",bg:"#e9ded9"}
 ];
 
 useEffect(()=>{
