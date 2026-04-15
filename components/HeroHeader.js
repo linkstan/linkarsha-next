@@ -18,7 +18,11 @@ position:"relative",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
-overflow:"hidden"
+overflow:"hidden",
+
+/* curved hero bottom */
+borderBottomLeftRadius:"40% 80px",
+borderBottomRightRadius:"40% 80px"
 }}
 >
 
@@ -33,6 +37,8 @@ right:0,
 bottom:0,
 background:appearance?.heroImage
 ? `url(${appearance.heroImage}) center/cover no-repeat`
+: hero?.image
+? `url(${hero.image}) center/cover no-repeat`
 : theme.background || "#d8d8d8"
 }}
 />
@@ -62,9 +68,10 @@ background:hero.overlay
 style={{
 position:"relative",
 zIndex:2,
-fontSize:22,
+fontSize:28,
 fontWeight:600,
-fontFamily:"var(--font-playfair)"
+fontFamily:"var(--font-playfair)",
+textAlign:"center"
 }}
 >
 {hero.text}
