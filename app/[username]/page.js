@@ -1,3 +1,4 @@
+import ThemeRenderer from "../../components/ThemeRenderer";
 import { themes } from "../lib/themes";
 import HeroHeader from "../../components/HeroHeader";
 import { cache } from "react";
