@@ -17,6 +17,10 @@ const header = appearance?.header || {};
 const themeName = appearance?.theme || "minimal";
 const theme = themes[themeName] || themes.minimal;
 const fonts = theme.fonts || {};
+const avatarConfig = theme.avatar || {};
+const avatarSize = avatarConfig.size || 90;
+const avatarBorder = avatarConfig.border || "0px solid transparent";
+const avatarOverlap = theme.layout?.avatarOverlap;
 const socialLinks = appearance?.social_links || {};
 
 const activeSocial = Object.entries(socialLinks || {})
@@ -230,11 +234,14 @@ alignItems:"center"
 
 <div
 style={{
-width:80,
-height:80,
+width:avatarSize,
+height:avatarSize,
 borderRadius:"50%",
 overflow:"hidden",
-marginBottom:12
+marginBottom:12,
+border:avatarBorder,
+marginTop:avatarOverlap ? -avatarSize/2 : 0,
+background:"#fff"
 }}
 >
 
