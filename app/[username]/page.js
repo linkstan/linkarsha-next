@@ -142,7 +142,7 @@ backgroundPosition:"center",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-paddingTop:40,
+paddingTop: theme.layout?.hero ? 0 : 40,
 position:"relative",
 color:"#fff"
 }}>
