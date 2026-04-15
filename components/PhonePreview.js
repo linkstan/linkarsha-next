@@ -1,5 +1,6 @@
 "use client";
 
+import { themes } from "../app/lib/themes";
 import HeroHeader from "./HeroHeader";
 import { useEffect,useState } from "react";
 import { supabase } from "../app/lib/supabase";
@@ -208,7 +209,8 @@ background:`rgba(0,0,0,${overlay})`
 
 
 {/* CONTENT */}
-
+<HeroHeader profile={profile} appearance={appearance} />
+  
 <div
 style={{
 position:"relative",
