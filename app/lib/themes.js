@@ -62,11 +62,13 @@ border:"6px solid #ffffff"
 },
 
 buttons:{
-radius:40,
+radius:999,
 bg:"#e8bcbc",
 text:"#2d2d2d",
 shadow:false,
-spacing:16
+spacing:16,
+padding:"16px",
+fontWeight:600
 }
 
 }
