@@ -1,5 +1,6 @@
 "use client";
 
+import HeroHeader from "./HeroHeader";
 import { useEffect,useState } from "react";
 import { supabase } from "../app/lib/supabase";
 import ButtonBlock from "./ButtonBlock";
