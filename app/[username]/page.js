@@ -192,13 +192,20 @@ marginBottom:20
 }}
 />
 
-<h1>{profile.display_name || profile.username}</h1>
+<h1 style={{
+fontFamily:theme.fonts?.name || "Inter",
+fontSize:28,
+fontWeight:600
+}}>
+{profile.display_name || profile.username}
+</h1>
 
 {appearance?.header?.subtitle && (
 <div style={{
+fontFamily:theme.fonts?.bio || "Inter",
 opacity:.85,
 marginTop:4,
-fontSize:16
+fontSize:18
 }}>
 {appearance.header.subtitle}
 </div>
