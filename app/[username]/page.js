@@ -147,7 +147,7 @@ position:"relative",
 color:"#fff"
 }}>
   
-<HeroHeader profile={profile} appearance={appearance} />
+<HeroHeader profile={profile} appearance={appearance} theme={theme} />
   
 {wallpaper && blur>0 && (
 <div style={{
