@@ -14,6 +14,7 @@ const [blocks,setBlocks]=useState([]);
 const [appearance,setAppearance]=useState({});
 
 const header = appearance?.header || {};
+const subtitle = appearance?.subtitle || "";
 const themeName = appearance?.theme || "minimal";
 const theme = themes[themeName] || themes.minimal;
 const fonts = theme.fonts || {};
