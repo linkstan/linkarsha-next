@@ -1,13 +1,8 @@
 "use client";
 
-import { themes } from "../app/lib/themes";
+export default function HeroHeader({ appearance, theme }) {
 
-export default function HeroHeader({ profile, appearance, theme }) {
-
-const themeName = appearance?.theme || "minimal";
-const themeData = themes[themeName] || themes.minimal;
-
-if(!themeData.layout?.hero){
+if(!theme?.layout?.hero){
 return null;
 }
 
@@ -18,7 +13,7 @@ return(
 <div
 style={{
 width:"100%",
-height:hero.height || 200,
+height:hero.height || 220,
 position:"relative",
 display:"flex",
 alignItems:"center",
