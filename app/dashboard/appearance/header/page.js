@@ -35,7 +35,8 @@ bioFont:"Lora",
 
 displaySize:22,
 usernameSize:14,
-bioSize:15
+bioSize:15,
+subtitle:""
 });
 
 const [avatar,setAvatar]=useState(null);
