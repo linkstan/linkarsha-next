@@ -5,9 +5,9 @@ import { themes } from "../app/lib/themes";
 export default function HeroHeader({ profile, appearance, theme }) {
 
 const themeName = appearance?.theme || "minimal";
-const theme = themes[themeName] || themes.minimal;
+const themeData = themes[themeName] || themes.minimal;
 
-if(!theme.layout?.hero){
+if(!themeData.layout?.hero){
 return null;
 }
 
