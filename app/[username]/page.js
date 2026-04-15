@@ -1,3 +1,4 @@
+import HeroHeader from "../../components/HeroHeader";
 import { cache } from "react";
 import React from "react";
 import ButtonBlock from "../../components/ButtonBlock";
@@ -142,7 +143,9 @@ paddingTop:40,
 position:"relative",
 color:"#fff"
 }}>
-
+  
+<HeroHeader profile={profile} appearance={appearance} />
+  
 {wallpaper && blur>0 && (
 <div style={{
 position:"fixed",
@@ -185,7 +188,17 @@ marginBottom:20
 }}
 />
 
-<h1>{profile.display_name}</h1>
+<h1>{profile.display_name || profile.username}</h1>
+
+{appearance?.header?.subtitle && (
+<div style={{
+opacity:.85,
+marginTop:4,
+fontSize:16
+}}>
+{appearance.header.subtitle}
+</div>
+)}
 
 <div style={{opacity:.7}}>
 @{profile.username}
