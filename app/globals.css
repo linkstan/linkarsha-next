@@ -100,3 +100,36 @@ to{
 opacity:0.9;
 }
 }
+/* ---------- Smooth Theme Transitions ---------- */
+
+body{
+transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Phone preview smooth background */
+
+.phone-preview{
+transition: background 0.35s ease;
+}
+
+/* Buttons smooth hover */
+
+a{
+transition:
+transform .18s ease,
+box-shadow .18s ease,
+background .25s ease,
+opacity .18s ease;
+}
+
+/* Avatar smooth movement */
+
+.avatar{
+transition: transform .25s ease;
+}
+
+/* Hero smooth transition */
+
+.hero{
+transition: background .4s ease, opacity .3s ease;
+}
