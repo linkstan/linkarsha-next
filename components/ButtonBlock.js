@@ -1,8 +1,13 @@
 "use client";
 
-export default function ButtonBlock({ block, buttons, themeBackground }) {
+import { themes } from "../app/lib/themes";
 
-buttons = buttons || {};
+export default function ButtonBlock({ block, buttons, themeBackground, themeName="minimal" }) {
+
+const theme = themes[themeName] || themes.minimal;
+
+/* appearance settings override theme buttons */
+buttons = buttons || theme.buttons || {};
 
 function formatTitle(title){
 
@@ -103,7 +108,7 @@ block?.data_json?.title?.toLowerCase()?.includes("premium")
 : buttons?.style==="glass"
 ? "rgba(255,255,255,0.12)"
 : buttons?.colorMode==="theme"
-? (themeBackground || "rgba(0,0,0,.35)")
+? (themeBackground || theme?.background || "rgba(0,0,0,.35)")
 : buttons?.color,
 
 border:
@@ -135,7 +140,8 @@ buttons?.shadowLift
 ? "0 6px 0 rgba(0,0,0,0.35)"
 : "none",
 
-transition:"transform .15s ease, box-shadow .2s ease"
+transition:"transform .15s ease, box-shadow .2s ease",
+fontFamily:theme?.fonts?.buttons || "Inter"
 }}
 >
 
