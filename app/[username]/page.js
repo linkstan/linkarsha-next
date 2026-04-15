@@ -69,6 +69,8 @@ Profile not found
 /* SETTINGS */
 
 const appearance = profile.profile_settings || {};
+const themeName = profile.theme || "minimal";
+const theme = themes[themeName] || themes.minimal;
 const header = appearance.header || {};
 const socialLinks = appearance.social_links || {};
 const showSocialIcons = header.showSocialIcons;
