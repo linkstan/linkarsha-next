@@ -139,7 +139,27 @@ transition:"transform .15s ease, box-shadow .2s ease"
 }}
 >
 
+<div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+
+<div>
 {formatTitle(block?.data_json?.title || "Link")}
+</div>
+
+{block?.data_json?.subtitle && (
+
+<div
+style={{
+fontSize:12,
+opacity:.8,
+marginTop:3
+}}
+>
+{block.data_json.subtitle}
+</div>
+
+)}
+
+</div>
 
 </a>
 
