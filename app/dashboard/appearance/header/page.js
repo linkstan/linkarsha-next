@@ -67,34 +67,6 @@ displayAdvanced:false,
 }
 
 }
-<input
-type="text"
-placeholder="Subtitle (example: business coach)"
-value={appearanceSettings.subtitle || ""}
-onChange={(e)=>{
-
-const newValue = e.target.value;
-
-setAppearanceSettings(prev=>({
-...prev,
-subtitle:newValue
-}));
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{
-detail:{ subtitle:newValue }
-})
-);
-
-}}
-style={{
-width:"100%",
-padding:"12px",
-borderRadius:"10px",
-border:"1px solid var(--border)",
-marginTop:"10px"
-}}
-/>
 
 async function loadProfile(){
 
@@ -445,6 +417,22 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 />
  Show Username
 </label>
+
+<h4 style={{marginTop:20}}>Subtitle</h4>
+
+<input
+type="text"
+placeholder="Example: business coach"
+value={settings.subtitle || ""}
+onChange={(e)=>updateSetting("subtitle", e.target.value)}
+style={{
+width:"100%",
+padding:"10px",
+borderRadius:"10px",
+border:"1px solid var(--border)",
+marginTop:"6px"
+}}
+/>
 
 </div>
 
