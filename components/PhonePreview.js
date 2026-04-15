@@ -252,7 +252,16 @@ objectFit:"cover"
 
 {/* NAME */}
 
-<h3>
+<h3
+style={{
+fontFamily:
+fonts.name==="Playfair Display"
+? "var(--font-playfair)"
+: fonts.name==="Dancing Script"
+? "var(--font-dancing)"
+: "var(--font-inter)"
+}}
+>
 {profile?.display_name || profile?.username}
 </h3>
 
@@ -271,7 +280,13 @@ style={{
 opacity:.7,
 fontSize:13,
 marginBottom:20,
-textAlign:"center"
+textAlign:"center",
+fontFamily:
+fonts.bio==="Dancing Script"
+? "var(--font-dancing)"
+: fonts.bio==="Playfair Display"
+? "var(--font-playfair)"
+: "var(--font-inter)"
 }}
 >
 {profile?.bio}
