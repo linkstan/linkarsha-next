@@ -122,7 +122,7 @@ Royal:"linear-gradient(135deg,#141e30,#243b55)",
 Luxury:"#000000"
 };
 
-const background = wallpaper || themeMap[profile.theme] || "#0b0b12";
+const background = wallpaper || theme.background || "#0b0b12";
 
 /* BLOCKS */
 
