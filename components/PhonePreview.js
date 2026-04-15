@@ -273,6 +273,20 @@ fonts.name==="Playfair Display"
 >
 {profile?.display_name || profile?.username}
 </h3>
+{subtitle && (
+
+<div
+style={{
+fontFamily:"var(--font-dancing)",
+fontSize:22,
+marginTop:6,
+opacity:.85
+}}
+>
+{subtitle}
+</div>
+
+)}
 
 
 {/* USERNAME */}
