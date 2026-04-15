@@ -2,7 +2,7 @@
 
 import { themes } from "../app/lib/themes";
 
-export default function HeroHeader({ profile, appearance }) {
+export default function HeroHeader({ profile, appearance, theme })
 
 const themeName = appearance?.theme || "minimal";
 const theme = themes[themeName] || themes.minimal;
