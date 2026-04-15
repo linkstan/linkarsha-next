@@ -1,0 +1,72 @@
+}
+export const themes = {
+
+minimal:{
+name:"Minimal",
+
+layout:{
+hero:false,
+avatarOverlap:false
+},
+
+background:"#ffffff",
+
+fonts:{
+name:"Inter",
+bio:"Inter",
+buttons:"Inter"
+},
+
+avatar:{
+size:90,
+border:"0px solid transparent"
+},
+
+buttons:{
+radius:12,
+bg:"#111111",
+text:"#ffffff",
+shadow:false,
+spacing:12
+}
+
+},
+
+
+
+samira:{
+name:"Samira Coach",
+
+layout:{
+hero:true,
+avatarOverlap:true
+},
+
+hero:{
+height:220,
+text:"Hi there!",
+overlay:"rgba(255,255,255,0.6)"
+},
+
+background:"#e9ded9",
+
+fonts:{
+name:"Playfair Display",
+bio:"Dancing Script",
+buttons:"Inter"
+},
+
+avatar:{
+size:120,
+border:"6px solid #ffffff"
+},
+
+buttons:{
+radius:40,
+bg:"#e8bcbc",
+text:"#2d2d2d",
+shadow:false,
+spacing:16
+}
+
+}
