@@ -185,10 +185,15 @@ src={profile.avatar || ""}
 style={{
 width:theme.avatar?.size || 110,
 height:theme.avatar?.size || 110,
-borderRadius:theme.avatar?.borderRadius || "50%",
+borderRadius:"50%",
 border:theme.avatar?.border || "none",
 objectFit:"cover",
-marginBottom:20
+
+/* avatar overlap system */
+marginTop: theme.layout?.avatarOverlap ? -60 : 0,
+marginBottom:20,
+position:"relative",
+zIndex:3
 }}
 />
 
