@@ -147,9 +147,9 @@ paddingTop: theme.layout?.hero ? 0 : 40,
 position:"relative",
 color:"#fff"
 }}>
-  
-<HeroHeader profile={profile} appearance={appearance} theme={theme} />
-  
+
+{/* WALLPAPER BLUR */}
+
 {wallpaper && blur>0 && (
 <div style={{
 position:"fixed",
@@ -162,6 +162,8 @@ WebkitBackdropFilter:`blur(${blur}px)`
 }}/>
 )}
 
+{/* WALLPAPER OVERLAY */}
+
 {wallpaper && overlay && (
 <div style={{
 position:"fixed",
@@ -173,135 +175,23 @@ background:"rgba(0,0,0,0.25)"
 }}/>
 )}
 
+{/* THEME RENDERER */}
+
 <div style={{
 position:"relative",
 zIndex:2,
 display:"flex",
 flexDirection:"column",
-alignItems:"center"
+alignItems:"center",
+width:"100%"
 }}>
 
-<img
-src={profile.avatar || ""}
-style={{
-width:theme.avatar?.size || 110,
-height:theme.avatar?.size || 110,
-borderRadius:"50%",
-border:theme.avatar?.border || "none",
-objectFit:"cover",
-
-/* avatar overlap system */
-marginTop: theme.layout?.avatarOverlap ? -60 : 0,
-marginBottom:20,
-position:"relative",
-zIndex:3
-}}
+<ThemeRenderer
+profile={profile}
+appearance={appearance}
+theme={theme}
+blocks={blocks}
 />
-
-<h1 style={{
-fontFamily:theme.fonts?.name || "Inter",
-fontSize:28,
-fontWeight:600
-}}>
-{profile.display_name || profile.username}
-</h1>
-
-{appearance?.header?.subtitle && (
-<div style={{
-fontFamily:theme.fonts?.bio || "Inter",
-opacity:.85,
-marginTop:4,
-fontSize:18
-}}>
-{appearance.header.subtitle}
-</div>
-)}
-
-<div style={{opacity:.7}}>
-@{profile.username}
-</div>
-
-<p style={{
-maxWidth:320,
-textAlign:"center",
-opacity:.8
-}}>
-{profile.bio}
-</p>
-
-{showSocialIcons && socialPosition==="header" && activeSocial.length>0 && (
-
-<div style={{
-display:"flex",
-gap:18,
-marginTop:20,
-flexWrap:"wrap",
-justifyContent:"center",
-alignItems:"center",
-maxWidth:280
-}}>
-
-{activeSocial.map(({platform,username},i)=>{
-
-const Icon = socialIcons[platform];
-const IconElement = Icon || null;
-
-return(
-
-<a
-key={platform+i}
-href={buildSocialUrl(platform,username)}
-target="_blank"
-rel="noopener noreferrer"
-className="social-icon"
-style={{
-width:38,
-height:38,
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-color:"rgba(255,255,255,0.95)",
-fontSize:22,
-borderRadius:"50%",
-cursor:"pointer",
-backdropFilter:"blur(8px)",
-background:"rgba(255,255,255,0.08)"
-}}
->
-
-<div
-style={{
-width:26,
-height:26,
-display:"flex",
-alignItems:"center",
-justifyContent:"center"
-}}
->
-{IconElement}
-</div>
-
-</a>
-
-);
-
-})}
-
-</div>
-
-)}
-
-<div style={{marginTop:40,width:320}}>
-
-{blocks.map(block=>(
-<ButtonBlock
-key={block.id}
-block={block}
-themeName={themeName}
-/>
-))}
-
-</div>
 
 </div>
 
