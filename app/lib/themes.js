@@ -1,4 +1,3 @@
-}
 export const themes = {
 
 minimal:{
@@ -70,3 +69,7 @@ spacing:16
 }
 
 }
+
+
+
+};
