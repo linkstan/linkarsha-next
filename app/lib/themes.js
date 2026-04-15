@@ -1,76 +1,114 @@
-export const themes = {
+/* ------------------------------------------------ */
+/* THEME BUILDER                                    */
+/* allows creating themes with very small configs   */
+/* ------------------------------------------------ */
 
-minimal:{
-name:"Minimal",
+function createTheme(config={}){
 
-layout:{
-hero:false,
-avatarOverlap:false
-},
+return {
 
-background:"#ffffff",
-
-fonts:{
-name:"Inter",
-bio:"Inter",
-buttons:"Inter"
-},
-
-avatar:{
-size:90,
-border:"0px solid transparent"
-},
-
-buttons:{
-radius:12,
-bg:"#111111",
-text:"#ffffff",
-shadow:false,
-spacing:12
-}
-
-},
-
-
-
-samira:{
-name:"Samira Coach",
+name: config.name || "Theme",
 
 layout:{
-hero:true,
-avatarOverlap:true
+hero: config.hero ?? false,
+avatarOverlap: config.avatarOverlap ?? false
 },
 
 hero:{
-height:260,
-text:"Hi there!",
-image:"/samira-hero.jpg",
-overlay:"rgba(255,255,255,0.6)"
+height: config.heroHeight || 240,
+text: config.heroText || "",
+image: config.heroImage || null,
+overlay: config.heroOverlay || null
 },
 
-background:"#e9ded9",
+background: config.background || "#ffffff",
 
 fonts:{
-name:"Playfair Display",
-bio:"Dancing Script",
-buttons:"Inter"
+name: config.nameFont || "Inter",
+bio: config.bioFont || "Inter",
+buttons: config.buttonFont || "Inter"
 },
 
 avatar:{
-size:120,
-border:"6px solid #ffffff"
+size: config.avatarSize || 100,
+border: config.avatarBorder || "0px solid transparent"
 },
 
 buttons:{
-radius:999,
-bg:"#e8bcbc",
-text:"#2d2d2d",
-shadow:false,
-spacing:16,
-padding:16,
-fontWeight:600
+radius: config.buttonRadius ?? 12,
+bg: config.buttonColor || "#111111",
+text: config.buttonText || "#ffffff",
+shadow: config.buttonShadow || false,
+spacing: config.buttonSpacing || 12,
+padding: config.buttonPadding || 12,
+fontWeight: config.buttonWeight || 600
 }
 
+};
+
 }
+
+
+/* ------------------------------------------------ */
+/* THEMES                                           */
+/* ------------------------------------------------ */
+
+export const themes = {
+
+/* ---------- MINIMAL ---------- */
+
+minimal: createTheme({
+
+name:"Minimal",
+
+background:"#ffffff",
+
+nameFont:"Inter",
+bioFont:"Inter",
+buttonFont:"Inter",
+
+avatarSize:90,
+avatarBorder:"0px solid transparent",
+
+buttonRadius:12,
+buttonColor:"#111111",
+buttonText:"#ffffff",
+buttonSpacing:12
+
+}),
+
+
+
+/* ---------- SAMIRA COACH ---------- */
+
+samira: createTheme({
+
+name:"Samira Coach",
+
+hero:true,
+avatarOverlap:true,
+
+heroHeight:260,
+heroText:"Hi there!",
+heroImage:"/samira-hero.jpg",
+heroOverlay:"rgba(255,255,255,0.6)",
+
+background:"#e9ded9",
+
+nameFont:"Playfair Display",
+bioFont:"Dancing Script",
+buttonFont:"Inter",
+
+avatarSize:120,
+avatarBorder:"6px solid #ffffff",
+
+buttonRadius:999,
+buttonColor:"#e8bcbc",
+buttonText:"#2d2d2d",
+buttonSpacing:16,
+buttonPadding:16,
+buttonWeight:600
+
+})
 
 };
