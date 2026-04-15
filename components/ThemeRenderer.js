@@ -32,12 +32,15 @@ width:"100%"
 <img
 src={profile.avatar || ""}
 style={{
-width:theme?.avatar?.size || 110,
-height:theme?.avatar?.size || 110,
+width:theme?.avatar?.size || 120,
+height:theme?.avatar?.size || 120,
 borderRadius:"50%",
 border:theme?.avatar?.border || "none",
 objectFit:"cover",
-marginTop:theme?.layout?.avatarOverlap ? -60 : 20,
+
+/* deeper overlap so avatar fits hero curve */
+marginTop:theme?.layout?.avatarOverlap ? -80 : 20,
+
 marginBottom:20,
 position:"relative",
 zIndex:3
@@ -49,7 +52,7 @@ zIndex:3
 <h1
 style={{
 fontFamily:theme?.fonts?.name || "Inter",
-fontSize:32,
+fontSize:34,
 margin:0,
 textAlign:"center"
 }}
@@ -63,9 +66,9 @@ textAlign:"center"
 
 <div
 style={{
-fontFamily:theme?.fonts?.bio || "Inter",
-fontSize:22,
-opacity:.85,
+fontFamily:theme?.fonts?.bio || "Dancing Script",
+fontSize:26,
+opacity:.9,
 marginTop:6,
 textAlign:"center"
 }}
@@ -77,10 +80,12 @@ textAlign:"center"
 
 {/* USERNAME */}
 
-<div style={{
+<div
+style={{
 opacity:.7,
 marginTop:6
-}}>
+}}
+>
 @{profile.username}
 </div>
 
@@ -92,7 +97,7 @@ marginTop:6
 style={{
 maxWidth:320,
 textAlign:"center",
-opacity:.8,
+opacity:.85,
 marginTop:10
 }}
 >
