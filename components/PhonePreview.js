@@ -14,6 +14,9 @@ const [blocks,setBlocks]=useState([]);
 const [appearance,setAppearance]=useState({});
 
 const header = appearance?.header || {};
+const themeName = appearance?.theme || "minimal";
+const theme = themes[themeName] || themes.minimal;
+const fonts = theme.fonts || {};
 const socialLinks = appearance?.social_links || {};
 
 const activeSocial = Object.entries(socialLinks || {})
