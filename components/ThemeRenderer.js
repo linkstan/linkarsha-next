@@ -10,6 +10,8 @@ theme,
 blocks
 }){
 
+const themeName = profile?.theme || "minimal";
+
 return(
 
 <div
@@ -30,12 +32,12 @@ width:"100%"
 <img
 src={profile.avatar || ""}
 style={{
-width:theme.avatar?.size || 110,
-height:theme.avatar?.size || 110,
+width:theme?.avatar?.size || 110,
+height:theme?.avatar?.size || 110,
 borderRadius:"50%",
-border:theme.avatar?.border || "none",
+border:theme?.avatar?.border || "none",
 objectFit:"cover",
-marginTop:theme.layout?.avatarOverlap ? -60 : 20,
+marginTop:theme?.layout?.avatarOverlap ? -60 : 20,
 marginBottom:20,
 position:"relative",
 zIndex:3
@@ -46,9 +48,10 @@ zIndex:3
 
 <h1
 style={{
-fontFamily:theme.fonts?.name,
+fontFamily:theme?.fonts?.name || "Inter",
 fontSize:32,
-margin:0
+margin:0,
+textAlign:"center"
 }}
 >
 {profile.display_name || profile.username}
@@ -60,10 +63,11 @@ margin:0
 
 <div
 style={{
-fontFamily:theme.fonts?.bio,
+fontFamily:theme?.fonts?.bio || "Inter",
 fontSize:22,
 opacity:.85,
-marginTop:6
+marginTop:6,
+textAlign:"center"
 }}
 >
 {appearance.header.subtitle}
@@ -71,18 +75,46 @@ marginTop:6
 
 )}
 
-{/* BUTTONS */}
+{/* USERNAME */}
 
 <div style={{
-marginTop:40,
-width:320
+opacity:.7,
+marginTop:6
 }}>
+@{profile.username}
+</div>
+
+{/* BIO */}
+
+{profile.bio && (
+
+<p
+style={{
+maxWidth:320,
+textAlign:"center",
+opacity:.8,
+marginTop:10
+}}
+>
+{profile.bio}
+</p>
+
+)}
+
+{/* BUTTONS */}
+
+<div
+style={{
+width:320,
+marginTop:40
+}}
+>
 
 {blocks.map(block=>(
 <ButtonBlock
 key={block.id}
 block={block}
-themeName={profile.theme}
+themeName={themeName}
 />
 ))}
 
