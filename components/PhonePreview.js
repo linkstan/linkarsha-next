@@ -218,7 +218,7 @@ background:`rgba(0,0,0,${overlay})`
 
 
 {/* CONTENT */}
-<HeroHeader profile={profile} appearance={appearance} />
+<HeroHeader appearance={appearance} theme={theme} />
   
 <div
 style={{
