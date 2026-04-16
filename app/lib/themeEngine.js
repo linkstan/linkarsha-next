@@ -1,33 +1,28 @@
 import { themes } from "./themes";
 
-export function getTheme(themeName, appearance = {}) {
+/* merge theme + user appearance */
+
+export function getTheme(themeName, appearance={}){
 
 const baseTheme = themes[themeName] || themes.minimal;
 
-const headerSettings = appearance.header || {};
-const buttonSettings = appearance.buttons || {};
-const colorSettings = appearance.colors || {};
+/* header overrides */
 
-return {
+const header = appearance?.header || {};
+
+return{
 
 ...baseTheme,
 
 hero:{
 ...baseTheme.hero,
-text: headerSettings.heroText ?? baseTheme.hero.text,
-image: headerSettings.heroImage ?? baseTheme.hero.image,
-opacity: headerSettings.heroOpacity ?? 1
+text: header.heroText || baseTheme.hero.text,
+image: header.heroImage || baseTheme.hero.image
 },
 
 buttons:{
 ...baseTheme.buttons,
-...buttonSettings
-},
-
-colors:{
-background: colorSettings.background ?? baseTheme.background,
-text: colorSettings.text ?? "#ffffff",
-title: colorSettings.title ?? "#ffffff"
+bg: appearance?.buttons?.color || baseTheme.buttons.bg
 }
 
 };
