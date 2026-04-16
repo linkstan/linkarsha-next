@@ -62,7 +62,6 @@ background:"rgba(255,255,255,0.65)"
 {/* HERO TEXT */}
 
 {heroText && (
-
 <div
 style={{
 position:"absolute",
@@ -74,12 +73,11 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
-textShadow:"0 0 25px rgba(255,255,255,0.95), 0 0 50px rgba(255,255,255,0.9)"
+textShadow:"0 0 25px rgba(255,255,255,0.95)"
 }}
 >
 {heroText}
 </div>
-
 )}
 
 {/* AVATAR NOTCH */}
