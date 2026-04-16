@@ -15,6 +15,10 @@ const heroImage = header.heroImage || hero.image;
 const heroText = header.heroText || hero.text;
 const heroOpacity = (header.heroOpacity ?? 100) / 100;
 
+/* auto mobile hero positioning */
+
+const heroPosition = header.heroPosition || "center";
+
 return(
 
 <div
@@ -37,14 +41,15 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:`url(${heroImage}) center/cover no-repeat`,
-opacity:heroOpacity
+background:`url(${heroImage}) ${heroPosition}/cover no-repeat`,
+opacity:heroOpacity,
+transition:"opacity .3s ease"
 }}
 />
 
 )}
 
-{/* SOFT WHITE FADE */}
+{/* SOFT WHITE FADE (improves text readability) */}
 
 <div
 style={{
@@ -53,7 +58,7 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:"rgba(255,255,255,0.65)"
+background:"linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.55))"
 }}
 />
 
@@ -72,7 +77,10 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
-textShadow:"0 0 25px rgba(255,255,255,0.95)"
+
+/* soft brush glow */
+
+textShadow:"0 0 25px rgba(255,255,255,0.95), 0 0 40px rgba(255,255,255,0.9)"
 }}
 >
 {heroText}
