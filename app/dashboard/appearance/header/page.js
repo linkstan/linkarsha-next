@@ -12,6 +12,7 @@ const router = useRouter();
 
 const [themeName,setThemeName]=useState("minimal");
 const [theme,setTheme]=useState(null);
+const themeFeatures = theme?.features || {};
 
 const [settings,setSettings]=useState({
 layout:"classic",
