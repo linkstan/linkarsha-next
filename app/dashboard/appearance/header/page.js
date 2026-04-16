@@ -9,6 +9,9 @@ export default function HeaderEditor(){
 
 const router = useRouter();
 
+const [themeName,setThemeName]=useState("minimal");
+const [theme,setTheme]=useState(null);
+
 const [settings,setSettings]=useState({
 layout:"classic",
 
@@ -37,7 +40,15 @@ bioFont:"Lora",
 displaySize:22,
 usernameSize:14,
 bioSize:15,
-subtitle:""
+
+subtitle:"",
+
+/* HERO SETTINGS */
+
+heroText:"",
+heroImage:null,
+heroOpacity:100
+
 });
 
 const [avatar,setAvatar]=useState(null);
@@ -54,10 +65,14 @@ if(!session) return;
 
 const {data}=await supabase
 .from("profiles")
-.select("profile_settings")
+.select("profile_settings, theme")
 .eq("id",session.user.id)
 .single();
 
+if(data?.theme){
+setThemeName(data.theme);
+setTheme(themes[data.theme] || themes.minimal);
+}
 if(data?.profile_settings?.header){
 
 setSettings(prev=>({
@@ -315,6 +330,59 @@ style={{display:"none"}}
 </div>
 
 </div>
+{theme?.features?.hero && (
+
+<div style={section}>
+
+<h3>Hero</h3>
+
+{/* Hero Text */}
+
+{theme?.features?.heroText && (
+
+<>
+<div style={{marginBottom:6}}>Hero Text</div>
+
+<input
+type="text"
+value={settings.heroText || ""}
+onChange={(e)=>updateSetting("heroText",e.target.value)}
+style={{
+width:"100%",
+padding:"10px",
+borderRadius:"10px",
+border:"1px solid var(--border)"
+}}
+/>
+
+</>
+
+)}
+
+{/* Hero Opacity */}
+
+{theme?.features?.heroOpacity && (
+
+<div style={{marginTop:20}}>
+
+<div>Hero Opacity ({settings.heroOpacity}%)</div>
+
+<input
+type="range"
+min="0"
+max="100"
+value={settings.heroOpacity || 100}
+onChange={(e)=>updateSetting("heroOpacity",Number(e.target.value))}
+style={{width:"100%"}}
+/>
+
+</div>
+
+)}
+
+</div>
+
+)}
 
 {/* LAYOUT */}
 
