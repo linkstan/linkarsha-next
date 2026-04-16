@@ -425,7 +425,7 @@ border:"1px solid var(--border)"
 
 <div style={{marginTop:20}}>
 
-<div>Hero Opacity ({settings.heroOpacity}%)</div>
+<div>Hero Opacity ({settings.heroOpacity || 100}%)</div>
 
 <input
 type="range"
@@ -435,10 +435,6 @@ value={settings.heroOpacity || 100}
 onChange={(e)=>updateSetting("heroOpacity",Number(e.target.value))}
 style={{width:"100%"}}
 />
-
-</div>
-
-)}
 
 </div>
 
