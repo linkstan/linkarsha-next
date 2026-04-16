@@ -15,16 +15,20 @@ const heroImage = header.heroImage || hero.image;
 const heroText = header.heroText || hero.text;
 const heroOpacity = (header.heroOpacity ?? 100) / 100;
 
-/* auto mobile hero positioning */
+/* auto hero positioning */
 
 const heroPosition = header.heroPosition || "center";
+
+/* responsive hero height */
+
+const heroHeight = hero.height || 260;
 
 return(
 
 <div
 style={{
 width:"100%",
-height:hero.height || 260,
+height:heroHeight,
 position:"relative",
 overflow:"hidden"
 }}
@@ -41,7 +45,10 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:`url(${heroImage}) ${heroPosition}/cover no-repeat`,
+backgroundImage:`url(${heroImage})`,
+backgroundSize:"cover",
+backgroundPosition:heroPosition,
+backgroundRepeat:"no-repeat",
 opacity:heroOpacity,
 transition:"opacity .3s ease"
 }}
@@ -49,7 +56,7 @@ transition:"opacity .3s ease"
 
 )}
 
-{/* SOFT WHITE FADE (improves text readability) */}
+{/* SOFT WHITE GRADIENT */}
 
 <div
 style={{
@@ -77,10 +84,7 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
-
-/* soft brush glow */
-
-textShadow:"0 0 25px rgba(255,255,255,0.95), 0 0 40px rgba(255,255,255,0.9)"
+textShadow:"0 0 25px rgba(255,255,255,0.95),0 0 40px rgba(255,255,255,0.9)"
 }}
 >
 {heroText}
