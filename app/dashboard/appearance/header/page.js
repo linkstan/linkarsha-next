@@ -373,7 +373,7 @@ style={{display:"none"}}
 </div>
 
 </div>
-{theme?.features?.hero && (
+{themeFeatures.hero && (
 
 <div style={section}>
 
@@ -420,7 +420,7 @@ borderRadius:10
 </div>
 {/* Hero Text */}
 
-{theme?.features?.heroText && (
+{themeFeatures.heroText && (
 
 <>
 <div style={{marginBottom:6}}>Hero Text</div>
@@ -443,7 +443,7 @@ border:"1px solid var(--border)"
 
 {/* Hero Opacity */}
 
-{theme?.features?.heroOpacity && (
+{themeFeatures.heroOpacity && (
 
 <div style={{marginTop:20}}>
 
