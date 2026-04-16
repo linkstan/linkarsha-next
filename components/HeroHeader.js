@@ -17,7 +17,7 @@ const heroOpacity = (header.heroOpacity ?? 100) / 100;
 
 /* auto hero positioning */
 
-const heroPosition = header.heroPosition || "center";
+const heroPosition = header.heroPosition || "center center";
 
 /* responsive hero height */
 
@@ -47,7 +47,8 @@ right:0,
 bottom:0,
 backgroundImage:`url(${heroImage})`,
 backgroundSize:"cover",
-backgroundPosition:heroPosition,
+backgroundPosition: heroPosition,
+backgroundAttachment: "scroll",
 backgroundRepeat:"no-repeat",
 opacity:heroOpacity,
 transition:"opacity .3s ease"
