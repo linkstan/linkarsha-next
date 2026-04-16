@@ -57,13 +57,17 @@ background:hero.overlay
 <div
 style={{
 position:"absolute",
-top:"45%",
+top:"42%",
 left:"50%",
 transform:"translate(-50%,-50%)",
-zIndex:2,
-fontSize:32,
-fontWeight:600,
-textAlign:"center"
+zIndex:3,
+fontSize:34,
+fontFamily:"'Dancing Script', cursive",
+color:"#2b2b2b",
+padding:"6px 16px",
+background:"rgba(255,255,255,0.65)",
+borderRadius:8,
+backdropFilter:"blur(4px)"
 }}
 >
 {hero.text}
