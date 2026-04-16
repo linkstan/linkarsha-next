@@ -247,6 +247,32 @@ reader.readAsDataURL(file);
 
 }
 
+/* ADD THIS DIRECTLY BELOW */
+
+async function saveCroppedHero(crop,zoom){
+
+const { default: getCroppedImg } = await import("../../../lib/cropImage");
+
+const blob = await getCroppedImg(cropImage,crop,zoom);
+
+const {data:{session}}=await supabase.auth.getSession();
+
+const path=`hero/${session.user.id}_${Date.now()}.jpg`;
+
+await supabase.storage
+.from("hero")
+.upload(path,blob);
+
+const {data}=supabase.storage
+.from("hero")
+.getPublicUrl(path);
+
+updateSetting("heroImage",data.publicUrl);
+
+setCropImage(null);
+
+}
+
 /* UI STYLES */
 
 const section={
