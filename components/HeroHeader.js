@@ -75,7 +75,7 @@ textAlign:"center"
 <div
 style={{
 position:"absolute",
-bottom:-60,
+bottom:-85,
 left:"50%",
 transform:"translateX(-50%)",
 width:"120%",
