@@ -230,6 +230,27 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
 
 }
+async function uploadHero(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+const {data:{session}}=await supabase.auth.getSession();
+if(!session) return;
+
+const path=`hero/${session.user.id}_${Date.now()}`;
+
+await supabase.storage
+.from("hero")
+.upload(path,file);
+
+const {data}=supabase.storage
+.from("hero")
+.getPublicUrl(path);
+
+updateSetting("heroImage",data.publicUrl);
+
+}
 
 /* UI STYLES */
 
@@ -335,7 +356,46 @@ style={{display:"none"}}
 <div style={section}>
 
 <h3>Hero</h3>
+{/* HERO IMAGE */}
 
+<div style={{marginBottom:20}}>
+
+<div style={{marginBottom:6}}>Hero Image</div>
+
+<label style={{
+padding:"8px 14px",
+border:"1px solid var(--border)",
+borderRadius:20,
+cursor:"pointer"
+}}>
+Upload Image
+
+<input
+type="file"
+accept="image/*"
+onChange={uploadHero}
+style={{display:"none"}}
+/>
+
+</label>
+
+{settings.heroImage && (
+
+<div style={{marginTop:10}}>
+
+<img
+src={settings.heroImage}
+style={{
+width:"100%",
+borderRadius:10
+}}
+/>
+
+</div>
+
+)}
+
+</div>
 {/* Hero Text */}
 
 {theme?.features?.heroText && (
