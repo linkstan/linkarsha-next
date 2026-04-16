@@ -1,8 +1,8 @@
 "use client";
 
-import { getTheme } from "../app/lib/themeEngine";
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
+import { getTheme } from "../app/lib/themeEngine";
 
 export default function ThemeRenderer({
 profile,
