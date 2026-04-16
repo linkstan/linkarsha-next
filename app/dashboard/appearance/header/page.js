@@ -440,6 +440,10 @@ style={{width:"100%"}}
 
 )}
 
+</div>
+
+)}
+
 {/* LAYOUT */}
 
 <div style={section}>
