@@ -13,13 +13,13 @@ return(
 <div
 style={{
 width:"100%",
-height:hero.height || 240,
+height:hero.height || 260,
 position:"relative",
 overflow:"hidden"
 }}
 >
 
-{/* HERO BACKGROUND */}
+{/* HERO IMAGE */}
 
 <div
 style={{
@@ -32,14 +32,13 @@ background:appearance?.heroImage
 ? `url(${appearance.heroImage}) center/cover no-repeat`
 : hero?.image
 ? `url(${hero.image}) center/cover no-repeat`
-: theme.background || "#d8d8d8"
+: "#ddd"
 }}
 />
 
 {/* HERO OVERLAY */}
 
 {hero.overlay && (
-
 <div
 style={{
 position:"absolute",
@@ -50,13 +49,11 @@ bottom:0,
 background:hero.overlay
 }}
 />
-
 )}
 
-{/* HERO TEXT */}
+{/* TEXT */}
 
 {hero.text && (
-
 <div
 style={{
 position:"absolute",
@@ -64,29 +61,27 @@ top:"45%",
 left:"50%",
 transform:"translate(-50%,-50%)",
 zIndex:2,
-fontSize:30,
+fontSize:32,
 fontWeight:600,
-fontFamily:"var(--font-playfair)",
 textAlign:"center"
 }}
 >
 {hero.text}
 </div>
-
 )}
 
-{/* CURVE SHAPE */}
+{/* HERO CURVE CUT */}
 
 <div
 style={{
 position:"absolute",
-bottom:-80,
-left:0,
-right:0,
-height:160,
+bottom:-110,
+left:"50%",
+transform:"translateX(-50%)",
+width:"160%",
+height:220,
 background:theme.background || "#e9ded9",
-borderTopLeftRadius:"50% 100%",
-borderTopRightRadius:"50% 100%"
+borderRadius:"50%"
 }}
 />
 
