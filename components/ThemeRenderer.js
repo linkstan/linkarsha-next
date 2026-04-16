@@ -22,27 +22,27 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 width:"100%",
-background:theme?.background || "#ffffff"
+background:finalTheme?.background || "#ffffff"
 }}
 >
 
 {/* HERO */}
 
-<HeroHeader appearance={appearance} theme={theme} />
+<HeroHeader appearance={appearance} theme={finalTheme} />
 
 {/* AVATAR */}
 
 <img
 src={profile.avatar || ""}
 style={{
-width:theme?.avatar?.size || 120,
-height:theme?.avatar?.size || 120,
+width:finalTheme?.avatar?.size || 120,
+height:finalTheme?.avatar?.size || 120,
 borderRadius:"50%",
 border:"none",
 objectFit:"cover",
 
 /* overlap hero correctly */
-marginTop:theme?.layout?.avatarOverlap ? -70 : 20,
+marginTop:finalTheme?.layout?.avatarOverlap ? -70 : 20,
 
 marginBottom:16,
 position:"relative",
@@ -127,6 +127,7 @@ marginTop:36
 key={block.id}
 block={block}
 themeName={themeName}
+theme={finalTheme}
 />
 ))}
 
