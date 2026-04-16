@@ -12,6 +12,7 @@ blocks
 }){
 
 const themeName = profile?.theme || "minimal";
+const finalTheme = getTheme(themeName, appearance);
 
 return(
 
