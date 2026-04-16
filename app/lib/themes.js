@@ -9,10 +9,25 @@ return {
 
 name: config.name || "Theme",
 
+/* layout system */
+
 layout:{
 hero: config.hero ?? false,
 avatarOverlap: config.avatarOverlap ?? false
 },
+
+/* feature system (controls customize panel) */
+
+features:{
+hero: config.hero ?? false,
+heroImage: config.heroImageFeature ?? config.hero ?? false,
+heroText: config.heroTextFeature ?? config.hero ?? false,
+heroOpacity: config.heroOpacityFeature ?? config.hero ?? false,
+socialIcons: config.socialIconsFeature ?? true,
+subtitle: config.subtitleFeature ?? true
+},
+
+/* hero settings */
 
 hero:{
 height: config.heroHeight || 240,
@@ -21,7 +36,11 @@ image: config.heroImage || null,
 overlay: config.heroOverlay || null
 },
 
+/* page background */
+
 background: config.background || "#ffffff",
+
+/* fonts */
 
 fonts:{
 name: config.nameFont || "Inter",
@@ -29,10 +48,14 @@ bio: config.bioFont || "Inter",
 buttons: config.buttonFont || "Inter"
 },
 
+/* avatar */
+
 avatar:{
 size: config.avatarSize || 100,
-border: config.avatarBorder || "0px solid transparent"
+border: config.avatarBorder || "none"
 },
+
+/* buttons */
 
 buttons:{
 radius: config.buttonRadius ?? 12,
@@ -61,6 +84,9 @@ minimal: createTheme({
 
 name:"Minimal",
 
+hero:false,
+avatarOverlap:false,
+
 background:"#ffffff",
 
 nameFont:"Inter",
@@ -68,9 +94,9 @@ bioFont:"Inter",
 buttonFont:"Inter",
 
 avatarSize:90,
-avatarBorder:"0px solid transparent",
+avatarBorder:"none",
 
-buttonRadius:12,
+buttonRadius:4,
 buttonColor:"#111111",
 buttonText:"#ffffff",
 buttonSpacing:12
@@ -100,7 +126,7 @@ bioFont:"Dancing Script",
 buttonFont:"Inter",
 
 avatarSize:120,
-avatarBorder:"6px solid #ffffff",
+avatarBorder:"none",
 
 buttonRadius:999,
 buttonColor:"#e8bcbc",
