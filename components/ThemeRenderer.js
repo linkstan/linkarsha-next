@@ -48,7 +48,7 @@ zIndex:5
 
 <h1
 style={{
-fontFamily:theme?.fonts?.name || "Inter",
+fontFamily:"Playfair Display, serif",
 fontSize:34,
 margin:0,
 textAlign:"center"
@@ -63,7 +63,7 @@ textAlign:"center"
 
 <div
 style={{
-fontFamily:theme?.fonts?.bio || "Inter",
+fontFamily:"Dancing Script, cursive",
 fontSize:26,
 opacity:.9,
 marginTop:6,
