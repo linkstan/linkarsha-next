@@ -1,5 +1,6 @@
 "use client";
 
+import { getTheme } from "../app/lib/themeEngine";
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
 
