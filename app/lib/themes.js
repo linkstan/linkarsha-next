@@ -84,21 +84,8 @@ minimal: createTheme({
 
 name:"Minimal",
 
-layout:"classic",
-
-features:{
 hero:false,
-socialIcons:false,
-subtitle:false,
-bio:true,
-username:true
-},
-
-customizable:{
-fonts:true,
-buttons:true,
-colors:true
-},
+avatarOverlap:false,
 
 background:"#ffffff",
 
@@ -107,41 +94,25 @@ bioFont:"Inter",
 buttonFont:"Inter",
 
 avatarSize:90,
+avatarBorder:"none",
 
 buttonRadius:4,
 buttonColor:"#111111",
-buttonText:"#ffffff"
+buttonText:"#ffffff",
+buttonSpacing:12
 
 }),
 
 
 
-/* ---------- SAMIRA ---------- */
+/* ---------- SAMIRA COACH ---------- */
 
 samira: createTheme({
 
 name:"Samira Coach",
 
-layout:"hero",
-
-features:{
 hero:true,
-heroImage:true,
-heroText:true,
-heroOpacity:true,
-socialIcons:true,
-subtitle:true,
-bio:true,
-username:true
-},
-
-customizable:{
-fonts:true,
-fontSize:true,
-buttons:true,
-colors:true,
-heroImage:true
-},
+avatarOverlap:true,
 
 heroHeight:260,
 heroText:"Hi there!",
@@ -155,6 +126,7 @@ bioFont:"Dancing Script",
 buttonFont:"Inter",
 
 avatarSize:120,
+avatarBorder:"none",
 
 buttonRadius:999,
 buttonColor:"#e8bcbc",
