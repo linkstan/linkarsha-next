@@ -39,7 +39,7 @@ border:theme?.avatar?.border || "none",
 objectFit:"cover",
 
 /* deeper overlap so avatar fits hero curve */
-marginTop:theme?.layout?.avatarOverlap ? -80 : 20,  
+marginTop:theme?.layout?.avatarOverlap ? -80 : 20,
 marginBottom:20,
 position:"relative",
 zIndex:3
@@ -65,7 +65,7 @@ textAlign:"center"
 
 <div
 style={{
-fontFamily:theme?.fonts?.bio || "Dancing Script",
+fontFamily:theme?.fonts?.bio || "Inter",
 fontSize:26,
 opacity:.9,
 marginTop:6,
