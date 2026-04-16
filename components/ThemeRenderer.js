@@ -37,7 +37,7 @@ height:theme?.avatar?.size || 120,
 borderRadius:"50%",
 border:"none",
 objectFit:"cover",
-marginTop:-60,
+marginTop: theme?.layout?.avatarOverlap ? -60 : 20,
 marginBottom:20,
 position:"relative",
 zIndex:5
