@@ -39,8 +39,7 @@ border:theme?.avatar?.border || "none",
 objectFit:"cover",
 
 /* deeper overlap so avatar fits hero curve */
-marginTop:theme?.layout?.avatarOverlap ? -80 : 20,
-
+marginTop:theme?.layout?.avatarOverlap ? -80 : 20,  
 marginBottom:20,
 position:"relative",
 zIndex:3
