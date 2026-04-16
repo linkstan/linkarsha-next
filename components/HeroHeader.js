@@ -15,14 +15,7 @@ style={{
 width:"100%",
 height:hero.height || 240,
 position:"relative",
-display:"flex",
-alignItems:"center",
-justifyContent:"center",
-overflow:"hidden",
-
-/* smooth hero curve */
-borderBottomLeftRadius:"50% 120px",
-borderBottomRightRadius:"50% 120px"
+overflow:"hidden"
 }}
 >
 
@@ -66,7 +59,10 @@ background:hero.overlay
 
 <div
 style={{
-position:"relative",
+position:"absolute",
+top:"45%",
+left:"50%",
+transform:"translate(-50%,-50%)",
 zIndex:2,
 fontSize:30,
 fontWeight:600,
@@ -78,6 +74,21 @@ textAlign:"center"
 </div>
 
 )}
+
+{/* CURVE SHAPE */}
+
+<div
+style={{
+position:"absolute",
+bottom:-80,
+left:0,
+right:0,
+height:160,
+background:theme.background || "#e9ded9",
+borderTopLeftRadius:"50% 100%",
+borderTopRightRadius:"50% 100%"
+}}
+/>
 
 </div>
 
