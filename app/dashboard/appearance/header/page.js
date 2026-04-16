@@ -52,6 +52,7 @@ heroOpacity:100
 });
 
 const [avatar,setAvatar]=useState(null);
+const [cropImage,setCropImage]=useState(null);
 
 useEffect(()=>{
 loadSettings();
@@ -235,20 +236,13 @@ async function uploadHero(e){
 const file=e.target.files[0];
 if(!file) return;
 
-const {data:{session}}=await supabase.auth.getSession();
-if(!session) return;
+const reader = new FileReader();
 
-const path=`hero/${session.user.id}_${Date.now()}`;
+reader.onload = ()=>{
+setCropImage(reader.result);
+};
 
-await supabase.storage
-.from("hero")
-.upload(path,file);
-
-const {data}=supabase.storage
-.from("hero")
-.getPublicUrl(path);
-
-updateSetting("heroImage",data.publicUrl);
+reader.readAsDataURL(file);
 
 }
 
