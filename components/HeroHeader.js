@@ -19,7 +19,7 @@ overflow:"hidden"
 }}
 >
 
-{/* HERO IMAGE */}
+{/* HERO IMAGE BACKGROUND */}
 
 <div
 style={{
@@ -32,13 +32,13 @@ background:appearance?.heroImage
 ? `url(${appearance.heroImage}) center/cover no-repeat`
 : hero?.image
 ? `url(${hero.image}) center/cover no-repeat`
-: "#ddd"
+: "#ddd",
+filter:"brightness(1.05)"
 }}
 />
 
-{/* HERO OVERLAY */}
+{/* SOFT WHITE FADE OVER IMAGE */}
 
-{hero.overlay && (
 <div
 style={{
 position:"absolute",
@@ -46,10 +46,9 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:hero.overlay
+background:"rgba(255,255,255,0.65)"
 }}
 />
-)}
 
 {/* HERO TEXT */}
 
@@ -65,6 +64,8 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
+
+/* soft white glow around text */
 textShadow:"0 0 25px rgba(255,255,255,0.95), 0 0 50px rgba(255,255,255,0.9)"
 }}
 >
