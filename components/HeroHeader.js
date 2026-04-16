@@ -9,14 +9,12 @@ return null;
 const hero = theme.hero || {};
 const header = appearance?.header || {};
 
-/* values from customization */
-
-const hero = theme.hero || {};
-const header = appearance?.header || {};
+/* final values */
 
 const heroImage = header.heroImage || hero.image;
 const heroText = header.heroText || hero.text;
 const heroOpacity = (header.heroOpacity ?? 100) / 100;
+
 return(
 
 <div
@@ -62,6 +60,7 @@ background:"rgba(255,255,255,0.65)"
 {/* HERO TEXT */}
 
 {heroText && (
+
 <div
 style={{
 position:"absolute",
@@ -78,9 +77,10 @@ textShadow:"0 0 25px rgba(255,255,255,0.95)"
 >
 {heroText}
 </div>
+
 )}
 
-{/* AVATAR NOTCH */}
+{/* AVATAR CUT */}
 
 <div
 style={{
