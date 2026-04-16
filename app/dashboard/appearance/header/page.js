@@ -4,6 +4,7 @@ import { themes } from "../../../lib/themes";
 import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { useRouter } from "next/navigation";
+import HeroCropModal from "../../../../components/HeroCropModal";
 
 export default function HeaderEditor(){
 
