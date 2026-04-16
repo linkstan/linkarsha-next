@@ -912,6 +912,16 @@ onClick={()=>move("username","down")}
 
 )}
 
+{cropImage && (
+
+<HeroCropModal
+image={cropImage}
+onCancel={()=>setCropImage(null)}
+onComplete={saveCroppedHero}
+/>
+
+)}
+
 </div>
 
 );
