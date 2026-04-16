@@ -7,6 +7,13 @@ return null;
 }
 
 const hero = theme.hero || {};
+const header = appearance?.header || {};
+
+/* values from customization */
+
+const heroImage = header.heroImage || hero.image;
+const heroText = header.heroText || hero.text;
+const heroOpacity = (header.heroOpacity ?? 100) / 100;
 
 return(
 
@@ -19,7 +26,9 @@ overflow:"hidden"
 }}
 >
 
-{/* HERO IMAGE BACKGROUND */}
+{/* HERO IMAGE */}
+
+{heroImage && (
 
 <div
 style={{
@@ -28,16 +37,14 @@ top:0,
 left:0,
 right:0,
 bottom:0,
-background:appearance?.heroImage
-? `url(${appearance.heroImage}) center/cover no-repeat`
-: hero?.image
-? `url(${hero.image}) center/cover no-repeat`
-: "#ddd",
-filter:"brightness(1.05)"
+background:`url(${heroImage}) center/cover no-repeat`,
+opacity:heroOpacity
 }}
 />
 
-{/* SOFT WHITE FADE OVER IMAGE */}
+)}
+
+{/* SOFT WHITE FADE */}
 
 <div
 style={{
@@ -52,7 +59,8 @@ background:"rgba(255,255,255,0.65)"
 
 {/* HERO TEXT */}
 
-{hero.text && (
+{heroText && (
+
 <div
 style={{
 position:"absolute",
@@ -64,16 +72,15 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
-
-/* soft white glow around text */
 textShadow:"0 0 25px rgba(255,255,255,0.95), 0 0 50px rgba(255,255,255,0.9)"
 }}
 >
-{hero.text}
+{heroText}
 </div>
+
 )}
 
-{/* AVATAR NOTCH CUT */}
+{/* AVATAR NOTCH */}
 
 <div
 style={{
