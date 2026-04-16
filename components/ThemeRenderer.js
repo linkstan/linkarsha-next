@@ -7,7 +7,6 @@ import { getTheme } from "../app/lib/themeEngine";
 export default function ThemeRenderer({
 profile,
 appearance,
-theme,
 blocks
 }){
 
@@ -22,7 +21,9 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 width:"100%",
-background:finalTheme?.background || "#ffffff"
+background:finalTheme?.background || "#ffffff",
+color: finalTheme?.textColor || "#000",
+minHeight:"100vh"
 }}
 >
 
@@ -35,15 +36,13 @@ background:finalTheme?.background || "#ffffff"
 <img
 src={profile.avatar || ""}
 style={{
-width:finalTheme?.avatar?.size || 120,
-height:finalTheme?.avatar?.size || 120,
+width:finalTheme?.avatar?.size || 110,
+height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
-border:"none",
+border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
 
-/* overlap hero correctly */
 marginTop:finalTheme?.layout?.avatarOverlap ? -70 : 20,
-
 marginBottom:16,
 position:"relative",
 zIndex:5
@@ -54,11 +53,10 @@ zIndex:5
 
 <h1
 style={{
-fontFamily:"var(--font-playfair)",
-fontSize:36,
+fontFamily:finalTheme?.fonts?.name || "Inter",
+fontSize:34,
 margin:0,
-textAlign:"center",
-color:"#ffffff"
+textAlign:"center"
 }}
 >
 {profile.display_name || profile.username}
@@ -70,12 +68,11 @@ color:"#ffffff"
 
 <div
 style={{
-fontFamily:"var(--font-dancing)",
-fontSize:28,
-opacity:.95,
+fontFamily:finalTheme?.fonts?.bio || "Inter",
+fontSize:26,
+opacity:.9,
 marginTop:6,
-textAlign:"center",
-color:"#ffffff"
+textAlign:"center"
 }}
 >
 {appearance.header.subtitle}
@@ -87,9 +84,8 @@ color:"#ffffff"
 
 <div
 style={{
-opacity:.75,
-marginTop:6,
-color:"#ffffff"
+opacity:.7,
+marginTop:6
 }}
 >
 @{profile.username}
@@ -103,9 +99,8 @@ color:"#ffffff"
 style={{
 maxWidth:320,
 textAlign:"center",
-opacity:.9,
-marginTop:10,
-color:"#ffffff"
+opacity:.85,
+marginTop:10
 }}
 >
 {profile.bio}
@@ -128,7 +123,8 @@ key={block.id}
 block={block}
 themeName={themeName}
 theme={finalTheme}
-/>
+appearance={appearance}
+ />
 ))}
 
 </div>
