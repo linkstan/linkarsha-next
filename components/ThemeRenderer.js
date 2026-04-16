@@ -35,15 +35,12 @@ style={{
 width:theme?.avatar?.size || 120,
 height:theme?.avatar?.size || 120,
 borderRadius:"50%",
-border:theme?.avatar?.border || "6px solid #ffffff",
+border:"none",
 objectFit:"cover",
-
-/* REAL overlap */
-marginTop:theme?.layout?.avatarOverlap ? -70 : 20,
+marginTop:-60,
 marginBottom:20,
 position:"relative",
-zIndex:5,
-background:"#fff"
+zIndex:5
 }}
 />
 
