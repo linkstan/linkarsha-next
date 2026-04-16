@@ -11,10 +11,12 @@ const header = appearance?.header || {};
 
 /* values from customization */
 
+const hero = theme.hero || {};
+const header = appearance?.header || {};
+
 const heroImage = header.heroImage || hero.image;
 const heroText = header.heroText || hero.text;
 const heroOpacity = (header.heroOpacity ?? 100) / 100;
-
 return(
 
 <div
