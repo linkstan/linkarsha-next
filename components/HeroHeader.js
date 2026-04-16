@@ -51,7 +51,7 @@ background:hero.overlay
 />
 )}
 
-{/* TEXT */}
+{/* HERO TEXT */}
 
 {hero.text && (
 <div
@@ -70,18 +70,19 @@ textAlign:"center"
 </div>
 )}
 
-{/* HERO CURVE CUT */}
+{/* AVATAR NOTCH CUT */}
 
 <div
 style={{
 position:"absolute",
-bottom:-45,
+bottom:-60,
 left:"50%",
 transform:"translateX(-50%)",
-width:"35%",
-height:120,
+width:160,
+height:160,
 background:theme.background || "#e9ded9",
-borderRadius:"50%"
+borderRadius:"50%",
+zIndex:3
 }}
 />
 
