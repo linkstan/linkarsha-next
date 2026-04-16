@@ -27,6 +27,8 @@ width:"100%"
 
 <HeroHeader appearance={appearance} theme={theme} />
 
+{/* AVATAR */}
+
 <img
 src={profile.avatar || ""}
 style={{
@@ -42,14 +44,6 @@ marginBottom:20,
 position:"relative",
 zIndex:5,
 background:"#fff"
-}}
-/>
-
-/* deeper overlap so avatar fits hero curve */
-marginTop:theme?.layout?.avatarOverlap ? -80 : 20,
-marginBottom:20,
-position:"relative",
-zIndex:3
 }}
 />
 
