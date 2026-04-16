@@ -95,7 +95,7 @@ e.currentTarget.style.transform = "translateY(0) scale(1)";
 
 style={{
 display:"block",
-padding:isCTA ? 28 : (buttons?.padding || 12),
+padding:isCTA ? 28 : (buttons?.padding || 16),
 marginTop:buttons?.spacing || 10,
 textDecoration:"none",
 transform:"translateY(0)",
@@ -113,7 +113,7 @@ isCTA
 ? "rgba(255,255,255,0.12)"
 : buttons?.colorMode==="theme"
 ? (themeBackground || theme?.background || "rgba(0,0,0,.35)")
-: buttons?.bg,
+: buttons?.bg || "#000",
 
 border:
 buttons?.style==="outline"
@@ -127,11 +127,9 @@ buttons?.style==="glass"
 ? "blur(12px)"
 : "none",
 
-borderRadius:
-buttons?.radius==="square"?4:
-buttons?.radius==="round"?10:
-buttons?.radius==="rounder"?18:
-buttons?.radius ?? 999,
+/* PERFECT theme radius control */
+
+borderRadius: buttons?.radius ?? 12,
 
 color:
 buttons?.textMode==="theme"
