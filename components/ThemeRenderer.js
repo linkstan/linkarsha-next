@@ -19,7 +19,8 @@ style={{
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-width:"100%"
+width:"100%",
+background:theme?.background || "#ffffff"
 }}
 >
 
@@ -37,8 +38,11 @@ height:theme?.avatar?.size || 120,
 borderRadius:"50%",
 border:"none",
 objectFit:"cover",
-marginTop:-70,
-marginBottom:20,
+
+/* overlap hero correctly */
+marginTop:theme?.layout?.avatarOverlap ? -70 : 20,
+
+marginBottom:16,
 position:"relative",
 zIndex:5
 }}
@@ -48,10 +52,11 @@ zIndex:5
 
 <h1
 style={{
-fontFamily:"Playfair Display, serif",
-fontSize:34,
+fontFamily:"var(--font-playfair)",
+fontSize:36,
 margin:0,
-textAlign:"center"
+textAlign:"center",
+color:"#ffffff"
 }}
 >
 {profile.display_name || profile.username}
@@ -63,11 +68,12 @@ textAlign:"center"
 
 <div
 style={{
-fontFamily:"Dancing Script, cursive",
-fontSize:26,
-opacity:.9,
+fontFamily:"var(--font-dancing)",
+fontSize:28,
+opacity:.95,
 marginTop:6,
-textAlign:"center"
+textAlign:"center",
+color:"#ffffff"
 }}
 >
 {appearance.header.subtitle}
@@ -79,8 +85,9 @@ textAlign:"center"
 
 <div
 style={{
-opacity:.7,
-marginTop:6
+opacity:.75,
+marginTop:6,
+color:"#ffffff"
 }}
 >
 @{profile.username}
@@ -94,8 +101,9 @@ marginTop:6
 style={{
 maxWidth:320,
 textAlign:"center",
-opacity:.85,
-marginTop:10
+opacity:.9,
+marginTop:10,
+color:"#ffffff"
 }}
 >
 {profile.bio}
@@ -108,7 +116,7 @@ marginTop:10
 <div
 style={{
 width:320,
-marginTop:40
+marginTop:36
 }}
 >
 
