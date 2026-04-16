@@ -37,7 +37,7 @@ height:theme?.avatar?.size || 120,
 borderRadius:"50%",
 border:"none",
 objectFit:"cover",
-marginTop:-50,
+marginTop:-70,
 marginBottom:20,
 position:"relative",
 zIndex:5
