@@ -75,10 +75,10 @@ textAlign:"center"
 <div
 style={{
 position:"absolute",
-bottom:-40,
+bottom:-50,
 left:"50%",
 transform:"translateX(-50%)",
-width:"120%",
+width:"200%",
 height:120,
 background:theme.background || "#e9ded9",
 borderRadius:"50%"
