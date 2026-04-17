@@ -77,11 +77,7 @@ minHeight:"100vh"
 }}
 >
 
-{/* HERO */}
-
 <HeroHeader appearance={appearance} theme={finalTheme} />
-
-{/* AVATAR */}
 
 <img
 src={profile.avatar || ""}
@@ -98,8 +94,6 @@ zIndex:5
 }}
 />
 
-{/* DISPLAY NAME */}
-
 {header.showDisplayName !== false && (
 
 <h1
@@ -114,8 +108,6 @@ textAlign:"center"
 </h1>
 
 )}
-
-{/* SUBTITLE */}
 
 {header.subtitle && (
 
@@ -133,22 +125,13 @@ textAlign:"center"
 
 )}
 
-{/* USERNAME */}
-
 {header.showUsername !== false && (
 
-<div
-style={{
-opacity:.7,
-marginTop:6
-}}
->
+<div style={{opacity:.7,marginTop:6}}>
 @{profile.username}
 </div>
 
 )}
-
-{/* BIO */}
 
 {header.showBio && profile.bio && (
 
@@ -165,50 +148,54 @@ marginTop:10
 
 )}
 
-{/* SOCIAL ICONS ABOVE LINKS */}
+{/* SOCIAL ICONS ABOVE */}
 
 {header.showSocialIcons && header.socialPosition==="header" && (
 
-<div
-style={{
+<div style={{
 display:"flex",
 gap:14,
 marginTop:16,
 flexWrap:"wrap",
 justifyContent:"center"
-}}
->
+}}>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
-usernames?.length > 0 &&
-usernames.map((username,i)=>(
+usernames?.length>0 &&
+usernames.map((username,i)=>{
+
+const iconSrc =
+header.socialIconStyle==="official"
+? `/icons/${platform==="twitter"?"x":platform}.png`
+: `/icons/theme/${platform}.svg`;
+
+return(
+
 <a
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 >
+
 <img
-src={`/icons/${platform==="twitter"?"x":platform}.png`}
+src={iconSrc}
 style={{width:22,height:22}}
 onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 />
+
 </a>
-))
+
+);
+
+})
 )}
 
 </div>
 
 )}
 
-{/* BUTTONS */}
-
-<div
-style={{
-width:320,
-marginTop:36
-}}
->
+<div style={{width:320,marginTop:36}}>
 
 {blocks.map(block=>(
 <ButtonBlock
@@ -222,41 +209,47 @@ appearance={appearance}
 
 </div>
 
-{/* SOCIAL ICONS BELOW LINKS */}
+{/* SOCIAL ICONS BELOW */}
 
 {header.showSocialIcons && header.socialPosition==="bottom" && (
 
-<div
-style={{
+<div style={{
 display:"flex",
 gap:14,
 marginTop:30,
 flexWrap:"wrap",
 justifyContent:"center"
-}}
->
+}}>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
-usernames?.length > 0 &&
-usernames.map((username,i)=>(
+usernames?.length>0 &&
+usernames.map((username,i)=>{
+
+const iconSrc =
+header.socialIconStyle==="official"
+? `/icons/${platform==="twitter"?"x":platform}.png`
+: `/icons/theme/${platform}.svg`;
+
+return(
+
 <a
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 >
-const iconSrc =
-header.socialIconStyle==="official"
-? `/icons/${platform==="twitter"?"x":platform}.png`
-: `/icons/theme/${platform}.svg`;
 
 <img
 src={iconSrc}
 style={{width:22,height:22}}
 onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 />
+
 </a>
-))
+
+);
+
+})
 )}
 
 </div>
