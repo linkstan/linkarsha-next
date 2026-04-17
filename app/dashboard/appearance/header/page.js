@@ -148,8 +148,13 @@ const {data:profile}=await supabase
 .eq("id",session.user.id)
 .single();
 
-const allSettings=profile?.profile_settings || {};
-allSettings.header=newSettings;
+const allSettings = profile?.profile_settings || {};
+
+if(!allSettings.header){
+allSettings.header = {};
+}
+
+allSettings.header = newSettings;
 
 await supabase
 .from("profiles")
