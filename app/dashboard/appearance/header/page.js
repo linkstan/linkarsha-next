@@ -13,6 +13,9 @@ import HeaderHero from "./components/HeaderHero";
 import HeaderLayout from "./components/HeaderLayout";
 import HeaderSocialIcons from "./components/HeaderSocialIcons";
 import HeaderDisplayOptions from "./components/HeaderDisplayOptions";
+import HeaderFonts from "./components/HeaderFonts";
+import HeaderFontSize from "./components/HeaderFontSize";
+import HeaderFontAlignment from "./components/HeaderFontAlignment";
 
 export default function HeaderEditor(){
 
