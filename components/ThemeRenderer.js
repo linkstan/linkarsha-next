@@ -245,8 +245,13 @@ href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 >
+const iconSrc =
+header.socialIconStyle==="official"
+? `/icons/${platform==="twitter"?"x":platform}.png`
+: `/icons/theme/${platform}.svg`;
+
 <img
-src={`/icons/${platform==="twitter"?"x":platform}.png`}
+src={iconSrc}
 style={{width:22,height:22}}
 onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 />
