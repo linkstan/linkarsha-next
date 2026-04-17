@@ -248,23 +248,27 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 
 async function saveCroppedHero(crop,zoom){
 
+setHeroUploading(true);
+
 const { default: getCroppedImg } = await import("../../../lib/cropImage");
 
 const blob = await getCroppedImg(cropImage,crop,zoom);
 
-const {data:{session}}=await supabase.auth.getSession();
+const {data:{session}} = await supabase.auth.getSession();
 
-const path=`hero/${session.user.id}_${Date.now()}.jpg`;
+const path = `hero/${session.user.id}_${Date.now()}.jpg`;
 
 await supabase.storage
 .from("hero")
 .upload(path,blob);
 
-const {data}=supabase.storage
+const {data} = supabase.storage
 .from("hero")
 .getPublicUrl(path);
 
 updateSetting("heroImage",data.publicUrl);
+
+setHeroUploading(false);
 
 setCropImage(null);
 
@@ -272,27 +276,16 @@ setCropImage(null);
 /* uploadHero */
 async function uploadHero(e){
 
-const file=e.target.files[0];
+const file = e.target.files[0];
 if(!file) return;
 
-setHeroUploading(true);
+const reader = new FileReader();
 
-const {data:{session}}=await supabase.auth.getSession();
-if(!session) return;
+reader.onload = ()=>{
+setCropImage(reader.result);
+};
 
-const path=`hero/${session.user.id}_${Date.now()}`;
-
-await supabase.storage
-.from("hero")
-.upload(path,file);
-
-const {data}=supabase.storage
-.from("hero")
-.getPublicUrl(path);
-
-updateSetting("heroImage",data.publicUrl);
-
-setHeroUploading(false);
+reader.readAsDataURL(file);
 
 }
 
