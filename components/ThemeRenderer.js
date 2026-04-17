@@ -4,6 +4,53 @@ import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
 import { getTheme } from "../app/lib/themeEngine";
 
+function buildSocialUrl(platform, username){
+
+switch(platform){
+
+case "instagram":
+return `https://www.instagram.com/${username}`;
+
+case "facebook":
+return `https://www.facebook.com/${username}`;
+
+case "twitter":
+return `https://x.com/${username}`;
+
+case "youtube":
+return `https://www.youtube.com/@${username}`;
+
+case "tiktok":
+return `https://www.tiktok.com/@${username}`;
+
+case "telegram":
+return `https://t.me/${username}`;
+
+case "github":
+return `https://github.com/${username}`;
+
+case "pinterest":
+return `https://www.pinterest.com/${username}`;
+
+case "linkedin":
+return `https://www.linkedin.com/in/${username}`;
+
+case "website":
+return username.startsWith("http") ? username : `https://${username}`;
+
+case "email":
+return `mailto:${username}`;
+
+case "whatsapp":
+return `https://wa.me/${username}`;
+
+default:
+return `https://${platform}.com/${username}`;
+
+}
+
+}
+
 export default function ThemeRenderer({
 profile,
 appearance,
@@ -133,10 +180,11 @@ justifyContent:"center"
 >
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames?.length > 0 &&
 usernames.map((username,i)=>(
 <a
 key={platform+i}
-href={`https://${platform}.com/${username}`}
+href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 >
@@ -189,10 +237,11 @@ justifyContent:"center"
 >
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames?.length > 0 &&
 usernames.map((username,i)=>(
 <a
 key={platform+i}
-href={`https://${platform}.com/${username}`}
+href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 >
