@@ -377,211 +377,26 @@ updateSetting={updateSetting}
 themeFeatures={themeFeatures}
 />
 
-{/* FONT SYSTEM */}
-
-<div style={section}>
-
-<h3>Fonts</h3>
-
-<label>
-<input
-type="checkbox"
-checked={settings.useDefaultFonts}
-onChange={(e)=>updateSetting("useDefaultFonts",e.target.checked)}
-/>
- Default Fonts
-</label>
-
-<div style={{fontSize:13,opacity:.7,marginBottom:10}}>
-Display Name → Poppins<br/>
-Username → Roboto<br/>
-Bio → Lora
-</div>
-
-<label>
-<input
-type="checkbox"
-checked={settings.advancedFonts}
-onChange={(e)=>updateSetting("advancedFonts",e.target.checked)}
-/>
- Show advanced font options
-</label>
-
-{settings.advancedFonts && (
-
-<div style={{marginTop:15}}>
-
-<h4>Display Name Font</h4>
-
-<select
-value={settings.displayFont}
-onChange={(e)=>updateSetting("displayFont",e.target.value)}
->
-
-<option>Montserrat</option>
-<option>Poppins</option>
-<option>Playfair Display</option>
-<option>Raleway</option>
-<option>Rubik</option>
-<option>Josefin Sans</option>
-<option>Oswald</option>
-<option>Spectral</option>
-<option>Lora</option>
-<option>Bitter</option>
-<option>Source Code Pro</option>
-<option>Inconsolata</option>
-<option>Roboto Condensed</option>
-<option>Encode Sans Semi Condensed</option>
-<option>Asap Condensed</option>
-<option>Allura</option>
-<option>Great Vibes</option>
-<option>Pinyon Script</option>
-<option>Dancing Script</option>
-<option>Pacifico</option>
-<option>Sacramento</option>
-
-</select>
-
-<h4 style={{marginTop:15}}>Username Font</h4>
-
-<select
-value={settings.usernameFont}
-onChange={(e)=>updateSetting("usernameFont",e.target.value)}
->
-
-<option>Roboto</option>
-<option>Open Sans</option>
-<option>Lato</option>
-<option>Nunito</option>
-<option>Source Sans 3</option>
-<option>Karla</option>
-<option>Assistant</option>
-<option>Work Sans</option>
-<option>Cabin</option>
-<option>Rubik</option>
-
-</select>
-
-<h4 style={{marginTop:15}}>Bio Font</h4>
-
-<select
-value={settings.bioFont}
-onChange={(e)=>updateSetting("bioFont",e.target.value)}
->
-
-<option>Merriweather</option>
-<option>Lora</option>
-<option>PT Serif</option>
-<option>Crimson Text</option>
-<option>Libre Baskerville</option>
-<option>Spectral</option>
-<option>Domine</option>
-<option>Gelasio</option>
-<option>Alegreya</option>
-<option>Bitter</option>
-<option>Allura</option>
-<option>Great Vibes</option>
-<option>Pinyon Script</option>
-<option>Dancing Script</option>
-<option>Pacifico</option>
-<option>Sacramento</option>
-
-</select>
-
-</div>
-
-)}
-
-</div>
-
-{/* FONT SIZE */}
-
-<div style={section}>
-
-<h3>Font Size</h3>
-
-<div>Display Name ({settings.displaySize}px)</div>
-
-<input
-type="range"
-min="16"
-max="40"
-value={settings.displaySize}
-onChange={(e)=>updateSetting("displaySize",Number(e.target.value))}
+<HeaderFonts
+section={section}
+settings={settings}
+updateSetting={updateSetting}
 />
 
-<div style={{marginTop:15}}>
-Username ({settings.usernameSize}px)
-</div>
-
-<input
-type="range"
-min="10"
-max="20"
-value={settings.usernameSize}
-onChange={(e)=>updateSetting("usernameSize",Number(e.target.value))}
+<HeaderFontSize
+section={section}
+settings={settings}
+updateSetting={updateSetting}
 />
 
-<div style={{marginTop:15}}>
-Bio ({settings.bioSize}px)
-</div>
-
-<input
-type="range"
-min="10"
-max="20"
-value={settings.bioSize}
-onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
+<HeaderFontAlignment
+section={section}
+settings={settings}
+setSettings={setSettings}
+updateSetting={updateSetting}
+move={move}
+arrow={arrow}
 />
-
-</div>
-
-{settings.layout === "hero" && (
-
-<div style={section}>
-
-<h3>Font Alignment</h3>
-
-<label>
-<input
-type="radio"
-name="alignmentMode"
-checked={!settings.displayAdvanced}
-onChange={()=>{
-const newSettings={
-...settings,
-displayAdvanced:false,
-displayAlign:{x:0,y:0},
-usernameAlign:{x:0,y:0}
-};
-
-setSettings(newSettings);
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{header:newSettings}})
-);
-
-updateSetting("displayAdvanced",false);
-}}
-/>
- Default
-</label>
-
-<br/>
-
-<label>
-<input
-type="radio"
-name="alignmentMode"
-checked={settings.displayAdvanced === true}
-onChange={()=>updateSetting("displayAdvanced",true)}
-/>
- Advanced Font Alignment
-</label>
-
-</div>
-
-)}
 
 {cropImage && (
 
