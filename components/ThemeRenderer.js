@@ -3,6 +3,7 @@
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
 import { getTheme } from "../app/lib/themeEngine";
+import { useEffect, useState } from "react";
 
 function buildSocialUrl(platform, username){
 
@@ -57,11 +58,34 @@ appearance,
 blocks
 }){
 
-const themeName = profile?.theme || "minimal";
-const finalTheme = getTheme(themeName, appearance);
+/* LIVE APPEARANCE STATE */
 
-const header = appearance?.header || {};
-const socialLinks = appearance?.social_links || {};
+const [liveAppearance,setLiveAppearance] = useState(appearance || {});
+
+/* LISTEN FOR EDITOR CHANGES */
+
+useEffect(()=>{
+
+function handleAppearanceUpdate(e){
+
+setLiveAppearance(prev=>({
+...prev,
+...e.detail
+}));
+
+}
+
+window.addEventListener("appearance-update",handleAppearanceUpdate);
+
+return ()=>window.removeEventListener("appearance-update",handleAppearanceUpdate);
+
+},[]);
+
+const themeName = profile?.theme || "minimal";
+const finalTheme = getTheme(themeName, liveAppearance);
+
+const header = liveAppearance?.header || {};
+const socialLinks = liveAppearance?.social_links || {};
 
 return(
 
@@ -77,7 +101,7 @@ minHeight:"100vh"
 }}
 >
 
-<HeroHeader appearance={appearance} theme={finalTheme} />
+<HeroHeader appearance={liveAppearance} theme={finalTheme} />
 
 <img
 src={profile.avatar || ""}
@@ -87,7 +111,13 @@ height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
-marginTop:finalTheme?.layout?.avatarOverlap ? -70 : 20,
+
+/* FIX HERO AVATAR ALIGNMENT */
+
+marginTop:finalTheme?.layout?.avatarOverlap
+? -(finalTheme?.avatar?.size || 110) / 2
+: 20,
+
 marginBottom:16,
 position:"relative",
 zIndex:5
@@ -203,7 +233,7 @@ key={block.id}
 block={block}
 themeName={themeName}
 theme={finalTheme}
-appearance={appearance}
+appearance={liveAppearance}
 />
 ))}
 
