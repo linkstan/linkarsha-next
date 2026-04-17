@@ -491,6 +491,8 @@ Classic
 
 {/* SOCIAL ICONS */}
 
+{themeFeatures.socialIcons && (
+
 <div style={section}>
 
 <h3>Social Icons</h3>
@@ -534,6 +536,8 @@ onChange={()=>updateSetting("socialPosition","bottom")}
 
 </div>
 
+)}
+
 {/* DISPLAY OPTIONS */}
 
 <div style={section}>
@@ -548,16 +552,9 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 </label>
 <br/>
 
-<label>
-<input
-type="checkbox"
-checked={settings.showBio}
-onChange={(e)=>updateSetting("showBio",e.target.checked)}
-/>
- Show Bio
-</label>
 <br/>
 
+{themeFeatures.username && (
 <label>
 <input
 type="checkbox"
@@ -566,8 +563,20 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
 />
  Show Username
 </label>
+)}
 
-<h4 style={{marginTop:18}}>Subtitle</h4>
+{themeFeatures.subtitle && (
+
+<>
+
+<label>
+<input
+type="checkbox"
+checked={!!settings.subtitle}
+onChange={(e)=>updateSetting("subtitle", e.target.checked ? "Example subtitle" : "")}
+/>
+ Show Subtitle
+</label>
 
 <input
 type="text"
@@ -583,7 +592,9 @@ marginTop:"6px"
 }}
 />
 
-</div>
+</>
+
+)}
 
 {/* FONT SYSTEM */}
 
