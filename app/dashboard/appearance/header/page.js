@@ -6,6 +6,14 @@ import { supabase } from "../../../lib/supabase";
 import { useRouter } from "next/navigation";
 import HeroCropModal from "../../../../components/HeroCropModal";
 
+/* HEADER COMPONENTS */
+
+import HeaderProfileImage from "./components/HeaderProfileImage";
+import HeaderHero from "./components/HeaderHero";
+import HeaderLayout from "./components/HeaderLayout";
+import HeaderSocialIcons from "./components/HeaderSocialIcons";
+import HeaderDisplayOptions from "./components/HeaderDisplayOptions";
+
 export default function HeaderEditor(){
 
 const router = useRouter();
@@ -46,8 +54,6 @@ usernameSize:14,
 bioSize:15,
 
 subtitle:"",
-
-/* HERO SETTINGS */
 
 heroText:"",
 heroImage:null,
@@ -107,16 +113,12 @@ setAvatar(data.avatar);
 
 }
 
-/* SAVE SETTINGS */
-
 async function updateSetting(key,value){
 
 const newSettings={
 ...settings,
 [key]:value
 };
-
-/* DEFAULT FONT LOGIC */
 
 if(key==="useDefaultFonts" && value===true){
 newSettings.displayFont="Poppins";
@@ -129,17 +131,11 @@ if(key==="advancedFonts" && value===true){
 newSettings.useDefaultFonts=false;
 }
 
-/* UPDATE LOCAL STATE FIRST */
-
 setSettings(newSettings);
-
-/* LIVE PREVIEW */
 
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{header:newSettings}})
 );
-
-/* SAVE TO DATABASE */
 
 const {data:{session}}=await supabase.auth.getSession();
 if(!session) return;
@@ -165,8 +161,6 @@ await supabase
 
 }
 
-/* ALIGNMENT MOVE */
-
 function move(type,dir){
 
 let align={...(settings[type+"Align"] || {x:0,y:0})};
@@ -191,8 +185,6 @@ updateSetting(type+"Align",align);
 
 }
 
-/* HOLD ARROW MOVEMENT */
-
 let holdTimer=null;
 
 function startMove(type,dir){
@@ -208,8 +200,6 @@ move(type,dir);
 function stopMove(){
 clearInterval(holdTimer);
 }
-
-/* AVATAR UPLOAD */
 
 async function uploadAvatar(e){
 
@@ -244,7 +234,6 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
 
 }
-/* ADD THIS DIRECTLY BELOW */
 
 async function saveCroppedHero(crop,zoom){
 
@@ -273,7 +262,7 @@ setHeroUploading(false);
 setCropImage(null);
 
 }
-/* uploadHero */
+
 async function uploadHero(e){
 
 const file = e.target.files[0];
@@ -288,8 +277,6 @@ setCropImage(reader.result);
 reader.readAsDataURL(file);
 
 }
-
-/* UI STYLES */
 
 const section={
 background:"var(--card)",
@@ -322,8 +309,6 @@ return(
 
 <div style={{maxWidth:650}}>
 
-{/* HEADER TITLE */}
-
 <div style={{
 display:"flex",
 alignItems:"center",
@@ -351,284 +336,43 @@ cursor:"pointer"
 
 </div>
 
-{/* PROFILE IMAGE */}
-<div style={section}>
-
-<h3>Profile Image</h3>
-
-<div style={{display:"flex",gap:20,alignItems:"center"}}>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden"
-}}>
-<img
-src={avatar || "/default-avatar.png"}
-style={{width:"100%",height:"100%",objectFit:"cover"}}
-/>
-</div>
-
-<label style={{
-padding:"8px 14px",
-border:"1px solid var(--border)",
-borderRadius:20,
-cursor:"pointer"
-}}>
-
-{avatarUploading ? "Uploading..." : "Upload"}
-
-<input
-type="file"
-accept="image/*"
-onChange={uploadAvatar}
-style={{display:"none"}}
+<HeaderProfileImage
+section={section}
+avatar={avatar}
+avatarUploading={avatarUploading}
+uploadAvatar={uploadAvatar}
 />
 
-</label>
-
-</div>
-
-</div>{/* HERO */}
-
-{themeFeatures.hero && (
-
-<div style={section}>
-
-<h3>Hero</h3>
-
-{/* HERO IMAGE */}
-
-<div style={{marginBottom:20}}>
-
-<div style={{marginBottom:6}}>Hero Image</div>
-
-<label style={{
-padding:"8px 14px",
-border:"1px solid var(--border)",
-borderRadius:20,
-cursor:"pointer"
-}}>
-
-{heroUploading ? "Uploading..." : "Upload Image"}
-
-<input
-type="file"
-accept="image/*"
-onChange={uploadHero}
-style={{display:"none"}}
+<HeaderHero
+section={section}
+settings={settings}
+themeFeatures={themeFeatures}
+updateSetting={updateSetting}
+heroUploading={heroUploading}
+uploadHero={uploadHero}
 />
 
-</label>
-
-{settings.heroImage && (
-
-<div style={{marginTop:10}}>
-<img
-src={settings.heroImage}
-style={{
-width:"100%",
-borderRadius:10
-}}
-/>
-</div>
-
-)}
-
-</div>
-
-{/* HERO TEXT */}
-
-{themeFeatures.heroText && (
-
-<>
-<div style={{marginBottom:6}}>Hero Text</div>
-
-<input
-type="text"
-value={settings.heroText || ""}
-onChange={(e)=>updateSetting("heroText",e.target.value)}
-style={{
-width:"100%",
-padding:"10px",
-borderRadius:"10px",
-border:"1px solid var(--border)"
-}}
-/>
-</>
-
-)}
-
-{/* HERO OPACITY */}
-
-{themeFeatures.heroOpacity && (
-
-<div style={{marginTop:20}}>
-
-<div>Hero Opacity ({settings.heroOpacity || 100}%)</div>
-
-<input
-type="range"
-min="0"
-max="100"
-value={settings.heroOpacity || 100}
-onChange={(e)=>updateSetting("heroOpacity",Number(e.target.value))}
-style={{width:"100%"}}
+<HeaderLayout
+section={section}
+theme={theme}
+settings={settings}
+updateSetting={updateSetting}
+btn={btn}
 />
 
-</div>
-
-)}
-
-</div>
-
-)}
-
-{/* LAYOUT (only if theme allows layout change) */}
-
-{!theme?.layout?.hero && (
-
-<div style={section}>
-
-<h3>Layout</h3>
-
-<div style={{display:"flex",gap:10}}>
-
-<button
-onClick={()=>updateSetting("layout","classic")}
-style={btn(settings.layout==="classic")}
->
-Classic
-</button>
-
-</div>
-
-</div>
-
-)}
-
-{/* SOCIAL ICONS */}
-
-{themeFeatures.socialIcons && (
-
-<div style={section}>
-
-<h3>Social Icons</h3>
-
-<label>
-<input
-type="checkbox"
-checked={settings.showSocialIcons}
-onChange={(e)=>updateSetting("showSocialIcons",e.target.checked)}
-/>
- Show Social Icons
-</label>
-
-{settings.showSocialIcons && (
-
-<div style={{marginTop:12}}>
-
-<div style={{fontSize:14,marginBottom:6}}>Show in:</div>
-
-<label style={{marginRight:12}}>
-<input
-type="radio"
-checked={settings.socialPosition==="header"}
-onChange={()=>updateSetting("socialPosition","header")}
-/>
- Header
-</label>
-
-<label>
-<input
-type="radio"
-checked={settings.socialPosition==="bottom"}
-onChange={()=>updateSetting("socialPosition","bottom")}
-/>
- Bottom of Links
-</label>
-
-</div>
-
-)}
-
-</div>
-
-)}
-
-{/* DISPLAY OPTIONS */}
-
-<div style={section}>
-
-<label>
-<input
-type="checkbox"
-checked={settings.showDisplayName}
-onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
-/>
- Show Display Name
-</label>
-
-<br/>
-<br/>
-
-{themeFeatures.username && (
-<label>
-<input
-type="checkbox"
-checked={settings.showUsername}
-onChange={(e)=>updateSetting("showUsername",e.target.checked)}
-/>
- Show Username
-</label>
-)}
-
-{themeFeatures.bio && (
-<label>
-<input
-type="checkbox"
-checked={settings.showBio}
-onChange={(e)=>updateSetting("showBio",e.target.checked)}
-/>
- Show Bio
-</label>
-)}
-
-{themeFeatures.subtitle && (
-<>
-
-<label>
-<input
-type="checkbox"
-checked={!!settings.subtitle}
-onChange={(e)=>updateSetting("subtitle", e.target.checked ? "Example subtitle" : "")}
-/>
- Show Subtitle
-</label>
-
-{!!settings.subtitle && (
-
-<input
-type="text"
-placeholder="Example: business coach"
-value={settings.subtitle || ""}
-onChange={(e)=>updateSetting("subtitle", e.target.value)}
-style={{
-width:"100%",
-padding:"10px",
-borderRadius:"10px",
-border:"1px solid var(--border)",
-marginTop:"6px"
-}}
+<HeaderSocialIcons
+section={section}
+settings={settings}
+updateSetting={updateSetting}
+themeFeatures={themeFeatures}
 />
 
-)}
-
-</>
-)}
-
-</div>
+<HeaderDisplayOptions
+section={section}
+settings={settings}
+updateSetting={updateSetting}
+themeFeatures={themeFeatures}
+/>
 
 {/* FONT SYSTEM */}
 
@@ -789,8 +533,6 @@ onChange={(e)=>updateSetting("bioSize",Number(e.target.value))}
 
 </div>
 
-{/* FONT ALIGNMENT */}
-
 {settings.layout === "hero" && (
 
 <div style={section}>
@@ -833,123 +575,6 @@ onChange={()=>updateSetting("displayAdvanced",true)}
 />
  Advanced Font Alignment
 </label>
-
-{settings.displayAdvanced && (
-
-<div style={{marginTop:15}}>
-
-<h4>Display Alignment</h4>
-
-<div style={{
-display:"grid",
-gridTemplateColumns:"40px 40px 40px",
-gap:6,
-justifyContent:"center",
-marginTop:10
-}}>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("display","up")}
->
-↑
-</button>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("display","left")}
->
-←
-</button>
-
-<button style={arrow} disabled>•</button>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("display","right")}
->
-→
-</button>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("display","down")}
->
-↓
-</button>
-
-<div></div>
-
-</div>
-
-
-<h4 style={{marginTop:20}}>Username Alignment</h4>
-
-<div style={{
-display:"grid",
-gridTemplateColumns:"40px 40px 40px",
-gap:6,
-justifyContent:"center",
-marginTop:10
-}}>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("username","up")}
->
-↑
-</button>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("username","left")}
->
-←
-</button>
-
-<button style={arrow} disabled>•</button>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("username","right")}
->
-→
-</button>
-
-<div></div>
-
-<button
-style={arrow}
-disabled={!settings.displayAdvanced}
-onClick={()=>move("username","down")}
->
-↓
-</button>
-
-<div></div>
-
-</div>
-
-</div>
-
-)}
 
 </div>
 
