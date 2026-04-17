@@ -60,7 +60,7 @@ blocks
 
 /* LIVE APPEARANCE STATE */
 
-const [liveAppearance,setLiveAppearance] = useState(appearance || {});
+const [liveAppearance,setLiveAppearance] = useState({});
 
 /* LISTEN FOR EDITOR CHANGES */
 
@@ -81,11 +81,24 @@ return ()=>window.removeEventListener("appearance-update",handleAppearanceUpdate
 
 },[]);
 
-const themeName = profile?.theme || "minimal";
-const finalTheme = getTheme(themeName, liveAppearance);
+/* THEME ENGINE MUST USE ORIGINAL APPEARANCE */
 
-const header = liveAppearance?.header || {};
-const socialLinks = liveAppearance?.social_links || {};
+const themeName = profile?.theme || "minimal";
+const finalTheme = getTheme(themeName, appearance);
+
+/* MERGE HEADER DATA */
+
+const header = {
+...(appearance?.header || {}),
+...(liveAppearance?.header || {})
+};
+
+/* MERGE SOCIAL LINKS */
+
+const socialLinks =
+liveAppearance?.social_links ||
+appearance?.social_links ||
+{};
 
 return(
 
@@ -101,7 +114,7 @@ minHeight:"100vh"
 }}
 >
 
-<HeroHeader appearance={liveAppearance} theme={finalTheme} />
+<HeroHeader appearance={appearance} theme={finalTheme} />
 
 <img
 src={profile.avatar || ""}
@@ -112,7 +125,7 @@ borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
 
-/* FIX HERO AVATAR ALIGNMENT */
+/* RESPONSIVE HERO OVERLAP FIX */
 
 marginTop:finalTheme?.layout?.avatarOverlap
 ? -(finalTheme?.avatar?.size || 110) / 2
@@ -233,8 +246,8 @@ key={block.id}
 block={block}
 themeName={themeName}
 theme={finalTheme}
-appearance={liveAppearance}
-/>
+appearance={appearance}
+ />
 ))}
 
 </div>
