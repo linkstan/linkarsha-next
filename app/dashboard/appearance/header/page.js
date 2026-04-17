@@ -555,8 +555,8 @@ onChange={(e)=>updateSetting("showDisplayName",e.target.checked)}
 />
  Show Display Name
 </label>
-<br/>
 
+<br/>
 <br/>
 
 {themeFeatures.username && (
@@ -569,6 +569,7 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
  Show Username
 </label>
 )}
+
 {themeFeatures.bio && (
 <label>
 <input
@@ -579,8 +580,8 @@ onChange={(e)=>updateSetting("showBio",e.target.checked)}
  Show Bio
 </label>
 )}
-{themeFeatures.subtitle && (
 
+{themeFeatures.subtitle && (
 <>
 
 <label>
@@ -611,8 +612,9 @@ marginTop:"6px"
 )}
 
 </>
-
 )}
+
+</div>
 
 {/* FONT SYSTEM */}
 
