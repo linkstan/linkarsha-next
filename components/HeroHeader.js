@@ -85,7 +85,7 @@ fontSize:36,
 fontFamily:"var(--font-dancing)",
 color:"#2d2d2d",
 textAlign:"center",
-textShadow:"0 0 30px rgba(255,255,255,.95), 0 0 60px rgba(255,255,255,.85), 0 0 90px rgba(255,255,255,.75)"
+textShadow:"0 0 30px rgba(255,255,255,.95),0 0 60px rgba(255,255,255,.85),0 0 90px rgba(255,255,255,.7)"
 }}
 >
 {heroText}
