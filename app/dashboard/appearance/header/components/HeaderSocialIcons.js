@@ -26,6 +26,8 @@ onChange={(e)=>updateSetting("showSocialIcons",e.target.checked)}
 
 {settings.showSocialIcons && (
 
+<>
+
 <div style={{marginTop:12}}>
 
 <div style={{fontSize:14,marginBottom:6}}>Show in:</div>
@@ -49,6 +51,7 @@ onChange={()=>updateSetting("socialPosition","bottom")}
 </label>
 
 </div>
+
 <div style={{marginTop:12}}>
 
 <div style={{fontSize:14,marginBottom:6}}>Icon Style</div>
@@ -72,6 +75,8 @@ onChange={()=>updateSetting("socialIconStyle","official")}
 </label>
 
 </div>
+
+</>
 
 )}
 
