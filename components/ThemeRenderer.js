@@ -58,47 +58,47 @@ appearance,
 blocks
 }){
 
-/* LIVE APPEARANCE STATE */
+/* LIVE STATE */
 
-const [liveAppearance,setLiveAppearance] = useState({});
+const [live,setLive] = useState({});
 
-/* LISTEN FOR EDITOR CHANGES */
+/* LISTEN FOR EDITOR EVENTS */
 
 useEffect(()=>{
 
-function handleAppearanceUpdate(e){
+function update(e){
 
-setLiveAppearance(prev=>({
+setLive(prev=>({
 ...prev,
 ...e.detail
 }));
 
 }
 
-window.addEventListener("appearance-update",handleAppearanceUpdate);
+window.addEventListener("appearance-update",update);
 
-return ()=>window.removeEventListener("appearance-update",handleAppearanceUpdate);
+return ()=>window.removeEventListener("appearance-update",update);
 
 },[]);
 
-/* THEME ENGINE MUST USE ORIGINAL APPEARANCE */
+/* THEME ENGINE USES ORIGINAL APPEARANCE */
 
 const themeName = profile?.theme || "minimal";
 const finalTheme = getTheme(themeName, appearance);
 
-/* MERGE HEADER DATA */
+/* MERGE HEADER SETTINGS */
 
 const header = {
 ...(appearance?.header || {}),
-...(liveAppearance?.header || {})
+...(live?.header || {})
 };
 
 /* MERGE SOCIAL LINKS */
 
-const socialLinks =
-liveAppearance?.social_links ||
-appearance?.social_links ||
-{};
+const socialLinks = {
+...(appearance?.social_links || {}),
+...(live?.social_links || {})
+};
 
 return(
 
@@ -124,13 +124,9 @@ height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
-
-/* RESPONSIVE HERO OVERLAP FIX */
-
 marginTop:finalTheme?.layout?.avatarOverlap
-? -(finalTheme?.avatar?.size || 110) / 2
+? -(finalTheme?.avatar?.size || 110)/2
 : 20,
-
 marginBottom:16,
 position:"relative",
 zIndex:5
@@ -169,11 +165,9 @@ textAlign:"center"
 )}
 
 {header.showUsername !== false && (
-
 <div style={{opacity:.7,marginTop:6}}>
 @{profile.username}
 </div>
-
 )}
 
 {header.showBio && profile.bio && (
@@ -195,22 +189,23 @@ marginTop:10
 
 {header.showSocialIcons && header.socialPosition==="header" && (
 
-<div style={{
+<div
+style={{
 display:"flex",
 gap:14,
 marginTop:16,
 flexWrap:"wrap",
 justifyContent:"center"
-}}>
+}}
+>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
-usernames?.length>0 &&
-usernames.map((username,i)=>{
+usernames?.map((username,i)=>{
 
 const iconSrc =
-header.socialIconStyle==="official"
-? `/icons/${platform==="twitter"?"x":platform}.png`
-: `/icons/theme/${platform}.svg`;
+header.socialIconStyle==="theme"
+? `/icons/theme/${platform}.svg`
+: `/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
@@ -247,7 +242,7 @@ block={block}
 themeName={themeName}
 theme={finalTheme}
 appearance={appearance}
- />
+/>
 ))}
 
 </div>
@@ -256,22 +251,23 @@ appearance={appearance}
 
 {header.showSocialIcons && header.socialPosition==="bottom" && (
 
-<div style={{
+<div
+style={{
 display:"flex",
 gap:14,
 marginTop:30,
 flexWrap:"wrap",
 justifyContent:"center"
-}}>
+}}
+>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
-usernames?.length>0 &&
-usernames.map((username,i)=>{
+usernames?.map((username,i)=>{
 
 const iconSrc =
-header.socialIconStyle==="official"
-? `/icons/${platform==="twitter"?"x":platform}.png`
-: `/icons/theme/${platform}.svg`;
+header.socialIconStyle==="theme"
+? `/icons/theme/${platform}.svg`
+: `/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
