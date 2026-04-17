@@ -25,6 +25,7 @@ const router = useRouter();
 const [themeName,setThemeName]=useState("minimal");
 const [theme,setTheme]=useState(null);
 const themeFeatures = theme?.features || {};
+
 const [avatarUploading,setAvatarUploading]=useState(false);
 const [heroUploading,setHeroUploading]=useState(false);
 
@@ -63,7 +64,6 @@ subtitle:"",
 heroText:"",
 heroImage:null,
 heroOpacity:100
-
 });
 
 const [avatar,setAvatar]=useState(null);
@@ -90,6 +90,7 @@ if(data?.theme){
 setThemeName(data.theme);
 setTheme(themes[data.theme] || themes.minimal);
 }
+
 if(data?.profile_settings?.header){
 
 setSettings(prev=>({
@@ -167,45 +168,7 @@ await supabase
 
 }
 
-function move(type,dir){
-
-let align={...(settings[type+"Align"] || {x:0,y:0})};
-
-if(dir==="up") align.y -= 5;
-if(dir==="down") align.y += 5;
-if(dir==="left") align.x -= 5;
-if(dir==="right") align.x += 5;
-
-const newSettings={
-...settings,
-[type+"Align"]:align
-};
-
-setSettings(newSettings);
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{header:newSettings}})
-);
-
-updateSetting(type+"Align",align);
-
-}
-
-let holdTimer=null;
-
-function startMove(type,dir){
-
-move(type,dir);
-
-holdTimer=setInterval(()=>{
-move(type,dir);
-},80);
-
-}
-
-function stopMove(){
-clearInterval(holdTimer);
-}
+/* AVATAR UPLOAD */
 
 async function uploadAvatar(e){
 
@@ -222,62 +185,8 @@ reader.readAsDataURL(file);
 
 }
 
-setAvatarUploading(true);
+/* SAVE AVATAR AFTER CROP */
 
-const {data:{session}}=await supabase.auth.getSession();
-
-const path=`avatars/${session.user.id}_${Date.now()}`;
-
-await supabase.storage
-.from("avatars")
-.upload(path,file);
-
-const {data}=supabase.storage
-.from("avatars")
-.getPublicUrl(path);
-
-await supabase
-.from("profiles")
-.update({avatar:data.publicUrl})
-.eq("id",session.user.id);
-
-setAvatar(data.publicUrl);
-
-setAvatarUploading(false);
-
-window.dispatchEvent(
-new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
-);
-
-}
-
-async function saveCroppedHero(crop,zoom){
-
-setHeroUploading(true);
-
-const { default: getCroppedImg } = await import("../../../lib/cropImage");
-
-const blob = await getCroppedImg(cropImage,crop,zoom);
-
-const {data:{session}} = await supabase.auth.getSession();
-
-const path = `hero/${session.user.id}_${Date.now()}.jpg`;
-
-await supabase.storage
-.from("hero")
-.upload(path,blob);
-
-const {data} = supabase.storage
-.from("hero")
-.getPublicUrl(path);
-
-updateSetting("heroImage",data.publicUrl);
-
-setHeroUploading(false);
-
-setCropImage(null);
-
-}
 async function saveAvatarCrop(area,zoom){
 
 setAvatarUploading(true);
@@ -314,6 +223,38 @@ new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
 
 }
+
+/* HERO CROP SAVE */
+
+async function saveCroppedHero(crop,zoom){
+
+setHeroUploading(true);
+
+const { default: getCroppedImg } = await import("../../../lib/cropImage");
+
+const blob = await getCroppedImg(cropImage,crop,zoom);
+
+const {data:{session}} = await supabase.auth.getSession();
+
+const path = `hero/${session.user.id}_${Date.now()}.jpg`;
+
+await supabase.storage
+.from("hero")
+.upload(path,blob);
+
+const {data} = supabase.storage
+.from("hero")
+.getPublicUrl(path);
+
+updateSetting("heroImage",data.publicUrl);
+
+setHeroUploading(false);
+
+setCropImage(null);
+
+}
+
+/* HERO UPLOAD */
 
 async function uploadHero(e){
 
@@ -443,8 +384,6 @@ section={section}
 settings={settings}
 setSettings={setSettings}
 updateSetting={updateSetting}
-move={move}
-arrow={arrow}
 />
 
 {cropImage && (
@@ -456,6 +395,7 @@ onComplete={saveCroppedHero}
 />
 
 )}
+
 {avatarCropImage && (
 
 <AvatarCropModal
