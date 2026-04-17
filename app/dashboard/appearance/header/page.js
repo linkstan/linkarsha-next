@@ -466,7 +466,9 @@ style={{width:"100%"}}
 
 )}
 
-{/* LAYOUT */}
+{/* LAYOUT (only if theme allows layout change) */}
+
+{!theme?.layout?.hero && (
 
 <div style={section}>
 
@@ -481,16 +483,11 @@ style={btn(settings.layout==="classic")}
 Classic
 </button>
 
-<button
-onClick={()=>updateSetting("layout","hero")}
-style={btn(settings.layout==="hero")}
->
-Hero
-</button>
-
 </div>
 
 </div>
+
+)}
 
 {/* SOCIAL ICONS */}
 
