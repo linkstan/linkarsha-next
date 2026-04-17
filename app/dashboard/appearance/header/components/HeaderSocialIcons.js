@@ -49,6 +49,29 @@ onChange={()=>updateSetting("socialPosition","bottom")}
 </label>
 
 </div>
+<div style={{marginTop:12}}>
+
+<div style={{fontSize:14,marginBottom:6}}>Icon Style</div>
+
+<label style={{marginRight:12}}>
+<input
+type="radio"
+checked={settings.socialIconStyle==="theme"}
+onChange={()=>updateSetting("socialIconStyle","theme")}
+/>
+ Theme Icons
+</label>
+
+<label>
+<input
+type="radio"
+checked={settings.socialIconStyle==="official"}
+onChange={()=>updateSetting("socialIconStyle","official")}
+/>
+ Official Logos
+</label>
+
+</div>
 
 )}
 
