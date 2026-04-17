@@ -21,7 +21,7 @@ layout:"classic",
 
 showDisplayName:true,
 showUsername:true,
-showBio:true,
+showBio:false,
 
 showSocialIcons:false,
 socialPosition:"header",
