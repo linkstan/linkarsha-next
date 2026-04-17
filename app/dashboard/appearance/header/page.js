@@ -397,14 +397,15 @@ style={{display:"none"}}
 
 </div>
 
-</div>
-{/* HERO IMAGE */}
+</div>{/* HERO */}
 
 {themeFeatures.hero && (
 
 <div style={section}>
 
 <h3>Hero</h3>
+
+{/* HERO IMAGE */}
 
 <div style={{marginBottom:20}}>
 
@@ -431,7 +432,6 @@ style={{display:"none"}}
 {settings.heroImage && (
 
 <div style={{marginTop:10}}>
-
 <img
 src={settings.heroImage}
 style={{
@@ -439,15 +439,13 @@ width:"100%",
 borderRadius:10
 }}
 />
-
 </div>
 
 )}
 
 </div>
 
-)}
-{/* Hero Text */}
+{/* HERO TEXT */}
 
 {themeFeatures.heroText && (
 
@@ -465,12 +463,11 @@ borderRadius:"10px",
 border:"1px solid var(--border)"
 }}
 />
-
 </>
 
 )}
 
-{/* Hero Opacity */}
+{/* HERO OPACITY */}
 
 {themeFeatures.heroOpacity && (
 
