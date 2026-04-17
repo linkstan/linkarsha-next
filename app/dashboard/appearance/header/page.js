@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { useRouter } from "next/navigation";
 import HeroCropModal from "../../../../components/HeroCropModal";
+import AvatarCropModal from "../../../../components/AvatarCropModal";
 
 /* HEADER COMPONENTS */
 
@@ -36,6 +37,7 @@ showBio:false,
 
 showSocialIcons:false,
 socialPosition:"header",
+socialIconStyle:"theme",
 
 displayAlign:{x:0,y:0},
 usernameAlign:{x:0,y:0},
@@ -66,6 +68,7 @@ heroOpacity:100
 
 const [avatar,setAvatar]=useState(null);
 const [cropImage,setCropImage]=useState(null);
+const [avatarCropImage,setAvatarCropImage]=useState(null);
 
 useEffect(()=>{
 loadSettings();
@@ -209,6 +212,16 @@ async function uploadAvatar(e){
 const file=e.target.files[0];
 if(!file) return;
 
+const reader=new FileReader();
+
+reader.onload=()=>{
+setAvatarCropImage(reader.result);
+};
+
+reader.readAsDataURL(file);
+
+}
+
 setAvatarUploading(true);
 
 const {data:{session}}=await supabase.auth.getSession();
@@ -263,6 +276,42 @@ updateSetting("heroImage",data.publicUrl);
 setHeroUploading(false);
 
 setCropImage(null);
+
+}
+async function saveAvatarCrop(area,zoom){
+
+setAvatarUploading(true);
+
+const { default:getCroppedImg } = await import("../../../lib/cropImage");
+
+const blob = await getCroppedImg(avatarCropImage,area,zoom);
+
+const {data:{session}}=await supabase.auth.getSession();
+
+const path=`avatars/${session.user.id}_${Date.now()}.jpg`;
+
+await supabase.storage
+.from("avatars")
+.upload(path,blob);
+
+const {data}=supabase.storage
+.from("avatars")
+.getPublicUrl(path);
+
+await supabase
+.from("profiles")
+.update({avatar:data.publicUrl})
+.eq("id",session.user.id);
+
+setAvatar(data.publicUrl);
+
+setAvatarUploading(false);
+
+setAvatarCropImage(null);
+
+window.dispatchEvent(
+new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
+);
 
 }
 
@@ -404,6 +453,16 @@ arrow={arrow}
 image={cropImage}
 onCancel={()=>setCropImage(null)}
 onComplete={saveCroppedHero}
+/>
+
+)}
+{avatarCropImage && (
+
+<AvatarCropModal
+image={avatarCropImage}
+shape={settings.layout==="classic" ? "round" : "rect"}
+onCancel={()=>setAvatarCropImage(null)}
+onComplete={saveAvatarCrop}
 />
 
 )}
