@@ -13,6 +13,8 @@ const router = useRouter();
 const [themeName,setThemeName]=useState("minimal");
 const [theme,setTheme]=useState(null);
 const themeFeatures = theme?.features || {};
+const [avatarUploading,setAvatarUploading]=useState(false);
+const [heroUploading,setHeroUploading]=useState(false);
 
 const [settings,setSettings]=useState({
 layout:"classic",
@@ -214,6 +216,8 @@ async function uploadAvatar(e){
 const file=e.target.files[0];
 if(!file) return;
 
+setAvatarUploading(true);
+
 const {data:{session}}=await supabase.auth.getSession();
 
 const path=`avatars/${session.user.id}_${Date.now()}`;
@@ -233,26 +237,13 @@ await supabase
 
 setAvatar(data.publicUrl);
 
+setAvatarUploading(false);
+
 window.dispatchEvent(
 new CustomEvent("appearance-update",{detail:{avatar:data.publicUrl}})
 );
 
 }
-async function uploadHero(e){
-
-const file=e.target.files[0];
-if(!file) return;
-
-const reader = new FileReader();
-
-reader.onload = ()=>{
-setCropImage(reader.result);
-};
-
-reader.readAsDataURL(file);
-
-}
-
 /* ADD THIS DIRECTLY BELOW */
 
 async function saveCroppedHero(crop,zoom){
@@ -276,6 +267,32 @@ const {data}=supabase.storage
 updateSetting("heroImage",data.publicUrl);
 
 setCropImage(null);
+
+}
+/* uploadHero */
+async function uploadHero(e){
+
+const file=e.target.files[0];
+if(!file) return;
+
+setHeroUploading(true);
+
+const {data:{session}}=await supabase.auth.getSession();
+if(!session) return;
+
+const path=`hero/${session.user.id}_${Date.now()}`;
+
+await supabase.storage
+.from("hero")
+.upload(path,file);
+
+const {data}=supabase.storage
+.from("hero")
+.getPublicUrl(path);
+
+updateSetting("heroImage",data.publicUrl);
+
+setHeroUploading(false);
 
 }
 
