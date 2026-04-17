@@ -14,6 +14,7 @@ const themeName = profile?.theme || "minimal";
 const finalTheme = getTheme(themeName, appearance);
 
 const header = appearance?.header || {};
+const socialLinks = appearance?.socialLinks || [];
 
 return(
 
@@ -43,7 +44,6 @@ height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
-
 marginTop:finalTheme?.layout?.avatarOverlap ? -70 : 20,
 marginBottom:16,
 position:"relative",
@@ -51,7 +51,7 @@ zIndex:5
 }}
 />
 
-{/* NAME */}
+{/* DISPLAY NAME */}
 
 {header.showDisplayName !== false && (
 
@@ -120,7 +120,7 @@ marginTop:10
 
 {/* SOCIAL ICONS ABOVE LINKS */}
 
-{header.showSocialIcons && header.socialPosition==="header" && (
+{header.showSocialIcons && header.socialPosition==="header" && socialLinks.length > 0 && (
 
 <div
 style={{
@@ -130,9 +130,20 @@ marginTop:16
 }}
 >
 
-<a href={`https://instagram.com/${profile.username}`} target="_blank">📸</a>
-<a href={`https://twitter.com/${profile.username}`} target="_blank">🐦</a>
-<a href={`https://t.me/${profile.username}`} target="_blank">✈️</a>
+{socialLinks.map((link)=>(
+<a
+key={link.id}
+href={link.url}
+target="_blank"
+rel="noopener noreferrer"
+style={{display:"flex",alignItems:"center"}}
+>
+<img
+src={link.icon}
+style={{width:22,height:22}}
+/>
+</a>
+))}
 
 </div>
 
@@ -161,7 +172,7 @@ appearance={appearance}
 
 {/* SOCIAL ICONS BELOW LINKS */}
 
-{header.showSocialIcons && header.socialPosition==="bottom" && (
+{header.showSocialIcons && header.socialPosition==="bottom" && socialLinks.length > 0 && (
 
 <div
 style={{
@@ -171,9 +182,20 @@ marginTop:30
 }}
 >
 
-<a href={`https://instagram.com/${profile.username}`} target="_blank">📸</a>
-<a href={`https://twitter.com/${profile.username}`} target="_blank">🐦</a>
-<a href={`https://t.me/${profile.username}`} target="_blank">✈️</a>
+{socialLinks.map((link)=>(
+<a
+key={link.id}
+href={link.url}
+target="_blank"
+rel="noopener noreferrer"
+style={{display:"flex",alignItems:"center"}}
+>
+<img
+src={link.icon}
+style={{width:22,height:22}}
+/>
+</a>
+))}
 
 </div>
 
