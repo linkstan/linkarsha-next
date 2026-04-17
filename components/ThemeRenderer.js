@@ -14,7 +14,7 @@ const themeName = profile?.theme || "minimal";
 const finalTheme = getTheme(themeName, appearance);
 
 const header = appearance?.header || {};
-const socialLinks = appearance?.socialLinks || [];
+const socialLinks = appearance?.social_links || {};
 
 return(
 
@@ -120,30 +120,34 @@ marginTop:10
 
 {/* SOCIAL ICONS ABOVE LINKS */}
 
-{header.showSocialIcons && header.socialPosition==="header" && socialLinks.length > 0 && (
+{header.showSocialIcons && header.socialPosition==="header" && (
 
 <div
 style={{
 display:"flex",
 gap:14,
-marginTop:16
+marginTop:16,
+flexWrap:"wrap",
+justifyContent:"center"
 }}
 >
 
-{socialLinks.map((link)=>(
+{Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames.map((username,i)=>(
 <a
-key={link.id}
-href={link.url}
+key={platform+i}
+href={`https://${platform}.com/${username}`}
 target="_blank"
 rel="noopener noreferrer"
-style={{display:"flex",alignItems:"center"}}
 >
 <img
-src={link.icon}
+src={`/icons/${platform==="twitter"?"x":platform}.png`}
 style={{width:22,height:22}}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 />
 </a>
-))}
+))
+)}
 
 </div>
 
@@ -172,30 +176,34 @@ appearance={appearance}
 
 {/* SOCIAL ICONS BELOW LINKS */}
 
-{header.showSocialIcons && header.socialPosition==="bottom" && socialLinks.length > 0 && (
+{header.showSocialIcons && header.socialPosition==="bottom" && (
 
 <div
 style={{
 display:"flex",
 gap:14,
-marginTop:30
+marginTop:30,
+flexWrap:"wrap",
+justifyContent:"center"
 }}
 >
 
-{socialLinks.map((link)=>(
+{Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames.map((username,i)=>(
 <a
-key={link.id}
-href={link.url}
+key={platform+i}
+href={`https://${platform}.com/${username}`}
 target="_blank"
 rel="noopener noreferrer"
-style={{display:"flex",alignItems:"center"}}
 >
 <img
-src={link.icon}
+src={`/icons/${platform==="twitter"?"x":platform}.png`}
 style={{width:22,height:22}}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 />
 </a>
-))}
+))
+)}
 
 </div>
 
