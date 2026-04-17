@@ -569,7 +569,16 @@ onChange={(e)=>updateSetting("showUsername",e.target.checked)}
  Show Username
 </label>
 )}
-
+{themeFeatures.bio && (
+<label>
+<input
+type="checkbox"
+checked={settings.showBio}
+onChange={(e)=>updateSetting("showBio",e.target.checked)}
+/>
+ Show Bio
+</label>
+)}
 {themeFeatures.subtitle && (
 
 <>
@@ -582,6 +591,8 @@ onChange={(e)=>updateSetting("subtitle", e.target.checked ? "Example subtitle" :
 />
  Show Subtitle
 </label>
+
+{!!settings.subtitle && (
 
 <input
 type="text"
@@ -596,6 +607,8 @@ border:"1px solid var(--border)",
 marginTop:"6px"
 }}
 />
+
+)}
 
 </>
 
