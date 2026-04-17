@@ -48,7 +48,7 @@ bottom:0,
 backgroundImage:`url(${heroImage})`,
 backgroundSize:"cover",
 backgroundPosition: heroPosition,
-backgroundAttachment: "scroll",
+backgroundAttachment: "initial",
 backgroundRepeat:"no-repeat",
 opacity:heroOpacity,
 transition:"opacity .3s ease"
