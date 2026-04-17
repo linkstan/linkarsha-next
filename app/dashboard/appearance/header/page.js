@@ -383,24 +383,28 @@ border:"1px solid var(--border)",
 borderRadius:20,
 cursor:"pointer"
 }}>
-Upload
+
+{avatarUploading ? "Uploading..." : "Upload"}
+
 <input
 type="file"
 accept="image/*"
 onChange={uploadAvatar}
 style={{display:"none"}}
 />
+
 </label>
 
 </div>
 
 </div>
+{/* HERO IMAGE */}
+
 {themeFeatures.hero && (
 
 <div style={section}>
 
 <h3>Hero</h3>
-{/* HERO IMAGE */}
 
 <div style={{marginBottom:20}}>
 
@@ -412,7 +416,8 @@ border:"1px solid var(--border)",
 borderRadius:20,
 cursor:"pointer"
 }}>
-Upload Image
+
+{heroUploading ? "Uploading..." : "Upload Image"}
 
 <input
 type="file"
@@ -440,6 +445,8 @@ borderRadius:10
 )}
 
 </div>
+
+)}
 {/* Hero Text */}
 
 {themeFeatures.heroText && (
