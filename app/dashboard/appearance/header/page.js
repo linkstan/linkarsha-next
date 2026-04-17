@@ -24,7 +24,15 @@ const router = useRouter();
 
 const [themeName,setThemeName]=useState("minimal");
 const [theme,setTheme]=useState(null);
-const themeFeatures = theme?.features || {};
+const themeFeatures = theme?.features ?? {
+hero:false,
+heroText:false,
+heroOpacity:false,
+socialIcons:true,
+username:true,
+bio:true,
+subtitle:true
+};
 
 const [avatarUploading,setAvatarUploading]=useState(false);
 const [heroUploading,setHeroUploading]=useState(false);
