@@ -29,8 +29,8 @@ zIndex:9999
 }}>
 
 <div style={{
-width:500,
-height:350,
+width:640,
+height:240,
 position:"relative",
 background:"#000"
 }}>
@@ -62,5 +62,4 @@ Save
 </div>
 
 );
-
 }
