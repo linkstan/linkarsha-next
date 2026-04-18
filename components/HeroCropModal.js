@@ -23,16 +23,21 @@ right:0,
 bottom:0,
 background:"rgba(0,0,0,.75)",
 display:"flex",
+flexDirection:"column",
 alignItems:"center",
 justifyContent:"center",
 zIndex:9999
 }}>
 
+{/* CROPPER PREVIEW */}
+
 <div style={{
-width:640,
-height:240,
+width:"360px",                 // mobile width preview
+aspectRatio:"16 / 6",          // EXACT same ratio as hero header
 position:"relative",
-background:"#000"
+background:"#000",
+borderRadius:12,
+overflow:"hidden"
 }}>
 
 <Cropper
@@ -47,7 +52,13 @@ onCropComplete={(a,b)=>setCroppedArea(b)}
 
 </div>
 
-<div style={{marginTop:20,display:"flex",gap:10}}>
+{/* BUTTONS */}
+
+<div style={{
+marginTop:20,
+display:"flex",
+gap:12
+}}>
 
 <button onClick={onCancel}>
 Cancel
@@ -62,4 +73,5 @@ Save
 </div>
 
 );
+
 }
