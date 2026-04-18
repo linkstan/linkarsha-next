@@ -12,38 +12,8 @@ buttons = buttons || theme.buttons || {};
 const isCTA = block?.data_json?.type === "cta";
 
 function formatTitle(title){
-
 if(!title) return "Link";
-
-const emojiMatch = title.match(/^(\p{Emoji}|\p{Extended_Pictographic})/u);
-
-if(emojiMatch){
 return title;
-}
-
-const icons = {
-youtube:"▶️",
-instagram:"📸",
-twitter:"🐦",
-x:"🐦",
-tiktok:"🎵",
-telegram:"✈️",
-github:"💻",
-website:"🌐",
-store:"🛒",
-email:"✉️"
-};
-
-const lower = title.toLowerCase();
-
-for(const key in icons){
-if(lower.includes(key)){
-return icons[key] + " " + title;
-}
-}
-
-return title;
-
 }
 
 return(
