@@ -26,7 +26,7 @@ const heroHeight = hero.height || 260;
 /* --- FIX: make avatar cut perfectly match avatar circle --- */
 
 const avatarSize = theme?.avatar?.size || 110;
-const gap = Math.max(24, avatarSize * 0.22); // space between hero edge and avatar
+const gap = Math.max(14, avatarSize * 0.12); // space between hero edge and avatar
 const cutSize = avatarSize + gap * 2;
 
 return(
