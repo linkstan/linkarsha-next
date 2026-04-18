@@ -34,7 +34,8 @@ aspectRatio:"16 / 6",
 position:"relative",
 overflow:"hidden",
 left:"50%",
-transform:"translateX(-50%)"
+transform:"translateX(-50%)",
+maxWidth:"100%"
 }}
 >
 
@@ -44,6 +45,7 @@ transform:"translateX(-50%)"
 
 <img
 src={heroImage}
+loading="eager"
 style={{
 position:"absolute",
 top:0,
