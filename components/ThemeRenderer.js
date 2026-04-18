@@ -124,7 +124,7 @@ margin:"0 auto",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-gap:8
+gap:6
 }}
 >
 
@@ -140,7 +140,7 @@ marginTop: finalTheme?.layout?.avatarOverlap ? 0 : 20,
 transform: finalTheme?.layout?.avatarOverlap
   ? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
   : "none",
-marginBottom:16,
+marginBottom:4,
 position:"relative",
 zIndex:10
 }}
