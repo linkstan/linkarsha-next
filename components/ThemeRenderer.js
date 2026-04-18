@@ -136,7 +136,7 @@ height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"contain",
-marginTop: finalTheme?.layout?.avatarOverlap ? 0 : 20,
+marginTop: finalTheme?.layout?.avatarOverlap ? -20 : 10,
 transform: finalTheme?.layout?.avatarOverlap
   ? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
   : "none",
