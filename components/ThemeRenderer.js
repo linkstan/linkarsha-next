@@ -58,29 +58,42 @@ appearance,
 blocks
 }){
 
+/* LIVE STATE */
+
 const [live,setLive] = useState({});
+
+/* LISTEN FOR EDITOR EVENTS */
 
 useEffect(()=>{
 
 function update(e){
+
 setLive(prev=>({
 ...prev,
 ...e.detail
 }));
+
 }
 
 window.addEventListener("appearance-update",update);
+
 return ()=>window.removeEventListener("appearance-update",update);
 
 },[]);
 
+/* THEME ENGINE USES ORIGINAL APPEARANCE */
+
 const themeName = profile?.theme || "minimal";
 const finalTheme = getTheme(themeName, appearance);
+
+/* MERGE HEADER SETTINGS */
 
 const header = {
 ...(appearance?.header || {}),
 ...(live?.header || {})
 };
+
+/* MERGE SOCIAL LINKS */
 
 const socialLinks = {
 ...(appearance?.social_links || {}),
@@ -98,14 +111,6 @@ width:"100%",
 background:finalTheme?.background || "#ffffff",
 color: finalTheme?.textColor || "#000",
 minHeight:"100vh"
-}}
->
-
-<div
-style={{
-width:390,
-maxWidth:"100%",
-margin:"0 auto"
 }}
 >
 
@@ -192,7 +197,7 @@ marginTop:10
 
 )}
 
-{/* SOCIAL ICONS */}
+{/* SOCIAL ICONS ABOVE */}
 
 {header.showSocialIcons && header.socialPosition==="header" && (
 
@@ -254,7 +259,53 @@ appearance={appearance}
 
 </div>
 
+{/* SOCIAL ICONS BELOW */}
+
+{header.showSocialIcons && header.socialPosition==="bottom" && (
+
+<div
+style={{
+display:"flex",
+gap:14,
+marginTop:30,
+flexWrap:"wrap",
+justifyContent:"center"
+}}
+>
+
+{Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames?.map((username,i)=>{
+
+const iconSrc =
+header.socialIconStyle==="theme"
+? `/icons/theme/${platform}.svg`
+: `/icons/${platform==="twitter"?"x":platform}.png`;
+
+return(
+
+<a
+key={platform+i}
+href={buildSocialUrl(platform,username)}
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<img
+src={iconSrc}
+style={{width:22,height:22}}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
+/>
+
+</a>
+
+);
+
+})
+)}
+
 </div>
+
+)}
 
 </div>
 
