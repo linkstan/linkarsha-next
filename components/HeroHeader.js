@@ -21,7 +21,7 @@ const heroPosition = header.heroPosition || "center center";
 
 /* responsive hero height */
 
-const heroHeight = hero.height || 260;
+const heroHeight = hero.height || "33vw";
 
 /* --- FIX: make avatar cut perfectly match avatar circle --- */
 
@@ -35,6 +35,7 @@ return(
 style={{
 width:"100%",
 height:heroHeight,
+maxHeight:260,
 position:"relative",
 overflow:"hidden"
 }}
