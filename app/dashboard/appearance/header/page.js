@@ -195,30 +195,30 @@ reader.readAsDataURL(file);
 
 /* SAVE AVATAR AFTER CROP */
 
-async function saveAvatarCrop(area,zoom){
+async function saveAvatarCrop(croppedAreaPixels, zoom){
 
 setAvatarUploading(true);
 
 const { default:getCroppedImg } = await import("../../../lib/cropImage");
 
-const blob = await getCroppedImg(avatarCropImage,area,zoom);
+const blob = await getCroppedImg(avatarCropImage, croppedAreaPixels, zoom);
 
-const {data:{session}}=await supabase.auth.getSession();
+const {data:{session}} = await supabase.auth.getSession();
 
-const path=`avatars/${session.user.id}_${Date.now()}.jpg`;
+const path = `avatars/${session.user.id}_${Date.now()}.jpg`;
 
 await supabase.storage
 .from("avatars")
-.upload(path,blob);
+.upload(path, blob);
 
-const {data}=supabase.storage
+const {data} = supabase.storage
 .from("avatars")
 .getPublicUrl(path);
 
 await supabase
 .from("profiles")
-.update({avatar:data.publicUrl})
-.eq("id",session.user.id);
+.update({ avatar: data.publicUrl })
+.eq("id", session.user.id);
 
 setAvatar(data.publicUrl);
 
