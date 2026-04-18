@@ -120,7 +120,10 @@ minHeight:"100vh"
 style={{
 width:360,
 maxWidth:"100%",
-margin:"0 auto"
+margin:"0 auto",
+display:"flex",
+flexDirection:"column",
+alignItems:"center"
 }}
 >
 
