@@ -116,6 +116,13 @@ minHeight:"100vh"
 
 <div
 style={{
+width:390,
+maxWidth:"100%",
+margin:"0 auto"
+}}
+>
+<div
+style={{
 width:360,
 maxWidth:"100%",
 margin:"0 auto",
