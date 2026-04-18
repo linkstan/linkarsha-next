@@ -123,7 +123,8 @@ maxWidth:"100%",
 margin:"0 auto",
 display:"flex",
 flexDirection:"column",
-alignItems:"center"
+alignItems:"center",
+gap:8
 }}
 >
 
@@ -167,7 +168,6 @@ style={{
 fontFamily:finalTheme?.fonts?.bio || "Inter",
 fontSize:26,
 opacity:.9,
-marginTop:6,
 textAlign:"center"
 }}
 >
@@ -177,7 +177,7 @@ textAlign:"center"
 )}
 
 {header.showUsername !== false && (
-<div style={{opacity:.7,marginTop:6}}>
+<div style={{opacity:.7}}>
 @{profile.username}
 </div>
 )}
@@ -188,8 +188,7 @@ textAlign:"center"
 style={{
 maxWidth:320,
 textAlign:"center",
-opacity:.85,
-marginTop:10
+opacity:.85
 }}
 >
 {profile.bio}
@@ -205,7 +204,6 @@ marginTop:10
 style={{
 display:"flex",
 gap:14,
-marginTop:16,
 flexWrap:"wrap",
 justifyContent:"center"
 }}
