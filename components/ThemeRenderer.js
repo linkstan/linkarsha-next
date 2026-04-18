@@ -131,7 +131,7 @@ transform: finalTheme?.layout?.avatarOverlap
   : "none",
 marginBottom:16,
 position:"relative",
-zIndex:5
+zIndex:10
 }}
 />
 
