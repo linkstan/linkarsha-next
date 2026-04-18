@@ -19,14 +19,10 @@ const heroOpacity = (header.heroOpacity ?? 100) / 100;
 
 const heroPosition = header.heroPosition || "center center";
 
-/* responsive hero height */
-
-const heroHeight = hero.height || "33vw";
-
 /* --- FIX: make avatar cut perfectly match avatar circle --- */
 
 const avatarSize = theme?.avatar?.size || 110;
-const gap = Math.max(14, avatarSize * 0.12); // space between hero edge and avatar
+const gap = Math.max(14, avatarSize * 0.12);
 const cutSize = avatarSize + gap * 2;
 
 return(
@@ -34,7 +30,7 @@ return(
 <div
 style={{
 width:"100%",
-height:heroHeight,
+aspectRatio:"16 / 6",
 maxHeight:260,
 position:"relative",
 overflow:"hidden"
