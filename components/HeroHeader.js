@@ -23,6 +23,12 @@ const heroPosition = header.heroPosition || "center center";
 
 const heroHeight = hero.height || 260;
 
+/* --- FIX: make avatar cut perfectly match avatar circle --- */
+
+const avatarSize = theme?.avatar?.size || 110;
+const gap = Math.max(24, avatarSize * 0.22); // space between hero edge and avatar
+const cutSize = avatarSize + gap * 2;
+
 return(
 
 <div
@@ -98,11 +104,11 @@ textShadow:"0 0 30px rgba(255,255,255,.95),0 0 60px rgba(255,255,255,.85),0 0 90
 <div
 style={{
 position:"absolute",
-bottom:-60,
+bottom:-(cutSize/2),
 left:"50%",
 transform:"translateX(-50%)",
-width:140,
-height:140,
+width:cutSize,
+height:cutSize,
 background:theme.background || "#e9ded9",
 borderRadius:"50%",
 zIndex:3
@@ -112,5 +118,4 @@ zIndex:3
 </div>
 
 );
-
 }
