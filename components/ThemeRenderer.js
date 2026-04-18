@@ -114,7 +114,18 @@ minHeight:"100vh"
 }}
 >
 
+<div
+style={{
+width:360,
+maxWidth:"100%",
+margin:"0 auto",
+overflow:"hidden"
+}}
+>
+
 <HeroHeader appearance={appearance} theme={finalTheme} />
+
+</div>
 
 <img
 src={profile.avatar || ""}
