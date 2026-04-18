@@ -29,12 +29,11 @@ return(
 
 <div
 style={{
-width:"100vw",
+width:"100%",
 aspectRatio:"16 / 6",
+maxHeight:260,
 position:"relative",
-overflow:"hidden",
-left:"50%",
-transform:"translateX(-50%)"
+overflow:"hidden"
 }}
 >
 
