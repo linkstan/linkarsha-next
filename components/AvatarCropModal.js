@@ -12,7 +12,7 @@ onComplete
 
 const [crop,setCrop]=useState({x:0,y:0});
 const [zoom,setZoom]=useState(1);
-const [area,setArea]=useState(null);
+const [croppedAreaPixels,setCroppedAreaPixels]=useState(null);
 
 return(
 
@@ -44,7 +44,9 @@ aspect={1}
 cropShape={shape}
 onCropChange={setCrop}
 onZoomChange={setZoom}
-onCropComplete={(c,a)=>setArea(a)}
+onCropComplete={(croppedArea, croppedAreaPixels)=>{
+setCroppedAreaPixels(croppedAreaPixels);
+}}
 />
 
 </div>
@@ -53,7 +55,7 @@ onCropComplete={(c,a)=>setArea(a)}
 
 <button onClick={onCancel}>Cancel</button>
 
-<button onClick={()=>onComplete(area,zoom)}>
+<button onClick={()=>onComplete(croppedAreaPixels,zoom)}>
 Save
 </button>
 
