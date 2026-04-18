@@ -124,6 +124,7 @@ height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
 objectFit:"cover",
+overflow:"hidden",
 marginTop: finalTheme?.layout?.avatarOverlap ? 0 : 20,
 transform: finalTheme?.layout?.avatarOverlap
   ? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
