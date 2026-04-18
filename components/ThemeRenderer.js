@@ -305,6 +305,7 @@ onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 )}
 
 </div>
+</div>
 
 );
 
