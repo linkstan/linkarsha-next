@@ -123,7 +123,7 @@ width:finalTheme?.avatar?.size || 110,
 height:finalTheme?.avatar?.size || 110,
 borderRadius:"50%",
 border:finalTheme?.avatar?.border || "none",
-objectFit:"cover",
+objectFit:"contain",
 overflow:"hidden",
 marginTop: finalTheme?.layout?.avatarOverlap ? 0 : 20,
 transform: finalTheme?.layout?.avatarOverlap
