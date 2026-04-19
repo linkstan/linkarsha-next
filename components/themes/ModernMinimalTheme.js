@@ -121,35 +121,53 @@ letterSpacing:1
 
 {/* CONTACT SECTION */}
 
-{Object.keys(socialLinks).length>0 && (
-
 <div style={{
 width:"100%",
 maxWidth:420,
-textAlign:"center",
-padding:"30px 0",
-background:"rgba(0,0,0,.15)"
+marginTop:30,
+position:"relative"
 }}>
 
 <div style={{
-fontFamily:"Inter",
+backgroundImage:`url(${appearance?.header?.heroImage || profile.avatar || ""})`,
+backgroundSize:"cover",
+backgroundPosition:"center",
+height:200,
+display:"flex",
+flexDirection:"column",
+justifyContent:"center",
+alignItems:"center",
+position:"relative"
+}}>
+
+<div style={{
+position:"absolute",
+inset:0,
+background:"rgba(0,0,0,0.25)"
+}}/>
+
+<div style={{
+border:"1px solid rgba(255,255,255,.7)",
+padding:"10px 25px",
 color:"#fff",
+fontFamily:"Inter",
 letterSpacing:2,
-marginBottom:15
+zIndex:2
 }}>
 CONTACT US
 </div>
 
 <div style={{
 display:"flex",
-justifyContent:"center",
-gap:20
+gap:18,
+marginTop:15,
+zIndex:2
 }}>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
 usernames?.map((username,i)=>{
 
-const icon = `/icons/${platform==="twitter"?"x":platform}.png`;
+const icon=`/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
@@ -157,13 +175,22 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
+style={{
+width:36,
+height:36,
+borderRadius:"50%",
+background:"#fff",
+display:"flex",
+alignItems:"center",
+justifyContent:"center"
+}}
 >
 
 <img
 src={icon}
 style={{
-width:28,
-height:28
+width:18,
+height:18
 }}
 />
 
@@ -178,21 +205,30 @@ height:28
 
 </div>
 
-)}
+</div>
 
 
-{/* RESOURCE LIST */}
 
-{resources.length>0 && (
+{/* RESOURCE SECTION */}
 
 <div style={{
 width:"100%",
 maxWidth:420,
 background:"#e9e1d8",
-padding:"20px 16px"
+padding:"25px 18px"
 }}>
 
-{resources.map(block=>(
+<div style={{
+fontFamily:"Playfair Display",
+fontSize:20,
+letterSpacing:1,
+color:"#7b726a",
+marginBottom:15
+}}>
+ALL THE RESOURCES
+</div>
+
+{resources.map((block,i)=>(
 
 <a
 key={block.id}
@@ -200,31 +236,59 @@ href={block?.data_json?.url || "#"}
 target="_blank"
 style={{
 display:"flex",
+alignItems:"center",
 justifyContent:"space-between",
 padding:"12px 0",
-borderBottom:"1px solid rgba(0,0,0,.1)",
+borderBottom:"1px solid rgba(0,0,0,.15)",
 textDecoration:"none",
-color:"#444",
-fontFamily:"Inter"
+color:"#444"
 }}
 >
 
-<span>
-{block?.data_json?.title}
-</span>
+<div style={{
+display:"flex",
+alignItems:"center",
+gap:12
+}}>
 
-<span>→</span>
+<div style={{
+width:36,
+height:36,
+borderRadius:6,
+background:"#ddd",
+overflow:"hidden"
+}}>
+
+{block?.data_json?.image && (
+<img
+src={block.data_json.image}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+)}
+
+</div>
+
+<div style={{
+fontFamily:"Inter",
+fontSize:14
+}}>
+{block?.data_json?.title}
+</div>
+
+</div>
+
+<div style={{
+opacity:.6
+}}>
+→
+</div>
 
 </a>
 
 ))}
 
 </div>
-
-)}
-
-</div>
-
-);
-
-}
