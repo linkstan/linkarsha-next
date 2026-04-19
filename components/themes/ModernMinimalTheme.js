@@ -1,7 +1,5 @@
 "use client";
 
-import ButtonBlock from "../ButtonBlock";
-
 export default function ModernMinimalTheme({
 profile,
 appearance,
@@ -10,123 +8,148 @@ socialLinks,
 buildSocialUrl
 }){
 
-/* split links */
-
-const primaryLinks = blocks.slice(0,6);
-const resourceLinks = blocks.slice(6);
+const primary = blocks.slice(0,6);
+const resources = blocks.slice(6);
 
 return(
 
-<div
-style={{
+<div style={{
 width:"100%",
+background:"#b7aba0",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-background:"#efe8e1",
 minHeight:"100vh"
-}}
->
+}}>
 
-{/* HERO SECTION */}
+{/* TITLE */}
 
-<div
-style={{
+<div style={{
+fontFamily:"Playfair Display",
+fontSize:36,
+color:"#f1ece6",
+marginTop:40,
+letterSpacing:2
+}}>
+{profile.display_name || profile.username}
+</div>
+
+
+{/* HERO IMAGE */}
+
+<div style={{
 width:"100%",
 maxWidth:420,
-margin:"0 auto",
-textAlign:"center"
-}}
->
-
-<div
-style={{
-width:"100%",
-height:220,
-borderBottomLeftRadius:140,
-borderBottomRightRadius:140,
+marginTop:20,
+borderTopLeftRadius:220,
+borderTopRightRadius:220,
 overflow:"hidden"
-}}
->
+}}>
 
 <img
-src={profile.avatar || ""}
+src={appearance?.header?.heroImage || profile.avatar || ""}
 style={{
 width:"100%",
-height:"100%",
+height:340,
 objectFit:"cover"
 }}
 />
 
 </div>
 
-<div style={{marginTop:16}}>
 
-<h1 style={{fontSize:28,fontFamily:"Playfair Display"}}>
-{profile.display_name || profile.username}
-</h1>
+{/* SUBTITLE STRIP */}
 
 {profile.bio && (
 
-<p
-style={{
-opacity:.8,
-maxWidth:320,
-margin:"8px auto"
-}}
->
+<div style={{
+background:"#e9e1d8",
+width:"100%",
+maxWidth:420,
+textAlign:"center",
+padding:"20px 10px",
+fontFamily:"Inter",
+letterSpacing:1,
+color:"#6c645d"
+}}>
 {profile.bio}
-</p>
+</div>
 
 )}
 
-</div>
 
-</div>
+{/* GRID BUTTONS */}
 
-
-{/* PRIMARY GRID LINKS */}
-
-<div
-style={{
+<div style={{
+background:"#b7aba0",
 width:"100%",
 maxWidth:420,
-marginTop:20,
+padding:"20px 16px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
-gap:10,
-padding:"0 16px"
+gap:12
+}}>
+
+{primary.map((block)=>{
+
+return(
+
+<a
+key={block.id}
+href={block?.data_json?.url || "#"}
+target="_blank"
+style={{
+border:"1px solid rgba(255,255,255,.6)",
+padding:"12px",
+textAlign:"center",
+textDecoration:"none",
+color:"#fff",
+fontFamily:"Inter",
+fontSize:14,
+letterSpacing:1
 }}
 >
+{block?.data_json?.title}
+</a>
 
-{primaryLinks.map(block=>(
-<ButtonBlock
-key={block.id}
-block={block}
-/>
-))}
+)
+
+})}
 
 </div>
 
 
-{/* SOCIAL ICONS */}
+{/* CONTACT SECTION */}
 
-{Object.keys(socialLinks).length > 0 && (
+{Object.keys(socialLinks).length>0 && (
 
-<div
-style={{
+<div style={{
+width:"100%",
+maxWidth:420,
+textAlign:"center",
+padding:"30px 0",
+background:"rgba(0,0,0,.15)"
+}}>
+
+<div style={{
+fontFamily:"Inter",
+color:"#fff",
+letterSpacing:2,
+marginBottom:15
+}}>
+CONTACT US
+</div>
+
+<div style={{
 display:"flex",
 justifyContent:"center",
-gap:18,
-marginTop:28
-}}
->
+gap:20
+}}>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
 usernames?.map((username,i)=>{
 
-const icon =
-`/icons/${platform==="twitter"?"x":platform}.png`;
+const icon = `/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
@@ -134,12 +157,14 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
-rel="noopener noreferrer"
 >
 
 <img
 src={icon}
-style={{width:24,height:24}}
+style={{
+width:28,
+height:28
+}}
 />
 
 </a>
@@ -151,21 +176,23 @@ style={{width:24,height:24}}
 
 </div>
 
+</div>
+
 )}
 
 
-{/* RESOURCE LINKS */}
+{/* RESOURCE LIST */}
 
-<div
-style={{
+{resources.length>0 && (
+
+<div style={{
 width:"100%",
 maxWidth:420,
-marginTop:28,
-padding:"0 16px"
-}}
->
+background:"#e9e1d8",
+padding:"20px 16px"
+}}>
 
-{resourceLinks.map(block=>(
+{resources.map(block=>(
 
 <a
 key={block.id}
@@ -174,11 +201,11 @@ target="_blank"
 style={{
 display:"flex",
 justifyContent:"space-between",
-alignItems:"center",
-padding:"14px 0",
-borderBottom:"1px solid rgba(0,0,0,.15)",
+padding:"12px 0",
+borderBottom:"1px solid rgba(0,0,0,.1)",
 textDecoration:"none",
-color:"#000"
+color:"#444",
+fontFamily:"Inter"
 }}
 >
 
@@ -186,15 +213,15 @@ color:"#000"
 {block?.data_json?.title}
 </span>
 
-<span style={{opacity:.6}}>
-→
-</span>
+<span>→</span>
 
 </a>
 
 ))}
 
 </div>
+
+)}
 
 </div>
 
