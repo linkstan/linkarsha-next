@@ -137,7 +137,7 @@ buttonWeight:600
 
 }),
 
-/* ---------- SAMIRA COACH ---------- */
+/* ---------- Modern Minimal ---------- */
 modernminimal: {
 background:"#efe8e1",
 textColor:"#1a1a1a",
