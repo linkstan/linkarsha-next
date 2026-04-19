@@ -160,4 +160,6 @@ buttonColor:"#111111",
 buttonText:"#ffffff",
 buttonSpacing:12
 
-}),
+})
+
+};
