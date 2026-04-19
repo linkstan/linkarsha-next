@@ -49,7 +49,7 @@ maxWidth:containerWidth
 <div
 style={{
 width:"100%",
-maxWidth:containerWidth,
+maxWidth:320,
 marginTop:20,
 borderTopLeftRadius:260,
 borderTopRightRadius:260,
@@ -63,7 +63,7 @@ overflow:"hidden"
 src={profile.avatar || ""}
 style={{
 width:"100%",
-height:380,
+height:410,
 objectFit:"cover"
 }}
 />
@@ -81,7 +81,7 @@ background:"#e9e1d8",
 width:"100%",
 textAlign:"center",
 padding:"16px 10px",
-marginTop:-2,
+marginTop:-6,
 fontFamily:"Inter",
 letterSpacing:1,
 color:"#6c645d"
