@@ -135,6 +135,19 @@ buttonSpacing:16,
 buttonPadding:16,
 buttonWeight:600
 
-})
+}),
 
+/* ---------- SAMIRA COACH ---------- */
+modernminimal: {
+background:"#efe8e1",
+textColor:"#1a1a1a",
+fonts:{
+name:"Playfair Display",
+bio:"Inter",
+buttons:"Inter"
+},
+layout:{
+hero:true
+}
+}
 };
