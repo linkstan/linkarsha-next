@@ -10,20 +10,34 @@ socialLinks,
 buildSocialUrl
 }){
 
+/* split links */
+
 const primaryLinks = blocks.slice(0,6);
 const resourceLinks = blocks.slice(6);
 
 return(
 
-<div style={{width:"100%",maxWidth:420,margin:"0 auto"}}>
+<div
+style={{
+width:"100%",
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+background:"#efe8e1",
+minHeight:"100vh"
+}}
+>
 
-{/* HERO */}
+{/* HERO SECTION */}
 
-<div style={{textAlign:"center",paddingTop:30}}>
-
-<h1 style={{fontSize:28,marginBottom:10}}>
-{profile.display_name || profile.username}
-</h1>
+<div
+style={{
+width:"100%",
+maxWidth:420,
+margin:"0 auto",
+textAlign:"center"
+}}
+>
 
 <div
 style={{
@@ -31,8 +45,7 @@ width:"100%",
 height:220,
 borderBottomLeftRadius:140,
 borderBottomRightRadius:140,
-overflow:"hidden",
-marginBottom:16
+overflow:"hidden"
 }}
 >
 
@@ -47,22 +60,42 @@ objectFit:"cover"
 
 </div>
 
+<div style={{marginTop:16}}>
+
+<h1 style={{fontSize:28,fontFamily:"Playfair Display"}}>
+{profile.display_name || profile.username}
+</h1>
+
 {profile.bio && (
-<p style={{opacity:.8}}>
+
+<p
+style={{
+opacity:.8,
+maxWidth:320,
+margin:"8px auto"
+}}
+>
 {profile.bio}
 </p>
+
 )}
 
 </div>
 
-{/* PRIMARY GRID */}
+</div>
+
+
+{/* PRIMARY GRID LINKS */}
 
 <div
 style={{
+width:"100%",
+maxWidth:420,
+marginTop:20,
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
 gap:10,
-marginTop:20
+padding:"0 16px"
 }}
 >
 
@@ -75,19 +108,25 @@ block={block}
 
 </div>
 
+
 {/* SOCIAL ICONS */}
+
+{Object.keys(socialLinks).length > 0 && (
 
 <div
 style={{
 display:"flex",
 justifyContent:"center",
-gap:16,
-marginTop:30
+gap:18,
+marginTop:28
 }}
 >
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
 usernames?.map((username,i)=>{
+
+const icon =
+`/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
@@ -99,7 +138,7 @@ rel="noopener noreferrer"
 >
 
 <img
-src={`/icons/${platform==="twitter"?"x":platform}.png`}
+src={icon}
 style={{width:24,height:24}}
 />
 
@@ -112,9 +151,19 @@ style={{width:24,height:24}}
 
 </div>
 
+)}
+
+
 {/* RESOURCE LINKS */}
 
-<div style={{marginTop:30}}>
+<div
+style={{
+width:"100%",
+maxWidth:420,
+marginTop:28,
+padding:"0 16px"
+}}
+>
 
 {resourceLinks.map(block=>(
 
@@ -125,15 +174,21 @@ target="_blank"
 style={{
 display:"flex",
 justifyContent:"space-between",
-padding:"14px 4px",
+alignItems:"center",
+padding:"14px 0",
 borderBottom:"1px solid rgba(0,0,0,.15)",
-textDecoration:"none"
+textDecoration:"none",
+color:"#000"
 }}
 >
 
-<span>{block?.data_json?.title}</span>
+<span>
+{block?.data_json?.title}
+</span>
 
-<span>→</span>
+<span style={{opacity:.6}}>
+→
+</span>
 
 </a>
 
