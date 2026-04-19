@@ -13,9 +13,11 @@ const [loading,setLoading]=useState(false);
 
 const themes=[
 
-{name:"minimal",category:"Light",bg:"#ffffff"},
+{name:"minimal",display:"Minimal",category:"Light",bg:"#ffffff"},
 
-{name:"samira",category:"Creator",bg:"#e9ded9"}
+{name:"samira",display:"Samira",category:"Creator",bg:"#e9ded9"},
+
+{name:"modernminimal",display:"Modern Minimal",category:"Modern",bg:"#efe8e1"}
 
 ];
 
@@ -137,7 +139,7 @@ justifyContent:"space-between",
 alignItems:"center"
 }}>
 
-<div>{t.name}</div>
+<div>{t.display}</div>
 
 {selected===t.name && (
 <div style={{
