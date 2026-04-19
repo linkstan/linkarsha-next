@@ -2,6 +2,7 @@
 
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
+import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -58,11 +59,7 @@ appearance,
 blocks
 }){
 
-/* LIVE STATE */
-
 const [live,setLive] = useState({});
-
-/* LISTEN FOR EDITOR EVENTS */
 
 useEffect(()=>{
 
@@ -81,24 +78,32 @@ return ()=>window.removeEventListener("appearance-update",update);
 
 },[]);
 
-/* THEME ENGINE USES ORIGINAL APPEARANCE */
-
 const themeName = profile?.theme || "minimal";
 const finalTheme = getTheme(themeName, appearance);
-
-/* MERGE HEADER SETTINGS */
 
 const header = {
 ...(appearance?.header || {}),
 ...(live?.header || {})
 };
 
-/* MERGE SOCIAL LINKS */
-
 const socialLinks = {
 ...(appearance?.social_links || {}),
 ...(live?.social_links || {})
 };
+
+/* MODERN MINIMAL THEME */
+
+if(themeName === "modernminimal"){
+return(
+<ModernMinimalTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
+socialLinks={socialLinks}
+buildSocialUrl={buildSocialUrl}
+/>
+)
+}
 
 return(
 
@@ -138,8 +143,8 @@ border:finalTheme?.avatar?.border || "none",
 objectFit:"contain",
 marginTop: finalTheme?.layout?.avatarOverlap ? -20 : 10,
 transform: finalTheme?.layout?.avatarOverlap
-  ? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
-  : "none",
+? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
+: "none",
 marginBottom:4,
 position:"relative",
 zIndex:10
@@ -195,8 +200,6 @@ opacity:.85
 </p>
 
 )}
-
-{/* SOCIAL ICONS ABOVE */}
 
 {header.showSocialIcons && header.socialPosition==="header" && (
 
@@ -256,8 +259,6 @@ appearance={appearance}
 ))}
 
 </div>
-
-{/* SOCIAL ICONS BELOW */}
 
 {header.showSocialIcons && header.socialPosition==="bottom" && (
 
