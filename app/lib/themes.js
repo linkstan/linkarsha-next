@@ -138,16 +138,26 @@ buttonWeight:600
 }),
 
 /* ---------- Modern Minimal ---------- */
-modernminimal: {
+
+modernminimal: createTheme({
+
+name:"Modern Minimal",
+
+hero:true,
+avatarOverlap:false,
+
 background:"#efe8e1",
-textColor:"#1a1a1a",
-fonts:{
-name:"Playfair Display",
-bio:"Inter",
-buttons:"Inter"
-},
-layout:{
-hero:true
-}
-}
-};
+
+nameFont:"Playfair Display",
+bioFont:"Inter",
+buttonFont:"Inter",
+
+avatarSize:110,
+avatarBorder:"none",
+
+buttonRadius:12,
+buttonColor:"#111111",
+buttonText:"#ffffff",
+buttonSpacing:12
+
+}),
