@@ -8,46 +8,59 @@ socialLinks,
 buildSocialUrl
 }){
 
+const containerWidth = 380;
+
 const primary = blocks.slice(0,6);
 const resources = blocks.slice(6);
 
 return(
 
-<div style={{
+<div
+style={{
 width:"100%",
 background:"#b7aba0",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
 minHeight:"100vh"
-}}>
+}}
+>
 
 {/* TITLE */}
 
-<div style={{
+<div
+style={{
 fontFamily:"Playfair Display",
 fontSize:36,
 color:"#f1ece6",
 marginTop:40,
-letterSpacing:2
-}}>
+letterSpacing:2,
+textAlign:"center",
+width:"100%",
+maxWidth:containerWidth
+}}
+>
 {profile.display_name || profile.username}
 </div>
 
 
-{/* HERO IMAGE */}
+{/* PROFILE HERO IMAGE (ARCH SHAPE) */}
 
-<div style={{
+<div
+style={{
 width:"100%",
-maxWidth:420,
+maxWidth:containerWidth,
 marginTop:20,
 borderTopLeftRadius:220,
 borderTopRightRadius:220,
+borderBottomLeftRadius:0,
+borderBottomRightRadius:0,
 overflow:"hidden"
-}}>
+}}
+>
 
 <img
-src={appearance?.header?.heroImage || profile.avatar || ""}
+src={profile.avatar || ""}
 style={{
 width:"100%",
 height:340,
@@ -62,16 +75,18 @@ objectFit:"cover"
 
 {profile.bio && (
 
-<div style={{
+<div
+style={{
 background:"#e9e1d8",
 width:"100%",
-maxWidth:420,
+maxWidth:containerWidth,
 textAlign:"center",
 padding:"20px 10px",
 fontFamily:"Inter",
 letterSpacing:1,
 color:"#6c645d"
-}}>
+}}
+>
 {profile.bio}
 </div>
 
@@ -80,15 +95,17 @@ color:"#6c645d"
 
 {/* GRID BUTTONS */}
 
-<div style={{
+<div
+style={{
 background:"#b7aba0",
 width:"100%",
-maxWidth:420,
-padding:"20px 16px",
+maxWidth:containerWidth,
+padding:"22px 16px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
-gap:12
-}}>
+gap:14
+}}
+>
 
 {primary.map((block)=>{
 
@@ -100,13 +117,14 @@ href={block?.data_json?.url || "#"}
 target="_blank"
 style={{
 border:"1px solid rgba(255,255,255,.6)",
-padding:"12px",
+padding:"13px",
 textAlign:"center",
 textDecoration:"none",
 color:"#fff",
 fontFamily:"Inter",
 fontSize:14,
-letterSpacing:1
+letterSpacing:1,
+background:"transparent"
 }}
 >
 {block?.data_json?.title}
@@ -121,53 +139,63 @@ letterSpacing:1
 
 {/* CONTACT SECTION */}
 
-<div style={{
+<div
+style={{
 width:"100%",
-maxWidth:420,
-marginTop:30,
-position:"relative"
-}}>
+maxWidth:containerWidth,
+marginTop:30
+}}
+>
 
-<div style={{
-backgroundImage:`url(${appearance?.header?.heroImage || profile.avatar || ""})`,
+<div
+style={{
+backgroundImage:`url(${appearance?.header?.heroImage || ""})`,
 backgroundSize:"cover",
 backgroundPosition:"center",
-height:200,
+height:210,
 display:"flex",
 flexDirection:"column",
 justifyContent:"center",
 alignItems:"center",
 position:"relative"
-}}>
+}}
+>
 
-<div style={{
+<div
+style={{
 position:"absolute",
 inset:0,
 background:"rgba(0,0,0,0.25)"
-}}/>
+}}
+/>
 
-<div style={{
+<div
+style={{
 border:"1px solid rgba(255,255,255,.7)",
 padding:"10px 25px",
 color:"#fff",
 fontFamily:"Inter",
 letterSpacing:2,
 zIndex:2
-}}>
+}}
+>
 CONTACT US
 </div>
 
-<div style={{
+
+{/* SOCIAL ICONS */}
+
+<div
+style={{
 display:"flex",
 gap:18,
 marginTop:15,
 zIndex:2
-}}>
+}}
+>
 
 {Object.entries(socialLinks).map(([platform,usernames]) =>
 usernames?.map((username,i)=>{
-
-const icon=`/icons/${platform==="twitter"?"x":platform}.png`;
 
 return(
 
@@ -176,10 +204,10 @@ key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
 style={{
-width:36,
-height:36,
+width:38,
+height:38,
 borderRadius:"50%",
-background:"#fff",
+background:"rgba(255,255,255,.9)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center"
@@ -187,7 +215,7 @@ justifyContent:"center"
 >
 
 <img
-src={icon}
+src={`/icons/theme/${platform}.svg`}
 style={{
 width:18,
 height:18
@@ -209,26 +237,34 @@ height:18
 
 
 
-{/* RESOURCE SECTION */}
+{/* RESOURCES HEADER SECTION */}
 
-<div style={{
+<div
+style={{
 width:"100%",
-maxWidth:420,
+maxWidth:containerWidth,
 background:"#e9e1d8",
-padding:"25px 18px"
-}}>
+padding:"28px 18px"
+}}
+>
 
-<div style={{
+<div
+style={{
 fontFamily:"Playfair Display",
-fontSize:20,
-letterSpacing:1,
+fontSize:22,
+letterSpacing:2,
 color:"#7b726a",
-marginBottom:15
-}}>
+textAlign:"center",
+marginBottom:20
+}}
+>
 ALL THE RESOURCES
 </div>
 
-{resources.map((block,i)=>(
+
+{/* RESOURCE LIST */}
+
+{resources.map((block)=>(
 
 <a
 key={block.id}
@@ -238,28 +274,33 @@ style={{
 display:"flex",
 alignItems:"center",
 justifyContent:"space-between",
-padding:"12px 0",
+padding:"14px 0",
 borderBottom:"1px solid rgba(0,0,0,.15)",
 textDecoration:"none",
 color:"#444"
 }}
 >
 
-<div style={{
+<div
+style={{
 display:"flex",
 alignItems:"center",
 gap:12
-}}>
+}}
+>
 
-<div style={{
+<div
+style={{
 width:36,
 height:36,
 borderRadius:6,
 background:"#ddd",
 overflow:"hidden"
-}}>
+}}
+>
 
 {block?.data_json?.image && (
+
 <img
 src={block.data_json.image}
 style={{
@@ -268,22 +309,27 @@ height:"100%",
 objectFit:"cover"
 }}
 />
+
 )}
 
 </div>
 
-<div style={{
+<div
+style={{
 fontFamily:"Inter",
 fontSize:14
-}}>
+}}
+>
 {block?.data_json?.title}
 </div>
 
 </div>
 
-<div style={{
+<div
+style={{
 opacity:.6
-}}>
+}}
+>
 →
 </div>
 
@@ -292,6 +338,8 @@ opacity:.6
 ))}
 
 </div>
+
+
 </div>
 
 );
