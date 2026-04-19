@@ -51,8 +51,8 @@ style={{
 width:"100%",
 maxWidth:containerWidth,
 marginTop:20,
-borderTopLeftRadius:220,
-borderTopRightRadius:220,
+borderTopLeftRadius:260,
+borderTopRightRadius:260,
 borderBottomLeftRadius:0,
 borderBottomRightRadius:0,
 overflow:"hidden"
