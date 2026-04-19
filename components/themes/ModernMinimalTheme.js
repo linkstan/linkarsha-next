@@ -51,8 +51,8 @@ style={{
 width:"100%",
 maxWidth:containerWidth,
 marginTop:20,
-borderTopLeftRadius:180,
-borderTopRightRadius:180,
+borderTopLeftRadius:220,
+borderTopRightRadius:220,
 borderBottomLeftRadius:0,
 borderBottomRightRadius:0,
 overflow:"hidden"
@@ -80,7 +80,7 @@ style={{
 background:"#e9e1d8",
 width:"100%",
 textAlign:"center",
-padding:"18px 10px",
+padding:"16px 10px",
 marginTop:-2,
 fontFamily:"Inter",
 letterSpacing:1,
@@ -117,12 +117,12 @@ href={block?.data_json?.url || "#"}
 target="_blank"
 style={{
 border:"1px solid rgba(255,255,255,.6)",
-padding:"9px 10px",
+padding:"13px 8px",
 textAlign:"center",
 textDecoration:"none",
 color:"#fff",
 fontFamily:"Inter",
-fontSize:13,
+fontSize:15,
 letterSpacing:1,
 background:"transparent"
 }}
