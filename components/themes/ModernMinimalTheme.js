@@ -51,8 +51,8 @@ style={{
 width:"100%",
 maxWidth:containerWidth,
 marginTop:20,
-borderTopLeftRadius:220,
-borderTopRightRadius:220,
+borderTopLeftRadius:180,
+borderTopRightRadius:180,
 borderBottomLeftRadius:0,
 borderBottomRightRadius:0,
 overflow:"hidden"
@@ -63,7 +63,7 @@ overflow:"hidden"
 src={profile.avatar || ""}
 style={{
 width:"100%",
-height:340,
+height:380,
 objectFit:"cover"
 }}
 />
@@ -79,9 +79,9 @@ objectFit:"cover"
 style={{
 background:"#e9e1d8",
 width:"100%",
-maxWidth:containerWidth,
 textAlign:"center",
-padding:"20px 10px",
+padding:"18px 10px",
+marginTop:-2,
 fontFamily:"Inter",
 letterSpacing:1,
 color:"#6c645d"
@@ -117,12 +117,12 @@ href={block?.data_json?.url || "#"}
 target="_blank"
 style={{
 border:"1px solid rgba(255,255,255,.6)",
-padding:"13px",
+padding:"9px 10px",
 textAlign:"center",
 textDecoration:"none",
 color:"#fff",
 fontFamily:"Inter",
-fontSize:14,
+fontSize:13,
 letterSpacing:1,
 background:"transparent"
 }}
@@ -142,7 +142,6 @@ background:"transparent"
 <div
 style={{
 width:"100%",
-maxWidth:containerWidth,
 marginTop:30
 }}
 >
