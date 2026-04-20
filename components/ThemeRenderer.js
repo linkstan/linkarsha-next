@@ -80,6 +80,19 @@ return ()=>window.removeEventListener("appearance-update",update);
 },[]);
 
 const themeName = profile?.theme || "minimal";
+
+const header = {
+...(appearance?.header || {}),
+...(live?.header || {})
+};
+
+const socialLinks = {
+...(appearance?.social_links || {}),
+...(live?.social_links || {})
+};
+
+/* ARCHWAY THEME */
+
 if(themeName === "archway"){
 return(
 <ArchwayTheme
@@ -91,17 +104,8 @@ buildSocialUrl={buildSocialUrl}
 />
 )
 }
+
 const finalTheme = getTheme(themeName, appearance);
-
-const header = {
-...(appearance?.header || {}),
-...(live?.header || {})
-};
-
-const socialLinks = {
-...(appearance?.social_links || {}),
-...(live?.social_links || {})
-};
 
 /* MODERN MINIMAL THEME */
 
