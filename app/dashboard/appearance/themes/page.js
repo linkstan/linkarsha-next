@@ -17,9 +17,9 @@ const themes=[
 
 {name:"samira",display:"Samira",category:"Creator",bg:"#e9ded9"},
 
-{name:"modernminimal",display:"Modern Minimal",category:"Modern",bg:"#efe8e1"}
-  
-{name:"archway",category:"Professional",bg:"#f3efe9"}
+{name:"modernminimal",display:"Modern Minimal",category:"Modern",bg:"#efe8e1"},
+
+{name:"archway",display:"Archway",category:"Professional",bg:"#f3efe9"}
 
 ];
 
