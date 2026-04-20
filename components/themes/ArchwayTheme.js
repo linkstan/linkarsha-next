@@ -8,24 +8,29 @@ socialLinks,
 buildSocialUrl
 }){
 
-const headerImage = appearance?.header?.heroImage || profile.avatar || "";
+const contactBlocks = blocks.slice(0,3);
+const socialBlocks = blocks.slice(3,5);
+const ctaBlock = blocks[5];
 
-const blur = appearance?.header?.blur ?? 12;
+const headerImage =
+appearance?.header?.heroImage ||
+profile.avatar ||
+"";
 
 return(
 
 <div
 style={{
 width:"100%",
+minHeight:"100vh",
 background:"#f3efe9",
 display:"flex",
 flexDirection:"column",
-alignItems:"center",
-minHeight:"100vh"
+alignItems:"center"
 }}
 >
 
-{/* HEADER IMAGE */}
+{/* BLURRED HEADER */}
 
 <div
 style={{
@@ -34,25 +39,37 @@ height:220,
 backgroundImage:`url(${headerImage})`,
 backgroundSize:"cover",
 backgroundPosition:"center",
-filter:`blur(${blur}px)`,
-position:"relative"
+filter:"blur(18px)",
+opacity:.7
 }}
 />
 
 
-{/* PROFILE ARCH */}
+{/* CONTENT */}
 
 <div
 style={{
-width:220,
-height:260,
+width:360,
+maxWidth:"92%",
 marginTop:-120,
-borderTopLeftRadius:140,
-borderTopRightRadius:140,
-borderBottomLeftRadius:16,
-borderBottomRightRadius:16,
+display:"flex",
+flexDirection:"column",
+alignItems:"center"
+}}
+>
+
+{/* ARCH IMAGE */}
+
+<div
+style={{
+width:170,
+height:210,
+borderTopLeftRadius:120,
+borderTopRightRadius:120,
+borderBottomLeftRadius:20,
+borderBottomRightRadius:20,
 overflow:"hidden",
-background:"#f3efe9"
+background:"#fff"
 }}
 >
 
@@ -68,78 +85,93 @@ objectFit:"cover"
 </div>
 
 
-{/* NAME */}
+{/* NAME STRIP */}
+
+<div
+style={{
+marginTop:18,
+backgroundImage:"url(/textures/brush.png)",
+backgroundSize:"cover",
+backgroundPosition:"center",
+padding:"16px 28px",
+textAlign:"center"
+}}
+>
 
 <div
 style={{
 fontFamily:"Playfair Display",
-fontSize:32,
-marginTop:20,
-color:"#1a1a1a"
+fontSize:34,
+color:"#1c1c1c"
 }}
 >
 {profile.display_name || profile.username}
 </div>
 
-
-{/* SUBTITLE */}
-
-{appearance?.header?.subtitle && (
-
 <div
 style={{
-fontSize:14,
-letterSpacing:2,
-opacity:.7,
-marginTop:4
+fontSize:12,
+letterSpacing:3,
+marginTop:6,
+opacity:.6
 }}
 >
-{appearance.header.subtitle}
+{profile.subtitle || ""}
 </div>
 
-)}
+</div>
 
 
-{/* CONTACT LINKS */}
+{/* CONTACT INFO */}
 
 <div
 style={{
-marginTop:25,
+marginTop:24,
 display:"flex",
 flexDirection:"column",
-gap:12,
+gap:14,
 alignItems:"center"
 }}
 >
 
-{blocks.slice(0,3).map((block)=>(
+{contactBlocks.map((block)=>{
 
-<div
+const title = block?.data_json?.title || "";
+const url = block?.data_json?.url || "";
+
+let icon="/icons/other.png";
+
+if(url.includes("mailto")) icon="/icons/email.png";
+if(url.includes("http")) icon="/icons/globe.png";
+if(url.includes("tel")) icon="/icons/phone.png";
+
+return(
+
+<a
 key={block.id}
+href={url}
 style={{
 display:"flex",
 alignItems:"center",
-gap:10,
-fontSize:15,
-color:"#444"
-}}
->
-
-<span>•</span>
-
-<a
-href={block?.data_json?.url || "#"}
-style={{
+gap:12,
 textDecoration:"none",
-color:"#444"
+color:"#444",
+fontSize:15
 }}
 >
-{block?.data_json?.title}
+
+<img
+src={icon}
+style={{width:18,height:18}}
+/>
+
+<span>{title}</span>
+
 </a>
 
-</div>
+);
 
-))}
+})}
 
 </div>
 
@@ -148,22 +180,21 @@ color:"#444"
 
 <div
 style={{
-width:260,
+width:"100%",
 height:1,
-background:"rgba(0,0,0,0.15)",
-marginTop:30
+background:"#ddd",
+margin:"26px 0"
 }}
 />
 
 
-{/* SOCIAL HANDLES */}
+{/* SOCIAL LINKS */}
 
 <div
 style={{
-marginTop:20,
 display:"flex",
 flexDirection:"column",
-gap:10,
+gap:12,
 alignItems:"center"
 }}
 >
@@ -173,20 +204,27 @@ usernames?.map((username,i)=>{
 
 return(
 
-<div
+<a
 key={platform+i}
+href={buildSocialUrl(platform,username)}
+target="_blank"
 style={{
 display:"flex",
+alignItems:"center",
 gap:10,
-fontSize:15
+textDecoration:"none",
+color:"#444"
 }}
 >
 
-<span>{platform}</span>
+<img
+src={`/icons/${platform}.png`}
+style={{width:18,height:18}}
+/>
 
 <span>@{username}</span>
 
-</div>
+</a>
 
 );
 
@@ -202,11 +240,11 @@ fontSize:15
 
 <div
 style={{
-marginTop:30,
+marginTop:26,
 fontStyle:"italic",
-opacity:.7,
 textAlign:"center",
-maxWidth:260
+maxWidth:260,
+opacity:.7
 }}
 >
 {profile.bio}
@@ -217,24 +255,26 @@ maxWidth:260
 
 {/* CTA BUTTON */}
 
-{blocks[3] && (
+{ctaBlock && (
 
 <a
-href={blocks[3]?.data_json?.url || "#"}
+href={ctaBlock?.data_json?.url || "#"}
 style={{
-marginTop:30,
+marginTop:26,
 border:"1px solid #333",
-padding:"10px 22px",
+padding:"12px 28px",
 textDecoration:"none",
 color:"#333",
 letterSpacing:2,
-fontSize:13
+fontSize:14
 }}
 >
-{blocks[3]?.data_json?.title}
+{ctaBlock?.data_json?.title}
 </a>
 
 )}
+
+</div>
 
 </div>
 
