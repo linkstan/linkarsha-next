@@ -8,6 +8,8 @@ socialLinks,
 buildSocialUrl
 }){
 
+const themeColor = "#e7dfd6";
+
 const contactBlocks = blocks.slice(0,3);
 const socialBlocks = blocks.slice(3,5);
 const ctaBlock = blocks[5];
@@ -43,7 +45,6 @@ filter:"blur(18px)",
 opacity:.7
 }}
 />
-
 
 {/* CONTENT */}
 
@@ -84,17 +85,24 @@ objectFit:"cover"
 
 </div>
 
-
 {/* NAME STRIP */}
 
 <div
 style={{
 marginTop:18,
-backgroundImage:"url(/textures/brush.png)",
-backgroundSize:"cover",
-backgroundPosition:"center",
-padding:"16px 28px",
-textAlign:"center"
+padding:"22px 36px",
+textAlign:"center",
+background:themeColor,
+
+WebkitMaskImage:"url(/textures/brush.png)",
+WebkitMaskRepeat:"no-repeat",
+WebkitMaskSize:"contain",
+WebkitMaskPosition:"center",
+
+maskImage:"url(/textures/brush.png)",
+maskRepeat:"no-repeat",
+maskSize:"contain",
+maskPosition:"center"
 }}
 >
 
@@ -120,7 +128,6 @@ opacity:.6
 </div>
 
 </div>
-
 
 {/* CONTACT INFO */}
 
@@ -175,7 +182,6 @@ style={{width:18,height:18}}
 
 </div>
 
-
 {/* DIVIDER */}
 
 <div
@@ -186,7 +192,6 @@ background:"#ddd",
 margin:"26px 0"
 }}
 />
-
 
 {/* SOCIAL LINKS */}
 
@@ -233,7 +238,6 @@ style={{width:18,height:18}}
 
 </div>
 
-
 {/* TAGLINE */}
 
 {profile.bio && (
@@ -251,7 +255,6 @@ opacity:.7
 </div>
 
 )}
-
 
 {/* CTA BUTTON */}
 
