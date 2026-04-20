@@ -9,7 +9,6 @@ buildSocialUrl
 }){
 
 const contactBlocks = blocks.slice(0,3);
-const socialBlocks = blocks.slice(3,5);
 const ctaBlock = blocks[5];
 
 const headerImage =
@@ -24,50 +23,59 @@ style={{
 width:"100%",
 minHeight:"100vh",
 background:"#f3efe9",
+position:"relative",
 display:"flex",
-flexDirection:"column",
-alignItems:"center"
+justifyContent:"center"
 }}
 >
 
-{/* HEADER IMAGE */}
+{/* HEADER BACKGROUND */}
 
 <div
 style={{
-width:"100%",
-height:220,
+position:"absolute",
+top:0,
+left:0,
+right:0,
+height:260,
 backgroundImage:`url(${headerImage})`,
 backgroundSize:"cover",
-backgroundPosition:"center"
+backgroundPosition:"center",
+zIndex:1
 }}
 />
 
 
-{/* CONTENT */}
+{/* MAIN CARD */}
 
 <div
 style={{
 width:360,
 maxWidth:"92%",
-marginTop:-120,
+marginTop:120,
+background:"#f3efe9",
 display:"flex",
 flexDirection:"column",
-alignItems:"center"
+alignItems:"center",
+paddingBottom:40,
+zIndex:2
 }}
 >
 
-{/* ARCH IMAGE */}
+{/* ARCH PROFILE */}
 
 <div
 style={{
 width:170,
 height:210,
+marginTop:-90,
 borderTopLeftRadius:120,
 borderTopRightRadius:120,
 borderBottomLeftRadius:20,
 borderBottomRightRadius:20,
 overflow:"hidden",
-background:"#fff"
+background:"#fff",
+boxShadow:"0 10px 25px rgba(0,0,0,.08)"
 }}
 >
 
@@ -83,17 +91,17 @@ objectFit:"cover"
 </div>
 
 
-{/* NAME STRIP */}
+{/* NAME BRUSH */}
 
 <div
 style={{
-marginTop:18,
-padding:"22px 40px",
-textAlign:"center",
+marginTop:20,
+padding:"20px 40px",
 backgroundImage:"url(/textures/brush.png)",
 backgroundRepeat:"no-repeat",
+backgroundSize:"contain",
 backgroundPosition:"center",
-backgroundSize:"contain"
+textAlign:"center"
 }}
 >
 
@@ -125,7 +133,7 @@ opacity:.6
 
 <div
 style={{
-marginTop:24,
+marginTop:28,
 display:"flex",
 flexDirection:"column",
 gap:14,
@@ -182,7 +190,7 @@ style={{
 width:"100%",
 height:1,
 background:"#ddd",
-margin:"26px 0"
+margin:"28px 0"
 }}
 />
 
@@ -259,7 +267,7 @@ opacity:.7
 <a
 href={ctaBlock?.data_json?.url || "#"}
 style={{
-marginTop:26,
+marginTop:28,
 border:"1px solid #333",
 padding:"12px 28px",
 textDecoration:"none",
