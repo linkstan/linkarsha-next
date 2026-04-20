@@ -3,6 +3,7 @@
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
+import ArchwayTheme from "./themes/ArchwayTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -79,6 +80,17 @@ return ()=>window.removeEventListener("appearance-update",update);
 },[]);
 
 const themeName = profile?.theme || "minimal";
+if(themeName === "archway"){
+return(
+<ArchwayTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
+socialLinks={socialLinks}
+buildSocialUrl={buildSocialUrl}
+/>
+)
+}
 const finalTheme = getTheme(themeName, appearance);
 
 const header = {
