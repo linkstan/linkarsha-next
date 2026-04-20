@@ -23,59 +23,39 @@ style={{
 width:"100%",
 minHeight:"100vh",
 background:"#f3efe9",
-position:"relative",
 display:"flex",
-justifyContent:"center"
+flexDirection:"column",
+alignItems:"center"
 }}
 >
 
-{/* HEADER BACKGROUND */}
+{/* HEADER IMAGE */}
 
 <div
 style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-height:260,
+width:"100%",
+height:240,
 backgroundImage:`url(${headerImage})`,
 backgroundSize:"cover",
-backgroundPosition:"center",
-zIndex:1
+backgroundPosition:"center"
 }}
 />
 
 
-{/* MAIN CARD */}
-
-<div
-style={{
-width:360,
-maxWidth:"92%",
-marginTop:120,
-background:"#f3efe9",
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-paddingBottom:40,
-zIndex:2
-}}
->
-
-{/* ARCH PROFILE */}
+{/* ARCH PROFILE IMAGE */}
 
 <div
 style={{
 width:170,
 height:210,
-marginTop:-90,
+marginTop:-120,
 borderTopLeftRadius:120,
 borderTopRightRadius:120,
 borderBottomLeftRadius:20,
 borderBottomRightRadius:20,
 overflow:"hidden",
 background:"#fff",
-boxShadow:"0 10px 25px rgba(0,0,0,.08)"
+zIndex:5
 }}
 >
 
@@ -91,16 +71,12 @@ objectFit:"cover"
 </div>
 
 
-{/* NAME BRUSH */}
+{/* NAME SECTION (will adjust later) */}
 
 <div
 style={{
-marginTop:20,
+marginTop:18,
 padding:"20px 40px",
-backgroundImage:"url(/textures/brush.png)",
-backgroundRepeat:"no-repeat",
-backgroundSize:"contain",
-backgroundPosition:"center",
 textAlign:"center"
 }}
 >
@@ -115,17 +91,6 @@ color:"#1c1c1c"
 {profile.display_name || profile.username}
 </div>
 
-<div
-style={{
-fontSize:12,
-letterSpacing:3,
-marginTop:6,
-opacity:.6
-}}
->
-{profile.subtitle || ""}
-</div>
-
 </div>
 
 
@@ -133,7 +98,7 @@ opacity:.6
 
 <div
 style={{
-marginTop:28,
+marginTop:24,
 display:"flex",
 flexDirection:"column",
 gap:14,
@@ -187,7 +152,7 @@ style={{width:18,height:18}}
 
 <div
 style={{
-width:"100%",
+width:"90%",
 height:1,
 background:"#ddd",
 margin:"28px 0"
@@ -280,8 +245,6 @@ fontSize:14
 </a>
 
 )}
-
-</div>
 
 </div>
 
