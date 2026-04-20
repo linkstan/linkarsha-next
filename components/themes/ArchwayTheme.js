@@ -8,8 +8,6 @@ socialLinks,
 buildSocialUrl
 }){
 
-const themeColor = "#e7dfd6";
-
 const contactBlocks = blocks.slice(0,3);
 const socialBlocks = blocks.slice(3,5);
 const ctaBlock = blocks[5];
@@ -32,7 +30,7 @@ alignItems:"center"
 }}
 >
 
-{/* BLURRED HEADER */}
+{/* HEADER IMAGE */}
 
 <div
 style={{
@@ -40,11 +38,10 @@ width:"100%",
 height:220,
 backgroundImage:`url(${headerImage})`,
 backgroundSize:"cover",
-backgroundPosition:"center",
-filter:"blur(18px)",
-opacity:.7
+backgroundPosition:"center"
 }}
 />
+
 
 {/* CONTENT */}
 
@@ -85,24 +82,18 @@ objectFit:"cover"
 
 </div>
 
+
 {/* NAME STRIP */}
 
 <div
 style={{
 marginTop:18,
-padding:"22px 36px",
+padding:"22px 40px",
 textAlign:"center",
-background:themeColor,
-
-WebkitMaskImage:"url(/textures/brush.png)",
-WebkitMaskRepeat:"no-repeat",
-WebkitMaskSize:"contain",
-WebkitMaskPosition:"center",
-
-maskImage:"url(/textures/brush.png)",
-maskRepeat:"no-repeat",
-maskSize:"contain",
-maskPosition:"center"
+backgroundImage:"url(/textures/brush.png)",
+backgroundRepeat:"no-repeat",
+backgroundPosition:"center",
+backgroundSize:"contain"
 }}
 >
 
@@ -128,6 +119,7 @@ opacity:.6
 </div>
 
 </div>
+
 
 {/* CONTACT INFO */}
 
@@ -182,6 +174,7 @@ style={{width:18,height:18}}
 
 </div>
 
+
 {/* DIVIDER */}
 
 <div
@@ -192,6 +185,7 @@ background:"#ddd",
 margin:"26px 0"
 }}
 />
+
 
 {/* SOCIAL LINKS */}
 
@@ -238,6 +232,7 @@ style={{width:18,height:18}}
 
 </div>
 
+
 {/* TAGLINE */}
 
 {profile.bio && (
@@ -255,6 +250,7 @@ opacity:.7
 </div>
 
 )}
+
 
 {/* CTA BUTTON */}
 
