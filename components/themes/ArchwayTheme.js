@@ -51,10 +51,9 @@ height:210,
 marginTop:-120,
 borderTopLeftRadius:120,
 borderTopRightRadius:120,
-borderBottomLeftRadius:20,
-borderBottomRightRadius:20,
+borderBottomLeftRadius:120,
+borderBottomRightRadius:120,
 overflow:"hidden",
-background:"#fff",
 zIndex:5
 }}
 >
@@ -64,7 +63,8 @@ src={profile.avatar || ""}
 style={{
 width:"100%",
 height:"100%",
-objectFit:"cover"
+objectFit:"cover",
+objectPosition:"center"
 }}
 />
 
