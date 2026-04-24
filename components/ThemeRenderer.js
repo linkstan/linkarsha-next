@@ -4,6 +4,7 @@ import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
+import BlueprintTheme from "./themes/BlueprintTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -112,6 +113,19 @@ const finalTheme = getTheme(themeName, appearance);
 if(themeName === "modernminimal"){
 return(
 <ModernMinimalTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
+socialLinks={socialLinks}
+buildSocialUrl={buildSocialUrl}
+/>
+)
+}
+
+/* BluePrint THEME */
+if(themeName === "blueprint"){
+return(
+<BlueprintTheme
 profile={profile}
 appearance={appearance}
 blocks={blocks}
