@@ -59,7 +59,6 @@ objectFit:"cover"
 
 </div>
 
-
 {/* NAME */}
 
 <div
@@ -72,7 +71,6 @@ color:"#2f5668"
 >
 {profile.display_name || profile.username}
 </div>
-
 
 {/* SUBTITLE */}
 
@@ -89,7 +87,6 @@ marginTop:4
 </div>
 
 )}
-
 
 {/* WAVE DIVIDER */}
 
@@ -112,62 +109,6 @@ d="M0,64L80,74.7C160,85,320,107,480,101.3C640,96,800,64,960,53.3C1120,43,1280,53
 </svg>
 
 </div>
-{/* LOGO / PROFILE */}
-
-<div
-style={{
-width:80,
-height:80,
-borderRadius:"50%",
-border:"6px solid #e9e1d8",
-margin:"0 auto 10px",
-overflow:"hidden"
-}}
->
-
-<img
-src={profile.avatar || ""}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover"
-}}
-/>
-
-</div>
-
-
-{/* NAME */}
-
-<div
-style={{
-fontSize:26,
-fontWeight:600,
-letterSpacing:1,
-color:"#2f5668"
-}}
->
-{profile.display_name || profile.username}
-</div>
-
-
-{/* SUBTITLE */}
-
-{profile.subtitle && (
-
-<div
-style={{
-fontSize:14,
-opacity:.7,
-marginTop:4
-}}
->
-{profile.subtitle}
-</div>
-
-)}
-
-</div>
 
 
 {/* DARK SECTION */}
@@ -176,7 +117,7 @@ marginTop:4
 style={{
 width:"100%",
 maxWidth:360,
-padding:"40px 20px",
+padding:"60px 20px 40px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr 1fr",
 gap:28,
