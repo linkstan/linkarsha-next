@@ -46,13 +46,13 @@ backgroundPosition:"center"
 
 <div
 style={{
-width:170,
-height:210,
+width:180,
+height:220,
 marginTop:-120,
 borderTopLeftRadius:120,
 borderTopRightRadius:120,
-borderBottomLeftRadius:120,
-borderBottomRightRadius:120,
+borderBottomLeftRadius:12,
+borderBottomRightRadius:12,
 overflow:"hidden",
 zIndex:5
 }}
@@ -67,7 +67,6 @@ objectFit:"cover",
 objectPosition:"center"
 }}
 />
-
 </div>
 
 
