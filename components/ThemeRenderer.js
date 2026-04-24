@@ -106,8 +106,6 @@ buildSocialUrl={buildSocialUrl}
 )
 }
 
-const finalTheme = getTheme(themeName, appearance);
-
 /* MODERN MINIMAL THEME */
 
 if(themeName === "modernminimal"){
@@ -122,7 +120,8 @@ buildSocialUrl={buildSocialUrl}
 )
 }
 
-/* BluePrint THEME */
+/* BLUEPRINT THEME */
+
 if(themeName === "blueprint"){
 return(
 <BlueprintTheme
@@ -134,10 +133,11 @@ buildSocialUrl={buildSocialUrl}
 />
 )
 }
-  
+
 /* DEFAULT ENGINE THEMES */
 
 const finalTheme = getTheme(themeName, appearance);
+
 return(
 
 <div
