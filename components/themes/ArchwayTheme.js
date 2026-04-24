@@ -46,13 +46,17 @@ backgroundPosition:"center"
 
 <div
 style={{
-width:180,
-height:220,
-marginTop:40,
-borderTopLeftRadius:120,
-borderTopRightRadius:120,
-borderBottomLeftRadius:12,
-borderBottomRightRadius:12,
+width:200,
+height:230,
+marginTop:-110,
+background:"#f3efe9",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+borderTopLeftRadius:140,
+borderTopRightRadius:140,
+borderBottomLeftRadius:14,
+borderBottomRightRadius:14,
 overflow:"hidden",
 zIndex:5
 }}
@@ -61,12 +65,16 @@ zIndex:5
 <img
 src={profile.avatar || ""}
 style={{
-width:"100%",
-height:"100%",
+width:"92%",
+height:"92%",
 objectFit:"cover",
-objectPosition:"center"
+borderTopLeftRadius:120,
+borderTopRightRadius:120,
+borderBottomLeftRadius:12,
+borderBottomRightRadius:12
 }}
 />
+
 </div>
 
 
