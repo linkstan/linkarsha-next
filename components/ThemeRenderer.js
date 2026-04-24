@@ -134,7 +134,10 @@ buildSocialUrl={buildSocialUrl}
 />
 )
 }
+  
+/* DEFAULT ENGINE THEMES */
 
+const finalTheme = getTheme(themeName, appearance);
 return(
 
 <div
