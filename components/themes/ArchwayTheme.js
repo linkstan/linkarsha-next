@@ -48,7 +48,7 @@ backgroundPosition:"center"
 style={{
 width:200,
 height:230,
-marginTop:-130,
+marginTop:-140,
 background:"#f3efe9",
 display:"flex",
 alignItems:"center",
