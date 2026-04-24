@@ -19,7 +19,9 @@ const themes=[
 
 {name:"modernminimal",display:"Modern Minimal",category:"Modern",bg:"#efe8e1"},
 
-{name:"archway",display:"Archway",category:"Professional",bg:"#f3efe9"}
+{name:"archway",display:"Archway",category:"Professional",bg:"#f3efe9"},
+  
+{name:"blueprint",display:"Blueprint",category:"Business",bg:"#2f5668"}
 
 ];
 
