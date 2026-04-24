@@ -8,7 +8,7 @@ socialLinks,
 buildSocialUrl
 }){
 
-const primaryBlocks = blocks.slice(0,5);
+const primary = blocks.slice(0,5);
 
 return(
 
@@ -24,35 +24,41 @@ color:"#f1e2d6"
 }}
 >
 
-{/* TOP SECTION */}
+{/* TOP LIGHT SECTION */}
 
 <div
 style={{
 width:"100%",
-maxWidth:420,
 background:"#e9e1d8",
-padding:"40px 20px 90px",
-textAlign:"center",
-position:"relative"
+padding:"50px 20px 110px",
+textAlign:"center"
 }}
 >
 
-{/* LOGO */}
+{/* LOGO / PROFILE */}
 
-{profile.avatar && (
+<div
+style={{
+width:80,
+height:80,
+borderRadius:"50%",
+border:"6px solid #e9e1d8",
+margin:"0 auto 10px",
+overflow:"hidden"
+}}
+>
 
 <img
-src={profile.avatar}
+src={profile.avatar || ""}
 style={{
-width:60,
-height:60,
-borderRadius:"50%",
-objectFit:"cover",
-marginBottom:10
+width:"100%",
+height:"100%",
+objectFit:"cover"
 }}
 />
 
-)}
+</div>
+
 
 {/* NAME */}
 
@@ -67,6 +73,7 @@ color:"#2f5668"
 {profile.display_name || profile.username}
 </div>
 
+
 {/* SUBTITLE */}
 
 {profile.subtitle && (
@@ -74,8 +81,8 @@ color:"#2f5668"
 <div
 style={{
 fontSize:14,
-marginTop:4,
-opacity:.7
+opacity:.7,
+marginTop:4
 }}
 >
 {profile.subtitle}
@@ -86,61 +93,21 @@ opacity:.7
 </div>
 
 
-{/* PROFILE IMAGE */}
+{/* DARK SECTION */}
 
 <div
 style={{
-marginTop:-70,
-marginBottom:20
-}}
->
-
-<img
-src={profile.avatar || ""}
-style={{
-width:140,
-height:140,
-borderRadius:"50%",
-border:"6px solid #e9e1d8",
-objectFit:"cover"
-}}
-/>
-
-</div>
-
-
-{/* BIO */}
-
-{profile.bio && (
-
-<div
-style={{
-maxWidth:300,
-textAlign:"center",
-fontSize:15,
-lineHeight:1.5,
-marginBottom:30
-}}
->
-{profile.bio}
-</div>
-
-)}
-
-
-{/* BUTTON GRID */}
-
-<div
-style={{
+width:"100%",
+maxWidth:360,
+padding:"40px 20px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr 1fr",
-gap:30,
-maxWidth:340,
-marginBottom:60
+gap:28,
+justifyItems:"center"
 }}
 >
 
-{primaryBlocks.map((block)=>{
+{primary.map((block)=>{
 
 return(
 
@@ -173,9 +140,9 @@ marginBottom:8
 <img
 src="/icons/other.png"
 style={{
-width:26,
-height:26,
-opacity:.8
+width:24,
+height:24,
+opacity:.85
 }}
 />
 
@@ -184,7 +151,8 @@ opacity:.8
 <div
 style={{
 fontSize:12,
-letterSpacing:1
+letterSpacing:1,
+textAlign:"center"
 }}
 >
 {block?.data_json?.title}
