@@ -35,37 +35,36 @@ overflow:"hidden"
 }}
 >
 
-{/* CURVED DIVIDER */}
+{/* SMOOTH WAVE DIVIDER */}
 
 <svg
-viewBox="0 0 1440 260"
+viewBox="0 0 1440 320"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
 bottom:0,
 left:0,
 width:"100%",
-height:"100%"
+height:220
 }}
 >
 
 <path
 fill="#355f6b"
 d="
-M0,180
-C200,160 320,170 420,165
-C520,160 620,150 700,160
-C900,190 1040,110 1160,60
-C1260,20 1340,10 1440,0
-L1440,260
-L0,260
+M0,224
+C180,180 320,260 480,220
+C640,180 760,140 920,160
+C1080,180 1200,120 1320,80
+C1380,60 1420,40 1440,32
+L1440,320
+L0,320
 Z"
 />
 
 </svg>
 
 </div>
-
 
 {/* AVATAR */}
 
