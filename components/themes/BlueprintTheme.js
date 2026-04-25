@@ -16,72 +16,40 @@ return(
 style={{
 width:"100%",
 minHeight:"100vh",
-background:"#2f5668",
+background:"#335d69",
 display:"flex",
 flexDirection:"column",
-alignItems:"center",
-color:"#f1e2d6"
+alignItems:"center"
 }}
 >
 
-{/* TOP LIGHT SECTION */}
+{/* TOP BEIGE SECTION */}
 
 <div
 style={{
 width:"100%",
+height:260,
 background:"#e9e1d8",
-padding:"80px 20px 120px",
-textAlign:"center",
 position:"relative"
 }}
 >
 
-{/* NAME */}
-
-<div
-style={{
-fontSize:34,
-fontWeight:600,
-letterSpacing:1,
-color:"#2f5668"
-}}
->
-{profile.display_name || profile.username}
-</div>
-
-
-{/* SUBTITLE */}
-
-{profile.subtitle && (
-
-<div
-style={{
-fontSize:14,
-opacity:.7,
-marginTop:6
-}}
->
-{profile.subtitle}
-</div>
-
-)}
-
 {/* WAVE */}
 
 <svg
-viewBox="0 0 1440 150"
+viewBox="0 0 1440 160"
 style={{
 position:"absolute",
-bottom:-1,
+bottom:0,
 left:0,
 width:"100%",
-height:150
+height:160
 }}
 >
 
 <path
-fill="#2f5668"
-d="M0,96L80,101.3C160,107,320,117,480,106.7C640,96,800,64,960,58.7C1120,53,1280,75,1360,85.3L1440,96L1440,160L0,160Z"
+fill="#335d69"
+d="M0,64C200,120 350,20 520,60C700,100 880,40 1050,60C1220,80 1360,140 1440,120L1440,160L0,160Z"
 />
 
 </svg>
@@ -89,13 +57,13 @@ d="M0,96L80,101.3C160,107,320,117,480,106.7C640,96,800,64,960,58.7C1120,53,1280,
 </div>
 
 
-{/* PROFILE IMAGE OVERLAP */}
+{/* AVATAR ON WAVE */}
 
 <div
 style={{
-marginTop:-60,
+marginTop:-55,
 marginBottom:40,
-zIndex:5
+zIndex:10
 }}
 >
 
@@ -104,8 +72,9 @@ style={{
 width:110,
 height:110,
 borderRadius:"50%",
-border:"6px solid #e6b9b3",
-overflow:"hidden"
+border:"6px solid #d8a9a3",
+overflow:"hidden",
+background:"#fff"
 }}
 >
 
@@ -130,8 +99,8 @@ style={{
 width:"100%",
 maxWidth:360,
 display:"grid",
-gridTemplateColumns:"1fr 1fr 1fr",
-gap:36,
+gridTemplateColumns:"1fr 1fr",
+gap:40,
 justifyItems:"center"
 }}
 >
@@ -155,10 +124,10 @@ color:"#f1e2d6"
 
 <div
 style={{
-width:80,
-height:80,
+width:90,
+height:90,
 borderRadius:"50%",
-border:"3px solid #f1e2d6",
+border:"3px solid #e8ddd4",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
@@ -169,9 +138,8 @@ marginBottom:12
 <img
 src="/icons/other.png"
 style={{
-width:30,
-height:30,
-opacity:.9
+width:34,
+height:34
 }}
 />
 
@@ -179,7 +147,7 @@ opacity:.9
 
 <div
 style={{
-fontSize:13,
+fontSize:14,
 letterSpacing:2,
 textAlign:"center"
 }}
