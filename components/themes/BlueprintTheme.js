@@ -16,14 +16,14 @@ return(
 style={{
 width:"100%",
 minHeight:"100vh",
-background:"#335d69",
+background:"#355f6b",
 display:"flex",
 flexDirection:"column",
 alignItems:"center"
 }}
 >
 
-{/* TOP BEIGE SECTION */}
+{/* TOP BEIGE AREA */}
 
 <div
 style={{
@@ -34,22 +34,22 @@ position:"relative"
 }}
 >
 
-{/* WAVE */}
+{/* BIG WAVE */}
 
 <svg
-viewBox="0 0 1440 160"
+viewBox="0 0 1440 260"
 style={{
 position:"absolute",
 bottom:0,
 left:0,
 width:"100%",
-height:160
+height:220
 }}
 >
 
 <path
-fill="#335d69"
-d="M0,64C200,120 350,20 520,60C700,100 880,40 1050,60C1220,80 1360,140 1440,120L1440,160L0,160Z"
+fill="#355f6b"
+d="M0,180C240,120 420,200 620,160C820,120 1000,60 1200,80C1320,90 1380,120 1440,140L1440,260L0,260Z"
 />
 
 </svg>
@@ -61,9 +61,9 @@ d="M0,64C200,120 350,20 520,60C700,100 880,40 1050,60C1220,80 1360,140 1440,120L
 
 <div
 style={{
-marginTop:-55,
-marginBottom:40,
-zIndex:10
+marginTop:-70,
+marginBottom:50,
+zIndex:5
 }}
 >
 
@@ -97,10 +97,10 @@ objectFit:"cover"
 <div
 style={{
 width:"100%",
-maxWidth:360,
+maxWidth:320,
 display:"grid",
 gridTemplateColumns:"1fr 1fr",
-gap:40,
+gap:50,
 justifyItems:"center"
 }}
 >
@@ -138,8 +138,8 @@ marginBottom:12
 <img
 src="/icons/other.png"
 style={{
-width:34,
-height:34
+width:32,
+height:32
 }}
 />
 
