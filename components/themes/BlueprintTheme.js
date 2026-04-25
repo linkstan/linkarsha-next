@@ -30,20 +30,81 @@ color:"#f1e2d6"
 style={{
 width:"100%",
 background:"#e9e1d8",
-padding:"50px 20px 80px",
+padding:"80px 20px 120px",
 textAlign:"center",
 position:"relative"
 }}
 >
 
-{/* PROFILE IMAGE */}
+{/* NAME */}
 
 <div
 style={{
-width:80,
-height:80,
+fontSize:34,
+fontWeight:600,
+letterSpacing:1,
+color:"#2f5668"
+}}
+>
+{profile.display_name || profile.username}
+</div>
+
+
+{/* SUBTITLE */}
+
+{profile.subtitle && (
+
+<div
+style={{
+fontSize:14,
+opacity:.7,
+marginTop:6
+}}
+>
+{profile.subtitle}
+</div>
+
+)}
+
+{/* WAVE */}
+
+<svg
+viewBox="0 0 1440 150"
+style={{
+position:"absolute",
+bottom:-1,
+left:0,
+width:"100%",
+height:150
+}}
+>
+
+<path
+fill="#2f5668"
+d="M0,96L80,101.3C160,107,320,117,480,106.7C640,96,800,64,960,58.7C1120,53,1280,75,1360,85.3L1440,96L1440,160L0,160Z"
+/>
+
+</svg>
+
+</div>
+
+
+{/* PROFILE IMAGE OVERLAP */}
+
+<div
+style={{
+marginTop:-60,
+marginBottom:40,
+zIndex:5
+}}
+>
+
+<div
+style={{
+width:110,
+height:110,
 borderRadius:"50%",
-margin:"0 auto 10px",
+border:"6px solid #e6b9b3",
 overflow:"hidden"
 }}
 >
@@ -59,68 +120,18 @@ objectFit:"cover"
 
 </div>
 
-{/* NAME */}
-
-<div
-style={{
-fontSize:26,
-fontWeight:600,
-letterSpacing:1,
-color:"#2f5668"
-}}
->
-{profile.display_name || profile.username}
-</div>
-
-{/* SUBTITLE */}
-
-{profile.subtitle && (
-
-<div
-style={{
-fontSize:14,
-opacity:.7,
-marginTop:4
-}}
->
-{profile.subtitle}
-</div>
-
-)}
-
-{/* WAVE DIVIDER */}
-
-<svg
-viewBox="0 0 1440 120"
-style={{
-position:"absolute",
-bottom:-1,
-left:0,
-width:"100%",
-height:120
-}}
->
-
-<path
-fill="#2f5668"
-d="M0,64L80,74.7C160,85,320,107,480,101.3C640,96,800,64,960,53.3C1120,43,1280,53,1360,58.7L1440,64L1440,160L1360,160C1280,160,1120,160,960,160C800,160,640,160,480,160C320,160,160,160,80,160L0,160Z"
-/>
-
-</svg>
-
 </div>
 
 
-{/* DARK SECTION */}
+{/* ICON GRID */}
 
 <div
 style={{
 width:"100%",
 maxWidth:360,
-padding:"60px 20px 40px",
 display:"grid",
 gridTemplateColumns:"1fr 1fr 1fr",
-gap:28,
+gap:36,
 justifyItems:"center"
 }}
 >
@@ -144,23 +155,23 @@ color:"#f1e2d6"
 
 <div
 style={{
-width:60,
-height:60,
+width:80,
+height:80,
 borderRadius:"50%",
-border:"2px solid #f1e2d6",
+border:"3px solid #f1e2d6",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
-marginBottom:8
+marginBottom:12
 }}
 >
 
 <img
 src="/icons/other.png"
 style={{
-width:24,
-height:24,
-opacity:.85
+width:30,
+height:30,
+opacity:.9
 }}
 />
 
@@ -168,8 +179,8 @@ opacity:.85
 
 <div
 style={{
-fontSize:12,
-letterSpacing:1,
+fontSize:13,
+letterSpacing:2,
 textAlign:"center"
 }}
 >
