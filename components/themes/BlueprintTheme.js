@@ -30,26 +30,36 @@ style={{
 width:"100%",
 height:260,
 background:"#e9e1d8",
-position:"relative"
+position:"relative",
+overflow:"hidden"
 }}
 >
 
-{/* BIG WAVE */}
+{/* CURVED DIVIDER */}
 
 <svg
 viewBox="0 0 1440 260"
+preserveAspectRatio="none"
 style={{
 position:"absolute",
 bottom:0,
 left:0,
 width:"100%",
-height:220
+height:"100%"
 }}
 >
 
 <path
 fill="#355f6b"
-d="M0,180C240,120 420,200 620,160C820,120 1000,60 1200,80C1320,90 1380,120 1440,140L1440,260L0,260Z"
+d="
+M0,180
+C200,160 320,170 420,165
+C520,160 620,150 700,160
+C900,190 1040,110 1160,60
+C1260,20 1340,10 1440,0
+L1440,260
+L0,260
+Z"
 />
 
 </svg>
@@ -57,12 +67,12 @@ d="M0,180C240,120 420,200 620,160C820,120 1000,60 1200,80C1320,90 1380,120 1440,
 </div>
 
 
-{/* AVATAR ON WAVE */}
+{/* AVATAR */}
 
 <div
 style={{
-marginTop:-70,
-marginBottom:50,
+marginTop:-65,
+marginBottom:40,
 zIndex:5
 }}
 >
@@ -72,7 +82,7 @@ style={{
 width:110,
 height:110,
 borderRadius:"50%",
-border:"6px solid #d8a9a3",
+border:"7px solid #d7a8a2",
 overflow:"hidden",
 background:"#fff"
 }}
@@ -138,8 +148,8 @@ marginBottom:12
 <img
 src="/icons/other.png"
 style={{
-width:32,
-height:32
+width:34,
+height:34
 }}
 />
 
