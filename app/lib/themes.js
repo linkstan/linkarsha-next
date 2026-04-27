@@ -104,7 +104,6 @@ buttonSpacing:12
 }),
 
 
-
 /* ---------- SAMIRA COACH ---------- */
 
 samira: createTheme({
@@ -137,6 +136,7 @@ buttonWeight:600
 
 }),
 
+  
 /* ---------- Modern Minimal ---------- */
 
 modernminimal: createTheme({
@@ -159,6 +159,81 @@ buttonRadius:12,
 buttonColor:"#111111",
 buttonText:"#ffffff",
 buttonSpacing:12
+
+}),
+  
+
+/* ---------- ARCHWAY ---------- */
+
+archway: createTheme({
+
+name:"Archway",
+
+hero:false,
+avatarOverlap:false,
+
+background:"#f3efe9",
+
+nameFont:"Inter",
+bioFont:"Inter",
+
+avatarSize:110,
+avatarBorder:"none",
+
+buttonRadius:14,
+buttonColor:"#222222",
+buttonText:"#ffffff",
+buttonSpacing:14
+
+}),
+
+
+/* ---------- BLUEPRINT ---------- */
+
+blueprint: createTheme({
+
+name:"Blueprint",
+
+hero:false,
+avatarOverlap:false,
+
+background:"#2f5668",
+
+nameFont:"Inter",
+bioFont:"Inter",
+
+avatarSize:80,
+avatarBorder:"6px solid #e9e1d8",
+
+buttonRadius:999,
+buttonColor:"#2f5668",
+buttonText:"#f1e2d6",
+buttonSpacing:20
+
+}),
+
+
+/* ---------- SOLSTICE ---------- */
+
+solstice: createTheme({
+
+name:"Solstice",
+
+hero:false,
+avatarOverlap:false,
+
+background:"#efe9df",
+
+nameFont:"Arial",
+bioFont:"Arial",
+
+avatarSize:110,
+avatarBorder:"none",
+
+buttonRadius:40,
+buttonColor:"#6a2600",
+buttonText:"#f4e5cd",
+buttonSpacing:18
 
 })
 
