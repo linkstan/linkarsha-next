@@ -76,7 +76,16 @@ color:"#f5e5cc",
 textDecoration:"none"
 }}
 >
+<a
+href={block?.data_json?.url || "#"}
+target="_blank"
+style={{
+textDecoration:"none",
+color:"inherit"
+}}
+>
 {block?.data_json?.title}
+</a>
 </a>
 ))}
 
@@ -163,8 +172,16 @@ margin:"18px 0",
 background: dark ? "#6a2600" : "#efe7da",
 color: dark ? "#f4e5cd" : "#5c2a00"
 }}
+><a
+href={block?.data_json?.url || "#"}
+target="_blank"
+style={{
+textDecoration:"none",
+color:"inherit"
+}}
 >
 {block?.data_json?.title}
+</a>
 </div>
 
 )
