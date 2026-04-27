@@ -10,6 +10,7 @@ buildSocialUrl
 
 const heroLinks = blocks.slice(0,3);
 const extraLinks = blocks.slice(3,6);
+const header = appearance?.header || {};
 
 return(
 
