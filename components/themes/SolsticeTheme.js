@@ -61,19 +61,23 @@ color:"#e6d2ad"
 </h1>
 
 {heroLinks.map((block)=>(
-<div
+<a
 key={block.id}
+href={block?.data_json?.url || "#"}
+target="_blank"
 style={{
+display:"block",
 width:"85%",
 margin:"14px auto",
 padding:14,
 borderRadius:35,
 border:"2px solid #caa77c",
-color:"#f5e5cc"
+color:"#f5e5cc",
+textDecoration:"none"
 }}
 >
 {block?.data_json?.title}
-</div>
+</a>
 ))}
 
 </section>
