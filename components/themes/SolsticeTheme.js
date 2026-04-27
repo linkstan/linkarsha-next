@@ -64,7 +64,17 @@ margin:"12px 0 40px",
 color:"#e6d2ad"
 }}
 >
-{profile.display_name || "Solstice"}
+{header.showDisplayName !== false && (
+<h1
+style={{
+fontSize:52,
+margin:"12px 0 40px",
+color:"#e6d2ad"
+}}
+>
+{profile.display_name || profile.username}
+</h1>
+)}
 </h1>
 
 {heroLinks.map((block)=>(
