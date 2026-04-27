@@ -23,7 +23,9 @@ const themes=[
   
 {name:"blueprint",display:"Blueprint",category:"Business",bg:"#2f5668"},
   
-{name:"solstice",display:"Solstice",category:"Business",bg:"linear-gradient(#7a2c00,#4d2200)"}
+{name:"solstice",display:"Solstice",category:"Business",bg:"linear-gradient(#7a2c00,#4d2200)"},
+  
+{name:"portfolio",display:"Portfolio",category:"Creator",bg:"#2c2c2c"}
   
 ];
 
