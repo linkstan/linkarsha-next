@@ -143,6 +143,8 @@ return(
 profile={profile}
 appearance={appearance}
 blocks={blocks}
+socialLinks={socialLinks}
+buildSocialUrl={buildSocialUrl}
 />
 )
 }
