@@ -1,5 +1,7 @@
 "use client";
 
+import ButtonBlock from "../ButtonBlock";
+
 export default function SolsticeTheme({
 profile,
 appearance,
@@ -151,23 +153,14 @@ onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 {/* HERO BUTTONS */}
 
 {heroLinks.map((block)=>(
-<a
-key={block.id}
-href={block?.data_json?.url || "#"}
-target="_blank"
-style={{
-display:"block",
-width:"85%",
-margin:"14px auto",
-padding:14,
-borderRadius: buttons.radius || 35,
-border:`2px solid ${buttons.color || "#caa77c"}`,
-color:"#f5e5cc",
-textDecoration:"none"
-}}
->
-{block?.data_json?.title}
-</a>
+<div key={block.id} style={{width:"85%",margin:"14px auto"}}>
+<ButtonBlock
+block={block}
+buttons={appearance?.buttons}
+themeBackground="#7a2c00"
+themeName="solstice"
+/>
+</div>
 ))}
 
 </section>
@@ -249,22 +242,14 @@ const dark = i===1;
 
 return(
 
-<a
-key={block.id}
-href={block?.data_json?.url || "#"}
-target="_blank"
-style={{
-display:"block",
-padding:16,
-borderRadius:40,
-margin:"18px 0",
-background: dark ? "#6a2600" : "#efe7da",
-color: dark ? "#f4e5cd" : "#5c2a00",
-textDecoration:"none"
-}}
->
-{block?.data_json?.title}
-</a>
+<div key={block.id} style={{margin:"18px 0"}}>
+<ButtonBlock
+block={block}
+buttons={appearance?.buttons}
+themeBackground={dark ? "#6a2600" : "#efe7da"}
+themeName="solstice"
+/>
+</div>
 
 )
 
