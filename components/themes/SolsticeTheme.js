@@ -10,7 +10,9 @@ buildSocialUrl
 
 const heroLinks = blocks.slice(0,3);
 const extraLinks = blocks.slice(3,6);
+
 const header = appearance?.header || {};
+const buttons = appearance?.buttons || {};
 
 return(
 
@@ -57,25 +59,96 @@ opacity:.35
 A DESIGN AGENCY
 </div>
 
-<h1
-style={{
-fontSize:52,
-margin:"12px 0 40px",
-color:"#e6d2ad"
-}}
->
+
+{/* DISPLAY NAME */}
+
 {header.showDisplayName !== false && (
 <h1
 style={{
 fontSize:52,
-margin:"12px 0 40px",
+margin:"12px 0 10px",
 color:"#e6d2ad"
 }}
 >
 {profile.display_name || profile.username}
 </h1>
 )}
-</h1>
+
+
+{/* USERNAME */}
+
+{header.showUsername !== false && (
+<div style={{opacity:.7,marginBottom:10}}>
+@{profile.username}
+</div>
+)}
+
+
+{/* BIO */}
+
+{header.showBio && profile.bio && (
+<p
+style={{
+maxWidth:320,
+margin:"0 auto 20px",
+opacity:.9
+}}
+>
+{profile.bio}
+</p>
+)}
+
+
+{/* SOCIAL ICONS */}
+
+{header.showSocialIcons && (
+
+<div
+style={{
+display:"flex",
+gap:14,
+justifyContent:"center",
+marginBottom:20,
+flexWrap:"wrap"
+}}
+>
+
+{Object.entries(socialLinks).map(([platform,usernames]) =>
+usernames?.map((username,i)=>{
+
+const iconSrc =
+header.socialIconStyle==="theme"
+? `/icons/theme/${platform}.svg`
+: `/icons/${platform==="twitter"?"x":platform}.png`;
+
+return(
+
+<a
+key={platform+i}
+href={buildSocialUrl(platform,username)}
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<img
+src={iconSrc}
+style={{width:22,height:22}}
+onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
+/>
+
+</a>
+
+);
+
+})
+)}
+
+</div>
+
+)}
+
+
+{/* HERO BUTTONS */}
 
 {heroLinks.map((block)=>(
 <a
@@ -87,8 +160,8 @@ display:"block",
 width:"85%",
 margin:"14px auto",
 padding:14,
-borderRadius:35,
-border:"2px solid #caa77c",
+borderRadius: buttons.radius || 35,
+border:`2px solid ${buttons.color || "#caa77c"}`,
 color:"#f5e5cc",
 textDecoration:"none"
 }}
@@ -98,6 +171,7 @@ textDecoration:"none"
 ))}
 
 </section>
+
 
 {/* MAIL SECTION */}
 
@@ -148,6 +222,7 @@ SUBSCRIBE
 
 </section>
 
+
 {/* DIVIDER */}
 
 <div
@@ -156,6 +231,7 @@ height:12,
 background:"#efe7da"
 }}
 />
+
 
 {/* ADDITIONAL LINKS */}
 
@@ -195,6 +271,7 @@ textDecoration:"none"
 })}
 
 </section>
+
 
 {/* DISCOUNT */}
 
@@ -257,6 +334,7 @@ purchase.
 </div>
 
 </section>
+
 
 {/* FOOTER */}
 
