@@ -5,6 +5,7 @@ import ButtonBlock from "./ButtonBlock";
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
+import SolsticeTheme from "./themes/SolstuceTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -130,6 +131,18 @@ appearance={appearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
+/>
+)
+}
+  
+/* SOLSTICE THEME */
+  
+if(themeName === "solstice"){
+return(
+<SolsticeTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
 />
 )
 }
