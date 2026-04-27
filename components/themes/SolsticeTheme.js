@@ -3,7 +3,9 @@
 export default function SolsticeTheme({
 profile,
 appearance,
-blocks
+blocks,
+socialLinks,
+buildSocialUrl
 }){
 
 const heroLinks = blocks.slice(0,3);
