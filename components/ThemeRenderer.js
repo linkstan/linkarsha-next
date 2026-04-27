@@ -6,6 +6,7 @@ import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
 import SolsticeTheme from "./themes/SolsticeTheme";
+import PortfolioTheme from "./themes/PortfolioTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -145,6 +146,17 @@ appearance={appearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
+/>
+)
+}
+
+/* PORTFOLIO THEME */
+if(themeName === "portfolio"){
+return(
+<PortfolioTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
 />
 )
 }
