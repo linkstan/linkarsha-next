@@ -5,7 +5,7 @@ import ButtonBlock from "./ButtonBlock";
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
-import SolsticeTheme from "./themes/SolstuceTheme";
+import SolsticeTheme from "./themes/SolsticeTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
