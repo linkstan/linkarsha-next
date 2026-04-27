@@ -33,16 +33,20 @@ position:"relative"
 }}
 >
 
+{/* SUNBURST */}
+
 <div
 style={{
 position:"absolute",
-width:400,
-height:400,
-top:40,
+width:420,
+height:420,
+top:30,
 left:"50%",
 transform:"translateX(-50%)",
-background:"radial-gradient(circle,#a74d1b22 10%,transparent 60%)",
-borderRadius:"50%"
+background:
+"repeating-conic-gradient(from 0deg, rgba(255,200,150,.15) 0deg 10deg, transparent 10deg 20deg)",
+borderRadius:"50%",
+opacity:.35
 }}
 />
 
@@ -76,16 +80,7 @@ color:"#f5e5cc",
 textDecoration:"none"
 }}
 >
-<a
-href={block?.data_json?.url || "#"}
-target="_blank"
-style={{
-textDecoration:"none",
-color:"inherit"
-}}
->
 {block?.data_json?.title}
-</a>
 </a>
 ))}
 
@@ -98,6 +93,8 @@ style={{
 background:"#4d2200",
 color:"#f2e5cd",
 display:"flex",
+flexWrap:"wrap",
+gap:20,
 justifyContent:"space-between",
 alignItems:"center",
 padding:"45px 30px"
@@ -163,26 +160,22 @@ const dark = i===1;
 
 return(
 
-<div
+<a
 key={block.id}
+href={block?.data_json?.url || "#"}
+target="_blank"
 style={{
+display:"block",
 padding:16,
 borderRadius:40,
 margin:"18px 0",
 background: dark ? "#6a2600" : "#efe7da",
-color: dark ? "#f4e5cd" : "#5c2a00"
-}}
-><a
-href={block?.data_json?.url || "#"}
-target="_blank"
-style={{
-textDecoration:"none",
-color:"inherit"
+color: dark ? "#f4e5cd" : "#5c2a00",
+textDecoration:"none"
 }}
 >
 {block?.data_json?.title}
 </a>
-</div>
 
 )
 
@@ -265,14 +258,23 @@ padding:30
 
 <div>follow us on socials.</div>
 
-<div style={{marginTop:15,fontSize:22}}>
-<span style={{margin:"0 12px"}}>f</span>
-<span style={{margin:"0 12px"}}>◎</span>
-<span style={{margin:"0 12px"}}>t</span>
-<span style={{margin:"0 12px"}}>▶</span>
-<span style={{margin:"0 12px"}}>♪</span>
-<span style={{margin:"0 12px"}}>p</span>
-<span style={{margin:"0 12px"}}>in</span>
+<div
+style={{
+display:"flex",
+justifyContent:"center",
+gap:18,
+marginTop:15
+}}
+>
+
+<img src="/icons/facebook.png" width="22"/>
+<img src="/icons/instagram.png" width="22"/>
+<img src="/icons/x.png" width="22"/>
+<img src="/icons/youtube.png" width="22"/>
+<img src="/icons/tiktok.png" width="22"/>
+<img src="/icons/pinterest.png" width="22"/>
+<img src="/icons/linkedin.png" width="22"/>
+
 </div>
 
 </section>
