@@ -57,7 +57,7 @@ margin:"12px 0 40px",
 color:"#e6d2ad"
 }}
 >
-{profile.display_name || "solstice"}
+{profile.display_name || "Solstice"}
 </h1>
 
 {heroLinks.map((block)=>(
