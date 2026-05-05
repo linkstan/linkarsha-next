@@ -74,19 +74,19 @@ viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:-30,
+top:-40,
 left:0,
 width:"100%",
 zIndex:6
 }}
 >
 <path
-d="M0,140 
-C180,260 420,40 720,120 
-C980,180 1180,40 1440,90"
+d="M0,160 
+C200,260 400,40 720,120 
+C1050,200 1220,40 1440,100"
 fill="none"
 stroke="#ffffff"
-strokeWidth="14"
+strokeWidth="16"
 strokeLinecap="round"
 />
 </svg>
@@ -98,7 +98,7 @@ viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:-5,
+top:-20,
 left:0,
 width:"100%",
 zIndex:5
@@ -106,13 +106,14 @@ zIndex:5
 >
 <path
 fill="#d8c9be"
-d="M0,140 
-C180,260 420,40 720,120 
-C980,180 1180,40 1440,90 
+d="M0,160 
+C200,260 400,40 720,120 
+C1050,200 1220,40 1440,100 
 L1440,0 
 L0,0 
 Z"
 />
+</svg>
 
 {/* BOTTOM DARK WAVE */}
 
@@ -121,18 +122,18 @@ viewBox="0 0 1440 220"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-bottom:-5,
+bottom:-15,
 left:0,
 width:"100%",
 zIndex:4,
-filter:"drop-shadow(0px -10px 18px rgba(0,0,0,0.35))"
+filter:"drop-shadow(0px -14px 22px rgba(0,0,0,0.45))"
 }}
 >
 <path
 fill="#7a4c4c"
-d="M0,165 
-C180,300 420,90 720,150 
-C980,210 1180,80 1440,120 
+d="M0,170 
+C200,300 400,90 720,150 
+C1050,220 1220,80 1440,130 
 L1440,220 
 L0,220 
 Z"
@@ -155,11 +156,12 @@ position:"relative"
 
 <div style={{
 position:"absolute",
-top:-70,
+top:-75,
 left:30,
 zIndex:10
 }}>
 
+{/* OUTER RING */}
 <div style={{
 position:"absolute",
 width:150,
@@ -170,13 +172,14 @@ top:-10,
 left:-10
 }}/>
 
+{/* AVATAR */}
 <img
 src={profile.avatar}
 style={{
 width:130,
 height:130,
 borderRadius:"50%",
-border:"6px solid rgba(255,255,255,0.6)",
+border:"6px solid rgba(255,255,255,0.65)",
 objectFit:"cover"
 }}
 />
@@ -193,7 +196,8 @@ marginTop:10
 
 <h2 style={{
 margin:0,
-fontSize:22
+fontSize:22,
+fontWeight:600
 }}>
 {profile.display_name || profile.username}
 </h2>
@@ -201,7 +205,8 @@ fontSize:22
 {header.showBio && profile.bio && (
 <p style={{
 opacity:.8,
-lineHeight:1.4
+lineHeight:1.4,
+marginTop:6
 }}>
 {profile.bio}
 </p>
@@ -248,7 +253,7 @@ color:"#fff"
 width:80,
 height:80,
 borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.4)",
+border:"2px solid rgba(255,255,255,0.45)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
@@ -261,7 +266,7 @@ fontSize:22
 <div style={{
 marginTop:8,
 fontSize:14,
-opacity:.8
+opacity:.85
 }}>
 {platform}
 </div>
