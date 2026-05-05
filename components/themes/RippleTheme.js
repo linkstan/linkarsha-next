@@ -56,7 +56,6 @@ overflow:"hidden"
 }}>
 
 {/* IMAGE */}
-
 <img
 src={appearance?.hero?.image || defaultImage}
 style={{
@@ -67,38 +66,13 @@ display:"block"
 }}
 />
 
-{/* WHITE WAVE LINE */}
-
+{/* TOP CREAM WAVE (MAIN SHAPE — EXACT LIKE REF) */}
 <svg
 viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:-40,
-left:0,
-width:"100%",
-zIndex:6
-}}
->
-<path
-d="M0,160 
-C200,260 400,40 720,120 
-C1050,200 1220,40 1440,100"
-fill="none"
-stroke="#ffffff"
-strokeWidth="16"
-strokeLinecap="round"
-/>
-</svg>
-
-{/* TOP CREAM WAVE */}
-
-<svg
-viewBox="0 0 1440 260"
-preserveAspectRatio="none"
-style={{
-position:"absolute",
-top:-20,
+top:0,
 left:0,
 width:"100%",
 zIndex:5
@@ -106,37 +80,69 @@ zIndex:5
 >
 <path
 fill="#d8c9be"
-d="M0,160 
-C200,260 400,40 720,120 
-C1050,200 1220,40 1440,100 
+d="
+M0,80 
+C317,245 320,130 540,55 
+C635,12 726,55 913,83 
+C1213,131 1244,40 1440,20 
 L1440,0 
 L0,0 
-Z"
+Z
+"
 />
 </svg>
 
-{/* BOTTOM DARK WAVE */}
+{/* WHITE EDGE LINE (IMPORTANT DETAIL) */}
+<svg
+viewBox="0 0 1440 260"
+preserveAspectRatio="none"
+style={{
+position:"absolute",
+top:0,
+left:0,
+width:"100%",
+zIndex:6,
+pointerEvents:"none"
+}}
+>
+<path
+d="
+M0,80 
+C317,245 320,130 540,55 
+C635,12 726,55 913,83 
+C1213,131 1244,40 1440,20
+"
+fill="none"
+stroke="#ffffff"
+strokeWidth="6"
+strokeLinecap="round"
+/>
+</svg>
 
+{/* BOTTOM DARK WAVE (MATCHING SHAPE + SHADOW) */}
 <svg
 viewBox="0 0 1440 220"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-bottom:-15,
+bottom:-1,
 left:0,
 width:"100%",
 zIndex:4,
-filter:"drop-shadow(0px -14px 22px rgba(0,0,0,0.45))"
+filter:"drop-shadow(0px -8px 14px rgba(0,0,0,0.35))"
 }}
 >
 <path
 fill="#7a4c4c"
-d="M0,170 
-C200,300 400,90 720,150 
-C1050,220 1220,80 1440,130 
+d="
+M0,120 
+C317,285 320,170 540,95 
+C635,52 726,95 913,123 
+C1213,171 1244,80 1440,60 
 L1440,220 
 L0,220 
-Z"
+Z
+"
 />
 </svg>
 
