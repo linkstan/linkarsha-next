@@ -46,12 +46,11 @@ fontSize:34
 
 </div>
 
-
 {/* HERO */}
 
 <div style={{
 position:"relative",
-height:300,
+height:320,
 overflow:"hidden"
 }}>
 
@@ -62,111 +61,87 @@ src={appearance?.hero?.image || defaultImage}
 style={{
 width:"100%",
 height:"100%",
-objectFit:"cover"
+objectFit:"cover",
+display:"block"
 }}
 />
 
-{/* WHITE WAVE LINE */}
+{/* WHITE WAVE LINE (strong & visible) */}
 
 <svg
 viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:0,
+top:-10,
 left:0,
 width:"100%",
 zIndex:6
 }}
 >
 <path
-d="M0,80 C317,245 320,130 540,55 C635,12 726,55 913,83 C1213,131 1244,40 1440,20"
+d="
+M0,110
+C250,240 450,20 720,80
+C1000,150 1200,20 1440,60
+"
 fill="none"
 stroke="#ffffff"
-strokeWidth="14"
+strokeWidth="18"
 strokeLinecap="round"
 />
 </svg>
 
-{/* TOP CREAM WAVE */}
+{/* TOP CREAM WAVE (deeper cut) */}
 
 <svg
 viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:0,
+top:-5,
 left:0,
 width:"100%",
 zIndex:5
 }}
 >
 <path fill="#d8c9be"
-d="M0,80 C317,245 320,130 540,55 C635,12 726,55 913,83 C1213,131 1244,40 1440,20 L1440,0 L0,0 Z"/>
+d="
+M0,110
+C250,240 450,20 720,80
+C1000,150 1200,20 1440,60
+L1440,0
+L0,0
+Z
+"/>
 </svg>
 
-{/* BOTTOM DARK WAVE */}
+{/* BOTTOM DARK WAVE (more depth + shadow) */}
 
 <svg
 viewBox="0 0 1440 220"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-bottom:-1,
+bottom:-10,
 left:0,
 width:"100%",
 zIndex:4,
-filter:"drop-shadow(0px -6px 10px rgba(0,0,0,0.25))"
+filter:"drop-shadow(0px -10px 18px rgba(0,0,0,0.35))"
 }}
 >
 <path fill="#7a4c4c"
-d="M0,120 C317,285 320,170 540,95 C635,52 726,95 913,123 C1213,171 1244,80 1440,60 L1440,220 L0,220 Z"/>
+d="
+M0,140
+C250,300 450,80 720,120
+C1000,180 1200,60 1440,100
+L1440,220
+L0,220
+Z
+"/>
 </svg>
 
 </div>
-
-
-{/* CONTENT */}
-
-<div style={{
-background:"#7a4c4c",
-color:"#fff",
-padding:"120px 20px 60px",
-position:"relative"
-}}>
-
-{/* PROFILE */}
-
-<div style={{
-position:"absolute",
-top:-70,
-left:30,
-zIndex:10
-}}>
-
-<div style={{
-position:"absolute",
-width:150,
-height:150,
-borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.25)",
-top:-10,
-left:-10
-}}/>
-
-<img
-src={profile.avatar}
-style={{
-width:130,
-height:130,
-borderRadius:"50%",
-border:"6px solid rgba(255,255,255,0.6)",
-objectFit:"cover"
-}}
-/>
-
-</div>
-
 
 {/* TEXT */}
 
