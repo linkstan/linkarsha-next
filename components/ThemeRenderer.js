@@ -7,6 +7,7 @@ import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
 import SolsticeTheme from "./themes/SolsticeTheme";
 import PortfolioTheme from "./themes/PortfolioTheme";
+import RippleTheme from "./themes/RippleTheme";
 import { getTheme } from "../app/lib/themeEngine";
 import { useEffect, useState } from "react";
 
@@ -154,6 +155,19 @@ buildSocialUrl={buildSocialUrl}
 if(themeName === "portfolio"){
 return(
 <PortfolioTheme
+profile={profile}
+appearance={appearance}
+blocks={blocks}
+socialLinks={socialLinks}
+buildSocialUrl={buildSocialUrl}
+/>
+)
+}
+  
+/* RIPPLE THEME */
+if(themeName === "ripple"){
+return(
+<RippleTheme
 profile={profile}
 appearance={appearance}
 blocks={blocks}
