@@ -235,6 +235,30 @@ buttonColor:"#6a2600",
 buttonText:"#f4e5cd",
 buttonSpacing:18
 
+}),
+  
+/* ---------- SOLSTICE ---------- */
+ripple: createTheme({
+
+name:"Ripple",
+
+hero:true,
+heroImageFeature:true,
+
+background:"#d8c9be",
+
+nameFont:"Playfair Display",
+bioFont:"Inter",
+buttonFont:"Inter",
+
+avatarSize:120,
+avatarBorder:"6px solid rgba(255,255,255,0.6)",
+
+buttonRadius:40,
+buttonColor:"#ffffff",
+buttonText:"#333",
+buttonSpacing:14
+
 })
 
 };
