@@ -20,11 +20,13 @@ minHeight:"100vh",
 fontFamily:"Arial, sans-serif"
 }}>
 
-{/* HEADER */}
+{/* HEADER WITH WAVE CUT */}
 
 <div style={{
+position:"relative",
+background:"#d8c9be",
 textAlign:"center",
-padding:"50px 20px 20px",
+padding:"50px 20px 80px",
 color:"#8b5e5e"
 }}>
 
@@ -44,37 +46,16 @@ fontSize:34
 </p>
 )}
 
-</div>
-
-
-{/* HERO */}
-
-<div style={{
-position:"relative",
-height:360,
-overflow:"hidden"
-}}>
-
-{/* IMAGE */}
-<img
-src={appearance?.hero?.image || defaultImage}
-style={{
-width:"100%",
-height:"100%",
-objectFit:"cover",
-display:"block"
-}}
-/>
-
-{/* TOP CREAM WAVE (MAIN SHAPE — EXACT LIKE REF) */}
+{/* WAVE CUT */}
 <svg
 viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:0,
+bottom:-1,
 left:0,
 width:"100%",
+height:120,
 zIndex:5
 }}
 >
@@ -85,22 +66,23 @@ M0,80
 C317,245 320,130 540,55 
 C635,12 726,55 913,83 
 C1213,131 1244,40 1440,20 
-L1440,0 
-L0,0 
+L1440,260 
+L0,260 
 Z
 "
 />
 </svg>
 
-{/* WHITE EDGE LINE (IMPORTANT DETAIL) */}
+{/* WHITE EDGE */}
 <svg
 viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:0,
+bottom:-1,
 left:0,
 width:"100%",
+height:120,
 zIndex:6,
 pointerEvents:"none"
 }}
@@ -119,7 +101,27 @@ strokeLinecap="round"
 />
 </svg>
 
-{/* BOTTOM DARK WAVE (MATCHING SHAPE + SHADOW) */}
+</div>
+
+
+{/* IMAGE SECTION */}
+
+<div style={{
+position:"relative",
+height:280,
+overflow:"hidden"
+}}>
+
+<img
+src={appearance?.hero?.image || defaultImage}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+
+{/* BOTTOM WAVE */}
 <svg
 viewBox="0 0 1440 220"
 preserveAspectRatio="none"
@@ -145,50 +147,6 @@ Z
 "
 />
 </svg>
-
-</div>
-
-
-{/* CONTENT */}
-
-<div style={{
-background:"#7a4c4c",
-color:"#fff",
-padding:"120px 20px 60px",
-position:"relative"
-}}>
-
-{/* PROFILE */}
-
-<div style={{
-position:"absolute",
-top:-75,
-left:30,
-zIndex:10
-}}>
-
-{/* OUTER RING */}
-<div style={{
-position:"absolute",
-width:150,
-height:150,
-borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.25)",
-top:-10,
-left:-10
-}}/>
-
-{/* AVATAR */}
-<img
-src={profile.avatar}
-style={{
-width:130,
-height:130,
-borderRadius:"50%",
-border:"6px solid rgba(255,255,255,0.65)",
-objectFit:"cover"
-}}
-/>
 
 </div>
 
