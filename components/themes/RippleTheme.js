@@ -51,7 +51,7 @@ fontSize:34
 
 <div style={{
 position:"relative",
-height:320,
+height:360,
 overflow:"hidden"
 }}>
 
@@ -74,7 +74,7 @@ viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:-20,
+top:-30,
 left:0,
 width:"100%",
 zIndex:6
@@ -121,7 +121,7 @@ viewBox="0 0 1440 220"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
-bottom:-10,
+bottom:-5,
 left:0,
 width:"100%",
 zIndex:4,
