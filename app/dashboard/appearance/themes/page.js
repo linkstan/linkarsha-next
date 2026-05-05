@@ -25,7 +25,9 @@ const themes=[
   
 {name:"solstice",display:"Solstice",category:"Business",bg:"linear-gradient(#7a2c00,#4d2200)"},
   
-{name:"portfolio",display:"Portfolio",category:"Creator",bg:"#2c2c2c"}
+{name:"portfolio",display:"Portfolio",category:"Creator",bg:"#2c2c2c"},
+  
+{name:"ripple",display:"Ripple",category:"Professional",bg:"#7a4c4c"}
   
 ];
 
