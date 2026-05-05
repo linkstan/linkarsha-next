@@ -8,6 +8,7 @@ buildSocialUrl
 }){
 
 const header = appearance?.header || {};
+
 const defaultImage =
 "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=1200";
 
@@ -27,48 +28,52 @@ padding:"50px 20px 20px",
 color:"#8b5e5e"
 }}>
 
-<div style={{fontSize:35}}>🦷</div>
+<div style={{fontSize:40}}>🦷</div>
 
 <h1 style={{
 margin:0,
-letterSpacing:2
+letterSpacing:2,
+fontSize:34
 }}>
 {profile.display_name || profile.username}
 </h1>
 
 {header.subtitle && (
-<p>{header.subtitle}</p>
+<p style={{marginTop:6}}>
+{header.subtitle}
+</p>
 )}
 
 </div>
+
 
 {/* HERO */}
 
 <div style={{
 position:"relative",
-height:280,
-overflow:"hidden",
-lineHeight:0
+height:300,
+overflow:"hidden"
 }}>
+
+{/* IMAGE */}
 
 <img
 src={appearance?.hero?.image || defaultImage}
 style={{
 width:"100%",
 height:"100%",
-objectFit:"cover",
-display:"block"
+objectFit:"cover"
 }}
 />
 
-{/* WHITE LINE */}
+{/* WHITE WAVE LINE */}
 
 <svg
 viewBox="0 0 1440 260"
-preserveAspectRatio="xMidYMin slice"
+preserveAspectRatio="none"
 style={{
 position:"absolute",
-top:-2,
+top:0,
 left:0,
 width:"100%",
 zIndex:6
@@ -78,16 +83,16 @@ zIndex:6
 d="M0,80 C317,245 320,130 540,55 C635,12 726,55 913,83 C1213,131 1244,40 1440,20"
 fill="none"
 stroke="#ffffff"
-strokeWidth="20"
+strokeWidth="14"
 strokeLinecap="round"
 />
 </svg>
 
-{/* TOP WAVE */}
+{/* TOP CREAM WAVE */}
 
 <svg
 viewBox="0 0 1440 260"
-preserveAspectRatio="xMidYMin slice"
+preserveAspectRatio="none"
 style={{
 position:"absolute",
 top:0,
@@ -100,7 +105,7 @@ zIndex:5
 d="M0,80 C317,245 320,130 540,55 C635,12 726,55 913,83 C1213,131 1244,40 1440,20 L1440,0 L0,0 Z"/>
 </svg>
 
-{/* BOTTOM WAVE */}
+{/* BOTTOM DARK WAVE */}
 
 <svg
 viewBox="0 0 1440 220"
@@ -110,7 +115,8 @@ position:"absolute",
 bottom:-1,
 left:0,
 width:"100%",
-zIndex:4
+zIndex:4,
+filter:"drop-shadow(0px -6px 10px rgba(0,0,0,0.25))"
 }}
 >
 <path fill="#7a4c4c"
@@ -119,14 +125,14 @@ d="M0,120 C317,285 320,170 540,95 C635,52 726,95 913,123 C1213,171 1244,80 1440,
 
 </div>
 
+
 {/* CONTENT */}
 
 <div style={{
 background:"#7a4c4c",
 color:"#fff",
 padding:"120px 20px 60px",
-position:"relative",
-zIndex:10
+position:"relative"
 }}>
 
 {/* PROFILE */}
@@ -135,7 +141,7 @@ zIndex:10
 position:"absolute",
 top:-70,
 left:30,
-zIndex:20
+zIndex:10
 }}>
 
 <div style={{
@@ -161,6 +167,7 @@ objectFit:"cover"
 
 </div>
 
+
 {/* TEXT */}
 
 <div style={{
@@ -168,17 +175,24 @@ marginLeft:180,
 marginTop:10
 }}>
 
-<h2 style={{margin:0}}>
+<h2 style={{
+margin:0,
+fontSize:22
+}}>
 {profile.display_name || profile.username}
 </h2>
 
 {header.showBio && profile.bio && (
-<p style={{opacity:.8}}>
+<p style={{
+opacity:.8,
+lineHeight:1.4
+}}>
 {profile.bio}
 </p>
 )}
 
 </div>
+
 
 {/* ICON GRID */}
 
@@ -207,7 +221,10 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
-style={{textDecoration:"none",color:"#fff"}}
+style={{
+textDecoration:"none",
+color:"#fff"
+}}
 >
 
 <div style={{
@@ -241,6 +258,7 @@ opacity:.8
 
 </div>
 
+
 {/* FOOTER */}
 
 <div style={{
@@ -255,6 +273,6 @@ opacity:.6
 
 </div>
 
-)
+);
 
 }
