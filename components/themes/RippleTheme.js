@@ -46,6 +46,7 @@ fontSize:34
 
 </div>
 
+
 {/* HERO */}
 
 <div style={{
@@ -66,7 +67,7 @@ display:"block"
 }}
 />
 
-{/* WHITE WAVE LINE (strong & visible) */}
+{/* WHITE WAVE LINE */}
 
 <svg
 viewBox="0 0 1440 260"
@@ -80,11 +81,7 @@ zIndex:6
 }}
 >
 <path
-d="
-M0,110
-C250,240 450,20 720,80
-C1000,150 1200,20 1440,60
-"
+d="M0,110 C250,240 450,20 720,80 C1000,150 1200,20 1440,60"
 fill="none"
 stroke="#ffffff"
 strokeWidth="18"
@@ -92,7 +89,7 @@ strokeLinecap="round"
 />
 </svg>
 
-{/* TOP CREAM WAVE (deeper cut) */}
+{/* TOP CREAM WAVE */}
 
 <svg
 viewBox="0 0 1440 260"
@@ -105,18 +102,13 @@ width:"100%",
 zIndex:5
 }}
 >
-<path fill="#d8c9be"
-d="
-M0,110
-C250,240 450,20 720,80
-C1000,150 1200,20 1440,60
-L1440,0
-L0,0
-Z
-"/>
+<path
+fill="#d8c9be"
+d="M0,110 C250,240 450,20 720,80 C1000,150 1200,20 1440,60 L1440,0 L0,0 Z"
+/>
 </svg>
 
-{/* BOTTOM DARK WAVE (more depth + shadow) */}
+{/* BOTTOM DARK WAVE */}
 
 <svg
 viewBox="0 0 1440 220"
@@ -130,18 +122,56 @@ zIndex:4,
 filter:"drop-shadow(0px -10px 18px rgba(0,0,0,0.35))"
 }}
 >
-<path fill="#7a4c4c"
-d="
-M0,140
-C250,300 450,80 720,120
-C1000,180 1200,60 1440,100
-L1440,220
-L0,220
-Z
-"/>
+<path
+fill="#7a4c4c"
+d="M0,140 C250,300 450,80 720,120 C1000,180 1200,60 1440,100 L1440,220 L0,220 Z"
+/>
 </svg>
 
 </div>
+
+
+{/* CONTENT */}
+
+<div style={{
+background:"#7a4c4c",
+color:"#fff",
+padding:"120px 20px 60px",
+position:"relative"
+}}>
+
+{/* PROFILE */}
+
+<div style={{
+position:"absolute",
+top:-70,
+left:30,
+zIndex:10
+}}>
+
+<div style={{
+position:"absolute",
+width:150,
+height:150,
+borderRadius:"50%",
+border:"2px solid rgba(255,255,255,0.25)",
+top:-10,
+left:-10
+}}/>
+
+<img
+src={profile.avatar}
+style={{
+width:130,
+height:130,
+borderRadius:"50%",
+border:"6px solid rgba(255,255,255,0.6)",
+objectFit:"cover"
+}}
+/>
+
+</div>
+
 
 {/* TEXT */}
 
@@ -179,7 +209,7 @@ marginTop:40,
 textAlign:"center"
 }}>
 
-{Object.entries(socialLinks).slice(0,6).map(([platform,usernames]) =>
+{Object.entries(socialLinks || {}).slice(0,6).map(([platform,usernames]) =>
 usernames?.map((username,i)=>{
 
 const icon =
@@ -196,6 +226,7 @@ return(
 key={platform+i}
 href={buildSocialUrl(platform,username)}
 target="_blank"
+rel="noopener noreferrer"
 style={{
 textDecoration:"none",
 color:"#fff"
