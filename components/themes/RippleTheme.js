@@ -5,14 +5,14 @@ profile,
 appearance,
 socialLinks,
 buildSocialUrl
-}){
+}) {
 
 const header = appearance?.header || {};
 
 const defaultImage =
 "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=1200";
 
-return(
+return (
 
 <div
 style={{
@@ -111,6 +111,22 @@ zIndex:2
 }}
 >
 
+<defs>
+
+{/* BIG 3D SHADOW */}
+
+<filter id="top3d" x="-20%" y="-20%" width="140%" height="200%">
+<feGaussianBlur stdDeviation="18" result="blur"/>
+</filter>
+
+<linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stopColor="rgba(255,255,255,0)" />
+<stop offset="40%" stopColor="rgba(0,0,0,0.35)" />
+<stop offset="100%" stopColor="rgba(0,0,0,0)" />
+</linearGradient>
+
+</defs>
+
 {/* MAIN TOP SHAPE */}
 
 <path
@@ -126,7 +142,7 @@ Z
 "
 />
 
-{/* WHITE EDGE */}
+{/* STRONG WHITE EDGE */}
 
 <path
 d="
@@ -136,48 +152,24 @@ C635,12 726,55 913,83
 C1213,131 1244,40 1440,20
 "
 fill="none"
-stroke="rgba(255,255,255,0.9)"
-strokeWidth="5"
+stroke="rgba(255,255,255,0.95)"
+strokeWidth="6"
 strokeLinecap="round"
 />
 
-</svg>
-
-
-{/* TOP SHADOW / 3D EFFECT */}
-
-<svg
-viewBox="0 0 1440 260"
-preserveAspectRatio="none"
-style={{
-position:"absolute",
-top:78,
-left:0,
-width:"100%",
-height:90,
-zIndex:2,
-pointerEvents:"none",
-opacity:.55,
-filter:"blur(10px)"
-}}
->
-
-<defs>
-<linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0%" stopColor="rgba(0,0,0,0.28)" />
-<stop offset="100%" stopColor="rgba(0,0,0,0)" />
-</linearGradient>
-</defs>
+{/* 3D FADE SHADOW */}
 
 <path
+filter="url(#top3d)"
 fill="url(#topFade)"
+opacity=".95"
 d="
 M0,80
 C317,245 320,130 540,55
 C635,12 726,55 913,83
 C1213,131 1244,40 1440,20
-L1440,120
-L0,120
+L1440,160
+L0,160
 Z
 "
 />
@@ -200,6 +192,22 @@ zIndex:3
 }}
 >
 
+<defs>
+
+{/* BIG BOTTOM SHADOW */}
+
+<filter id="bottom3d" x="-20%" y="-20%" width="140%" height="200%">
+<feGaussianBlur stdDeviation="20" result="blur"/>
+</filter>
+
+<linearGradient id="bottomFade" x1="0" y1="1" x2="0" y2="0">
+<stop offset="0%" stopColor="rgba(255,255,255,0)" />
+<stop offset="35%" stopColor="rgba(0,0,0,0.45)" />
+<stop offset="100%" stopColor="rgba(0,0,0,0)" />
+</linearGradient>
+
+</defs>
+
 {/* MAIN BOTTOM SHAPE */}
 
 <path
@@ -215,36 +223,27 @@ Z
 "
 />
 
-</svg>
-
-
-{/* BOTTOM SHADOW / 3D EFFECT */}
-
-<svg
-viewBox="0 0 1440 220"
-preserveAspectRatio="none"
-style={{
-position:"absolute",
-bottom:58,
-left:0,
-width:"100%",
-height:90,
-zIndex:4,
-pointerEvents:"none",
-opacity:.65,
-filter:"blur(12px)"
-}}
->
-
-<defs>
-<linearGradient id="bottomFade" x1="0" y1="1" x2="0" y2="0">
-<stop offset="0%" stopColor="rgba(0,0,0,0.35)" />
-<stop offset="100%" stopColor="rgba(0,0,0,0)" />
-</linearGradient>
-</defs>
+{/* TOP LIGHT EDGE */}
 
 <path
+d="
+M0,120
+C317,285 320,170 540,95
+C635,52 726,95 913,123
+C1213,171 1244,80 1440,60
+"
+fill="none"
+stroke="rgba(255,255,255,0.18)"
+strokeWidth="3"
+strokeLinecap="round"
+/>
+
+{/* 3D SHADOW EFFECT */}
+
+<path
+filter="url(#bottom3d)"
 fill="url(#bottomFade)"
+opacity=".95"
 d="
 M0,120
 C317,285 320,170 540,95
@@ -311,8 +310,6 @@ top:-4,
 left:-4
 }}
 />
-
-{/* PROFILE IMAGE */}
 
 <img
 src={profile.avatar || "https://randomuser.me/api/portraits/women/44.jpg"}
@@ -381,9 +378,9 @@ textAlign:"center"
 }}
 >
 
-{Object.entries(socialLinks || {}).slice(0,6).map(([platform,usernames])=>
+{Object.entries(socialLinks || {}).slice(0,6).map(([platform,usernames]) =>
 
-usernames?.map((username,i)=>{
+usernames?.map((username,i) => {
 
 const icon =
 platform==="whatsapp" ? "💬" :
@@ -393,7 +390,7 @@ platform==="facebook" ? "f" :
 platform==="instagram" ? "📷" :
 "📍";
 
-return(
+return (
 
 <a
 key={platform+i}
