@@ -96,7 +96,7 @@ display:"block"
 />
 
 
-{/* TOP WAVE EXACT */}
+{/* TOP WAVE */}
 
 <svg
 viewBox="0 0 1440 260"
@@ -110,6 +110,9 @@ height:120,
 zIndex:2
 }}
 >
+
+{/* MAIN TOP SHAPE */}
+
 <path
 fill="#d8c9be"
 d="
@@ -123,6 +126,8 @@ Z
 "
 />
 
+{/* WHITE EDGE */}
+
 <path
 d="
 M0,80
@@ -131,10 +136,52 @@ C635,12 726,55 913,83
 C1213,131 1244,40 1440,20
 "
 fill="none"
-stroke="rgba(255,255,255,0.75)"
-strokeWidth="6"
+stroke="rgba(255,255,255,0.9)"
+strokeWidth="5"
 strokeLinecap="round"
 />
+
+</svg>
+
+
+{/* TOP SHADOW / 3D EFFECT */}
+
+<svg
+viewBox="0 0 1440 260"
+preserveAspectRatio="none"
+style={{
+position:"absolute",
+top:78,
+left:0,
+width:"100%",
+height:90,
+zIndex:2,
+pointerEvents:"none",
+opacity:.55,
+filter:"blur(10px)"
+}}
+>
+
+<defs>
+<linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stopColor="rgba(0,0,0,0.28)" />
+<stop offset="100%" stopColor="rgba(0,0,0,0)" />
+</linearGradient>
+</defs>
+
+<path
+fill="url(#topFade)"
+d="
+M0,80
+C317,245 320,130 540,55
+C635,12 726,55 913,83
+C1213,131 1244,40 1440,20
+L1440,120
+L0,120
+Z
+"
+/>
+
 </svg>
 
 
@@ -149,10 +196,12 @@ bottom:-1,
 left:0,
 width:"100%",
 height:120,
-zIndex:3,
-filter:"drop-shadow(0px -8px 14px rgba(0,0,0,0.28))"
+zIndex:3
 }}
 >
+
+{/* MAIN BOTTOM SHAPE */}
+
 <path
 fill="#7a4c4c"
 d="
@@ -165,6 +214,48 @@ L0,220
 Z
 "
 />
+
+</svg>
+
+
+{/* BOTTOM SHADOW / 3D EFFECT */}
+
+<svg
+viewBox="0 0 1440 220"
+preserveAspectRatio="none"
+style={{
+position:"absolute",
+bottom:58,
+left:0,
+width:"100%",
+height:90,
+zIndex:4,
+pointerEvents:"none",
+opacity:.65,
+filter:"blur(12px)"
+}}
+>
+
+<defs>
+<linearGradient id="bottomFade" x1="0" y1="1" x2="0" y2="0">
+<stop offset="0%" stopColor="rgba(0,0,0,0.35)" />
+<stop offset="100%" stopColor="rgba(0,0,0,0)" />
+</linearGradient>
+</defs>
+
+<path
+fill="url(#bottomFade)"
+d="
+M0,120
+C317,285 320,170 540,95
+C635,52 726,95 913,123
+C1213,171 1244,80 1440,60
+L1440,0
+L0,0
+Z
+"
+/>
+
 </svg>
 
 </div>
