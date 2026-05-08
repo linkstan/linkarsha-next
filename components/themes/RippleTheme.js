@@ -103,7 +103,6 @@ strokeLinecap="round"
 
 </div>
 
-
 {/* IMAGE SECTION */}
 
 <div style={{
@@ -150,7 +149,6 @@ Z
 
 </div>
 
-
 {/* TEXT */}
 
 <div style={{
@@ -177,7 +175,6 @@ marginTop:6
 )}
 
 </div>
-
 
 {/* ICON GRID */}
 
@@ -243,7 +240,6 @@ opacity:.85
 )}
 
 </div>
-
 
 {/* FOOTER */}
 
