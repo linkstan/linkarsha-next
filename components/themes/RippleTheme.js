@@ -19,7 +19,8 @@ style={{
 margin:0,
 background:"#d8c9be",
 fontFamily:"Arial, sans-serif",
-minHeight:"100vh"
+minHeight:"100vh",
+overflow:"hidden"
 }}
 >
 
@@ -29,18 +30,25 @@ minHeight:"100vh"
 style={{
 textAlign:"center",
 padding:"50px 20px 20px",
-color:"#8b5e5e"
+color:"#8b5e5e",
+position:"relative",
+zIndex:10
 }}
 >
 
-<div style={{fontSize:35}}>
+<div style={{
+fontSize:35,
+marginBottom:10
+}}>
 🦷
 </div>
 
 <h1
 style={{
 margin:0,
-letterSpacing:2
+letterSpacing:2,
+fontSize:34,
+fontWeight:700
 }}
 >
 {profile.display_name || profile.username}
@@ -48,7 +56,13 @@ letterSpacing:2
 
 {header.subtitle && (
 
-<p style={{marginTop:8}}>
+<p
+style={{
+marginTop:12,
+fontSize:16,
+opacity:.9
+}}
+>
 {header.subtitle}
 </p>
 
@@ -62,8 +76,9 @@ letterSpacing:2
 <div
 style={{
 position:"relative",
-height:280,
-overflow:"hidden"
+height:320,
+overflow:"hidden",
+marginTop:-10
 }}
 >
 
@@ -81,7 +96,7 @@ display:"block"
 />
 
 
-{/* TOP WAVE */}
+{/* TOP WAVE EXACT */}
 
 <svg
 viewBox="0 0 1440 260"
@@ -91,7 +106,7 @@ position:"absolute",
 top:0,
 left:0,
 width:"100%",
-height:"100%",
+height:120,
 zIndex:2
 }}
 >
@@ -107,6 +122,19 @@ L0,0
 Z
 "
 />
+
+<path
+d="
+M0,80
+C317,245 320,130 540,55
+C635,12 726,55 913,83
+C1213,131 1244,40 1440,20
+"
+fill="none"
+stroke="rgba(255,255,255,0.75)"
+strokeWidth="6"
+strokeLinecap="round"
+/>
 </svg>
 
 
@@ -120,7 +148,9 @@ position:"absolute",
 bottom:-1,
 left:0,
 width:"100%",
-zIndex:3
+height:120,
+zIndex:3,
+filter:"drop-shadow(0px -8px 14px rgba(0,0,0,0.28))"
 }}
 >
 <path
@@ -147,7 +177,8 @@ style={{
 background:"#7a4c4c",
 color:"#fff",
 padding:"120px 20px 60px",
-position:"relative"
+position:"relative",
+marginTop:-2
 }}
 >
 
@@ -156,8 +187,9 @@ position:"relative"
 <div
 style={{
 position:"absolute",
-top:-70,
-left:30
+top:-68,
+left:32,
+zIndex:20
 }}
 >
 
@@ -174,6 +206,22 @@ top:-10,
 left:-10
 }}
 />
+
+{/* SECOND RING */}
+
+<div
+style={{
+position:"absolute",
+width:138,
+height:138,
+borderRadius:"50%",
+border:"2px solid rgba(255,255,255,0.2)",
+top:-4,
+left:-4
+}}
+/>
+
+{/* PROFILE IMAGE */}
 
 <img
 src={profile.avatar || "https://randomuser.me/api/portraits/women/44.jpg"}
@@ -195,14 +243,18 @@ objectFit:"cover"
 
 <div
 style={{
-marginLeft:180,
-marginTop:10
+marginLeft:185,
+marginTop:5,
+maxWidth:220
 }}
 >
 
 <h2
 style={{
-margin:0
+margin:0,
+fontSize:24,
+lineHeight:1.2,
+fontWeight:700
 }}
 >
 {profile.display_name || profile.username}
@@ -212,9 +264,10 @@ margin:0
 
 <p
 style={{
-margin:"5px 0",
-opacity:.8,
-lineHeight:1.5
+margin:"10px 0 0",
+opacity:.82,
+lineHeight:1.45,
+fontSize:15
 }}
 >
 {profile.bio}
@@ -232,7 +285,7 @@ style={{
 display:"grid",
 gridTemplateColumns:"repeat(3,1fr)",
 gap:30,
-marginTop:40,
+marginTop:55,
 textAlign:"center"
 }}
 >
@@ -264,15 +317,15 @@ color:"#fff"
 
 <div
 style={{
-width:80,
-height:80,
+width:86,
+height:86,
 borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.4)",
+border:"2px solid rgba(255,255,255,0.35)",
 display:"flex",
 alignItems:"center",
 justifyContent:"center",
 margin:"auto",
-fontSize:22
+fontSize:24
 }}
 >
 {icon}
@@ -280,9 +333,9 @@ fontSize:22
 
 <div
 style={{
-marginTop:8,
-fontSize:14,
-opacity:.8,
+marginTop:10,
+fontSize:15,
+opacity:.85,
 textTransform:"capitalize"
 }}
 >
@@ -305,8 +358,9 @@ textTransform:"capitalize"
 <div
 style={{
 textAlign:"center",
-marginTop:40,
-opacity:.6
+marginTop:45,
+opacity:.6,
+fontSize:14
 }}
 >
 👆 TOQUE NOS ÍCONES
