@@ -255,8 +255,7 @@ opacity:.6
 👆 TOQUE NOS ÍCONES
 </div>
 
-</div>
-
+{/* END MAIN CONTENT */}
 </div>
 
 );
