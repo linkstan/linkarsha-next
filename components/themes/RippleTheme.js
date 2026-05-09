@@ -205,7 +205,7 @@ overflow:"visible"
 
 <stop
 offset="0%"
-stopColor="rgba(0,0,0,0.55)"
+stopColor="rgba(0,0,0,0.9)"
 />
 
 <stop
