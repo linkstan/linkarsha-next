@@ -210,7 +210,7 @@ result="blur"
 />
 
 <feOffset
-dy="4"
+dy="1"
 result="offsetBlur"
 />
 
