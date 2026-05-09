@@ -180,35 +180,50 @@ Z
 {/* BOTTOM WAVE */}
 
 <svg
-viewBox="0 0 1440 220"
+viewBox="0 0 1440 260"
 preserveAspectRatio="none"
 style={{
 position:"absolute",
 bottom:-1,
 left:0,
 width:"100%",
-height:120,
-zIndex:3
+height:140,
+zIndex:3,
+overflow:"visible"
 }}
 >
 
 <defs>
 
-{/* BIG BOTTOM SHADOW */}
-
-<filter id="bottom3d" x="-20%" y="-20%" width="140%" height="200%">
-<feGaussianBlur stdDeviation="20" result="blur"/>
+{/* SOFT 3D BLUR */}
+<filter id="waveBlur" x="-20%" y="-20%" width="140%" height="200%">
+<feGaussianBlur stdDeviation="14" />
 </filter>
 
-<linearGradient id="bottomFade" x1="0" y1="1" x2="0" y2="0">
-<stop offset="0%" stopColor="rgba(255,255,255,0)" />
-<stop offset="35%" stopColor="rgba(0,0,0,0.45)" />
-<stop offset="100%" stopColor="rgba(0,0,0,0)" />
+{/* SHADOW FADE */}
+<linearGradient id="waveFade" x1="0" y1="0" x2="0" y2="1">
+
+<stop
+offset="0%"
+stopColor="rgba(0,0,0,0.55)"
+/>
+
+<stop
+offset="45%"
+stopColor="rgba(0,0,0,0.22)"
+/>
+
+<stop
+offset="100%"
+stopColor="rgba(0,0,0,0)"
+/>
+
 </linearGradient>
 
 </defs>
 
-{/* MAIN BOTTOM SHAPE */}
+
+{/* MAIN BROWN WAVE */}
 
 <path
 fill="#7a4c4c"
@@ -217,13 +232,14 @@ M0,120
 C317,285 320,170 540,95
 C635,52 726,95 913,123
 C1213,171 1244,80 1440,60
-L1440,220
-L0,220
+L1440,260
+L0,260
 Z
 "
 />
 
-{/* TOP LIGHT EDGE */}
+
+{/* WHITE TOP EDGE */}
 
 <path
 d="
@@ -233,24 +249,25 @@ C635,52 726,95 913,123
 C1213,171 1244,80 1440,60
 "
 fill="none"
-stroke="rgba(255,255,255,0.18)"
+stroke="rgba(255,255,255,0.22)"
 strokeWidth="3"
 strokeLinecap="round"
 />
 
-{/* 3D SHADOW EFFECT */}
+
+{/* 3D DARK FADE UNDER CURVE */}
 
 <path
-filter="url(#bottom3d)"
-fill="url(#bottomFade)"
-opacity=".95"
+filter="url(#waveBlur)"
+fill="url(#waveFade)"
+opacity="1"
 d="
 M0,120
 C317,285 320,170 540,95
 C635,52 726,95 913,123
 C1213,171 1244,80 1440,60
-L1440,0
-L0,0
+L1440,170
+L0,170
 Z
 "
 />
