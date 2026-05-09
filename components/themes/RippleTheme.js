@@ -195,30 +195,43 @@ overflow:"visible"
 
 <defs>
 
-{/* SOFT 3D BLUR */}
-<filter id="waveBlur" x="-20%" y="-20%" width="140%" height="200%">
-<feGaussianBlur stdDeviation="14" />
+{/* REAL CURVE SHADOW */}
+<filter
+id="waveShadow"
+x="-20%"
+y="-50%"
+width="160%"
+height="250%"
+>
+<feGaussianBlur
+in="SourceAlpha"
+stdDeviation="18"
+result="blur"
+/>
+
+<feOffset
+dy="10"
+result="offsetBlur"
+/>
+
+<feFlood
+floodColor="rgba(0,0,0,0.9)"
+result="shadowColor"
+/>
+
+<feComposite
+in="shadowColor"
+in2="offsetBlur"
+operator="in"
+result="shadow"
+/>
+
+<feMerge>
+<feMergeNode in="shadow"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+
 </filter>
-
-{/* SHADOW FADE */}
-<linearGradient id="waveFade" x1="0" y1="0" x2="0" y2="1">
-
-<stop
-offset="0%"
-stopColor="rgba(0,0,0,0.9)"
-/>
-
-<stop
-offset="45%"
-stopColor="rgba(0,0,0,0.22)"
-/>
-
-<stop
-offset="100%"
-stopColor="rgba(0,0,0,0)"
-/>
-
-</linearGradient>
 
 </defs>
 
@@ -226,6 +239,7 @@ stopColor="rgba(0,0,0,0)"
 {/* MAIN BROWN WAVE */}
 
 <path
+filter="url(#waveShadow)"
 fill="#7a4c4c"
 d="
 M0,120
@@ -239,7 +253,7 @@ Z
 />
 
 
-{/* WHITE TOP EDGE */}
+{/* WHITE EDGE */}
 
 <path
 d="
@@ -249,27 +263,9 @@ C635,52 726,95 913,123
 C1213,171 1244,80 1440,60
 "
 fill="none"
-stroke="rgba(255,255,255,0.22)"
+stroke="rgba(255,255,255,0.20)"
 strokeWidth="3"
 strokeLinecap="round"
-/>
-
-
-{/* 3D DARK FADE UNDER CURVE */}
-
-<path
-filter="url(#waveBlur)"
-fill="url(#waveFade)"
-opacity="1"
-d="
-M0,120
-C317,285 320,170 540,95
-C635,52 726,95 913,123
-C1213,171 1244,80 1440,60
-L1440,170
-L0,170
-Z
-"
 />
 
 </svg>
