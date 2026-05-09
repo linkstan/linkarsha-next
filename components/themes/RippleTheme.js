@@ -215,7 +215,7 @@ result="offsetBlur"
 />
 
 <feFlood
-floodColor="rgba(0,0,0,0.9)"
+floodColor="rgba(0,0,0,0.7)"
 result="shadowColor"
 />
 
