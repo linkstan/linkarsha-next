@@ -43,7 +43,9 @@ case "linkedin":
 return `https://www.linkedin.com/in/${username}`;
 
 case "website":
-return username.startsWith("http") ? username : `https://${username}`;
+return username.startsWith("http")
+? username
+: `https://${username}`;
 
 case "email":
 return `mailto:${username}`;
@@ -66,6 +68,8 @@ blocks
 
 const [live,setLive] = useState({});
 
+/* LIVE EVENTS */
+
 useEffect(()=>{
 
 function update(e){
@@ -77,30 +81,71 @@ setLive(prev=>({
 
 }
 
-window.addEventListener("appearance-update",update);
+function updateTheme(e){
 
-return ()=>window.removeEventListener("appearance-update",update);
+setLive(prev=>({
+...prev,
+theme:e.detail
+}));
+
+}
+
+window.addEventListener(
+"appearance-update",
+update
+);
+
+window.addEventListener(
+"theme-change",
+updateTheme
+);
+
+return ()=>{
+
+window.removeEventListener(
+"appearance-update",
+update
+);
+
+window.removeEventListener(
+"theme-change",
+updateTheme
+);
+
+};
 
 },[]);
 
+
+/* LIVE THEME FIX */
+
 const themeName =
+live?.theme ||
 appearance?.theme ||
 profile?.theme ||
 "minimal";
+
+
+/* LIVE HEADER */
 
 const header = {
 ...(appearance?.header || {}),
 ...(live?.header || {})
 };
 
+
+/* LIVE SOCIAL LINKS */
+
 const socialLinks = {
 ...(appearance?.social_links || {}),
 ...(live?.social_links || {})
 };
 
-/* ARCHWAY THEME */
+
+/* ARCHWAY */
 
 if(themeName === "archway"){
+
 return(
 <ArchwayTheme
 profile={profile}
@@ -110,11 +155,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
 
-/* MODERN MINIMAL THEME */
+
+/* MODERN MINIMAL */
 
 if(themeName === "modernminimal"){
+
 return(
 <ModernMinimalTheme
 profile={profile}
@@ -124,11 +172,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
 
-/* BLUEPRINT THEME */
+
+/* BLUEPRINT */
 
 if(themeName === "blueprint"){
+
 return(
 <BlueprintTheme
 profile={profile}
@@ -138,11 +189,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
-  
-/* SOLSTICE THEME */
-  
+
+
+/* SOLSTICE */
+
 if(themeName === "solstice"){
+
 return(
 <SolsticeTheme
 profile={profile}
@@ -152,10 +206,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
 
-/* PORTFOLIO THEME */
+
+/* PORTFOLIO */
+
 if(themeName === "portfolio"){
+
 return(
 <PortfolioTheme
 profile={profile}
@@ -165,10 +223,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
-  
-/* RIPPLE THEME */
+
+
+/* RIPPLE */
+
 if(themeName === "ripple"){
+
 return(
 <RippleTheme
 profile={profile}
@@ -178,11 +240,14 @@ socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
 />
 )
+
 }
 
-/* DEFAULT ENGINE THEMES */
 
-const finalTheme = getTheme(themeName, appearance);
+/* DEFAULT THEMES */
+
+const finalTheme =
+getTheme(themeName, appearance);
 
 return(
 
@@ -192,13 +257,18 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 width:"100%",
-background:finalTheme?.background || "#ffffff",
-color: finalTheme?.textColor || "#000",
+background:
+finalTheme?.background || "#ffffff",
+color:
+finalTheme?.textColor || "#000",
 minHeight:"100vh"
 }}
 >
 
-<HeroHeader appearance={appearance} theme={finalTheme} />
+<HeroHeader
+appearance={appearance}
+theme={finalTheme}
+/>
 
 <div
 style={{
@@ -215,26 +285,43 @@ gap:6
 <img
 src={profile.avatar || ""}
 style={{
-width:finalTheme?.avatar?.size || 110,
-height:finalTheme?.avatar?.size || 110,
+width:
+finalTheme?.avatar?.size || 110,
+
+height:
+finalTheme?.avatar?.size || 110,
+
 borderRadius:"50%",
-border:finalTheme?.avatar?.border || "none",
+
+border:
+finalTheme?.avatar?.border || "none",
+
 objectFit:"contain",
-marginTop: finalTheme?.layout?.avatarOverlap ? -20 : 10,
-transform: finalTheme?.layout?.avatarOverlap
+
+marginTop:
+finalTheme?.layout?.avatarOverlap
+? -20
+: 10,
+
+transform:
+finalTheme?.layout?.avatarOverlap
 ? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
 : "none",
+
 marginBottom:4,
 position:"relative",
 zIndex:10
 }}
 />
 
+
 {header.showDisplayName !== false && (
 
 <h1
 style={{
-fontFamily:finalTheme?.fonts?.name || "Inter",
+fontFamily:
+finalTheme?.fonts?.name || "Inter",
+
 fontSize:34,
 margin:0,
 textAlign:"center"
@@ -245,11 +332,14 @@ textAlign:"center"
 
 )}
 
+
 {header.subtitle && (
 
 <div
 style={{
-fontFamily:finalTheme?.fonts?.bio || "Inter",
+fontFamily:
+finalTheme?.fonts?.bio || "Inter",
+
 fontSize:26,
 opacity:.9,
 textAlign:"center"
@@ -260,11 +350,15 @@ textAlign:"center"
 
 )}
 
+
 {header.showUsername !== false && (
+
 <div style={{opacity:.7}}>
 @{profile.username}
 </div>
+
 )}
+
 
 {header.showBio && profile.bio && (
 
@@ -280,7 +374,9 @@ opacity:.85
 
 )}
 
-{header.showSocialIcons && header.socialPosition==="header" && (
+
+{header.showSocialIcons &&
+header.socialPosition==="header" && (
 
 <div
 style={{
@@ -291,7 +387,9 @@ justifyContent:"center"
 }}
 >
 
-{Object.entries(socialLinks).map(([platform,usernames]) =>
+{Object.entries(socialLinks).map(
+([platform,usernames]) =>
+
 usernames?.map((username,i)=>{
 
 const iconSrc =
@@ -311,7 +409,9 @@ rel="noopener noreferrer"
 <img
 src={iconSrc}
 style={{width:22,height:22}}
-onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
+onError={(e)=>{
+e.currentTarget.src="/icons/other.png"
+}}
 />
 
 </a>
@@ -319,15 +419,23 @@ onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 );
 
 })
+
 )}
 
 </div>
 
 )}
 
-<div style={{width:320,marginTop:36}}>
+
+<div
+style={{
+width:320,
+marginTop:36
+}}
+>
 
 {blocks.map(block=>(
+
 <ButtonBlock
 key={block.id}
 block={block}
@@ -335,11 +443,14 @@ themeName={themeName}
 theme={finalTheme}
 appearance={appearance}
 />
+
 ))}
 
 </div>
 
-{header.showSocialIcons && header.socialPosition==="bottom" && (
+
+{header.showSocialIcons &&
+header.socialPosition==="bottom" && (
 
 <div
 style={{
@@ -351,7 +462,9 @@ justifyContent:"center"
 }}
 >
 
-{Object.entries(socialLinks).map(([platform,usernames]) =>
+{Object.entries(socialLinks).map(
+([platform,usernames]) =>
+
 usernames?.map((username,i)=>{
 
 const iconSrc =
@@ -371,7 +484,9 @@ rel="noopener noreferrer"
 <img
 src={iconSrc}
 style={{width:22,height:22}}
-onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
+onError={(e)=>{
+e.currentTarget.src="/icons/other.png"
+}}
 />
 
 </a>
@@ -379,13 +494,15 @@ onError={(e)=>{e.currentTarget.src="/icons/other.png"}}
 );
 
 })
-)}
-
-</div>
 
 )}
 
 </div>
+
+)}
+
+</div>
+
 </div>
 
 );
