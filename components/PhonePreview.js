@@ -88,6 +88,20 @@ theme:e.detail
 
 }
 
+
+/* VERY IMPORTANT */
+/* UPDATE PROFILE THEME TOO */
+
+function updateProfileTheme(e){
+
+setProfile(prev=>({
+...prev,
+theme:e.detail
+}));
+
+}
+
+
 window.addEventListener(
 "appearance-update",
 updateAppearance
@@ -101,6 +115,11 @@ updateBlocks
 window.addEventListener(
 "theme-change",
 updateTheme
+);
+
+window.addEventListener(
+"theme-change",
+updateProfileTheme
 );
 
 return ()=>{
@@ -118,6 +137,11 @@ updateBlocks
 window.removeEventListener(
 "theme-change",
 updateTheme
+);
+
+window.removeEventListener(
+"theme-change",
+updateProfileTheme
 );
 
 };
@@ -164,7 +188,12 @@ position:"relative"
 {/* LIVE REAL PUBLIC PROFILE */}
 
 <ThemeRenderer
-profile={profile}
+profile={{
+...profile,
+theme:
+appearance?.theme ||
+profile?.theme
+}}
 appearance={appearance}
 blocks={blocks}
 />
