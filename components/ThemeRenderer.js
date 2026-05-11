@@ -83,7 +83,10 @@ return ()=>window.removeEventListener("appearance-update",update);
 
 },[]);
 
-const themeName = profile?.theme || "minimal";
+const themeName =
+appearance?.theme ||
+profile?.theme ||
+"minimal";
 
 const header = {
 ...(appearance?.header || {}),
