@@ -58,7 +58,12 @@ async function applyTheme(name){
 setSelected(name);
 
 window.dispatchEvent(
-new CustomEvent("theme-change",{detail:name})
+new CustomEvent(
+"theme-change",
+{
+detail:name.toLowerCase()
+}
+)
 );
 
 /* 2 — save to database */
