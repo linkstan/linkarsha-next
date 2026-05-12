@@ -2,16 +2,30 @@
 
 import HeroHeader from "./HeroHeader";
 import ButtonBlock from "./ButtonBlock";
+
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
 import SolsticeTheme from "./themes/SolsticeTheme";
 import PortfolioTheme from "./themes/PortfolioTheme";
 import RippleTheme from "./themes/RippleTheme";
-import { getTheme } from "../app/lib/themeEngine";
-import { useEffect, useState } from "react";
 
-function buildSocialUrl(platform, username){
+import { getTheme } from "../app/lib/themeEngine";
+
+import {
+useEffect,
+useState
+} from "react";
+
+
+/* ================================================= */
+/* SOCIAL URL */
+/* ================================================= */
+
+function buildSocialUrl(
+platform,
+username
+){
 
 switch(platform){
 
@@ -43,6 +57,7 @@ case "linkedin":
 return `https://www.linkedin.com/in/${username}`;
 
 case "website":
+
 return username.startsWith("http")
 ? username
 : `https://${username}`;
@@ -60,6 +75,11 @@ return `https://${platform}.com/${username}`;
 
 }
 
+
+/* ================================================= */
+/* COMPONENT */
+/* ================================================= */
+
 export default function ThemeRenderer({
 profile,
 appearance,
@@ -68,11 +88,14 @@ blocks
 
 const [live,setLive] = useState({});
 
+
+/* ================================================= */
 /* LIVE EVENTS */
+/* ================================================= */
 
 useEffect(()=>{
 
-function update(e){
+function updateAppearance(e){
 
 setLive(prev=>({
 ...prev,
@@ -92,7 +115,7 @@ theme:e.detail
 
 window.addEventListener(
 "appearance-update",
-update
+updateAppearance
 );
 
 window.addEventListener(
@@ -104,7 +127,7 @@ return ()=>{
 
 window.removeEventListener(
 "appearance-update",
-update
+updateAppearance
 );
 
 window.removeEventListener(
@@ -117,160 +140,196 @@ updateTheme
 },[]);
 
 
-/* FINAL LIVE APPEARANCE */
+/* ================================================= */
+/* FINAL APPEARANCE */
+/* ================================================= */
 
 const finalAppearance = {
+
 ...appearance,
 ...live,
+
 theme:
+
 live?.theme ||
 appearance?.theme ||
 profile?.theme ||
 "minimal"
+
 };
 
 
-/* THEME NAME */
+/* ================================================= */
+/* THEME */
+/* ================================================= */
 
-const themeName = finalAppearance.theme;
+const themeName =
+finalAppearance.theme;
+
+const finalTheme =
+getTheme(
+themeName,
+finalAppearance
+);
 
 
+/* ================================================= */
 /* HEADER */
+/* ================================================= */
 
 const header = {
+
 ...(appearance?.header || {}),
 ...(live?.header || {})
+
 };
 
 
-/* SOCIAL LINKS */
+/* ================================================= */
+/* SOCIAL */
+/* ================================================= */
 
 const socialLinks = {
+
 ...(appearance?.social_links || {}),
 ...(live?.social_links || {})
+
 };
 
 
+/* ================================================= */
+/* CUSTOM THEMES */
+/* ================================================= */
+
+const customThemeProps = {
+
+profile,
+appearance:finalAppearance,
+blocks,
+
+theme:finalTheme,
+
+header,
+socialLinks,
+
+buildSocialUrl
+
+};
+
+
+/* ================================================= */
 /* ARCHWAY */
+/* ================================================= */
 
 if(themeName === "archway"){
 
 return(
 <ArchwayTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* MODERN MINIMAL */
+/* ================================================= */
 
 if(themeName === "modernminimal"){
 
 return(
 <ModernMinimalTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* BLUEPRINT */
+/* ================================================= */
 
 if(themeName === "blueprint"){
 
 return(
 <BlueprintTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* SOLSTICE */
+/* ================================================= */
 
 if(themeName === "solstice"){
 
 return(
 <SolsticeTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* PORTFOLIO */
+/* ================================================= */
 
 if(themeName === "portfolio"){
 
 return(
 <PortfolioTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* RIPPLE */
+/* ================================================= */
 
 if(themeName === "ripple"){
 
 return(
 <RippleTheme
-profile={profile}
-appearance={finalAppearance}
-blocks={blocks}
-socialLinks={socialLinks}
-buildSocialUrl={buildSocialUrl}
+{...customThemeProps}
 />
-)
+);
 
 }
 
 
+/* ================================================= */
 /* DEFAULT THEMES */
-
-const finalTheme =
-getTheme(themeName, finalAppearance);
+/* ================================================= */
 
 return(
 
 <div
 style={{
+
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
+
 width:"100%",
+
 background:
 finalTheme?.background || "#ffffff",
+
 color:
-finalTheme?.textColor || "#000",
+finalTheme?.textColor || "#000000",
+
 minHeight:"100vh"
+
 }}
 >
 
@@ -281,19 +340,28 @@ theme={finalTheme}
 
 <div
 style={{
+
 width:360,
 maxWidth:"100%",
+
 margin:"0 auto",
+
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
+
 gap:6
+
 }}
 >
 
+{/* AVATAR */}
+
 <img
 src={profile.avatar || ""}
+
 style={{
+
 width:
 finalTheme?.avatar?.size || 110,
 
@@ -305,95 +373,146 @@ borderRadius:"50%",
 border:
 finalTheme?.avatar?.border || "none",
 
-objectFit:"contain",
+objectFit:"cover",
 
 marginTop:
+
 finalTheme?.layout?.avatarOverlap
 ? -20
 : 10,
 
 transform:
+
 finalTheme?.layout?.avatarOverlap
-? `translateY(-${(finalTheme?.avatar?.size || 110)/2}px)`
+
+? `translateY(-${
+(finalTheme?.avatar?.size || 110)/2
+}px)`
+
 : "none",
 
 marginBottom:4,
+
 position:"relative",
-zIndex:10
+zIndex:10,
+
+boxShadow:
+
+finalTheme?.avatar?.shadow
+? "0 10px 25px rgba(0,0,0,.18)"
+: "none"
+
 }}
 />
+
+{/* NAME */}
 
 {header.showDisplayName !== false && (
 
 <h1
 style={{
+
 fontFamily:
 finalTheme?.fonts?.name || "Inter",
 
 fontSize:34,
+
 margin:0,
+
 textAlign:"center"
+
 }}
 >
+
 {profile.display_name || profile.username}
+
 </h1>
 
 )}
+
+{/* SUBTITLE */}
 
 {header.subtitle && (
 
 <div
 style={{
+
 fontFamily:
 finalTheme?.fonts?.bio || "Inter",
 
 fontSize:26,
+
 opacity:.9,
+
 textAlign:"center"
+
 }}
 >
+
 {header.subtitle}
+
 </div>
 
 )}
+
+{/* USERNAME */}
 
 {header.showUsername !== false && (
 
 <div style={{opacity:.7}}>
+
 @{profile.username}
+
 </div>
 
 )}
 
-{header.showBio && profile.bio && (
+{/* BIO */}
+
+{header.showBio !== false &&
+profile.bio && (
 
 <p
 style={{
+
 maxWidth:320,
+
 textAlign:"center",
+
 opacity:.85
+
 }}
 >
+
 {profile.bio}
+
 </p>
 
 )}
 
+{/* BUTTONS */}
+
 <div
 style={{
+
 width:320,
 marginTop:36
+
 }}
 >
 
 {blocks.map(block=>(
 
 <ButtonBlock
+
 key={block.id}
+
 block={block}
-themeName={themeName}
+
 theme={finalTheme}
+
 appearance={finalAppearance}
+
 />
 
 ))}
