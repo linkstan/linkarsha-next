@@ -117,16 +117,25 @@ updateTheme
 },[]);
 
 
-/* LIVE THEME FIX */
+/* FINAL LIVE APPEARANCE */
 
-const themeName =
+const finalAppearance = {
+...appearance,
+...live,
+theme:
 live?.theme ||
 appearance?.theme ||
 profile?.theme ||
-"minimal";
+"minimal"
+};
 
 
-/* LIVE HEADER */
+/* THEME NAME */
+
+const themeName = finalAppearance.theme;
+
+
+/* HEADER */
 
 const header = {
 ...(appearance?.header || {}),
@@ -134,7 +143,7 @@ const header = {
 };
 
 
-/* LIVE SOCIAL LINKS */
+/* SOCIAL LINKS */
 
 const socialLinks = {
 ...(appearance?.social_links || {}),
@@ -149,7 +158,7 @@ if(themeName === "archway"){
 return(
 <ArchwayTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -166,7 +175,7 @@ if(themeName === "modernminimal"){
 return(
 <ModernMinimalTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -183,7 +192,7 @@ if(themeName === "blueprint"){
 return(
 <BlueprintTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -200,7 +209,7 @@ if(themeName === "solstice"){
 return(
 <SolsticeTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -217,7 +226,7 @@ if(themeName === "portfolio"){
 return(
 <PortfolioTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -234,7 +243,7 @@ if(themeName === "ripple"){
 return(
 <RippleTheme
 profile={profile}
-appearance={appearance}
+appearance={finalAppearance}
 blocks={blocks}
 socialLinks={socialLinks}
 buildSocialUrl={buildSocialUrl}
@@ -247,7 +256,7 @@ buildSocialUrl={buildSocialUrl}
 /* DEFAULT THEMES */
 
 const finalTheme =
-getTheme(themeName, appearance);
+getTheme(themeName, finalAppearance);
 
 return(
 
@@ -266,7 +275,7 @@ minHeight:"100vh"
 >
 
 <HeroHeader
-appearance={appearance}
+appearance={finalAppearance}
 theme={finalTheme}
 />
 
@@ -314,7 +323,6 @@ zIndex:10
 }}
 />
 
-
 {header.showDisplayName !== false && (
 
 <h1
@@ -331,7 +339,6 @@ textAlign:"center"
 </h1>
 
 )}
-
 
 {header.subtitle && (
 
@@ -350,7 +357,6 @@ textAlign:"center"
 
 )}
 
-
 {header.showUsername !== false && (
 
 <div style={{opacity:.7}}>
@@ -358,7 +364,6 @@ textAlign:"center"
 </div>
 
 )}
-
 
 {header.showBio && profile.bio && (
 
@@ -374,59 +379,6 @@ opacity:.85
 
 )}
 
-
-{header.showSocialIcons &&
-header.socialPosition==="header" && (
-
-<div
-style={{
-display:"flex",
-gap:14,
-flexWrap:"wrap",
-justifyContent:"center"
-}}
->
-
-{Object.entries(socialLinks).map(
-([platform,usernames]) =>
-
-usernames?.map((username,i)=>{
-
-const iconSrc =
-header.socialIconStyle==="theme"
-? `/icons/theme/${platform}.svg`
-: `/icons/${platform==="twitter"?"x":platform}.png`;
-
-return(
-
-<a
-key={platform+i}
-href={buildSocialUrl(platform,username)}
-target="_blank"
-rel="noopener noreferrer"
->
-
-<img
-src={iconSrc}
-style={{width:22,height:22}}
-onError={(e)=>{
-e.currentTarget.src="/icons/other.png"
-}}
-/>
-
-</a>
-
-);
-
-})
-
-)}
-
-</div>
-
-)}
-
-
 <div
 style={{
 width:320,
@@ -441,65 +393,12 @@ key={block.id}
 block={block}
 themeName={themeName}
 theme={finalTheme}
-appearance={appearance}
+appearance={finalAppearance}
 />
 
 ))}
 
 </div>
-
-
-{header.showSocialIcons &&
-header.socialPosition==="bottom" && (
-
-<div
-style={{
-display:"flex",
-gap:14,
-marginTop:30,
-flexWrap:"wrap",
-justifyContent:"center"
-}}
->
-
-{Object.entries(socialLinks).map(
-([platform,usernames]) =>
-
-usernames?.map((username,i)=>{
-
-const iconSrc =
-header.socialIconStyle==="theme"
-? `/icons/theme/${platform}.svg`
-: `/icons/${platform==="twitter"?"x":platform}.png`;
-
-return(
-
-<a
-key={platform+i}
-href={buildSocialUrl(platform,username)}
-target="_blank"
-rel="noopener noreferrer"
->
-
-<img
-src={iconSrc}
-style={{width:22,height:22}}
-onError={(e)=>{
-e.currentTarget.src="/icons/other.png"
-}}
-/>
-
-</a>
-
-);
-
-})
-
-)}
-
-</div>
-
-)}
 
 </div>
 
