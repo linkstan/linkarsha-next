@@ -66,9 +66,16 @@ new CustomEvent("theme-change",{detail:name})
 const {data:{session}} = await supabase.auth.getSession();
 if(!session) return;
 
+const normalizedTheme = name.toLowerCase();
+
 await supabase
 .from("profiles")
-.update({theme:name})
+.update({
+theme: normalizedTheme,
+profile_settings:{
+theme: normalizedTheme
+}
+})
 .eq("id",session.user.id);
 
 }
