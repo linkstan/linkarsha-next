@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import ButtonBlock from "../../components/ButtonBlock";
+import PhonePreview from "../../components/PhonePreview";
 import Link from "next/link";
 import MobileBottomNav from "../../components/MobileBottomNav";
 import MobileDrawer from "../../components/MobileDrawer";
@@ -437,7 +438,7 @@ justifyContent:"center"
 
 {/* PHONE PREVIEW */}
 
-{!isMobile && showPreview && profile && (
+{!isMobile && showPreview && (
 
 <div style={{
 width:360,
@@ -447,59 +448,14 @@ alignItems:"flex-start",
 borderLeft:"1px solid var(--border)",
 position:"sticky",
 top:20,
-height:"100vh"
+height:"100vh",
+paddingTop:20
 }}>
 
-<div style={{
-width:280,
-height:520,
-background:"#000",
-borderRadius:30,
-padding:18
-}}>
+<PhonePreview />
 
-<div
-key={JSON.stringify(buttons)}
-style={{
-width:"100%",
-height:"100%",
-borderRadius:20,
-color:"#fff",
-position:"relative",
-overflow:"hidden"
-}}
->
+</div>
 
-{/* BACKGROUND */}
-<div
-style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-background: wallpaper ? wallpaper : themeMap[theme],
-backgroundSize:"cover",
-backgroundPosition:"center",
-zIndex:0
-}}
-/>
-
-{/* BLUR */}
-{wallpaper && wallpaperBlur > 0 && (
-<div
-style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-backdropFilter:`blur(${wallpaperBlur}px)`,
-WebkitBackdropFilter:`blur(${wallpaperBlur}px)`,
-pointerEvents:"none",
-zIndex:1
-}}
-/>
 )}
 
 {/* OVERLAY */}
