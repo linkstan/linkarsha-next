@@ -487,3 +487,40 @@ Audience tools
 Automation  
 
 Beyond a traditional **link-in-bio tool**.
+
+
+
+THEMES
+1. Theme System Rules
+Example:
+# Theme Engine Rules
+
+- themes.js is source of truth
+- no hardcoded theme styles
+- all customize panels use feature flags
+- theme layout separated from styling
+
+2. Current Architecture
+Dashboard Layout
+Theme Renderer
+PhonePreview
+Theme Config System
+
+3. Future Todo
+- Dynamic appearance panel
+- Wallpaper engine
+- Button animation system
+- Theme marketplace
+
+4. Current Active Theme Improvements
+Example:
+
+CURRENT THEME:
+Minimal
+
+TODO:
+- improve spacing
+- better typography
+- cleaner button hover
+
+
