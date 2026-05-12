@@ -1,19 +1,23 @@
 "use client";
 
-import { themes } from "../app/lib/themes";
+export default function ButtonBlock({
+block,
+theme,
+appearance
+}){
 
-export default function ButtonBlock({ block, buttons, themeBackground, themeName="minimal" }) {
+const buttons =
+theme?.buttons || {};
 
-const theme = themes[themeName] || themes.minimal;
-
-/* appearance settings override theme buttons */
-buttons = buttons || theme.buttons || {};
-
-const isCTA = block?.data_json?.type === "cta";
+const isCTA =
+block?.data_json?.type === "cta";
 
 function formatTitle(title){
+
 if(!title) return "Link";
+
 return title;
+
 }
 
 return(
@@ -24,107 +28,191 @@ target="_blank"
 rel="noopener noreferrer"
 
 onMouseEnter={(e)=>{
+
 if(buttons?.hoverEffect){
-e.currentTarget.style.transform = "translateY(-4px)";
+
+e.currentTarget.style.transform =
+"translateY(-4px)";
+
 }
+
 }}
 
 onMouseLeave={(e)=>{
-e.currentTarget.style.transform = "translateY(0)";
+
+e.currentTarget.style.transform =
+"translateY(0)";
+
 }}
 
 onMouseDown={(e)=>{
+
 if(buttons?.pressEffect){
+
 e.currentTarget.style.transform =
 buttons?.depthEffect
 ? "translateY(3px) scale(0.97)"
-: "scale(0.95)";
+: "scale(0.96)";
+
 }
+
 }}
 
 onMouseUp={(e)=>{
+
 if(buttons?.pressEffect){
-e.currentTarget.style.transform = "translateY(0) scale(1)";
+
+e.currentTarget.style.transform =
+"translateY(0) scale(1)";
+
 }
+
 }}
 
 onTouchStart={(e)=>{
+
 if(buttons?.pressEffect){
+
 e.currentTarget.style.transform =
 buttons?.depthEffect
 ? "translateY(3px) scale(0.97)"
-: "scale(0.95)";
+: "scale(0.96)";
+
 }
+
 }}
 
 onTouchEnd={(e)=>{
+
 if(buttons?.pressEffect){
-e.currentTarget.style.transform = "translateY(0) scale(1)";
+
+e.currentTarget.style.transform =
+"translateY(0) scale(1)";
+
 }
+
 }}
 
 style={{
+
 display:"block",
-padding:isCTA ? 28 : (buttons?.padding || 16),
-marginTop:buttons?.spacing || 10,
+
+padding:
+isCTA
+? 28
+: buttons?.padding || 16,
+
+marginTop:
+buttons?.spacing || 12,
+
 textDecoration:"none",
+
 transform:"translateY(0)",
 
+transition:
+"transform .15s ease, box-shadow .2s ease",
+
+/* ================================================= */
+/* BACKGROUND */
+/* ================================================= */
+
 background:
+
 isCTA
 ? "#e3a9a9"
-: block?.data_json?.title?.toLowerCase()?.includes("premium")
-? "linear-gradient(135deg,#ff9966,#ff5e62)"
-: block?.data_json?.title?.toLowerCase()?.includes("vip")
-? "linear-gradient(135deg,#f953c6,#b91d73)"
-: buttons?.style==="outline"
+
+: buttons?.style === "outline"
 ? "transparent"
-: buttons?.style==="glass"
+
+: buttons?.style === "glass"
 ? "rgba(255,255,255,0.12)"
-: buttons?.colorMode==="theme"
-? (themeBackground || theme?.background || "rgba(0,0,0,.35)")
-: buttons?.bg || "#000",
+
+: buttons?.bg || "#000000",
+
+/* ================================================= */
+/* BORDER */
+/* ================================================= */
 
 border:
-buttons?.style==="outline"
-? "1px solid rgba(255,255,255,.6)"
-: buttons?.style==="glass"
-? "1px solid rgba(255,255,255,.25)"
+
+buttons?.style === "outline"
+? "1px solid rgba(255,255,255,.5)"
+
+: buttons?.style === "glass"
+? "1px solid rgba(255,255,255,.18)"
+
 : "none",
 
+/* ================================================= */
+/* GLASS */
+/* ================================================= */
+
 backdropFilter:
-buttons?.style==="glass"
+
+buttons?.style === "glass"
 ? "blur(12px)"
 : "none",
 
-/* PERFECT theme radius control */
+WebkitBackdropFilter:
 
-borderRadius: buttons?.radius ?? 12,
-
-color:
-buttons?.textMode==="theme"
-? "#ffffff"
-: buttons?.text || "#ffffff",
-
-boxShadow:
-isCTA
-? "0 10px 30px rgba(0,0,0,0.25)"
-: buttons?.shadowLift
-? "0 10px 25px rgba(0,0,0,0.25)"
-: buttons?.depthEffect
-? "0 6px 0 rgba(0,0,0,0.35)"
+buttons?.style === "glass"
+? "blur(12px)"
 : "none",
 
-transition:"transform .15s ease, box-shadow .2s ease",
-fontFamily:theme?.fonts?.buttons || "Inter",
-fontWeight:buttons?.fontWeight || 600
+/* ================================================= */
+/* RADIUS */
+/* ================================================= */
+
+borderRadius:
+buttons?.radius ?? 12,
+
+/* ================================================= */
+/* TEXT */
+/* ================================================= */
+
+color:
+buttons?.text || "#ffffff",
+
+fontFamily:
+theme?.fonts?.buttons || "Inter",
+
+fontWeight:
+buttons?.fontWeight || 600,
+
+/* ================================================= */
+/* SHADOWS */
+/* ================================================= */
+
+boxShadow:
+
+isCTA
+? "0 10px 30px rgba(0,0,0,.22)"
+
+: buttons?.shadowLift
+? "0 10px 25px rgba(0,0,0,.20)"
+
+: buttons?.depthEffect
+? "0 6px 0 rgba(0,0,0,.28)"
+
+: "none"
+
 }}
 >
 
-<div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+<div
+style={{
+display:"flex",
+flexDirection:"column",
+alignItems:"center"
+}}
+>
 
 <div>
-{formatTitle(block?.data_json?.title || "Link")}
+
+{formatTitle(
+block?.data_json?.title || "Link"
+)}
+
 </div>
 
 {block?.data_json?.subtitle && (
@@ -132,11 +220,13 @@ fontWeight:buttons?.fontWeight || 600
 <div
 style={{
 fontSize:12,
-opacity:.8,
-marginTop:3
+opacity:.82,
+marginTop:4
 }}
 >
+
 {block.data_json.subtitle}
+
 </div>
 
 )}
@@ -145,6 +235,6 @@ marginTop:3
 
 </a>
 
-)
+);
 
 }
