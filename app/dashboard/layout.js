@@ -457,6 +457,18 @@ paddingTop:20
 </div>
 
 )}
+{isMobile && (
+<>
+<MobileBottomNav setOpenMore={setOpenMore}/>
+
+<MobileDrawer
+openMore={openMore}
+setOpenMore={setOpenMore}
+profile={profile}
+logout={logout}
+/>
+</>
+)}
 
 {/* OVERLAY */}
 {wallpaper && wallpaperOverlay > 0 && (
