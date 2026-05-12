@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import ButtonBlock from "../../components/ButtonBlock";
 import PhonePreview from "../../components/PhonePreview";
 import Link from "next/link";
 import MobileBottomNav from "../../components/MobileBottomNav";
@@ -471,155 +470,6 @@ logout={logout}
 </>
 )}
 
-{/* OVERLAY */}
-{wallpaper && wallpaperOverlay > 0 && (
-<div
-style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-background:`rgba(0,0,0,${wallpaperOverlay})`,
-pointerEvents:"none",
-zIndex:1
-}}
-/>
-)}
-
-{/* SCROLLABLE CONTENT */}
-<div style={{
-position:"relative",
-zIndex:2,
-height:"100%",
-overflowY:"auto"
-}}>
-
-{header.layout==="hero" ? (
-
-<div style={{
-height:200,
-position:"relative",
-overflow:"hidden"
-}}>
-
-<div style={{
-position:"absolute",
-top:0,
-left:0,
-right:0,
-bottom:0,
-backgroundImage:`url(${profile?.avatar})`,
-backgroundSize:"cover",
-backgroundPosition:"center"
-}}/>
-
-<div style={{
-position:"absolute",
-left:0,
-right:0,
-bottom:0,
-height:120,
-background:"linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
-}}/>
-
-</div>
-
-) : (
-
-<div style={{
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-marginTop:20
-}}>
-
-<div style={{
-width:70,
-height:70,
-borderRadius:"50%",
-overflow:"hidden"
-}}>
-<img
-src={profile?.avatar}
-style={{width:"100%",height:"100%",objectFit:"cover"}}
-/>
-</div>
-
-</div>
-
-)}
-
-<div style={{
-textAlign:"center",
-marginTop:10,
-position:"relative"
-}}>
-
-{header.showDisplayName !== false && (
-<div style={{
-fontFamily: header.displayFont || "Poppins",
-fontSize: header.displaySize || 22
-}}>
-{profile?.display_name}
-</div>
-)}
-
-{header.showUsername !== false && (
-<div style={{
-fontFamily: header.usernameFont || "Roboto",
-fontSize: header.usernameSize || 14
-}}>
-@{profile?.username}
-</div>
-)}
-
-{header.showBio !== false && (
-<div style={{
-fontFamily: header.bioFont || "Lora",
-fontSize: header.bioSize || 15
-}}>
-{profile?.bio}
-</div>
-)}
-
-</div>
-
-<div style={{padding:20}}>
-
-{blocks.map((block)=>(
-<ButtonBlock
-key={block.id}
-block={block}
-buttons={buttons}
-/>
-))}
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-)}
-
-{isMobile && (
-<>
-<MobileBottomNav setOpenMore={setOpenMore}/>
-
-<MobileDrawer
-openMore={openMore}
-setOpenMore={setOpenMore}
-profile={profile}
-logout={logout}
-/>
-</>
-)}
-
 </div>
 
 </div>
@@ -627,7 +477,6 @@ logout={logout}
 );
 
 }
-
 const item={
 padding:"10px 12px",
 cursor:"pointer",
