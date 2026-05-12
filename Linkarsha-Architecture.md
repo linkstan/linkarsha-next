@@ -524,3 +524,23 @@ TODO:
 - cleaner button hover
 
 
+
+
+FIRST
+
+Dynamic Customize Theme panel
+
+SECOND
+
+Make PhonePreview fully config-driven
+
+THIRD
+
+Improve Minimal theme completely
+
+THEN:
+
+* Samira
+* Blueprint
+* Ripple
+* etc
