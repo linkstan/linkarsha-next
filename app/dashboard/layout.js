@@ -457,6 +457,7 @@ paddingTop:20
 </div>
 
 )}
+
 {isMobile && (
 <>
 <MobileBottomNav setOpenMore={setOpenMore}/>
