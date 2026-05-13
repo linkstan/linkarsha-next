@@ -126,27 +126,6 @@ buttonWeight:600,
 buttonShadow:false
 
 }),
-name:"Minimal",
-
-hero:false,
-avatarOverlap:false,
-
-background:"#ffffff",
-
-nameFont:"Inter",
-bioFont:"Inter",
-buttonFont:"Inter",
-
-avatarSize:90,
-avatarBorder:"none",
-
-buttonRadius:4,
-buttonColor:"#111111",
-buttonText:"#ffffff",
-buttonSpacing:12
-
-}),
-
 
 /* ---------- SAMIRA COACH ---------- */
 
