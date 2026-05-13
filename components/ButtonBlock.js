@@ -82,23 +82,6 @@ function getFontSize(){
 switch(buttons?.size){
 
 case "small":
-return 13;
-
-case "large":
-return 24;
-
-default:
-return 17;
-
-}
-
-}
-
-function getFontSize(){
-
-switch(buttons?.size){
-
-case "small":
 return 14;
 
 case "large":
