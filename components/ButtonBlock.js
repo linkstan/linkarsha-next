@@ -65,13 +65,13 @@ function getPadding(){
 switch(buttons?.size){
 
 case "small":
-return "14px 18px";
+return "12px 16px";
 
 case "large":
-return "22px 28px";
+return "26px 32px";
 
 default:
-return "18px 22px";
+return "18px 24px";
 
 }
 
@@ -82,10 +82,10 @@ function getFontSize(){
 switch(buttons?.size){
 
 case "small":
-return 15;
+return 14;
 
 case "large":
-return 19;
+return 21;
 
 default:
 return 17;
@@ -133,7 +133,7 @@ return "transparent";
 }
 
 if(buttons?.style === "glass"){
-return "rgba(255,255,255,.14)";
+return "rgba(255,255,255,.38)";
 }
 
 return buttons?.bg || "#000000";
@@ -155,7 +155,7 @@ return "1.5px solid rgba(0,0,0,.18)";
 
 if(buttons?.style === "glass"){
 
-return "1px solid rgba(255,255,255,.28)";
+return "1px solid rgba(255,255,255,.7)";
 
 }
 
@@ -267,12 +267,12 @@ border:getBorder(),
 
 backdropFilter:
 buttons?.style === "glass"
-? "blur(16px)"
+? "blur(24px)"
 : "none",
 
 WebkitBackdropFilter:
 buttons?.style === "glass"
-? "blur(16px)"
+? "blur(24px)"
 : "none",
 
 borderRadius:getRadius(),
