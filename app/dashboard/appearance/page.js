@@ -313,7 +313,7 @@ Buttons
 
 </Link>
 
-{/* TEXT */}
+{/* TYPOGRAPHY */}
 
 <Link
 href="/dashboard/appearance/text?v=3"
