@@ -315,10 +315,15 @@ Buttons
 
 {/* TEXT */}
 
-<div
-style={card}
-onClick={()=>setEditor("text")}
+<Link
+href="/dashboard/appearance/text?v=3"
+style={{
+textDecoration:"none",
+color:"var(--text)"
+}}
 >
+
+<div style={card}>
 
 <div
 style={{
@@ -333,7 +338,7 @@ Aa
 </div>
 
 <div>
-Text
+Typography
 </div>
 
 </div>
@@ -343,6 +348,8 @@ Text
 </div>
 
 </div>
+
+</Link>
 
 {/* WALLPAPER */}
 
