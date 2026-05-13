@@ -65,13 +65,30 @@ function getPadding(){
 switch(buttons?.size){
 
 case "small":
-return "12px 16px";
+return "10px 14px";
 
 case "large":
-return "26px 32px";
+return "30px 36px";
 
 default:
 return "18px 24px";
+
+}
+
+}
+
+function getFontSize(){
+
+switch(buttons?.size){
+
+case "small":
+return 13;
+
+case "large":
+return 24;
+
+default:
+return 17;
 
 }
 
