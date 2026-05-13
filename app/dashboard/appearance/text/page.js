@@ -1,66 +1,241 @@
 "use client";
 
-import { useState } from "react";
+import {
+useState,
+useEffect
+} from "react";
+
+import { supabase }
+from "../../../lib/supabase";
+
+import { useRouter }
+from "next/navigation";
 
 export default function TextAppearancePage(){
 
-const [font,setFont] =
-useState("Inter");
+const router = useRouter();
 
-const [align,setAlign] =
-useState("center");
+const [settings,setSettings] = useState({
 
-const [nameSize,setNameSize] =
-useState(56);
+fontFamily:"Inter",
+
+align:"center",
+
+nameSize:56
+
+});
+
+
+/* ================================================= */
+/* LOAD */
+/* ================================================= */
+
+useEffect(()=>{
+loadSettings();
+},[]);
+
+async function loadSettings(){
+
+const {data:{session}} =
+await supabase.auth.getSession();
+
+if(!session) return;
+
+const {data} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+if(data?.profile_settings?.text){
+
+setSettings(prev=>({
+
+...prev,
+...data.profile_settings.text
+
+}));
+
+}
+
+}
+
+
+/* ================================================= */
+/* UPDATE */
+/* ================================================= */
+
+async function updateSetting(key,value){
+
+const newSettings = {
+
+...settings,
+[key]:value
+
+};
+
+setSettings(newSettings);
+
+
+/* LIVE PREVIEW */
+
+window.dispatchEvent(
+
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+text:newSettings
+}
+}
+)
+
+);
+
+
+/* SAVE */
+
+const {data:{session}} =
+await supabase.auth.getSession();
+
+if(!session) return;
+
+const {data:profile} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const allSettings =
+profile?.profile_settings || {};
+
+allSettings.text = newSettings;
+
+await supabase
+.from("profiles")
+.update({
+profile_settings:allSettings
+})
+.eq("id",session.user.id);
+
+}
+
+
+/* ================================================= */
+/* UI */
+/* ================================================= */
+
+const section = {
+
+background:"var(--card)",
+
+border:"1px solid var(--border)",
+
+borderRadius:18,
+
+padding:24,
+
+marginBottom:22
+
+};
+
+const option = (active)=>({
+
+padding:"10px 16px",
+
+borderRadius:999,
+
+border:"1px solid var(--border)",
+
+background:
+active
+? "var(--text)"
+: "var(--card)",
+
+color:
+active
+? "#ffffff"
+: "var(--text)",
+
+cursor:"pointer",
+
+marginRight:10,
+marginBottom:10,
+
+fontSize:15,
+fontWeight:500
+
+});
 
 
 return(
 
 <div
 style={{
-padding:40
+maxWidth:700,
+padding:20
 }}
 >
 
+{/* HEADER */}
+
+<div
+style={{
+display:"flex",
+alignItems:"center",
+gap:14,
+marginBottom:28
+}}
+>
+
+<div
+
+onClick={()=>router.back()}
+
+style={{
+
+width:42,
+height:42,
+
+borderRadius:"50%",
+
+border:"1px solid var(--border)",
+
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+
+cursor:"pointer",
+
+fontSize:18
+
+}}
+>
+
+←
+
+</div>
+
 <h1
 style={{
-fontSize:48,
-fontWeight:800,
-marginBottom:30
+margin:0,
+fontSize:44,
+lineHeight:1
 }}
 >
 Typography
 </h1>
 
+</div>
 
-{/* FONT FAMILY */}
 
-<div
-style={{
-background:"#fff",
-padding:24,
-borderRadius:24,
-border:"1px solid #ececec",
-marginBottom:24
-}}
->
+{/* ================================================= */}
+{/* FONT */}
+{/* ================================================= */}
 
-<h2
-style={{
-fontSize:28,
-marginBottom:20
-}}
->
-Font Family
-</h2>
+<div style={section}>
 
-<div
-style={{
-display:"flex",
-gap:12,
-flexWrap:"wrap"
-}}
->
+<h3>Font Family</h3>
 
 {[
 "Inter",
@@ -74,55 +249,18 @@ flexWrap:"wrap"
 <button
 key={item}
 
-onClick={()=>{
-
-setFont(item);
-
-window.dispatchEvent(
-new CustomEvent(
-"appearance-update",
-{
-detail:{
-text:{
-fontFamily:item,
-align,
-nameSize
-}
-}
-}
+style={
+option(
+settings.fontFamily === item
 )
-);
+}
 
-}}
-
-style={{
-
-padding:"12px 18px",
-
-borderRadius:999,
-
-border:
-font === item
-? "none"
-: "1px solid #ddd",
-
-background:
-font === item
-? "#000"
-: "#fff",
-
-color:
-font === item
-? "#fff"
-: "#111",
-
-cursor:"pointer",
-
-fontFamily:item,
-
-fontSize:15
-
-}}
+onClick={()=>
+updateSetting(
+"fontFamily",
+item
+)
+}
 >
 
 {item}
@@ -133,37 +271,14 @@ fontSize:15
 
 </div>
 
-</div>
 
-
-
+{/* ================================================= */}
 {/* ALIGNMENT */}
+{/* ================================================= */}
 
-<div
-style={{
-background:"#fff",
-padding:24,
-borderRadius:24,
-border:"1px solid #ececec",
-marginBottom:24
-}}
->
+<div style={section}>
 
-<h2
-style={{
-fontSize:28,
-marginBottom:20
-}}
->
-Alignment
-</h2>
-
-<div
-style={{
-display:"flex",
-gap:12
-}}
->
+<h3>Alignment</h3>
 
 {[
 "left",
@@ -174,53 +289,18 @@ gap:12
 <button
 key={item}
 
-onClick={()=>{
-
-setAlign(item);
-
-window.dispatchEvent(
-new CustomEvent(
-"appearance-update",
-{
-detail:{
-text:{
-fontFamily:font,
-align:item,
-nameSize
-}
-}
-}
+style={
+option(
+settings.align === item
 )
-);
+}
 
-}}
-
-style={{
-
-padding:"12px 18px",
-
-borderRadius:999,
-
-border:
-align === item
-? "none"
-: "1px solid #ddd",
-
-background:
-align === item
-? "#000"
-: "#fff",
-
-color:
-align === item
-? "#fff"
-: "#111",
-
-cursor:"pointer",
-
-textTransform:"capitalize"
-
-}}
+onClick={()=>
+updateSetting(
+"align",
+item
+)
+}
 >
 
 {item}
@@ -231,61 +311,29 @@ textTransform:"capitalize"
 
 </div>
 
-</div>
 
-
-
+{/* ================================================= */}
 {/* NAME SIZE */}
+{/* ================================================= */}
 
-<div
-style={{
-background:"#fff",
-padding:24,
-borderRadius:24,
-border:"1px solid #ececec",
-marginBottom:24
-}}
->
+<div style={section}>
 
-<h2
-style={{
-fontSize:28,
-marginBottom:20
-}}
->
-Name Size
-</h2>
+<h3>Name Size</h3>
 
 <input
 type="range"
+
 min="32"
 max="90"
 
-value={nameSize}
+value={settings.nameSize}
 
-onChange={(e)=>{
-
-const value =
-Number(e.target.value);
-
-setNameSize(value);
-
-window.dispatchEvent(
-new CustomEvent(
-"appearance-update",
-{
-detail:{
-text:{
-fontFamily:font,
-align,
-nameSize:value
-}
-}
-}
+onChange={(e)=>
+updateSetting(
+"nameSize",
+Number(e.target.value)
 )
-);
-
-}}
+}
 
 style={{
 width:"100%"
@@ -294,86 +342,11 @@ width:"100%"
 
 <div
 style={{
-marginTop:14,
-fontSize:15,
+marginTop:12,
 opacity:.7
 }}
 >
-{nameSize}px
-</div>
-
-</div>
-
-
-
-{/* PREVIEW */}
-
-<div
-style={{
-background:"#fff",
-padding:40,
-borderRadius:32,
-border:"1px solid #ececec",
-marginTop:40
-}}
->
-
-<div
-style={{
-textAlign:align
-}}
->
-
-<img
-src="https://i.pravatar.cc/160"
-alt="profile"
-
-style={{
-width:110,
-height:110,
-borderRadius:"50%",
-objectFit:"cover",
-marginBottom:24
-}}
-/>
-
-<h1
-style={{
-
-fontFamily:font,
-
-fontSize:Number(nameSize),
-
-lineHeight:1,
-
-marginBottom:16,
-
-fontWeight:800
-
-}}
->
-Ghamandi
-</h1>
-
-<div
-style={{
-fontSize:22,
-opacity:.6,
-marginBottom:20
-}}
->
-@ghamandi
-</div>
-
-<p
-style={{
-fontSize:18,
-opacity:.75
-}}
->
-Restaurant and Cafe focused creator
-</p>
-
+{settings.nameSize}px
 </div>
 
 </div>
