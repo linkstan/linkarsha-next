@@ -75,7 +75,24 @@ flexWrap:"wrap"
 key={item}
 
 onClick={()=>{
+
 setFont(item);
+
+window.dispatchEvent(
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+text:{
+fontFamily:item,
+align,
+nameSize
+}
+}
+}
+)
+);
+
 }}
 
 style={{
@@ -158,7 +175,24 @@ gap:12
 key={item}
 
 onClick={()=>{
+
 setAlign(item);
+
+window.dispatchEvent(
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+text:{
+fontFamily:font,
+align:item,
+nameSize
+}
+}
+}
+)
+);
+
 }}
 
 style={{
@@ -230,7 +264,27 @@ max="90"
 value={nameSize}
 
 onChange={(e)=>{
-setNameSize(e.target.value);
+
+const value =
+Number(e.target.value);
+
+setNameSize(value);
+
+window.dispatchEvent(
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+text:{
+fontFamily:font,
+align,
+nameSize:value
+}
+}
+}
+)
+);
+
 }}
 
 style={{
