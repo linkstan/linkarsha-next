@@ -7,10 +7,17 @@ appearance
 }){
 
 const buttons =
-theme?.buttons || {};
+appearance?.buttons ||
+theme?.buttons ||
+{};
 
 const isCTA =
 block?.data_json?.type === "cta";
+
+
+/* ================================================= */
+/* TITLE */
+/* ================================================= */
 
 function formatTitle(title){
 
@@ -19,6 +26,160 @@ if(!title) return "Link";
 return title;
 
 }
+
+
+/* ================================================= */
+/* RADIUS SYSTEM */
+/* ================================================= */
+
+function getRadius(){
+
+switch(buttons?.radius){
+
+case "square":
+return 0;
+
+case "round":
+return 16;
+
+case "rounder":
+return 24;
+
+case "full":
+return 999;
+
+default:
+return 16;
+
+}
+
+}
+
+
+/* ================================================= */
+/* SIZE SYSTEM */
+/* ================================================= */
+
+function getPadding(){
+
+switch(buttons?.size){
+
+case "small":
+return "14px 18px";
+
+case "large":
+return "22px 28px";
+
+default:
+return "18px 22px";
+
+}
+
+}
+
+function getFontSize(){
+
+switch(buttons?.size){
+
+case "small":
+return 15;
+
+case "large":
+return 19;
+
+default:
+return 17;
+
+}
+
+}
+
+
+/* ================================================= */
+/* SHADOW SYSTEM */
+/* ================================================= */
+
+function getShadow(){
+
+if(buttons?.shadowLift){
+
+return "0 10px 30px rgba(0,0,0,.14)";
+
+}
+
+if(buttons?.depthEffect){
+
+return "0 6px 0 rgba(0,0,0,.22)";
+
+}
+
+return "none";
+
+}
+
+
+/* ================================================= */
+/* BACKGROUND */
+/* ================================================= */
+
+function getBackground(){
+
+if(isCTA){
+return "#e3a9a9";
+}
+
+if(buttons?.style === "outline"){
+return "transparent";
+}
+
+if(buttons?.style === "glass"){
+return "rgba(255,255,255,.14)";
+}
+
+return buttons?.bg || "#000000";
+
+}
+
+
+/* ================================================= */
+/* BORDER */
+/* ================================================= */
+
+function getBorder(){
+
+if(buttons?.style === "outline"){
+
+return "1.5px solid rgba(0,0,0,.18)";
+
+}
+
+if(buttons?.style === "glass"){
+
+return "1px solid rgba(255,255,255,.28)";
+
+}
+
+return "none";
+
+}
+
+
+/* ================================================= */
+/* TEXT COLOR */
+/* ================================================= */
+
+function getTextColor(){
+
+if(buttons?.style === "outline"){
+
+return "#111111";
+
+}
+
+return buttons?.text || "#ffffff";
+
+}
+
 
 return(
 
@@ -32,7 +193,7 @@ onMouseEnter={(e)=>{
 if(buttons?.hoverEffect){
 
 e.currentTarget.style.transform =
-"translateY(-4px)";
+"translateY(-3px)";
 
 }
 
@@ -51,8 +212,8 @@ if(buttons?.pressEffect){
 
 e.currentTarget.style.transform =
 buttons?.depthEffect
-? "translateY(3px) scale(0.97)"
-: "scale(0.96)";
+? "translateY(3px) scale(.985)"
+: "scale(.98)";
 
 }
 
@@ -60,12 +221,8 @@ buttons?.depthEffect
 
 onMouseUp={(e)=>{
 
-if(buttons?.pressEffect){
-
 e.currentTarget.style.transform =
 "translateY(0) scale(1)";
-
-}
 
 }}
 
@@ -75,8 +232,8 @@ if(buttons?.pressEffect){
 
 e.currentTarget.style.transform =
 buttons?.depthEffect
-? "translateY(3px) scale(0.97)"
-: "scale(0.96)";
+? "translateY(3px) scale(.985)"
+: "scale(.98)";
 
 }
 
@@ -84,12 +241,8 @@ buttons?.depthEffect
 
 onTouchEnd={(e)=>{
 
-if(buttons?.pressEffect){
-
 e.currentTarget.style.transform =
 "translateY(0) scale(1)";
-
-}
 
 }}
 
@@ -97,113 +250,59 @@ style={{
 
 display:"block",
 
-padding:
-isCTA
-? 28
-: buttons?.padding || 16,
+padding:getPadding(),
 
-marginTop:
-buttons?.spacing || 12,
+marginTop:14,
 
 textDecoration:"none",
 
+transition:
+"all .18s ease",
+
 transform:"translateY(0)",
 
-transition:
-"transform .15s ease, box-shadow .2s ease",
+background:getBackground(),
 
-/* ================================================= */
-/* BACKGROUND */
-/* ================================================= */
-
-background:
-
-isCTA
-? "#e3a9a9"
-
-: buttons?.style === "outline"
-? "transparent"
-
-: buttons?.style === "glass"
-? "rgba(255,255,255,0.12)"
-
-: buttons?.bg || "#000000",
-
-/* ================================================= */
-/* BORDER */
-/* ================================================= */
-
-border:
-
-buttons?.style === "outline"
-? "1px solid rgba(255,255,255,.5)"
-
-: buttons?.style === "glass"
-? "1px solid rgba(255,255,255,.18)"
-
-: "none",
-
-/* ================================================= */
-/* GLASS */
-/* ================================================= */
+border:getBorder(),
 
 backdropFilter:
-
 buttons?.style === "glass"
-? "blur(12px)"
+? "blur(16px)"
 : "none",
 
 WebkitBackdropFilter:
-
 buttons?.style === "glass"
-? "blur(12px)"
+? "blur(16px)"
 : "none",
 
-/* ================================================= */
-/* RADIUS */
-/* ================================================= */
+borderRadius:getRadius(),
 
-borderRadius:
-buttons?.radius ?? 12,
-
-/* ================================================= */
-/* TEXT */
-/* ================================================= */
-
-color:
-buttons?.text || "#ffffff",
+color:getTextColor(),
 
 fontFamily:
 theme?.fonts?.buttons || "Inter",
 
-fontWeight:
-buttons?.fontWeight || 600,
+fontWeight:700,
 
-/* ================================================= */
-/* SHADOWS */
-/* ================================================= */
+fontSize:getFontSize(),
 
-boxShadow:
+letterSpacing:"-.02em",
 
-isCTA
-? "0 10px 30px rgba(0,0,0,.22)"
+boxShadow:getShadow(),
 
-: buttons?.shadowLift
-? "0 10px 25px rgba(0,0,0,.20)"
-
-: buttons?.depthEffect
-? "0 6px 0 rgba(0,0,0,.28)"
-
-: "none"
+overflow:"hidden"
 
 }}
 >
 
 <div
 style={{
+
 display:"flex",
 flexDirection:"column",
-alignItems:"center"
+alignItems:"center",
+justifyContent:"center"
+
 }}
 >
 
@@ -219,9 +318,12 @@ block?.data_json?.title || "Link"
 
 <div
 style={{
+
 fontSize:12,
-opacity:.82,
-marginTop:4
+opacity:.72,
+marginTop:4,
+fontWeight:500
+
 }}
 >
 
