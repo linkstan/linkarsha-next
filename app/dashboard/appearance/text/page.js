@@ -170,6 +170,27 @@ fontWeight:500
 
 return(
 
+<div>
+
+<div
+style={{
+background:"red",
+color:"#fff",
+padding:20,
+fontSize:30,
+fontWeight:800
+}}
+>
+NEW TEXT PAGE
+</div>
+
+<div
+style={{
+maxWidth:700,
+padding:20
+}}
+>
+
 <div
 style={{
 maxWidth:700,
