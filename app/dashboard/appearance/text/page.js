@@ -18,9 +18,7 @@ const router = useRouter();
 const [settings,setSettings] = useState({
 
 fontFamily:"Inter",
-
 align:"center",
-
 nameSize:56
 
 });
@@ -168,9 +166,15 @@ fontWeight:500
 });
 
 
+/* ================================================= */
+/* RENDER */
+/* ================================================= */
+
 return(
 
 <div>
+
+{/* DEBUG TEST */}
 
 <div
 style={{
@@ -184,12 +188,8 @@ fontWeight:800
 NEW TEXT PAGE
 </div>
 
-<div
-style={{
-maxWidth:700,
-padding:20
-}}
->
+
+{/* MAIN */}
 
 <div
 style={{
@@ -368,6 +368,8 @@ opacity:.7
 }}
 >
 {settings.nameSize}px
+</div>
+
 </div>
 
 </div>
