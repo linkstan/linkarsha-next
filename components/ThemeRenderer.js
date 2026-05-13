@@ -195,7 +195,16 @@ const socialLinks = {
 ...(live?.social_links || {})
 
 };
+/* ================================================= */
+/* TEXT SETTINGS */
+/* ================================================= */
 
+const text = {
+
+...(appearance?.text || {}),
+...(live?.text || {})
+
+};
 
 /* ================================================= */
 /* CUSTOM THEMES */
@@ -414,9 +423,12 @@ finalTheme?.avatar?.shadow
 style={{
 
 fontFamily:
-finalTheme?.fonts?.name || "Inter",
+text?.fontFamily ||
+finalTheme?.fonts?.name ||
+"Inter",
 
-fontSize:56,
+fontSize:
+text?.nameSize || 56,
 
 lineHeight:1,
 
@@ -426,7 +438,8 @@ fontWeight:700,
 
 margin:0,
 
-textAlign:"center"
+textAlign:
+text?.align || "center"
 
 }}
 >
@@ -450,7 +463,16 @@ fontSize:18,
 
 marginTop:14,
 
-letterSpacing:"-0.01em"
+letterSpacing:"-0.01em",
+
+textAlign:
+text?.align || "center",
+
+width:"100%",
+
+fontFamily:
+text?.fontFamily ||
+"Inter"
 
 }}
 >
@@ -469,7 +491,9 @@ letterSpacing:"-0.01em"
 style={{
 
 fontFamily:
-finalTheme?.fonts?.bio || "Inter",
+text?.fontFamily ||
+finalTheme?.fonts?.bio ||
+"Inter",
 
 fontSize:20,
 
@@ -477,7 +501,8 @@ lineHeight:1.5,
 
 opacity:.88,
 
-textAlign:"center",
+textAlign:
+text?.align || "center",
 
 marginTop:34,
 
@@ -502,7 +527,8 @@ style={{
 
 maxWidth:340,
 
-textAlign:"center",
+textAlign:
+text?.align || "center",
 
 opacity:.72,
 
@@ -512,7 +538,12 @@ fontSize:15,
 
 marginTop:18,
 
-marginBottom:0
+marginBottom:0,
+
+fontFamily:
+text?.fontFamily ||
+finalTheme?.fonts?.bio ||
+"Inter"
 
 }}
 >
