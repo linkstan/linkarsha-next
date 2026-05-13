@@ -341,16 +341,17 @@ theme={finalTheme}
 <div
 style={{
 
-width:360,
-maxWidth:"100%",
+width:"100%",
+maxWidth:420,
+
+paddingLeft:24,
+paddingRight:24,
 
 margin:"0 auto",
 
 display:"flex",
 flexDirection:"column",
-alignItems:"center",
-
-gap:6
+alignItems:"center"
 
 }}
 >
@@ -379,7 +380,7 @@ marginTop:
 
 finalTheme?.layout?.avatarOverlap
 ? -20
-: 10,
+: 42,
 
 transform:
 
@@ -391,7 +392,7 @@ finalTheme?.layout?.avatarOverlap
 
 : "none",
 
-marginBottom:4,
+marginBottom:22,
 
 position:"relative",
 zIndex:10,
@@ -415,7 +416,13 @@ style={{
 fontFamily:
 finalTheme?.fonts?.name || "Inter",
 
-fontSize:34,
+fontSize:56,
+
+lineHeight:1,
+
+letterSpacing:"-0.04em",
+
+fontWeight:700,
 
 margin:0,
 
@@ -430,6 +437,30 @@ textAlign:"center"
 
 )}
 
+{/* USERNAME */}
+
+{header.showUsername !== false && (
+
+<div
+style={{
+
+opacity:.55,
+
+fontSize:18,
+
+marginTop:14,
+
+letterSpacing:"-0.01em"
+
+}}
+>
+
+@{profile.username}
+
+</div>
+
+)}
+
 {/* SUBTITLE */}
 
 {header.subtitle && (
@@ -440,28 +471,22 @@ style={{
 fontFamily:
 finalTheme?.fonts?.bio || "Inter",
 
-fontSize:26,
+fontSize:20,
 
-opacity:.9,
+lineHeight:1.5,
 
-textAlign:"center"
+opacity:.88,
+
+textAlign:"center",
+
+marginTop:34,
+
+maxWidth:340
 
 }}
 >
 
 {header.subtitle}
-
-</div>
-
-)}
-
-{/* USERNAME */}
-
-{header.showUsername !== false && (
-
-<div style={{opacity:.7}}>
-
-@{profile.username}
 
 </div>
 
@@ -475,11 +500,19 @@ profile.bio && (
 <p
 style={{
 
-maxWidth:320,
+maxWidth:340,
 
 textAlign:"center",
 
-opacity:.85
+opacity:.72,
+
+lineHeight:1.7,
+
+fontSize:15,
+
+marginTop:18,
+
+marginBottom:0
 
 }}
 >
@@ -495,8 +528,11 @@ opacity:.85
 <div
 style={{
 
-width:320,
-marginTop:36
+width:"100%",
+
+marginTop:54,
+
+paddingBottom:80
 
 }}
 >
