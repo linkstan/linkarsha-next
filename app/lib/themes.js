@@ -84,6 +84,50 @@ minimal: createTheme({
 
 name:"Minimal",
 
+/* LAYOUT */
+
+hero:false,
+avatarOverlap:false,
+
+/* FEATURES */
+
+socialIcons:true,
+subtitle:true,
+
+/* BACKGROUND */
+
+background:"#ffffff",
+
+/* FONTS */
+
+nameFont:"Inter",
+bioFont:"Inter",
+buttonFont:"Inter",
+
+/* AVATAR */
+
+avatarSize:96,
+avatarBorder:"none",
+
+/* BUTTONS */
+
+buttonRadius:18,
+
+buttonColor:"#111111",
+
+buttonText:"#ffffff",
+
+buttonSpacing:14,
+
+buttonPadding:18,
+
+buttonWeight:600,
+
+buttonShadow:false
+
+}),
+name:"Minimal",
+
 hero:false,
 avatarOverlap:false,
 
