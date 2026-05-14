@@ -25,7 +25,11 @@ nameSize:56,
 
 usernameSize:18,
 
-bioSize:15
+bioSize:15,
+  
+fontWeight:700,
+
+textOpacity:.72
 
 });
 
@@ -430,6 +434,88 @@ opacity:.7
 }}
 >
 {settings.bioSize}px
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* FONT WEIGHT */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Font Weight</h3>
+
+{[
+400,
+500,
+600,
+700,
+800
+].map((item)=>(
+
+<button
+key={item}
+
+style={
+option(
+settings.fontWeight === item
+)
+}
+
+onClick={()=>
+updateSetting(
+"fontWeight",
+item
+)
+}
+>
+
+{item}
+
+</button>
+
+))}
+
+</div>
+
+
+{/* ================================================= */}
+{/* TEXT OPACITY */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Text Opacity</h3>
+
+<input
+type="range"
+
+min="0.2"
+max="1"
+step="0.02"
+
+value={settings.textOpacity}
+
+onChange={(e)=>
+updateSetting(
+"textOpacity",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.textOpacity}
 </div>
 
 </div>
