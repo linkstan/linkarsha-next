@@ -17,9 +17,21 @@ const router = useRouter();
 
 const [settings,setSettings] = useState({
 
+/* ================================================= */
+/* TYPE */
+/* ================================================= */
+
 type:"solid",
 
+/* ================================================= */
+/* SOLID */
+/* ================================================= */
+
 background:"#ffffff",
+
+/* ================================================= */
+/* GRADIENT */
+/* ================================================= */
 
 gradient1:"#ffffff",
 
@@ -27,12 +39,16 @@ gradient2:"#e9ecff",
 
 gradientDirection:"135deg",
 
+/* ================================================= */
+/* AMBIENT */
+/* ================================================= */
+
 glowOpacity:.18,
 
 blurStrength:80,
-  
+
 glowColor:"#7c7cff",
-  
+
 glowPosition:"top-left"
 
 });
@@ -189,6 +205,10 @@ padding:20
 }}
 >
 
+{/* ================================================= */}
+{/* HEADER */}
+{/* ================================================= */}
+
 <div
 style={{
 display:"flex",
@@ -238,7 +258,9 @@ Background
 </div>
 
 
+{/* ================================================= */}
 {/* TYPE */}
+{/* ================================================= */}
 
 <div style={section}>
 
@@ -246,7 +268,8 @@ Background
 
 {[
 "solid",
-"gradient"
+"gradient",
+"ambient"
 ].map((item)=>(
 
 <button
@@ -275,7 +298,9 @@ item
 </div>
 
 
+{/* ================================================= */}
 {/* SOLID */}
+{/* ================================================= */}
 
 {settings.type === "solid" && (
 
@@ -301,7 +326,9 @@ e.target.value
 )}
 
 
+{/* ================================================= */}
 {/* GRADIENT */}
+{/* ================================================= */}
 
 {settings.type === "gradient" && (
 
@@ -326,7 +353,6 @@ e.target.value
 
 </div>
 
-
 <div style={section}>
 
 <h3>Gradient Color 2</h3>
@@ -346,12 +372,57 @@ e.target.value
 
 </div>
 
+
+<div style={section}>
+
+<h3>Gradient Direction</h3>
+
+{[
+"135deg",
+"180deg",
+"90deg",
+"45deg"
+].map((item)=>(
+
+<button
+key={item}
+
+style={
+option(
+settings.gradientDirection === item
+)
+}
+
+onClick={()=>
+updateSetting(
+"gradientDirection",
+item
+)
+}
+>
+
+{item}
+
+</button>
+
+))}
+
+</div>
+
 </>
 
 )}
 
 
-{/* GLOW */}
+{/* ================================================= */}
+{/* AMBIENT */}
+{/* ================================================= */}
+
+{settings.type === "ambient" && (
+
+<>
+
+{/* GLOW OPACITY */}
 
 <div style={section}>
 
@@ -380,7 +451,8 @@ width:"100%"
 
 </div>
 
-/* GLOW COLOR */
+
+{/* GLOW COLOR */}
 
 <div style={section}>
 
@@ -401,7 +473,8 @@ e.target.value
 
 </div>
 
-/* GLOW POSITION */
+
+{/* GLOW POSITION */}
 
 <div style={section}>
 
@@ -468,6 +541,10 @@ width:"100%"
 />
 
 </div>
+
+</>
+
+)}
 
 </div>
 
