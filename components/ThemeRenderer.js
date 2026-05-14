@@ -359,8 +359,10 @@ finalTheme?.background ||
 color:
 finalTheme?.textColor || "#000000",
 
-minHeight:"100vh"
-
+minHeight:"100vh",
+  
+position:"relative",
+overflow:"hidden",
 }}
 >
 
