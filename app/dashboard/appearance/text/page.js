@@ -41,8 +41,6 @@ buttonSpacing:18,
 
 contentWidth:420,
   
-density:"balanced",
-  
 headerTopSpacing:42,
 
 nameBottomSpacing:14,
@@ -908,7 +906,7 @@ key={item}
 
 style={
 option(
-settings.density === item
+settings.densityMode === item
 )
 }
 
@@ -965,7 +963,7 @@ const newSettings = {
 
 ...settings,
 
-density:item,
+densityMode:item,
 
 ...preset
 
@@ -987,7 +985,7 @@ text:newSettings
 );
 
 updateSetting(
-"density",
+"densityMode",
 item
 );
 
