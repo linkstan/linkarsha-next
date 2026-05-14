@@ -41,6 +41,8 @@ buttonSpacing:18,
 
 contentWidth:420,
   
+density:"balanced",
+  
 headerTopSpacing:42,
 
 nameBottomSpacing:14,
@@ -849,6 +851,120 @@ opacity:.7
 >
 {settings.contentWidth}px
 </div>
+
+</div>
+
+{/* ================================================= */}
+{/* DENSITY MODE */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Density Mode</h3>
+
+{[
+"compact",
+"balanced",
+"luxury"
+].map((item)=>(
+
+<button
+key={item}
+
+style={
+option(
+settings.density === item
+)
+}
+
+onClick={()=>{
+
+let preset = {};
+
+if(item === "compact"){
+
+preset = {
+
+sectionSpacing:32,
+buttonSpacing:10,
+contentWidth:360,
+headerTopSpacing:20,
+nameBottomSpacing:8,
+bioBottomSpacing:28
+
+};
+
+}
+
+if(item === "balanced"){
+
+preset = {
+
+sectionSpacing:54,
+buttonSpacing:18,
+contentWidth:420,
+headerTopSpacing:42,
+nameBottomSpacing:14,
+bioBottomSpacing:54
+
+};
+
+}
+
+if(item === "luxury"){
+
+preset = {
+
+sectionSpacing:82,
+buttonSpacing:28,
+contentWidth:480,
+headerTopSpacing:72,
+nameBottomSpacing:24,
+bioBottomSpacing:82
+
+};
+
+}
+
+const newSettings = {
+
+...settings,
+
+density:item,
+
+...preset
+
+};
+
+setSettings(newSettings);
+
+window.dispatchEvent(
+
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+text:newSettings
+}
+}
+)
+
+);
+
+updateSetting(
+"density",
+item
+);
+
+}}
+
+>
+
+{item}
+
+</button>
+
+))}
 
 </div>
   
