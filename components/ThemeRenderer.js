@@ -351,7 +351,8 @@ theme={finalTheme}
 style={{
 
 width:"100%",
-maxWidth:420,
+maxWidth:
+text?.contentWidth || 420,
 
 paddingLeft:24,
 paddingRight:24,
