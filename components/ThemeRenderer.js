@@ -574,7 +574,7 @@ style={{
 width:"100%",
 
 marginTop:
-text?.bioBottomSpacing || 54,
+text?.sectionSpacing || 54,
 
 paddingBottom:80
 
