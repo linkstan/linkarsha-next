@@ -371,8 +371,41 @@ style={{
 
 position:"absolute",
 
-top:-120,
-left:-120,
+top:
+
+background?.glowPosition === "bottom"
+? "auto"
+: (
+background?.glowPosition === "center"
+? "50%"
+: -120
+),
+
+bottom:
+background?.glowPosition === "bottom"
+? -120
+: "auto",
+
+left:
+
+background?.glowPosition === "top-right"
+? "auto"
+: (
+background?.glowPosition === "center"
+? "50%"
+: -120
+),
+
+right:
+background?.glowPosition === "top-right"
+? -120
+: "auto",
+
+transform:
+
+background?.glowPosition === "center"
+? "translate(-50%,-50%)"
+: "none",
 
 width:420,
 height:420,
@@ -380,9 +413,9 @@ height:420,
 borderRadius:"50%",
 
 background:
-`rgba(120,120,255,${
-background?.glowOpacity || .18
-})`,
+`${background?.glowColor || "#7c7cff"}${Math.round(
+(background?.glowOpacity || .18)*255
+).toString(16).padStart(2,"0")}`,
 
 filter:
 `blur(${
