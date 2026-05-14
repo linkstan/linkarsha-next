@@ -413,9 +413,14 @@ height:420,
 borderRadius:"50%",
 
 background:
-`${background?.glowColor || "#7c7cff"}${Math.round(
+
+background?.type === "ambient"
+
+? `${background?.glowColor || "#7c7cff"}${Math.round(
 (background?.glowOpacity || .18)*255
-).toString(16).padStart(2,"0")}`,
+).toString(16).padStart(2,"0")}`
+
+: "transparent",
 
 filter:
 `blur(${
