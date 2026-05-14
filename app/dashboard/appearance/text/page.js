@@ -29,7 +29,11 @@ bioSize:15,
   
 fontWeight:700,
 
-textOpacity:.72
+textOpacity:.72,
+  
+letterSpacing:-0.04,
+
+lineHeight:1.5
 
 });
 
@@ -516,6 +520,86 @@ opacity:.7
 }}
 >
 {settings.textOpacity}
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* LETTER SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Letter Spacing</h3>
+
+<input
+type="range"
+
+min="-0.12"
+max="0.12"
+step="0.01"
+
+value={settings.letterSpacing}
+
+onChange={(e)=>
+updateSetting(
+"letterSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.letterSpacing}em
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* LINE HEIGHT */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Line Height</h3>
+
+<input
+type="range"
+
+min="0.9"
+max="2.2"
+step="0.05"
+
+value={settings.lineHeight}
+
+onChange={(e)=>
+updateSetting(
+"lineHeight",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.lineHeight}
 </div>
 
 </div>
