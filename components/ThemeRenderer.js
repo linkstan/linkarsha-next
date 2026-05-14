@@ -432,7 +432,8 @@ text?.nameSize || 56,
 
 lineHeight:1,
 
-letterSpacing:"-0.04em",
+letterSpacing:
+`${text?.letterSpacing || -0.04}em`,
 
 fontWeight:
 text?.fontWeight || 700,
@@ -466,7 +467,8 @@ text?.usernameSize || 18,
 
 marginTop:14,
 
-letterSpacing:"-0.01em",
+letterSpacing:
+`${(text?.letterSpacing || -0.04)/4}em`,
 
 textAlign:
 text?.align || "center",
@@ -500,7 +502,8 @@ finalTheme?.fonts?.bio ||
 
 fontSize:20,
 
-lineHeight:1.5,
+lineHeight:
+text?.lineHeight || 1.5,
 
 opacity:
 text?.textOpacity || .88,
@@ -537,7 +540,8 @@ text?.align || "center",
 opacity:
 text?.textOpacity || .72,
 
-lineHeight:1.7,
+lineHeight:
+text?.lineHeight || 1.7,
 
 fontSize:
 text?.bioSize || 15,
