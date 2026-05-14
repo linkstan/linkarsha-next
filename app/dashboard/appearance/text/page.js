@@ -33,7 +33,13 @@ textOpacity:.72,
   
 letterSpacing:-0.04,
 
-lineHeight:1.5
+lineHeight:1.5,
+  
+headerTopSpacing:42,
+
+nameBottomSpacing:14,
+
+bioBottomSpacing:54
 
 });
 
@@ -600,6 +606,123 @@ opacity:.7
 }}
 >
 {settings.lineHeight}
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* HEADER TOP SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Header Top Spacing</h3>
+
+<input
+type="range"
+
+min="0"
+max="120"
+
+value={settings.headerTopSpacing}
+
+onChange={(e)=>
+updateSetting(
+"headerTopSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.headerTopSpacing}px
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* NAME SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Name Bottom Spacing</h3>
+
+<input
+type="range"
+
+min="0"
+max="50"
+
+value={settings.nameBottomSpacing}
+
+onChange={(e)=>
+updateSetting(
+"nameBottomSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.nameBottomSpacing}px
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* BIO SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Bio Bottom Spacing</h3>
+
+<input
+type="range"
+
+min="10"
+max="120"
+
+value={settings.bioBottomSpacing}
+
+onChange={(e)=>
+updateSetting(
+"bioBottomSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.bioBottomSpacing}px
 </div>
 
 </div>
