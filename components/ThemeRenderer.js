@@ -459,7 +459,8 @@ style={{
 
 opacity:.55,
 
-fontSize:18,
+fontSize:
+text?.usernameSize || 18,
 
 marginTop:14,
 
@@ -534,7 +535,8 @@ opacity:.72,
 
 lineHeight:1.7,
 
-fontSize:15,
+fontSize:
+text?.bioSize || 15,
 
 marginTop:18,
 
