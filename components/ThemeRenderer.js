@@ -389,7 +389,7 @@ marginTop:
 
 finalTheme?.layout?.avatarOverlap
 ? -20
-: 42,
+: text?.headerTopSpacing || 42,
 
 transform:
 
@@ -465,7 +465,8 @@ text?.textOpacity || .55,
 fontSize:
 text?.usernameSize || 18,
 
-marginTop:14,
+marginTop:
+text?.nameBottomSpacing || 14,
 
 letterSpacing:
 `${(text?.letterSpacing || -0.04)/4}em`,
@@ -571,7 +572,8 @@ style={{
 
 width:"100%",
 
-marginTop:54,
+marginTop:
+text?.bioBottomSpacing || 54,
 
 paddingBottom:80
 
