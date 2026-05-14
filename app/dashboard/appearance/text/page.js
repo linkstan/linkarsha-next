@@ -21,7 +21,11 @@ fontFamily:"Inter",
 
 align:"center",
 
-nameSize:56
+nameSize:56,
+
+usernameSize:18,
+
+bioSize:15
 
 });
 
@@ -347,6 +351,85 @@ opacity:.7
 }}
 >
 {settings.nameSize}px
+</div>
+
+</div>
+
+{/* ================================================= */}
+{/* USERNAME SIZE */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Username Size</h3>
+
+<input
+type="range"
+
+min="12"
+max="40"
+
+value={settings.usernameSize}
+
+onChange={(e)=>
+updateSetting(
+"usernameSize",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.usernameSize}px
+</div>
+
+</div>
+
+
+{/* ================================================= */}
+{/* BIO SIZE */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Bio Size</h3>
+
+<input
+type="range"
+
+min="12"
+max="32"
+
+value={settings.bioSize}
+
+onChange={(e)=>
+updateSetting(
+"bioSize",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.bioSize}px
 </div>
 
 </div>
