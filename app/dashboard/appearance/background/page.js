@@ -29,7 +29,11 @@ gradientDirection:"135deg",
 
 glowOpacity:.18,
 
-blurStrength:80
+blurStrength:80,
+  
+glowColor:"#7c7cff",
+  
+glowPosition:"top-left"
 
 });
 
@@ -373,6 +377,65 @@ style={{
 width:"100%"
 }}
 />
+
+</div>
+
+/* GLOW COLOR */
+
+<div style={section}>
+
+<h3>Glow Color</h3>
+
+<input
+type="color"
+
+value={settings.glowColor}
+
+onChange={(e)=>
+updateSetting(
+"glowColor",
+e.target.value
+)
+}
+/>
+
+</div>
+
+/* GLOW POSITION */
+
+<div style={section}>
+
+<h3>Glow Position</h3>
+
+{[
+"top-left",
+"top-right",
+"center",
+"bottom"
+].map((item)=>(
+
+<button
+key={item}
+
+style={
+option(
+settings.glowPosition === item
+)
+}
+
+onClick={()=>
+updateSetting(
+"glowPosition",
+item
+)
+}
+>
+
+{item}
+
+</button>
+
+))}
 
 </div>
 
