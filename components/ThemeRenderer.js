@@ -402,7 +402,8 @@ finalTheme?.layout?.avatarOverlap
 
 : "none",
 
-marginBottom:22,
+marginBottom:
+text?.sectionSpacing || 22,
 
 position:"relative",
 zIndex:10,
@@ -513,7 +514,8 @@ text?.textOpacity || .88,
 textAlign:
 text?.align || "center",
 
-marginTop:34,
+marginTop:
+(text?.sectionSpacing || 54) / 1.5,
 
 maxWidth:340
 
@@ -548,7 +550,8 @@ text?.lineHeight || 1.7,
 fontSize:
 text?.bioSize || 15,
 
-marginTop:18,
+marginTop:
+(text?.sectionSpacing || 54) / 3,
 
 marginBottom:0,
 
