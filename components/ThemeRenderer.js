@@ -434,7 +434,8 @@ lineHeight:1,
 
 letterSpacing:"-0.04em",
 
-fontWeight:700,
+fontWeight:
+text?.fontWeight || 700,
 
 margin:0,
 
@@ -457,7 +458,8 @@ text?.align || "center"
 <div
 style={{
 
-opacity:.55,
+opacity:
+text?.textOpacity || .55,
 
 fontSize:
 text?.usernameSize || 18,
@@ -500,7 +502,8 @@ fontSize:20,
 
 lineHeight:1.5,
 
-opacity:.88,
+opacity:
+text?.textOpacity || .88,
 
 textAlign:
 text?.align || "center",
@@ -531,7 +534,8 @@ maxWidth:340,
 textAlign:
 text?.align || "center",
 
-opacity:.72,
+opacity:
+text?.textOpacity || .72,
 
 lineHeight:1.7,
 
