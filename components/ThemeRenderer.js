@@ -366,6 +366,33 @@ overflow:"hidden",
 }}
 >
 
+<div
+style={{
+
+position:"absolute",
+
+top:-120,
+left:-120,
+
+width:420,
+height:420,
+
+borderRadius:"50%",
+
+background:
+`rgba(120,120,255,${
+background?.glowOpacity || .18
+})`,
+
+filter:
+`blur(${
+background?.blurStrength || 80
+}px)`,
+
+pointerEvents:"none"
+
+}}
+/>
 <HeroHeader
 appearance={finalAppearance}
 theme={finalTheme}
