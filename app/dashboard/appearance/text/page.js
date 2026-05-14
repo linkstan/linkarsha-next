@@ -34,6 +34,12 @@ textOpacity:.72,
 letterSpacing:-0.04,
 
 lineHeight:1.5,
+
+sectionSpacing:54,
+
+buttonSpacing:18,
+
+contentWidth:420,
   
 headerTopSpacing:42,
 
@@ -727,6 +733,125 @@ opacity:.7
 
 </div>
 
+{/* ================================================= */}
+{/* SECTION SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Section Spacing</h3>
+
+<input
+type="range"
+
+min="20"
+max="120"
+
+value={settings.sectionSpacing}
+
+onChange={(e)=>
+updateSetting(
+"sectionSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.sectionSpacing}px
+</div>
+
+</div>
+
+
+{/* ================================================= */}
+{/* BUTTON SPACING */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Button Spacing</h3>
+
+<input
+type="range"
+
+min="4"
+max="40"
+
+value={settings.buttonSpacing}
+
+onChange={(e)=>
+updateSetting(
+"buttonSpacing",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.buttonSpacing}px
+</div>
+
+</div>
+
+
+{/* ================================================= */}
+{/* CONTENT WIDTH */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Content Width</h3>
+
+<input
+type="range"
+
+min="280"
+max="520"
+
+value={settings.contentWidth}
+
+onChange={(e)=>
+updateSetting(
+"contentWidth",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+<div
+style={{
+marginTop:12,
+opacity:.7
+}}
+>
+{settings.contentWidth}px
+</div>
+
+</div>
+  
 </div>
 
 );
