@@ -34,7 +34,7 @@ textOpacity:.72,
 letterSpacing:-0.04,
 
 lineHeight:1.5,
-
+densityMode:"balanced",
 sectionSpacing:54,
 
 buttonSpacing:18,
@@ -99,7 +99,42 @@ const newSettings = {
 [key]:value
 
 };
+if(key === "densityMode"){
 
+if(value === "compact"){
+
+newSettings.sectionSpacing = 28;
+newSettings.buttonSpacing = 10;
+newSettings.contentWidth = 360;
+newSettings.headerTopSpacing = 24;
+newSettings.nameBottomSpacing = 8;
+newSettings.bioBottomSpacing = 30;
+
+}
+
+if(value === "balanced"){
+
+newSettings.sectionSpacing = 54;
+newSettings.buttonSpacing = 18;
+newSettings.contentWidth = 420;
+newSettings.headerTopSpacing = 42;
+newSettings.nameBottomSpacing = 14;
+newSettings.bioBottomSpacing = 54;
+
+}
+
+if(value === "luxury"){
+
+newSettings.sectionSpacing = 84;
+newSettings.buttonSpacing = 28;
+newSettings.contentWidth = 520;
+newSettings.headerTopSpacing = 70;
+newSettings.nameBottomSpacing = 24;
+newSettings.bioBottomSpacing = 90;
+
+}
+
+}
 setSettings(newSettings);
 
 
