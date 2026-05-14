@@ -252,7 +252,8 @@ display:"block",
 
 padding:getPadding(),
 
-marginTop:14,
+marginTop:
+appearance?.text?.buttonSpacing || 18,
 
 textDecoration:"none",
 
