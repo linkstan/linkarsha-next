@@ -205,7 +205,16 @@ const text = {
 ...(live?.text || {})
 
 };
+/* ================================================= */
+/* BACKGROUND SETTINGS */
+/* ================================================= */
 
+const background = {
+
+...(appearance?.background || {}),
+...(live?.background || {})
+
+};
 /* ================================================= */
 /* CUSTOM THEMES */
 /* ================================================= */
@@ -332,7 +341,20 @@ alignItems:"center",
 width:"100%",
 
 background:
-finalTheme?.background || "#ffffff",
+
+background?.type === "gradient"
+
+? `linear-gradient(
+${background?.gradientDirection || "135deg"},
+${background?.gradient1 || "#ffffff"},
+${background?.gradient2 || "#e9ecff"}
+)`
+
+: (
+background?.background ||
+finalTheme?.background ||
+"#ffffff"
+),
 
 color:
 finalTheme?.textColor || "#000000",
