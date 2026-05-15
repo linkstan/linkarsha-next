@@ -559,35 +559,60 @@ isSplit
 background:
 
 isCard
-? "rgba(255,255,255,0.7)"
+
+? (
+background?.type === "ambient"
+? "rgba(255,255,255,0.16)"
+: "rgba(255,255,255,0.72)"
+)
+
 : "transparent",
 
 
 backdropFilter:
 
 isCard
-? "blur(30px)"
+? "blur(40px)"
 : "none",
 
 
 border:
 
 isCard
-? "1px solid rgba(255,255,255,0.25)"
+
+? (
+background?.type === "ambient"
+? "1px solid rgba(255,255,255,0.12)"
+: "1px solid rgba(255,255,255,0.55)"
+)
+
 : "none",
 
 
 borderRadius:
 
 isCard
-? 40
+? 48
 : 0,
 
+boxShadow:
+
+isCard
+
+? (
+background?.type === "ambient"
+
+? "0 30px 80px rgba(0,0,0,.28)"
+
+: "0 30px 80px rgba(0,0,0,.10)"
+)
+
+: "none",
 
 padding:
 
 isCard
-? "50px"
+? "70px 55px"
 : "0",
 
 
