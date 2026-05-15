@@ -195,6 +195,8 @@ const socialLinks = {
 ...(live?.social_links || {})
 
 };
+
+
 /* ================================================= */
 /* TEXT SETTINGS */
 /* ================================================= */
@@ -205,6 +207,8 @@ const text = {
 ...(live?.text || {})
 
 };
+
+
 /* ================================================= */
 /* BACKGROUND SETTINGS */
 /* ================================================= */
@@ -215,6 +219,40 @@ const background = {
 ...(live?.background || {})
 
 };
+
+
+/* ================================================= */
+/* LAYOUT SETTINGS */
+/* ================================================= */
+
+const layout = {
+
+...(appearance?.layout || {}),
+...(live?.layout || {})
+
+};
+
+
+/* ================================================= */
+/* LAYOUT TYPES */
+/* ================================================= */
+
+const isCentered =
+layout?.type === "centered";
+
+const isEditorial =
+layout?.type === "editorial";
+
+const isHero =
+layout?.type === "hero";
+
+const isCard =
+layout?.type === "card";
+
+const isSplit =
+layout?.type === "split";
+
+
 /* ================================================= */
 /* CUSTOM THEMES */
 /* ================================================= */
@@ -338,6 +376,22 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 
+justifyContent:
+
+isHero
+? "flex-start"
+: "center",
+
+padding:
+
+isHero
+? "0"
+: (
+isSplit
+? "60px 40px"
+: "40px 20px"
+),
+
 width:"100%",
 
 background:
@@ -360,11 +414,16 @@ color:
 finalTheme?.textColor || "#000000",
 
 minHeight:"100vh",
-  
+
 position:"relative",
 overflow:"hidden",
+
 }}
 >
+
+{/* ================================================= */}
+{/* GLOW */}
+{/* ================================================= */}
 
 <div
 style={{
@@ -431,26 +490,143 @@ pointerEvents:"none"
 
 }}
 />
+
+
 <HeroHeader
 appearance={finalAppearance}
 theme={finalTheme}
 />
 
+
+{/* ================================================= */}
+{/* MAIN CONTENT */}
+{/* ================================================= */}
+
 <div
 style={{
 
 width:"100%",
+
 maxWidth:
-text?.contentWidth || 420,
+
+isEditorial
+? 720
+
+: isHero
+? "100%"
+
+: isCard
+? 560
+
+: isSplit
+? 1200
+
+: 520,
+
+
+display:
+
+isSplit
+? "grid"
+: "flex",
+
+
+flexDirection:
+isSplit
+? undefined
+: "column",
+
+
+gridTemplateColumns:
+
+isSplit
+? "420px 1fr"
+: undefined,
+
+
+gap:
+isSplit
+? 60
+: undefined,
+
+
+alignItems:
+isSplit
+? "start"
+: "center",
+
+
+background:
+
+isCard
+? "rgba(255,255,255,0.7)"
+: "transparent",
+
+
+backdropFilter:
+
+isCard
+? "blur(30px)"
+: "none",
+
+
+border:
+
+isCard
+? "1px solid rgba(255,255,255,0.25)"
+: "none",
+
+
+borderRadius:
+
+isCard
+? 40
+: 0,
+
+
+padding:
+
+isCard
+? "50px"
+: "0",
+
 
 paddingLeft:24,
 paddingRight:24,
 
 margin:"0 auto",
 
+position:"relative",
+zIndex:5
+
+}}
+>
+
+{/* ================================================= */}
+{/* LEFT SIDE (SPLIT) */}
+{/* ================================================= */}
+
+<div
+style={{
+
 display:"flex",
 flexDirection:"column",
-alignItems:"center"
+
+alignItems:
+
+isEditorial
+? "flex-start"
+: (
+text?.align === "left"
+? "flex-start"
+: (
+text?.align === "right"
+? "flex-end"
+: "center"
+)
+),
+
+width:"100%"
 
 }}
 >
@@ -477,7 +653,10 @@ objectFit:"cover",
 
 marginTop:
 
-finalTheme?.layout?.avatarOverlap
+isHero
+? 100
+
+: finalTheme?.layout?.avatarOverlap
 ? -20
 : text?.headerTopSpacing || 42,
 
@@ -532,7 +711,14 @@ text?.fontWeight || 700,
 margin:0,
 
 textAlign:
+
+isEditorial
+? "left"
+: (
 text?.align || "center"
+),
+
+width:"100%"
 
 }}
 >
@@ -563,7 +749,12 @@ letterSpacing:
 `${(text?.letterSpacing || -0.04)/4}em`,
 
 textAlign:
-text?.align || "center",
+
+isEditorial
+? "left"
+: (
+text?.align || "center"
+),
 
 width:"100%",
 
@@ -601,12 +792,23 @@ opacity:
 text?.textOpacity || .88,
 
 textAlign:
-text?.align || "center",
+
+isEditorial
+? "left"
+: (
+text?.align || "center"
+),
 
 marginTop:
 (text?.sectionSpacing || 54) / 1.5,
 
-maxWidth:340
+maxWidth:
+
+isEditorial
+? 520
+: 340,
+
+width:"100%"
 
 }}
 >
@@ -625,10 +827,21 @@ profile.bio && (
 <p
 style={{
 
-maxWidth:340,
+maxWidth:
+
+isEditorial
+? 520
+: 340,
+
+width:"100%",
 
 textAlign:
-text?.align || "center",
+
+isEditorial
+? "left"
+: (
+text?.align || "center"
+),
 
 opacity:
 text?.textOpacity || .72,
@@ -658,7 +871,12 @@ finalTheme?.fonts?.bio ||
 
 )}
 
-{/* BUTTONS */}
+</div>
+
+
+{/* ================================================= */}
+{/* RIGHT SIDE / BUTTONS */}
+{/* ================================================= */}
 
 <div
 style={{
@@ -666,7 +884,12 @@ style={{
 width:"100%",
 
 marginTop:
-text?.sectionSpacing || 54,
+
+isSplit
+? 0
+: (
+text?.sectionSpacing || 54
+),
 
 paddingBottom:80
 
