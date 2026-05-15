@@ -10,6 +10,9 @@ import SolsticeTheme from "./themes/SolsticeTheme";
 import PortfolioTheme from "./themes/PortfolioTheme";
 import RippleTheme from "./themes/RippleTheme";
 
+import backgroundPresets
+from "../app/lib/backgroundPresets";
+
 import { getTheme } from "../app/lib/themeEngine";
 import { layoutPresets }
 from "../app/lib/layoutPresets";
@@ -202,10 +205,26 @@ const socialLinks = {
 /* BACKGROUND SETTINGS */
 /* ================================================= */
 
-const background = {
+const rawBackground = {
 
 ...(appearance?.background || {}),
 ...(live?.background || {})
+
+};
+
+const presetBackground = {
+
+...(backgroundPresets?.[
+rawBackground?.preset
+] || {})
+
+};
+
+const background = {
+
+...presetBackground,
+
+...rawBackground
 
 };
 /* ================================================= */
