@@ -135,33 +135,44 @@ marginBottom:22
 
 };
 
-const option = (active)=>({
 
-padding:"12px 18px",
+/* ================================================= */
+/* LAYOUTS */
+/* ================================================= */
 
-borderRadius:999,
+const layouts = [
 
-border:"1px solid var(--border)",
+{
+id:"centered",
+title:"Centered",
+desc:"Classic creator layout"
+},
 
-background:
-active
-? "var(--text)"
-: "var(--card)",
+{
+id:"editorial",
+title:"Editorial",
+desc:"Luxury magazine composition"
+},
 
-color:
-active
-? "#ffffff"
-: "var(--text)",
+{
+id:"hero",
+title:"Hero",
+desc:"Cinematic creator landing"
+},
 
-cursor:"pointer",
+{
+id:"card",
+title:"Card",
+desc:"Floating glass experience"
+},
 
-marginRight:10,
-marginBottom:10,
+{
+id:"split",
+title:"Split",
+desc:"Premium desktop composition"
+}
 
-fontSize:15,
-fontWeight:500
-
-});
+];
 
 
 return(
@@ -226,43 +237,342 @@ Layout
 
 
 {/* ================================================= */}
-{/* LAYOUT TYPE */}
+{/* LAYOUT STYLE */}
 {/* ================================================= */}
 
 <div style={section}>
 
 <h3>Layout Style</h3>
 
-{[
-"centered",
-"editorial",
-"hero",
-"card",
-"split"
-].map((item)=>(
+<div
+style={{
 
-<button
-key={item}
+display:"grid",
+gridTemplateColumns:"1fr 1fr",
+gap:18,
+marginTop:20
 
-style={
-option(
-settings.type === item
-)
-}
+}}
+>
+
+{layouts.map((item)=>(
+
+<div
+
+key={item.id}
 
 onClick={()=>
 updateSetting(
 "type",
-item
+item.id
 )
 }
+
+style={{
+
+border:
+
+settings.type === item.id
+
+? "2px solid var(--text)"
+
+: "1px solid var(--border)",
+
+borderRadius:24,
+
+padding:20,
+
+cursor:"pointer",
+
+background:"var(--card)",
+
+transition:"all .2s ease"
+
+}}
 >
 
-{item}
+{/* ================================================= */}
+{/* MINI PREVIEW */}
+{/* ================================================= */}
 
-</button>
+<div
+style={{
+
+height:120,
+
+borderRadius:18,
+
+background:"#f4f4f4",
+
+marginBottom:16,
+
+position:"relative",
+
+overflow:"hidden"
+
+}}
+>
+
+{/* CENTERED */}
+
+{item.id === "centered" && (
+
+<div
+style={{
+
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+paddingTop:18,
+gap:10
+
+}}
+>
+
+<div
+style={{
+width:34,
+height:34,
+borderRadius:"50%",
+background:"#bbb"
+}}
+/>
+
+<div
+style={{
+width:80,
+height:10,
+borderRadius:999,
+background:"#bbb"
+}}
+/>
+
+<div
+style={{
+width:120,
+height:12,
+borderRadius:999,
+background:"#d4d4d4"
+}}
+/>
+
+</div>
+
+)}
+
+{/* HERO */}
+
+{item.id === "hero" && (
+
+<div
+style={{
+
+display:"flex",
+flexDirection:"column",
+alignItems:"center",
+paddingTop:10,
+gap:12
+
+}}
+>
+
+<div
+style={{
+width:46,
+height:46,
+borderRadius:"50%",
+background:"#999"
+}}
+/>
+
+<div
+style={{
+width:120,
+height:14,
+borderRadius:999,
+background:"#999"
+}}
+/>
+
+<div
+style={{
+width:140,
+height:40,
+borderRadius:18,
+background:"#d0d0d0"
+}}
+/>
+
+</div>
+
+)}
+
+{/* SPLIT */}
+
+{item.id === "split" && (
+
+<div
+style={{
+
+display:"grid",
+gridTemplateColumns:"40px 1fr",
+gap:12,
+padding:16
+
+}}
+>
+
+<div
+style={{
+width:40,
+height:40,
+borderRadius:"50%",
+background:"#bcbcbc"
+}}
+/>
+
+<div
+style={{
+
+display:"flex",
+flexDirection:"column",
+gap:8
+
+}}
+>
+
+<div
+style={{
+width:"70%",
+height:10,
+borderRadius:999,
+background:"#bcbcbc"
+}}
+/>
+
+<div
+style={{
+width:"100%",
+height:12,
+borderRadius:999,
+background:"#d7d7d7"
+}}
+/>
+
+<div
+style={{
+width:"100%",
+height:12,
+borderRadius:999,
+background:"#d7d7d7"
+}}
+/>
+
+</div>
+
+</div>
+
+)}
+
+{/* CARD */}
+
+{item.id === "card" && (
+
+<div
+style={{
+
+padding:14
+
+}}
+>
+
+<div
+style={{
+
+width:"100%",
+height:"100%",
+
+borderRadius:20,
+
+background:"rgba(255,255,255,.7)",
+
+border:"1px solid rgba(0,0,0,.08)"
+
+}}
+/>
+
+</div>
+
+)}
+
+{/* EDITORIAL */}
+
+{item.id === "editorial" && (
+
+<div
+style={{
+padding:18
+}}
+>
+
+<div
+style={{
+width:"60%",
+height:12,
+borderRadius:999,
+background:"#999",
+marginBottom:12
+}}
+/>
+
+<div
+style={{
+width:"100%",
+height:10,
+borderRadius:999,
+background:"#d4d4d4",
+marginBottom:8
+}}
+/>
+
+<div
+style={{
+width:"90%",
+height:10,
+borderRadius:999,
+background:"#d4d4d4"
+}}
+/>
+
+</div>
+
+)}
+
+</div>
+
+<h4
+style={{
+margin:"0 0 6px 0"
+}}
+>
+{item.title}
+</h4>
+
+<div
+style={{
+opacity:.7,
+fontSize:14,
+lineHeight:1.5
+}}
+>
+{item.desc}
+</div>
+
+</div>
 
 ))}
+
+</div>
 
 </div>
 
