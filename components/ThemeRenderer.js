@@ -540,13 +540,13 @@ isSplit
 gridTemplateColumns:
 
 isSplit
-? "420px 1fr"
+? "420px minmax(400px,1fr)"
 : undefined,
 
 
 gap:
 isSplit
-? 60
+? 120
 : undefined,
 
 
@@ -654,7 +654,17 @@ text?.align === "right"
 ),
 
 width:"100%"
+position:
 
+isSplit
+? "sticky"
+: "relative",
+
+top:
+
+isSplit
+? 80
+: "auto",
 }}
 >
 
@@ -690,8 +700,15 @@ objectFit:"cover",
 
 marginTop:
 
-isHero
+isSplit
+? 20
+
+: isHero
 ? 140
+
+: finalTheme?.layout?.avatarOverlap
+? -20
+: text?.headerTopSpacing || 42,
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
