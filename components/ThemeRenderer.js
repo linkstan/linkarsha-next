@@ -11,6 +11,8 @@ import PortfolioTheme from "./themes/PortfolioTheme";
 import RippleTheme from "./themes/RippleTheme";
 
 import { getTheme } from "../app/lib/themeEngine";
+import { layoutPresets }
+from "../app/lib/layoutPresets";
 
 import {
 useEffect,
@@ -201,7 +203,15 @@ const socialLinks = {
 /* TEXT SETTINGS */
 /* ================================================= */
 
+const presetText = {
+
+...(layoutPresets?.[layout?.type] || {})
+
+};
+
 const text = {
+
+...presetText,
 
 ...(appearance?.text || {}),
 ...(live?.text || {})
