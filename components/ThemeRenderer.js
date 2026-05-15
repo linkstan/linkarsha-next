@@ -513,7 +513,7 @@ isEditorial
 ? 720
 
 : isHero
-? "100%"
+? 920
 
 : isCard
 ? 560
@@ -639,10 +639,20 @@ src={profile.avatar || ""}
 style={{
 
 width:
-finalTheme?.avatar?.size || 110,
+
+isHero
+? 140
+: (
+finalTheme?.avatar?.size || 110
+),
 
 height:
-finalTheme?.avatar?.size || 110,
+
+isHero
+? 140
+: (
+finalTheme?.avatar?.size || 110
+),
 
 borderRadius:"50%",
 
@@ -654,7 +664,7 @@ objectFit:"cover",
 marginTop:
 
 isHero
-? 100
+? 140
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
@@ -698,7 +708,14 @@ finalTheme?.fonts?.name ||
 "Inter",
 
 fontSize:
-text?.nameSize || 56,
+
+isHero
+? (
+(text?.nameSize || 56) + 18
+)
+: (
+text?.nameSize || 56
+),
 
 lineHeight:1,
 
