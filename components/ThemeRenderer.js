@@ -13,7 +13,8 @@ import RippleTheme from "./themes/RippleTheme";
 import backgroundPresets
 from "../app/lib/backgroundPresets";
 
-import { getTheme } from "../app/lib/themeEngine";
+import { getTheme }
+from "../app/lib/themeEngine";
 
 import { layoutPresets }
 from "../app/lib/layoutPresets";
@@ -94,6 +95,9 @@ blocks
 
 const [live,setLive] = useState({});
 
+const [isMobile,setIsMobile] =
+useState(false);
+
 
 /* ================================================= */
 /* LIVE EVENTS */
@@ -139,6 +143,39 @@ updateAppearance
 window.removeEventListener(
 "theme-change",
 updateTheme
+);
+
+};
+
+},[]);
+
+
+/* ================================================= */
+/* RESPONSIVE */
+/* ================================================= */
+
+useEffect(()=>{
+
+function handleResize(){
+
+setIsMobile(
+window.innerWidth <= 768
+);
+
+}
+
+handleResize();
+
+window.addEventListener(
+"resize",
+handleResize
+);
+
+return ()=>{
+
+window.removeEventListener(
+"resize",
+handleResize
 );
 
 };
@@ -566,7 +603,11 @@ width:"100%",
 
 maxWidth:
 
-isEditorial
+isMobile
+
+? 520
+
+: isEditorial
 ? 720
 
 : isHero
@@ -583,7 +624,7 @@ isEditorial
 
 display:
 
-isSplit
+isSplit && !isMobile
 ? "grid"
 : "flex",
 
@@ -596,7 +637,7 @@ isSplit
 
 gridTemplateColumns:
 
-isSplit
+isSplit && !isMobile
 ? "420px minmax(400px,1fr)"
 : undefined,
 
@@ -680,7 +721,13 @@ margin:"0 auto",
 paddingTop:
 
 isHero
-? 120
+
+? (
+isMobile
+? 70
+: 120
+)
+
 : undefined,
 
 transition:
@@ -719,13 +766,13 @@ width:"100%",
 
 position:
 
-isSplit
+isSplit && !isMobile
 ? "sticky"
 : "relative",
 
 top:
 
-isSplit
+isSplit && !isMobile
 ? 80
 : "auto",
 
@@ -768,7 +815,11 @@ isSplit
 ? 20
 
 : isHero
-? 220
+? (
+isMobile
+? 120
+: 220
+)
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
@@ -814,11 +865,23 @@ finalTheme?.fonts?.name ||
 fontSize:
 
 isHero
+
 ? (
+isMobile
+? 72
+: (
 (text?.nameSize || 56) + 32
+)
+)
+
+: (
+isMobile
+? (
+(text?.nameSize || 56) - 10
 )
 : (
 text?.nameSize || 56
+)
 ),
 
 lineHeight:
@@ -1030,7 +1093,12 @@ isEditorial
 marginTop:
 
 isHero
-? 90
+
+? (
+isMobile
+? 60
+: 90
+)
 
 : isSplit
 ? 0
