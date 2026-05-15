@@ -866,23 +866,21 @@ fontSize:
 
 isHero
 
-? (
-isMobile
-? 72
-: (
-(text?.nameSize || 56) + 32
-)
-)
+? "clamp(72px,10vw,140px)"
 
-: (
-isMobile
-? (
-(text?.nameSize || 56) - 10
-)
-: (
-text?.nameSize || 56
-)
-),
+: isEditorial
+
+? "clamp(54px,7vw,92px)"
+
+: isSplit
+
+? "clamp(58px,8vw,100px)"
+
+: isCard
+
+? "clamp(46px,6vw,72px)"
+
+: "clamp(42px,6vw,62px)",
 
 lineHeight:
 
