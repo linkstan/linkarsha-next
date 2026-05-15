@@ -20,202 +20,8 @@ const router = useRouter();
 
 const [settings,setSettings] = useState({
 
+preset:"",
 
-/* ================================================= */
-/* PRESETS */}
-{/* ================================================= */}
-
-<div style={section}>
-
-<h3>Background Presets</h3>
-
-<div
-style={{
-
-display:"grid",
-
-gridTemplateColumns:
-"repeat(auto-fit,minmax(220px,1fr))",
-
-gap:18,
-
-marginTop:20
-
-}}
->
-
-{presets.map((item)=>{
-
-const preset =
-backgroundPresets[item.id];
-
-return(
-
-<div
-
-key={item.id}
-
-onClick={()=>{
-
-const newSettings = {
-
-...settings,
-
-preset:item.id,
-
-...preset
-
-};
-
-setSettings(newSettings);
-
-window.dispatchEvent(
-
-new CustomEvent(
-"appearance-update",
-{
-detail:{
-background:newSettings
-}
-}
-)
-
-);
-
-updateSetting(
-"preset",
-item.id
-);
-
-}}
-
-style={{
-
-cursor:"pointer",
-
-border:
-
-settings.preset === item.id
-
-? "2px solid #000"
-
-: "1px solid var(--border)",
-
-borderRadius:28,
-
-overflow:"hidden",
-
-background:"var(--card)",
-
-transition:"all .25s ease",
-
-boxShadow:
-
-settings.preset === item.id
-
-? "0 18px 40px rgba(0,0,0,.12)"
-
-: "0 4px 12px rgba(0,0,0,.05)"
-
-}}
->
-
-{/* PREVIEW */}
-
-<div
-style={{
-
-height:120,
-
-background:
-
-preset.type === "gradient"
-
-? `linear-gradient(
-${preset.gradientDirection || "135deg"},
-${preset.gradient1},
-${preset.gradient2}
-)`
-
-: preset.background,
-
-position:"relative",
-
-overflow:"hidden"
-
-}}
->
-
-{/* GLOW */}
-
-<div
-style={{
-
-position:"absolute",
-
-width:160,
-height:160,
-
-borderRadius:"50%",
-
-background:
-preset.glowColor || "transparent",
-
-opacity:
-preset.glowOpacity || 0,
-
-filter:
-`blur(${
-preset.blurStrength || 0
-}px)`,
-
-top:-40,
-right:-40
-
-}}
-/>
-
-</div>
-
-{/* TEXT */}
-
-<div
-style={{
-padding:18
-}}
->
-
-<div
-style={{
-fontSize:17,
-fontWeight:700,
-marginBottom:6
-}}
->
-{item.title}
-</div>
-
-<div
-style={{
-fontSize:14,
-opacity:.65,
-lineHeight:1.5
-}}
->
-{item.desc}
-</div>
-
-</div>
-
-</div>
-
-);
-
-})}
-
-</div>
-
-</div>
 /* ================================================= */
 /* TYPE */
 /* ================================================= */
@@ -347,6 +153,7 @@ profile_settings:allSettings
 
 }
 
+
 /* ================================================= */
 /* PRESET LIST */
 /* ================================================= */
@@ -402,6 +209,8 @@ desc:"Deep ocean atmosphere"
 }
 
 ];
+
+
 /* ================================================= */
 /* UI */
 /* ================================================= */
@@ -507,6 +316,215 @@ fontSize:44
 >
 Background
 </h1>
+
+</div>
+
+
+{/* ================================================= */}
+{/* PRESETS */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Background Presets</h3>
+
+<div
+style={{
+
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(220px,1fr))",
+
+gap:18,
+
+marginTop:20
+
+}}
+>
+
+{presets.map((item)=>{
+
+const preset =
+backgroundPresets[item.id];
+
+return(
+
+<div
+
+key={item.id}
+
+onClick={async ()=>{
+
+const newSettings = {
+
+...settings,
+
+preset:item.id,
+
+...preset
+
+};
+
+setSettings(newSettings);
+
+window.dispatchEvent(
+
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+background:newSettings
+}
+}
+)
+
+);
+
+const {data:{session}} =
+await supabase.auth.getSession();
+
+if(!session) return;
+
+const {data:profile} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const allSettings =
+profile?.profile_settings || {};
+
+allSettings.background = newSettings;
+
+await supabase
+.from("profiles")
+.update({
+profile_settings:allSettings
+})
+.eq("id",session.user.id);
+
+}}
+
+style={{
+
+cursor:"pointer",
+
+border:
+
+settings.preset === item.id
+
+? "2px solid #000"
+
+: "1px solid var(--border)",
+
+borderRadius:28,
+
+overflow:"hidden",
+
+background:"var(--card)",
+
+transition:"all .25s ease",
+
+boxShadow:
+
+settings.preset === item.id
+
+? "0 18px 40px rgba(0,0,0,.12)"
+
+: "0 4px 12px rgba(0,0,0,.05)"
+
+}}
+>
+
+<div
+style={{
+
+height:120,
+
+background:
+
+preset.type === "gradient"
+
+? `linear-gradient(
+${preset.gradientDirection || "135deg"},
+${preset.gradient1},
+${preset.gradient2}
+)`
+
+: preset.background,
+
+position:"relative",
+
+overflow:"hidden"
+
+}}
+>
+
+<div
+style={{
+
+position:"absolute",
+
+width:160,
+height:160,
+
+borderRadius:"50%",
+
+background:
+preset.glowColor || "transparent",
+
+opacity:
+preset.glowOpacity || 0,
+
+filter:
+`blur(${
+preset.blurStrength || 0
+}px)`,
+
+top:-40,
+right:-40
+
+}}
+/>
+
+</div>
+
+<div
+style={{
+padding:18
+}}
+>
+
+<div
+style={{
+fontSize:17,
+fontWeight:700,
+marginBottom:6
+}}
+>
+{item.title}
+</div>
+
+<div
+style={{
+fontSize:14,
+opacity:.65,
+lineHeight:1.5
+}}
+>
+{item.desc}
+</div>
+
+</div>
+
+</div>
+
+);
+
+})}
+
+</div>
 
 </div>
 
@@ -625,7 +643,6 @@ e.target.value
 
 </div>
 
-
 <div style={section}>
 
 <h3>Gradient Direction</h3>
@@ -675,8 +692,6 @@ item
 
 <>
 
-{/* GLOW OPACITY */}
-
 <div style={section}>
 
 <h3>Glow Opacity</h3>
@@ -704,9 +719,6 @@ width:"100%"
 
 </div>
 
-
-{/* GLOW COLOR */}
-
 <div style={section}>
 
 <h3>Glow Color</h3>
@@ -725,9 +737,6 @@ e.target.value
 />
 
 </div>
-
-
-{/* GLOW POSITION */}
 
 <div style={section}>
 
@@ -764,9 +773,6 @@ item
 ))}
 
 </div>
-
-
-{/* BLUR */}
 
 <div style={section}>
 
