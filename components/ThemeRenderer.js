@@ -615,8 +615,9 @@ flexDirection:"column",
 alignItems:
 
 isEditorial
+
 ? "flex-start"
-: "center"
+
 : (
 text?.align === "left"
 ? "flex-start"
