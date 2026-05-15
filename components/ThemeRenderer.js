@@ -14,6 +14,7 @@ import backgroundPresets
 from "../app/lib/backgroundPresets";
 
 import { getTheme } from "../app/lib/themeEngine";
+
 import { layoutPresets }
 from "../app/lib/layoutPresets";
 
@@ -201,6 +202,7 @@ const socialLinks = {
 
 };
 
+
 /* ================================================= */
 /* BACKGROUND SETTINGS */
 /* ================================================= */
@@ -223,10 +225,11 @@ rawBackground?.preset
 const background = {
 
 ...presetBackground,
-
 ...rawBackground
 
 };
+
+
 /* ================================================= */
 /* LAYOUT SETTINGS */
 /* ================================================= */
@@ -237,13 +240,17 @@ const layout = {
 ...(live?.layout || {})
 
 };
+
+
 /* ================================================= */
 /* TEXT SETTINGS */
 /* ================================================= */
 
 const presetText = {
 
-...(layoutPresets?.[layout?.type] || {})
+...(layoutPresets?.[
+layout?.type
+] || {})
 
 };
 
@@ -255,6 +262,7 @@ const text = {
 ...(live?.text || {})
 
 };
+
 
 /* ================================================= */
 /* LAYOUT TYPES */
@@ -433,6 +441,9 @@ finalTheme?.background ||
 "#ffffff"
 ),
 
+transition:
+"background 900ms ease, color 500ms ease",
+
 color:
 finalTheme?.textColor || "#000000",
 
@@ -523,6 +534,14 @@ isHero
 background?.blurStrength || 80
 )
 }px)`,
+
+opacity:
+background?.type === "ambient"
+? 1
+: 0,
+
+transition:
+"all 1200ms cubic-bezier(.22,1,.36,1)",
 
 pointerEvents:"none"
 
@@ -653,7 +672,6 @@ isCard
 ? "70px 55px"
 : "0",
 
-
 paddingLeft:24,
 paddingRight:24,
 
@@ -665,11 +683,14 @@ isHero
 ? 120
 : undefined,
 
+transition:
+"all 700ms cubic-bezier(.22,1,.36,1)",
+
 }}
 >
 
 {/* ================================================= */}
-{/* LEFT SIDE (SPLIT) */}
+{/* LEFT SIDE */}
 {/* ================================================= */}
 
 <div
@@ -990,7 +1011,7 @@ finalTheme?.fonts?.bio ||
 style={{
 
 width:"100%",
-  
+
 maxWidth:
 
 isSplit
