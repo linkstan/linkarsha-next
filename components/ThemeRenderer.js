@@ -653,7 +653,8 @@ text?.align === "right"
 )
 ),
 
-width:"100%"
+width:"100%",
+
 position:
 
 isSplit
@@ -665,6 +666,7 @@ top:
 isSplit
 ? 80
 : "auto",
+
 }}
 >
 
@@ -705,10 +707,6 @@ isSplit
 
 : isHero
 ? 140
-
-: finalTheme?.layout?.avatarOverlap
-? -20
-: text?.headerTopSpacing || 42,
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
@@ -943,6 +941,12 @@ finalTheme?.fonts?.bio ||
 style={{
 
 width:"100%",
+  
+maxWidth:
+
+isSplit
+? 680
+: "100%",
 
 display:"flex",
 flexDirection:"column",
