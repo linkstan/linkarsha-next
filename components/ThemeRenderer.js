@@ -466,8 +466,17 @@ background?.glowPosition === "center"
 ? "translate(-50%,-50%)"
 : "none",
 
-width:420,
-height:420,
+width:
+
+isHero
+? 760
+: 420,
+
+height:
+
+isHero
+? 760
+: 420,
 
 borderRadius:"50%",
 
@@ -483,7 +492,13 @@ background?.type === "ambient"
 
 filter:
 `blur(${
+isHero
+? (
+(background?.blurStrength || 80) + 40
+)
+: (
 background?.blurStrength || 80
+)
 }px)`,
 
 pointerEvents:"none"
@@ -621,8 +636,11 @@ paddingRight:24,
 
 margin:"0 auto",
 
-position:"relative",
-zIndex:5
+paddingTop:
+
+isHero
+? 120
+: undefined,
 
 }}
 >
@@ -759,7 +777,11 @@ isHero
 text?.nameSize || 56
 ),
 
-lineHeight:1,
+lineHeight:
+
+isHero
+? 0.92
+: 1,
 
 letterSpacing:
 `${text?.letterSpacing || -0.04}em`,
@@ -842,7 +864,11 @@ text?.fontFamily ||
 finalTheme?.fonts?.bio ||
 "Inter",
 
-fontSize:20,
+fontSize:
+
+isHero
+? 26
+: 20,
 
 lineHeight:
 text?.lineHeight || 1.5,
