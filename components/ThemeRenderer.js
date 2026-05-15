@@ -824,7 +824,7 @@ marginTop:
 maxWidth:
 
 isEditorial
-? 520
+? 260
 : 340,
 
 width:"100%"
@@ -849,7 +849,7 @@ style={{
 maxWidth:
 
 isEditorial
-? 520
+? 260
 : 340,
 
 width:"100%",
@@ -901,6 +901,15 @@ finalTheme?.fonts?.bio ||
 style={{
 
 width:"100%",
+
+display:"flex",
+flexDirection:"column",
+
+alignItems:
+
+isEditorial
+? "flex-start"
+: "stretch",
 
 marginTop:
 
