@@ -513,7 +513,7 @@ isEditorial
 ? 720
 
 : isHero
-? 920
+? 1100
 
 : isCard
 ? 560
@@ -706,7 +706,7 @@ isSplit
 ? 20
 
 : isHero
-? 140
+? 220
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
@@ -753,7 +753,7 @@ fontSize:
 
 isHero
 ? (
-(text?.nameSize || 56) + 18
+(text?.nameSize || 56) + 32
 )
 : (
 text?.nameSize || 56
@@ -959,7 +959,10 @@ isEditorial
 
 marginTop:
 
-isSplit
+isHero
+? 90
+
+: isSplit
 ? 0
 : (
 text?.sectionSpacing || 54
