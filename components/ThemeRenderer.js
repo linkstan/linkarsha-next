@@ -540,14 +540,34 @@ background?.glowPosition === "center"
 width:
 
 isHero
-? 760
-: 420,
+
+? (
+isMobile
+? 340
+: 760
+)
+
+: (
+isMobile
+? 240
+: 420
+),
 
 height:
 
 isHero
-? 760
-: 420,
+
+? (
+isMobile
+? 340
+: 760
+)
+
+: (
+isMobile
+? 240
+: 420
+),
 
 borderRadius:"50%",
 
@@ -643,8 +663,15 @@ isSplit && !isMobile
 
 
 gap:
+
 isSplit
-? 120
+
+? (
+isMobile
+? 50
+: 120
+)
+
 : undefined,
 
 
@@ -710,7 +737,13 @@ background?.type === "ambient"
 padding:
 
 isCard
-? "70px 55px"
+
+? (
+isMobile
+? "38px 24px"
+: "70px 55px"
+)
+
 : "0",
 
 paddingLeft:24,
@@ -724,7 +757,7 @@ isHero
 
 ? (
 isMobile
-? 70
+? 40
 : 120
 )
 
@@ -866,7 +899,9 @@ fontSize:
 
 isHero
 
-? "clamp(72px,10vw,140px)"
+isMobile
+? "clamp(54px,14vw,76px)"
+: "clamp(72px,10vw,140px)"
 
 : isEditorial
 
@@ -1076,7 +1111,13 @@ width:"100%",
 maxWidth:
 
 isSplit
-? 680
+
+? (
+isMobile
+? "100%"
+: 680
+)
+
 : "100%",
 
 display:"flex",
