@@ -284,9 +284,29 @@ padding:20,
 
 cursor:"pointer",
 
-background:"var(--card)",
+background:
 
-transition:"all .2s ease"
+settings.type === item.id
+
+? "linear-gradient(180deg,#ffffff,#f7f7f7)"
+
+: "var(--card)",
+
+transition:"all .25s cubic-bezier(.2,.8,.2,1)",
+
+transform:
+
+settings.type === item.id
+? "translateY(-4px) scale(1.01)"
+: "translateY(0px)",
+
+boxShadow:
+
+settings.type === item.id
+
+? "0 18px 50px rgba(0,0,0,.10)"
+
+: "0 4px 14px rgba(0,0,0,.04)"
 
 }}
 >
@@ -302,7 +322,13 @@ height:120,
 
 borderRadius:18,
 
-background:"#f4f4f4",
+background:
+
+settings.type === item.id
+
+? "linear-gradient(180deg,#f8f8f8,#ececec)"
+
+: "#f4f4f4",
 
 marginBottom:16,
 
