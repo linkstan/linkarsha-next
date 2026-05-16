@@ -316,7 +316,29 @@ layout?.type === "hero";
 
 const isCard =
 layout?.type === "card";
+const isAmbient =
+background?.type === "ambient";
 
+
+const isDarkBackground =
+
+background?.background
+?
+
+(
+background.background === "#050505"
+||
+background.background === "#0d1117"
+||
+background.background === "#071b2b"
+)
+
+: false;
+
+
+const surfaceDepth =
+background?.surfaceDepth || 1;
+  
 const isSplit =
 layout?.type === "split";
 
@@ -687,9 +709,31 @@ background:
 isCard
 
 ? (
-background?.type === "ambient"
-? "rgba(255,255,255,0.16)"
-: "rgba(255,255,255,0.72)"
+
+isAmbient
+
+? `rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .08
+: .16
+}
+)`
+
+: `rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .14
+: .72
+}
+)`
+
 )
 
 : "transparent",
@@ -698,7 +742,13 @@ background?.type === "ambient"
 backdropFilter:
 
 isCard
-? "blur(40px)"
+
+? `blur(${
+(background?.glassBlur || 26)
+*
+1.4
+}px)`
+
 : "none",
 
 
@@ -707,9 +757,31 @@ border:
 isCard
 
 ? (
-background?.type === "ambient"
-? "1px solid rgba(255,255,255,0.12)"
-: "1px solid rgba(255,255,255,0.55)"
+
+isAmbient
+
+? `1px solid rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .08
+: .12
+}
+)`
+
+: `1px solid rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .18
+: .55
+}
+)`
+
 )
 
 : "none",
