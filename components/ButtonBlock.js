@@ -15,10 +15,26 @@ appearance
 const [hovered,setHovered] =
 useState(false);
 
-const buttons =
+const rawButtons =
+
 appearance?.buttons ||
 theme?.buttons ||
 {};
+
+const presetButtons = {
+
+...(buttonPresets?.[
+rawButtons?.preset
+] || {})
+
+};
+
+const buttons = {
+
+...presetButtons,
+...rawButtons
+
+};
 
 const layout =
 appearance?.layout || {};
@@ -157,7 +173,11 @@ return "0 10px 28px rgba(0,0,0,.18)";
 
 if(buttons?.shadowLift){
 
-return "0 10px 30px rgba(0,0,0,.14)";
+return buttons?.style === "glass"
+
+? "0 12px 40px rgba(0,0,0,.18)"
+
+: "0 14px 34px rgba(0,0,0,.16)";
 
 }
 
@@ -418,6 +438,10 @@ boxShadow:
 getShadow(),
 
 overflow:"hidden",
+
+position:"relative",
+
+isolation:"isolate"
 
 position:"relative",
 
