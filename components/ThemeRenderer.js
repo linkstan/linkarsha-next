@@ -734,7 +734,18 @@ background?.type === "ambient"
 
 transition:
 "all 1200ms cubic-bezier(.22,1,.36,1)",
+animation:
 
+floatAnimation
+&&
+background?.type === "ambient"
+
+? `floatingGlow ${
+12 / motionDuration
+}s ease-in-out infinite`
+
+: "none",
+  
 pointerEvents:"none"
 
 }}
