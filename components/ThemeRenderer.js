@@ -1404,7 +1404,8 @@ appearance={finalAppearance}
 
 </div>
 
-);
+</div>
+
 <style jsx global>{`
 
 @keyframes floatingGlow {
@@ -1442,4 +1443,9 @@ scale(1);
 }
 
 `}</style>
+
+</>
+
+);
+
 }
