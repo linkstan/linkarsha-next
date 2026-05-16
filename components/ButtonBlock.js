@@ -10,7 +10,8 @@ useState
 export default function ButtonBlock({
 block,
 theme,
-appearance
+appearance,
+index
 }){
 
 const [hovered,setHovered] =
@@ -42,6 +43,14 @@ appearance?.layout || {};
 
 const background =
 appearance?.background || {};
+const motionDuration =
+background?.motionDuration || 1;
+
+const staggerIntensity =
+background?.staggerIntensity || 1;
+
+const entranceAnimation =
+background?.entranceAnimation !== false;
 
 const isCTA =
 block?.data_json?.type === "cta";
