@@ -304,7 +304,14 @@ function getTransform(){
 
 if(hovered){
 
-return "translateY(-4px) scale(1.01)";
+return "`translateY(-${
+4 * (background?.animationIntensity || 1)
+}px) scale(${
+1 + (
+0.01 *
+(background?.animationIntensity || 1)
+)
+})`";
 
 }
 
@@ -415,7 +422,9 @@ isCard
 isAmbient
 )
 
-? "blur(26px)"
+? `blur(${
+background?.glassBlur || 26
+}px)`
 
 : "none",
 
