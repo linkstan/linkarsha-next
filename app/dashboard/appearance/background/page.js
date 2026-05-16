@@ -67,6 +67,17 @@ glassBlur:26,
 heroIntensity:1,
 
 animationIntensity:1,
+  
+motionPreset:"cinematic",
+
+entranceAnimation:true,
+
+floatAnimation:true,
+
+staggerIntensity:1,
+
+motionDuration:1,
+  
 surfaceDepth:1
 
 });
@@ -949,6 +960,167 @@ style={{
 width:"100%"
 }}
 />
+
+</div>
+/* ================================================= */
+/* MOTION ENGINE */
+/* ================================================= */
+
+<div style={section}>
+
+<h3>Motion Preset</h3>
+
+{[
+"minimal",
+"cinematic",
+"energetic",
+"luxury"
+].map((item)=>(
+
+<button
+key={item}
+
+style={
+option(
+settings.motionPreset === item
+)
+}
+
+onClick={()=>
+updateSetting(
+"motionPreset",
+item
+)
+}
+>
+
+{item}
+
+</button>
+
+))}
+
+</div>
+
+
+<div style={section}>
+
+<h3>Motion Duration</h3>
+
+<input
+type="range"
+
+min=".4"
+max="2"
+step=".05"
+
+value={
+settings.motionDuration || 1
+}
+
+onChange={(e)=>
+updateSetting(
+"motionDuration",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
+
+
+<div style={section}>
+
+<h3>Stagger Intensity</h3>
+
+<input
+type="range"
+
+min=".4"
+max="2"
+step=".05"
+
+value={
+settings.staggerIntensity || 1
+}
+
+onChange={(e)=>
+updateSetting(
+"staggerIntensity",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
+
+
+<div style={section}>
+
+<h3>Entrance Animation</h3>
+
+<button
+
+style={
+option(
+settings.entranceAnimation
+)
+}
+
+onClick={()=>
+updateSetting(
+"entranceAnimation",
+!settings.entranceAnimation
+)
+}
+>
+
+{
+settings.entranceAnimation
+? "Enabled"
+: "Disabled"
+}
+
+</button>
+
+</div>
+
+
+<div style={section}>
+
+<h3>Floating Atmosphere</h3>
+
+<button
+
+style={
+option(
+settings.floatAnimation
+)
+}
+
+onClick={()=>
+updateSetting(
+"floatAnimation",
+!settings.floatAnimation
+)
+}
+>
+
+{
+settings.floatAnimation
+? "Enabled"
+: "Disabled"
+}
+
+</button>
 
 </div>
 </div>
