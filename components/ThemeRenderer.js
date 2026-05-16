@@ -583,7 +583,18 @@ finalTheme?.background ||
 ),
 
 transition:
-"background 900ms ease, color 500ms ease",
+`
+background 900ms ease,
+color 500ms ease,
+
+opacity ${
+0.9 * motionDuration
+}s cubic-bezier(.22,1,.36,1),
+
+transform ${
+1.2 * motionDuration
+}s cubic-bezier(.22,1,.36,1)
+`,
 
 color:
 finalTheme?.textColor || "#000000",
@@ -618,7 +629,8 @@ mounted
 
 transition:
 `
-opacity ${
+opacity ...
+` ${
 0.9 * motionDuration
 }s cubic-bezier(.22,1,.36,1),
 
