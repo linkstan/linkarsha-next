@@ -198,7 +198,11 @@ return "0 6px 0 rgba(0,0,0,.22)";
 
 }
 
-return "0 6px 16px rgba(0,0,0,.08)";
+return `0 ${
+6 * (background?.surfaceDepth || 1)
+}px ${
+16 * (background?.surfaceDepth || 1)
+}px rgba(0,0,0,.08)`;
 
 }
 
