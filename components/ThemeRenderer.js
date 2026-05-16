@@ -798,19 +798,39 @@ boxShadow:
 isCard
 
 ? (
-background?.type === "ambient"
 
-? `0 ${
-30 * (background?.surfaceDepth || 1)
-}px ${
-80 * (background?.surfaceDepth || 1)
-}px rgba(0,0,0,.28)`
+isAmbient
 
-? `0 ${
-30 * (background?.surfaceDepth || 1)
+? `
+0 ${
+30 * surfaceDepth
 }px ${
-80 * (background?.surfaceDepth || 1)
-}px rgba(0,0,0,.10)`
+80 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .42 : .28
+}
+)
+`
+
+: `
+0 ${
+30 * surfaceDepth
+}px ${
+80 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .20 : .10
+}
+)
+`
+
 )
 
 : "none",
