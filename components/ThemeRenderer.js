@@ -316,31 +316,76 @@ layout?.type === "hero";
 
 const isCard =
 layout?.type === "card";
+
+const isSplit =
+layout?.type === "split";
+
 const isAmbient =
 background?.type === "ambient";
 
+const surfaceDepth =
+background?.surfaceDepth || 1;
 
 const isDarkBackground =
 
-background?.background
-?
+background?.type === "ambient"
 
-(
-background.background === "#050505"
 ||
-background.background === "#0d1117"
+
+themeName === "blueprint"
+
 ||
-background.background === "#071b2b"
+
+themeName === "dark";
+
+
+/* ================================================= */
+/* TYPOGRAPHY ENGINE */
+/* ================================================= */
+
+const typographyIntensity =
+(background?.atmosphereIntensity || 1)
+*
+(background?.heroIntensity || 1);
+
+const headingScale =
+isHero
+? (
+isMobile
+? 1.08
+: 1.18
 )
+: 1;
 
-: false;
+const adaptiveTextOpacity =
+isDarkBackground
+? Math.min(
+(text?.textOpacity || .72) + .12,
+1
+)
+: (
+text?.textOpacity || .72
+);
 
 
-const surfaceDepth =
-background?.surfaceDepth || 1;
-  
-const isSplit =
-layout?.type === "split";
+/* ================================================= */
+/* DENSITY ENGINE */
+/* ================================================= */
+
+const density =
+text?.density || "balanced";
+
+const adaptiveSpacing =
+
+density === "compact"
+
+? .78
+
+: density === "luxury"
+
+? 1.28
+
+: 1;
 
 
 /* ================================================= */
@@ -514,10 +559,6 @@ overflow:"hidden",
 }}
 >
 
-{/* ================================================= */}
-{/* GLOW */}
-{/* ================================================= */}
-
 <div
 style={{
 
@@ -628,16 +669,10 @@ pointerEvents:"none"
 }}
 />
 
-
 <HeroHeader
 appearance={finalAppearance}
 theme={finalTheme}
 />
-
-
-{/* ================================================= */}
-{/* MAIN CONTENT */}
-{/* ================================================= */}
 
 <div
 style={{
@@ -648,22 +683,37 @@ maxWidth:
 
 isMobile
 
-? 520
+? (
+text?.contentWidthMobile || 520
+)
 
 : isEditorial
-? 720
+
+? (
+text?.contentWidthEditorial || 720
+)
 
 : isHero
-? 1100
+
+? (
+text?.contentWidthHero || 1100
+)
 
 : isCard
-? 560
+
+? (
+text?.contentWidthCard || 560
+)
 
 : isSplit
-? 1200
 
-: 520,
+? (
+text?.contentWidthSplit || 1200
+)
 
+: (
+text?.contentWidth || 520
+),
 
 display:
 
@@ -671,12 +721,10 @@ isSplit && !isMobile
 ? "grid"
 : "flex",
 
-
 flexDirection:
 isSplit
 ? undefined
 : "column",
-
 
 gridTemplateColumns:
 
@@ -684,25 +732,26 @@ isSplit && !isMobile
 ? "420px minmax(400px,1fr)"
 : undefined,
 
-
 gap:
 
 isSplit
 
 ? (
 isMobile
-? 50
-: 120
+? (
+50 * adaptiveSpacing
+)
+: (
+120 * adaptiveSpacing
+)
 )
 
 : undefined,
-
 
 alignItems:
 isSplit
 ? "start"
 : "center",
-
 
 background:
 
@@ -738,7 +787,6 @@ isDarkBackground
 
 : "transparent",
 
-
 backdropFilter:
 
 isCard
@@ -750,7 +798,6 @@ isCard
 }px)`
 
 : "none",
-
 
 border:
 
@@ -785,7 +832,6 @@ isDarkBackground
 )
 
 : "none",
-
 
 borderRadius:
 
@@ -870,10 +916,6 @@ transition:
 }}
 >
 
-{/* ================================================= */}
-{/* LEFT SIDE */}
-{/* ================================================= */}
-
 <div
 style={{
 
@@ -912,8 +954,6 @@ isSplit && !isMobile
 
 }}
 >
-
-{/* AVATAR */}
 
 <img
 src={profile.avatar || ""}
@@ -976,7 +1016,11 @@ finalTheme?.layout?.avatarOverlap
 : "none",
 
 marginBottom:
-text?.sectionSpacing || 22,
+(
+text?.sectionSpacing || 22
+)
+*
+adaptiveSpacing,
 
 position:"relative",
 zIndex:10,
@@ -989,8 +1033,6 @@ finalTheme?.avatar?.shadow
 
 }}
 />
-
-{/* NAME */}
 
 {header.showDisplayName !== false && (
 
@@ -1008,8 +1050,22 @@ isHero
 
 ? (
 isMobile
-? "clamp(54px,14vw,76px)"
-: "clamp(72px,10vw,140px)"
+
+? `clamp(${
+54 * headingScale
+}px,${
+14 * headingScale
+}vw,${
+76 * headingScale
+}px)`
+
+: `clamp(${
+72 * headingScale
+}px,${
+10 * headingScale
+}vw,${
+140 * headingScale
+}px)`
 )
 
 : isEditorial
@@ -1033,7 +1089,13 @@ isHero
 : 1,
 
 letterSpacing:
-`${text?.letterSpacing || -0.04}em`,
+`${
+(
+text?.letterSpacing || -0.04
+)
+*
+typographyIntensity
+}em`,
 
 fontWeight:
 text?.fontWeight || 700,
@@ -1059,21 +1121,23 @@ width:"100%"
 
 )}
 
-{/* USERNAME */}
-
 {header.showUsername !== false && (
 
 <div
 style={{
 
 opacity:
-text?.textOpacity || .55,
+adaptiveTextOpacity,
 
 fontSize:
 text?.usernameSize || 18,
 
 marginTop:
-text?.nameBottomSpacing || 14,
+(
+text?.nameBottomSpacing || 14
+)
+*
+adaptiveSpacing,
 
 letterSpacing:
 `${(text?.letterSpacing || -0.04)/4}em`,
@@ -1101,8 +1165,6 @@ text?.fontFamily ||
 
 )}
 
-{/* SUBTITLE */}
-
 {header.subtitle && (
 
 <div
@@ -1123,7 +1185,7 @@ lineHeight:
 text?.lineHeight || 1.5,
 
 opacity:
-text?.textOpacity || .88,
+adaptiveTextOpacity,
 
 textAlign:
 
@@ -1134,7 +1196,13 @@ text?.align || "center"
 ),
 
 marginTop:
-(text?.sectionSpacing || 54) / 1.5,
+(
+(text?.sectionSpacing || 54)
+/
+1.5
+)
+*
+adaptiveSpacing,
 
 maxWidth:
 
@@ -1152,8 +1220,6 @@ width:"100%"
 </div>
 
 )}
-
-{/* BIO */}
 
 {header.showBio !== false &&
 profile.bio && (
@@ -1178,16 +1244,35 @@ text?.align || "center"
 ),
 
 opacity:
-text?.textOpacity || .72,
+adaptiveTextOpacity,
 
 lineHeight:
-text?.lineHeight || 1.7,
+
+(
+text?.lineHeight || 1.7
+)
+
+*
+
+(
+isHero
+? 1.04
+: 1
+),
 
 fontSize:
 text?.bioSize || 15,
 
 marginTop:
-(text?.sectionSpacing || 54) / 3,
+
+(
+(text?.sectionSpacing || 54)
+/
+3
+)
+
+*
+adaptiveSpacing,
 
 marginBottom:0,
 
@@ -1206,11 +1291,6 @@ finalTheme?.fonts?.bio ||
 )}
 
 </div>
-
-
-{/* ================================================= */}
-{/* RIGHT SIDE / BUTTONS */}
-{/* ================================================= */}
 
 <div
 style={{
@@ -1244,14 +1324,20 @@ isHero
 
 ? (
 isMobile
-? 60
-: 90
+? (
+60 * adaptiveSpacing
+)
+: (
+90 * adaptiveSpacing
+)
 )
 
 : isSplit
 ? 0
 : (
-text?.sectionSpacing || 54
+(text?.sectionSpacing || 54)
+*
+adaptiveSpacing
 ),
 
 paddingBottom:80
