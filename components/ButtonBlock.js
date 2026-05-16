@@ -440,7 +440,9 @@ isCard
 isAmbient
 )
 
-? "blur(26px)"
+? `blur(${
+background?.glassBlur || 26
+}px)`
 
 : "none",
 
