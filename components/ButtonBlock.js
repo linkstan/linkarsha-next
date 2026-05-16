@@ -54,6 +54,24 @@ layout?.type === "card";
 
 const isAmbient =
 background?.type === "ambient";
+const isDarkBackground =
+
+background?.background
+?
+
+(
+background.background === "#050505"
+||
+background.background === "#0d1117"
+||
+background.background === "#071b2b"
+)
+
+: false;
+
+
+const surfaceDepth =
+background?.surfaceDepth || 1;
 
 
 /* ================================================= */
@@ -156,21 +174,47 @@ return 17;
 
 function getShadow(){
 
+const intensity =
+surfaceDepth *
+(background?.atmosphereIntensity || 1);
+
 if(hovered){
 
 if(isAmbient){
 
-return "0 25px 60px rgba(0,0,0,.28)";
+return `
+0 ${
+25 * intensity
+}px ${
+60 * intensity
+}px rgba(0,0,0,${
+isDarkBackground ? .42 : .28
+})
+`;
 
 }
 
-return "0 20px 45px rgba(0,0,0,.18)";
+return `
+0 ${
+20 * intensity
+}px ${
+45 * intensity
+}px rgba(0,0,0,.18)
+`;
 
 }
 
 if(isAmbient){
 
-return "0 10px 28px rgba(0,0,0,.18)";
+return `
+0 ${
+10 * intensity
+}px ${
+28 * intensity
+}px rgba(0,0,0,${
+isDarkBackground ? .34 : .18
+})
+`;
 
 }
 
@@ -179,30 +223,54 @@ if(buttons?.shadowLift){
 return buttons?.style === "glass"
 
 ? `0 ${
-buttons?.depth || 14
+(buttons?.depth || 14)
+*
+intensity
 }px ${
-(buttons?.depth || 14) * 2.4
-}px rgba(0,0,0,.18)`
+(buttons?.depth || 14)
+*
+2.4
+*
+intensity
+}px rgba(0,0,0,${
+isDarkBackground ? .28 : .18
+})`
 
 : `0 ${
-buttons?.depth || 14
+(buttons?.depth || 14)
+*
+intensity
 }px ${
-(buttons?.depth || 14) * 2.4
-}px rgba(0,0,0,.16)`;
+(buttons?.depth || 14)
+*
+2.4
+*
+intensity
+}px rgba(0,0,0,${
+isDarkBackground ? .24 : .16
+})`;
 
 }
 
 if(buttons?.depthEffect){
 
-return "0 6px 0 rgba(0,0,0,.22)";
+return `
+0 ${
+6 * intensity
+}px 0 rgba(0,0,0,.22)
+`;
 
 }
 
-return `0 ${
-6 * (background?.surfaceDepth || 1)
+return `
+0 ${
+6 * intensity
 }px ${
-16 * (background?.surfaceDepth || 1)
-}px rgba(0,0,0,.08)`;
+16 * intensity
+}px rgba(0,0,0,${
+isDarkBackground ? .20 : .08
+})
+`;
 
 }
 
@@ -237,9 +305,27 @@ isAmbient
 
 return hovered
 
-? "rgba(255,255,255,.28)"
+? `rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .18
+: .28
+}
+)`
 
-: "rgba(255,255,255,.18)";
+: `rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .10
+: .18
+}
+)`;
 
 }
 
@@ -272,9 +358,27 @@ isAmbient
 
 return hovered
 
-? "1px solid rgba(255,255,255,.45)"
+? `1px solid rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .22
+: .45
+}
+)`
 
-: "1px solid rgba(255,255,255,.25)";
+: `1px solid rgba(
+255,
+255,
+255,
+${
+isDarkBackground
+? .12
+: .25
+}
+)`;
 
 }
 
