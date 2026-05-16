@@ -728,9 +728,17 @@ isCard
 ? (
 background?.type === "ambient"
 
-? "0 30px 80px rgba(0,0,0,.28)"
+? `0 ${
+30 * (background?.surfaceDepth || 1)
+}px ${
+80 * (background?.surfaceDepth || 1)
+}px rgba(0,0,0,.28)`
 
-: "0 30px 80px rgba(0,0,0,.10)"
+? `0 ${
+30 * (background?.surfaceDepth || 1)
+}px ${
+80 * (background?.surfaceDepth || 1)
+}px rgba(0,0,0,.10)`
 )
 
 : "none",
