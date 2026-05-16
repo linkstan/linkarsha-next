@@ -510,14 +510,11 @@ marginTop:
 appearance?.text?.buttonSpacing || 18,
 
 textDecoration:"none",
+
 opacity:
 entranceAnimation
 ? 0
 : 1,
-
-animation:
-
-entranceAnimation
 
 animation:
 
@@ -530,6 +527,7 @@ index * 0.08 * staggerIntensity
 }s both`
 
 : "none",
+
 transition:
 `
 transform .32s cubic-bezier(.22,1,.36,1),
@@ -614,7 +612,6 @@ willChange:
 
 }}
 >
-
 {/* ================================================= */}
 {/* GLASS ATMOSPHERE */}
 {/* ================================================= */}
