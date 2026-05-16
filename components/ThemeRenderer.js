@@ -587,8 +587,9 @@ isHero
 ? (
 (background?.blurStrength || 80) + 40
 )
-: (
-background?.blurStrength || 80
+: (background?.blurStrength || 80)
+*
+(background?.atmosphereIntensity || 1)
 )
 }px)`,
 
@@ -822,7 +823,10 @@ style={{
 width:
 
 isHero
-? 140
+? (
+140 *
+(background?.heroIntensity || 1)
+)
 : (
 finalTheme?.avatar?.size || 110
 ),
@@ -830,7 +834,10 @@ finalTheme?.avatar?.size || 110
 height:
 
 isHero
-? 140
+? (
+140 *
+(background?.heroIntensity || 1)
+)
 : (
 finalTheme?.avatar?.size || 110
 ),
