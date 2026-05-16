@@ -97,6 +97,8 @@ const [live,setLive] = useState({});
 
 const [isMobile,setIsMobile] =
 useState(false);
+const [mounted,setMounted] =
+useState(false);
 
 
 /* ================================================= */
@@ -181,7 +183,21 @@ handleResize
 };
 
 },[]);
+/* ================================================= */
+/* ENTRANCE ANIMATION */
+/* ================================================= */
 
+useEffect(()=>{
+
+const timer = setTimeout(()=>{
+
+setMounted(true);
+
+},80);
+
+return ()=>clearTimeout(timer);
+
+},[]);
 
 /* ================================================= */
 /* FINAL APPEARANCE */
@@ -325,6 +341,25 @@ background?.type === "ambient";
 
 const surfaceDepth =
 background?.surfaceDepth || 1;
+/* ================================================= */
+/* MOTION ENGINE */
+/* ================================================= */
+
+const motionPreset =
+background?.motionPreset ||
+"cinematic";
+
+const motionDuration =
+background?.motionDuration || 1;
+
+const staggerIntensity =
+background?.staggerIntensity || 1;
+
+const entranceAnimation =
+background?.entranceAnimation !== false;
+
+const floatAnimation =
+background?.floatAnimation !== false;
 
 const isDarkBackground =
 
@@ -1345,10 +1380,12 @@ paddingBottom:80
 }}
 >
 
-{blocks.map(block=>(
+{blocks.map((block,index)=>(
 
 <ButtonBlock
-
+  
+index={index}
+ 
 key={block.id}
 
 block={block}
@@ -1368,5 +1405,41 @@ appearance={finalAppearance}
 </div>
 
 );
+<style jsx global>{`
 
+@keyframes floatingGlow {
+
+0%{
+transform:
+translate(0px,0px)
+scale(1);
+}
+
+25%{
+transform:
+translate(12px,-8px)
+scale(1.04);
+}
+
+50%{
+transform:
+translate(-6px,12px)
+scale(1.02);
+}
+
+75%{
+transform:
+translate(10px,6px)
+scale(1.05);
+}
+
+100%{
+transform:
+translate(0px,0px)
+scale(1);
+}
+
+}
+
+`}</style>
 }
