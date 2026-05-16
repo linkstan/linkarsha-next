@@ -1451,8 +1451,6 @@ appearance={finalAppearance}
 
 </div>
 
-</div>
-
 <style jsx global>{`
 
 @keyframes floatingGlow {
