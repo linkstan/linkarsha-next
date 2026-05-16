@@ -539,6 +539,8 @@ return(
 
 return(
 
+<>
+
 <div
 style={{
 
@@ -590,6 +592,40 @@ minHeight:"100vh",
 
 position:"relative",
 overflow:"hidden",
+opacity:
+
+entranceAnimation
+
+? (
+mounted
+? 1
+: 0
+)
+
+: 1,
+
+transform:
+
+entranceAnimation
+
+? (
+mounted
+? "translateY(0px)"
+: "translateY(28px)"
+)
+
+: "none",
+
+transition:
+`
+opacity ${
+0.9 * motionDuration
+}s cubic-bezier(.22,1,.36,1),
+
+transform ${
+1.2 * motionDuration
+}s cubic-bezier(.22,1,.36,1)
+`,
 
 }}
 >
