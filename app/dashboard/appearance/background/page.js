@@ -54,7 +54,19 @@ blurStrength:80,
 
 glowColor:"#7c7cff",
 
-glowPosition:"top-left"
+glowPosition:"top-left",
+
+/* ================================================= */
+/* ADVANCED */
+/* ================================================= */
+
+atmosphereIntensity:1,
+
+glassBlur:26,
+
+heroIntensity:1,
+
+animationIntensity:1
 
 });
 
