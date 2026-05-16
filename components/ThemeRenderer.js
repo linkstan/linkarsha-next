@@ -594,6 +594,7 @@ opacity ${
 transform ${
 1.2 * motionDuration
 }s cubic-bezier(.22,1,.36,1)
+s cubic-bezier(.22,1,.36,1)
 `,
 
 color:
@@ -602,7 +603,9 @@ finalTheme?.textColor || "#000000",
 minHeight:"100vh",
 
 position:"relative",
+
 overflow:"hidden",
+
 opacity:
 
 entranceAnimation
@@ -626,18 +629,6 @@ mounted
 )
 
 : "none",
-
-transition:
-`
-opacity ...
-` ${
-0.9 * motionDuration
-}s cubic-bezier(.22,1,.36,1),
-
-transform ${
-1.2 * motionDuration
-}s cubic-bezier(.22,1,.36,1)
-`,
 
 }}
 >
