@@ -804,7 +804,140 @@ width:"100%"
 </>
 
 )}
+{/* ================================================= */}
+{/* ATMOSPHERE CONTROLS */}
+{/* ================================================= */}
 
+<div style={section}>
+
+<h3>Atmosphere Intensity</h3>
+
+<input
+type="range"
+
+min=".2"
+max="2"
+step=".05"
+
+value={
+settings.atmosphereIntensity || 1
+}
+
+onChange={(e)=>
+updateSetting(
+"atmosphereIntensity",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
+
+
+{/* ================================================= */}
+{/* GLASS BLUR */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Glass Blur</h3>
+
+<input
+type="range"
+
+min="0"
+max="80"
+step="1"
+
+value={
+settings.glassBlur || 26
+}
+
+onChange={(e)=>
+updateSetting(
+"glassBlur",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
+
+
+{/* ================================================= */}
+{/* HERO INTENSITY */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Hero Intensity</h3>
+
+<input
+type="range"
+
+min=".6"
+max="2"
+step=".05"
+
+value={
+settings.heroIntensity || 1
+}
+
+onChange={(e)=>
+updateSetting(
+"heroIntensity",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
+
+
+{/* ================================================= */}
+{/* ANIMATION INTENSITY */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Animation Intensity</h3>
+
+<input
+type="range"
+
+min=".3"
+max="2"
+step=".05"
+
+value={
+settings.animationIntensity || 1
+}
+
+onChange={(e)=>
+updateSetting(
+"animationIntensity",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+</div>
 </div>
 
 );
