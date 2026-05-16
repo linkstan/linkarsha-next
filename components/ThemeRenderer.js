@@ -586,8 +586,8 @@ filter:
 isHero
 ? (
 (background?.blurStrength || 80) + 40
-)
-: (background?.blurStrength || 80)
+): (
+(background?.blurStrength || 80)
 *
 (background?.atmosphereIntensity || 1)
 )
