@@ -905,9 +905,6 @@ isMobile
 : "clamp(72px,10vw,140px)"
 )
 
-: (
-text?.nameSize || 56
-),
 : isEditorial
 
 ? "clamp(54px,7vw,92px)"
