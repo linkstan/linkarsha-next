@@ -90,7 +90,9 @@ case "full":
 return 999;
 
 default:
-return isHero ? 28 : 18;
+
+return buttons?.radiusValue ||
+(isHero ? 28 : 18);
 
 }
 
@@ -176,9 +178,17 @@ if(buttons?.shadowLift){
 
 return buttons?.style === "glass"
 
-? "0 12px 40px rgba(0,0,0,.18)"
+? `0 ${
+buttons?.depth || 14
+}px ${
+(buttons?.depth || 14) * 2.4
+}px rgba(0,0,0,.18)`
 
-: "0 14px 34px rgba(0,0,0,.16)";
+: `0 ${
+buttons?.depth || 14
+}px ${
+(buttons?.depth || 14) * 2.4
+}px rgba(0,0,0,.16)`;
 
 }
 
@@ -376,7 +386,13 @@ appearance?.text?.buttonSpacing || 18,
 textDecoration:"none",
 
 transition:
-"all .32s cubic-bezier(.22,1,.36,1)",
+`
+transform .32s cubic-bezier(.22,1,.36,1),
+box-shadow .32s cubic-bezier(.22,1,.36,1),
+background .5s ease,
+border .5s ease,
+backdrop-filter .5s ease
+`,
 
 transform:
 getTransform(),
