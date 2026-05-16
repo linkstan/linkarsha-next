@@ -512,18 +512,22 @@ appearance?.text?.buttonSpacing || 18,
 textDecoration:"none",
 opacity:
 entranceAnimation
-? 1
+? 0
 : 1,
 
 animation:
 
 entranceAnimation
 
+animation:
+
+entranceAnimation
+
 ? `buttonEntrance ${
-(.55 + (index * .08 * staggerIntensity))
-*
-motionDuration
-}s cubic-bezier(.22,1,.36,1)`
+0.7 * motionDuration
+}s cubic-bezier(.22,1,.36,1) ${
+index * 0.08 * staggerIntensity
+}s both`
 
 : "none",
 transition:
