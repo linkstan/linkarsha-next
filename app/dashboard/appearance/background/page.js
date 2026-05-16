@@ -20,13 +20,13 @@ const router = useRouter();
 
 const [settings,setSettings] = useState({
 
-preset:"",
+preset:"softLavender",
 
 /* ================================================= */
 /* TYPE */
 /* ================================================= */
 
-type:"solid",
+type:"ambient",
 
 /* ================================================= */
 /* SOLID */
@@ -54,7 +54,7 @@ blurStrength:80,
 
 glowColor:"#7c7cff",
 
-glowPosition:"top-left",
+glowPosition:"top-right",
 
 /* ================================================= */
 /* ADVANCED */
@@ -67,6 +67,7 @@ glassBlur:26,
 heroIntensity:1,
 
 animationIntensity:1
+surfaceDepth:1
 
 });
 
