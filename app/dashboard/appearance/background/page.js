@@ -66,7 +66,7 @@ glassBlur:26,
 
 heroIntensity:1,
 
-animationIntensity:1
+animationIntensity:1,
 surfaceDepth:1
 
 });
