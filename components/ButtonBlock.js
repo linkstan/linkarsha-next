@@ -304,14 +304,14 @@ function getTransform(){
 
 if(hovered){
 
-return "`translateY(-${
+return `translateY(-${
 4 * (background?.animationIntensity || 1)
 }px) scale(${
 1 + (
 0.01 *
 (background?.animationIntensity || 1)
 )
-})`";
+})`;
 
 }
 
