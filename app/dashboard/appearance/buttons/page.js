@@ -1,14 +1,28 @@
 "use client";
 
-import { useState,useEffect } from "react";
-import { supabase } from "../../../lib/supabase";
-import { useRouter } from "next/navigation";
+import {
+useState,
+useEffect
+} from "react";
+
+import { supabase }
+from "../../../lib/supabase";
+
+import { useRouter }
+from "next/navigation";
+
+import buttonPresets
+from "../../../lib/buttonPresets";
 
 export default function Buttons(){
 
 const router = useRouter();
 
 const [settings,setSettings] = useState({
+
+/* PRESET */
+
+preset:"minimal",
 
 /* STYLE */
 
@@ -17,6 +31,7 @@ style:"solid",
 /* RADIUS */
 
 radius:"round",
+radiusValue:18,
 
 /* COLORS */
 
@@ -37,12 +52,73 @@ pressEffect:true,
 shadowLift:false,
 depthEffect:false,
 
+/* ADVANCED */
+
+depth:14,
+
 /* SPACING */
 
 spacing:14,
 padding:18
 
 });
+
+
+/* ================================================= */
+/* PRESET LIST */
+/* ================================================= */
+
+const presets = [
+
+{
+id:"minimal",
+title:"Minimal",
+desc:"Clean modern simplicity"
+},
+
+{
+id:"glass",
+title:"Glass",
+desc:"Premium glassmorphism"
+},
+
+{
+id:"luxury",
+title:"Luxury",
+desc:"Elegant cinematic depth"
+},
+
+{
+id:"soft",
+title:"Soft",
+desc:"Warm creator softness"
+},
+
+{
+id:"editorial",
+title:"Editorial",
+desc:"Magazine aesthetic"
+},
+
+{
+id:"neon",
+title:"Neon",
+desc:"Bright modern energy"
+},
+
+{
+id:"floating",
+title:"Floating",
+desc:"Layered atmosphere"
+},
+
+{
+id:"bold",
+title:"Bold",
+desc:"Strong visual impact"
+}
+
+];
 
 
 /* ================================================= */
@@ -81,6 +157,38 @@ setSettings(prev=>({
 
 
 /* ================================================= */
+/* SAVE */
+/* ================================================= */
+
+async function saveSettings(newSettings){
+
+const {data:{session}} =
+await supabase.auth.getSession();
+
+if(!session) return;
+
+const {data:profile} = await supabase
+.from("profiles")
+.select("profile_settings")
+.eq("id",session.user.id)
+.single();
+
+const allSettings =
+profile?.profile_settings || {};
+
+allSettings.buttons = newSettings;
+
+await supabase
+.from("profiles")
+.update({
+profile_settings:allSettings
+})
+.eq("id",session.user.id);
+
+}
+
+
+/* ================================================= */
 /* UPDATE */
 /* ================================================= */
 
@@ -112,28 +220,46 @@ buttons:newSettings
 
 /* SAVE */
 
-const {data:{session}} =
-await supabase.auth.getSession();
+await saveSettings(newSettings);
 
-if(!session) return;
+}
 
-const {data:profile} = await supabase
-.from("profiles")
-.select("profile_settings")
-.eq("id",session.user.id)
-.single();
 
-const allSettings =
-profile?.profile_settings || {};
+/* ================================================= */
+/* APPLY PRESET */
+/* ================================================= */
 
-allSettings.buttons = newSettings;
+async function applyPreset(id){
 
-await supabase
-.from("profiles")
-.update({
-profile_settings:allSettings
-})
-.eq("id",session.user.id);
+const preset =
+buttonPresets?.[id] || {};
+
+const newSettings = {
+
+...settings,
+
+preset:id,
+
+...preset
+
+};
+
+setSettings(newSettings);
+
+window.dispatchEvent(
+
+new CustomEvent(
+"appearance-update",
+{
+detail:{
+buttons:newSettings
+}
+}
+)
+
+);
+
+await saveSettings(newSettings);
 
 }
 
@@ -148,7 +274,7 @@ background:"var(--card)",
 
 border:"1px solid var(--border)",
 
-borderRadius:18,
+borderRadius:24,
 
 padding:24,
 
@@ -180,7 +306,9 @@ marginRight:10,
 marginBottom:10,
 
 fontSize:15,
-fontWeight:500
+fontWeight:500,
+
+transition:"all .2s ease"
 
 });
 
@@ -193,12 +321,14 @@ return(
 
 <div
 style={{
-maxWidth:700,
+maxWidth:760,
 padding:20
 }}
 >
 
+{/* ================================================= */}
 {/* HEADER */}
+{/* ================================================= */}
 
 <div
 style={{
@@ -246,6 +376,157 @@ lineHeight:1
 >
 Buttons
 </h1>
+
+</div>
+
+
+{/* ================================================= */}
+{/* PRESETS */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Button Presets</h3>
+
+<div
+style={{
+
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(220px,1fr))",
+
+gap:18,
+
+marginTop:20
+
+}}
+>
+
+{presets.map((item)=>{
+
+const preset =
+buttonPresets?.[item.id] || {};
+
+return(
+
+<div
+
+key={item.id}
+
+onClick={()=>
+applyPreset(item.id)
+}
+
+style={{
+
+cursor:"pointer",
+
+border:
+
+settings?.preset === item.id
+
+? "2px solid #000"
+
+: "1px solid var(--border)",
+
+borderRadius:28,
+
+padding:20,
+
+background:"var(--card)",
+
+transition:"all .25s ease",
+
+boxShadow:
+
+settings?.preset === item.id
+
+? "0 18px 40px rgba(0,0,0,.12)"
+
+: "0 4px 12px rgba(0,0,0,.05)"
+
+}}
+>
+
+<div
+style={{
+
+height:90,
+
+borderRadius:24,
+
+background:
+
+preset?.style === "glass"
+
+? "rgba(255,255,255,.22)"
+
+: (
+preset?.bg ||
+"#111"
+),
+
+border:
+
+preset?.style === "glass"
+
+? "1px solid rgba(255,255,255,.4)"
+
+: "none",
+
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+
+fontWeight:700,
+
+fontSize:18,
+
+color:
+preset?.text || "#fff"
+
+}}
+>
+
+Button
+
+</div>
+
+<div
+style={{
+marginTop:16
+}}
+>
+
+<div
+style={{
+fontWeight:700,
+marginBottom:6
+}}
+>
+{item.title}
+</div>
+
+<div
+style={{
+fontSize:14,
+opacity:.68,
+lineHeight:1.5
+}}
+>
+{item.desc}
+</div>
+
+</div>
+
+</div>
+
+);
+
+})}
+
+</div>
 
 </div>
 
@@ -444,6 +725,62 @@ e.target.checked
 {" "}Depth effect
 
 </label>
+
+</div>
+
+
+{/* ================================================= */}
+{/* ADVANCED */}
+{/* ================================================= */}
+
+<div style={section}>
+
+<h3>Depth</h3>
+
+<input
+type="range"
+
+min="0"
+max="40"
+
+value={settings.depth || 14}
+
+onChange={(e)=>
+updateSetting(
+"depth",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
+
+
+<h3 style={{marginTop:30}}>
+Custom Radius
+</h3>
+
+<input
+type="range"
+
+min="0"
+max="999"
+
+value={settings.radiusValue || 18}
+
+onChange={(e)=>
+updateSetting(
+"radiusValue",
+Number(e.target.value)
+)
+}
+
+style={{
+width:"100%"
+}}
+/>
 
 </div>
 
