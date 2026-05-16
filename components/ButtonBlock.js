@@ -439,6 +439,8 @@ return "translateY(0px) scale(1)";
 
 return(
 
+<>
+
 <a
 href={block?.data_json?.url || "#"}
 target="_blank"
@@ -508,7 +510,22 @@ marginTop:
 appearance?.text?.buttonSpacing || 18,
 
 textDecoration:"none",
+opacity:
+entranceAnimation
+? 1
+: 1,
 
+animation:
+
+entranceAnimation
+
+? `buttonEntrance ${
+(.55 + (index * .08 * staggerIntensity))
+*
+motionDuration
+}s cubic-bezier(.22,1,.36,1)`
+
+: "none",
 transition:
 `
 transform .32s cubic-bezier(.22,1,.36,1),
@@ -668,7 +685,6 @@ fontWeight:500
 
 </a>
 
-);
 <style jsx global>{`
 
 @keyframes buttonEntrance {
@@ -696,4 +712,9 @@ scale(1);
 }
 
 `}</style>
+
+</>
+
+);
+
 }
