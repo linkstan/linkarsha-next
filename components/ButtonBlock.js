@@ -1,4 +1,5 @@
 "use client";
+
 import buttonPresets
 from "../app/lib/buttonPresets";
 
@@ -375,7 +376,7 @@ appearance?.text?.buttonSpacing || 18,
 textDecoration:"none",
 
 transition:
-"all 220ms cubic-bezier(.22,1,.36,1)",
+"all .32s cubic-bezier(.22,1,.36,1)",
 
 transform:
 getTransform(),
@@ -441,9 +442,7 @@ overflow:"hidden",
 
 position:"relative",
 
-isolation:"isolate"
-
-position:"relative",
+isolation:"isolate",
 
 willChange:
 "transform, box-shadow, background"
@@ -451,13 +450,41 @@ willChange:
 }}
 >
 
+{/* ================================================= */}
+{/* GLASS ATMOSPHERE */}
+{/* ================================================= */}
+
+{buttons?.style === "glass" && (
+
+<div
+style={{
+
+position:"absolute",
+
+inset:0,
+
+background:
+"linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.05))",
+
+pointerEvents:"none",
+
+zIndex:0
+
+}}
+/>
+
+)}
+
 <div
 style={{
 
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-justifyContent:"center"
+justifyContent:"center",
+
+position:"relative",
+zIndex:2
 
 }}
 >
