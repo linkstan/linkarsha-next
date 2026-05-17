@@ -19,6 +19,16 @@ getTransform
 
 } from "./renderers/blockStyleEngine";
 
+import ButtonContent
+from "./renderers/blocks/ButtonContent";
+
+import ButtonAtmosphere
+from "./renderers/blocks/ButtonAtmosphere";
+
+import {
+buttonEntranceKeyframes
+} from "./renderers/blocks/ButtonMotion";
+
 import {
 useState
 } from "react";
@@ -132,19 +142,6 @@ background.background === "#071b2b"
 
 const surfaceDepth =
 background?.surfaceDepth || 1;
-
-
-/* ================================================= */
-/* TITLE */
-/* ================================================= */
-
-function formatTitle(title){
-
-if(!title) return "Link";
-
-return title;
-
-}
 
 
 /* ================================================= */
@@ -413,7 +410,8 @@ background,
 isFeaturedCTA,
 hovered,
 isAmbient,
-buttons
+buttons,
+variant
 
 }),
 
@@ -429,26 +427,9 @@ willChange:
 }}
 >
 
-{buttons?.style === "glass" && (
-
-<div
-style={{
-
-position:"absolute",
-
-inset:0,
-
-background:
-"linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.05))",
-
-pointerEvents:"none",
-
-zIndex:0
-
-}}
+<ButtonAtmosphere
+buttons={buttons}
 />
-
-)}
 
 <div
 style={{
@@ -470,73 +451,22 @@ isHeroBlock
 }}
 >
 
-<div>
+<ButtonContent
 
-{formatTitle(
-block?.data_json?.title || "Link"
-)}
+block={block}
 
-</div>
+isHeroBlock={isHeroBlock}
 
-{block?.data_json?.subtitle && (
+isHero={isHero}
 
-<div
-style={{
-
-fontSize:
-
-isHeroBlock
-? 15
-
-: isHero
-? 13
-: 12,
-
-opacity:.72,
-
-marginTop:4,
-
-fontWeight:500
-
-}}
->
-
-{block.data_json.subtitle}
-
-</div>
-
-)}
+/>
 
 </div>
 
 </a>
 
 <style jsx global>{`
-
-@keyframes buttonEntrance {
-
-0%{
-
-opacity:0;
-
-transform:
-translateY(18px)
-scale(.98);
-
-}
-
-100%{
-
-opacity:1;
-
-transform:
-translateY(0px)
-scale(1);
-
-}
-
-}
-
+${buttonEntranceKeyframes}
 `}</style>
 
 </>
