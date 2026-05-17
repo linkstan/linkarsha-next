@@ -1,5 +1,8 @@
 "use client";
 
+import GlassSurface
+from "../surfaces/GlassSurface";
+
 export default function VideoBlock({
 
 block
@@ -17,20 +20,28 @@ return null;
 
 return(
 
-<div
+<GlassSurface
+
+borderRadius={28}
+
+padding={0}
+
 style={{
 
-width:"100%",
+width:"100%"
 
-borderRadius:28,
+}}
 
-overflow:"hidden",
+>
+
+<div
+style={{
 
 position:"relative",
 
 aspectRatio:"16 / 9",
 
-background:"#000000"
+width:"100%"
 
 }}
 >
@@ -41,18 +52,20 @@ allowFullScreen
 
 style={{
 
+position:"absolute",
+inset:0,
+
 width:"100%",
 height:"100%",
 
-border:"none",
-
-position:"absolute",
-inset:0
+border:"none"
 
 }}
 />
 
 </div>
+
+</GlassSurface>
 
 );
 
