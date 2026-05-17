@@ -50,6 +50,12 @@ lineHeight:1.05,
 letterSpacing:-0.075,
 
 textOpacity:.82,
+heroAlignment:"center",
+
+heroContentWidth:980,
+
+heroTopSpacing:160,
+heroTopSpacingMobile:80,
 
 /* ================================================= */
 /* CAPABILITIES */
@@ -120,6 +126,9 @@ lineHeight:1.55,
 letterSpacing:-0.05,
 
 textOpacity:.72,
+splitLeftWidth:440,
+
+enableBento:false,
 
 /* ================================================= */
 /* CAPABILITIES */
