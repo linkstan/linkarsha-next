@@ -68,6 +68,24 @@ index === 0;
 const isSecondaryCTA =
 index === 1;
 
+
+/* ================================================= */
+/* BLOCK SIZE ENGINE */
+/* ================================================= */
+
+const blockSize =
+block?.data_json?.size || "normal";
+
+const isWide =
+blockSize === "wide";
+
+const isFeature =
+blockSize === "feature";
+
+const isHeroBlock =
+blockSize === "hero";
+
+
 const isCard =
 layout?.type === "card";
 
@@ -142,6 +160,18 @@ return buttons?.radiusValue ||
 
 function getPadding(){
 
+if(isHeroBlock){
+
+return "42px 42px";
+
+}
+
+if(isFeature){
+
+return "36px 36px";
+
+}
+
 if(isFeaturedCTA){
 
 return "32px 38px";
@@ -177,6 +207,18 @@ return "18px 24px";
 
 
 function getFontSize(){
+
+if(isHeroBlock){
+
+return 28;
+
+}
+
+if(isFeature){
+
+return 24;
+
+}
 
 if(isFeaturedCTA){
 
@@ -217,6 +259,25 @@ return 17;
 /* ================================================= */
 
 function getShadow(){
+
+if(isHeroBlock){
+
+return `
+0 ${
+46 * surfaceDepth
+}px ${
+120 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .44 : .24
+}
+)
+`;
+
+}
 
 const intensity =
 surfaceDepth *
@@ -364,6 +425,30 @@ isCard
 isAmbient
 ){
 
+if(isHeroBlock){
+
+return hovered
+
+? `rgba(
+255,
+255,
+255,
+${
+isDarkBackground ? .28 : .42
+}
+)`
+
+: `rgba(
+255,
+255,
+255,
+${
+isDarkBackground ? .18 : .30
+}
+)`;
+
+}
+
 if(isFeaturedCTA){
 
 return hovered
@@ -497,8 +582,12 @@ if(hovered){
 
 return `translateY(-${
 (
-isFeaturedCTA
+isHeroBlock
+? 10
+
+: isFeaturedCTA
 ? 7
+
 : 4
 )
 *
@@ -588,6 +677,22 @@ style={{
 
 display:"block",
 
+gridColumn:
+
+isWide
+? "span 2"
+: "span 1",
+
+minHeight:
+
+isHeroBlock
+? 220
+
+: isFeature
+? 170
+
+: undefined,
+
 padding:getPadding(),
 
 marginTop:
@@ -672,8 +777,13 @@ fontFamily:
 theme?.fonts?.buttons || "Inter",
 
 fontWeight:
-isFeaturedCTA
+
+isHeroBlock
+? 900
+
+: isFeaturedCTA
 ? 800
+
 : 700,
 
 fontSize:
@@ -731,7 +841,13 @@ alignItems:"center",
 justifyContent:"center",
 
 position:"relative",
-zIndex:2
+zIndex:2,
+
+minHeight:
+
+isHeroBlock
+? 130
+: undefined
 
 }}
 >
@@ -751,7 +867,13 @@ block?.data_json?.title || "Link"
 style={{
 
 fontSize:
-isHero ? 13 : 12,
+
+isHeroBlock
+? 15
+
+: isHero
+? 13
+: 12,
 
 opacity:.72,
 
