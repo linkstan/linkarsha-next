@@ -315,7 +315,30 @@ const text = {
 ...(live?.text || {})
 
 };
+/* ================================================= */
+/* LAYOUT CAPABILITIES */
+/* ================================================= */
 
+const capabilities =
+presetText?.capabilities || {};
+
+const cinematicHero =
+capabilities?.cinematicHero;
+
+const asymmetricSplit =
+capabilities?.asymmetricSplit;
+
+const stickyIntro =
+capabilities?.stickyIntro;
+
+const featuredCTA =
+capabilities?.featuredCTA;
+
+const editorialComposition =
+capabilities?.editorialComposition;
+
+const immersiveSpacing =
+capabilities?.immersiveSpacing;
 
 /* ================================================= */
 /* LAYOUT TYPES */
