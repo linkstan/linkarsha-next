@@ -27,10 +27,6 @@ import {
 getFeaturedBlock
 } from "../../app/lib/featuredBlockEngine";
 
-import {
-getStorytellingFlow
-} from "../../app/lib/storytellingEngine";
-
 export default function ContentRenderer({
 
 blocks,
@@ -107,9 +103,7 @@ isMobile
 adaptiveSpacing
 ),
 
-paddingBottom:80,
-
-width:"100%"
+paddingBottom:80
 
 }}
 >
@@ -124,6 +118,7 @@ isMobile,
 adaptiveSpacing
 
 });
+
 const rhythm =
 getSectionRhythm({
 
@@ -192,6 +187,7 @@ isEditorial
 >
 
 {section.blocks.map((block,index)=>{
+
 const story =
 getStorytellingFlow({
 
@@ -200,14 +196,7 @@ block,
 isHero
 
 });
-const storytelling =
-getStorytellingFlow({
 
-index,
-block,
-isHero
-
-});
 const featuredBlock =
 getFeaturedBlock({
 
@@ -216,6 +205,7 @@ index,
 layout
 
 });
+
 const bento =
 getBentoConfig({
 
@@ -240,18 +230,19 @@ gridRow:
 `span ${bento.rowSpan}`,
 
 marginTop:
-storytelling.spacingTop,
+story.spacingTop,
 
 marginBottom:
-storytelling.spacingBottom,
+story.spacingBottom,
 
 transform:
-`scale(${storytelling.emphasis})`,
+`scale(${story.emphasis})`,
 
-transformOrigin:"center",
+transformOrigin:
+"center top",
 
 transition:
-"transform .5s cubic-bezier(.22,1,.36,1)"
+"all 700ms cubic-bezier(.22,1,.36,1)"
 
 }}
 >
@@ -262,7 +253,8 @@ block={{
 
 ...block,
 
-featuredBlock
+featuredBlock,
+story
 
 }}
 
