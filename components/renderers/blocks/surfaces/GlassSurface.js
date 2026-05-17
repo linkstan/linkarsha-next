@@ -1,7 +1,7 @@
 "use client";
 
 import designTokens
-from "../../../app/lib/designTokens";
+from "../../../../app/lib/designTokens";
 
 export default function GlassSurface({
 
