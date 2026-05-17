@@ -142,6 +142,19 @@ return 17;
 
 
 export function getShadow({
+
+variant,
+isHeroBlock,
+surfaceDepth,
+isDarkBackground,
+background,
+isFeaturedCTA,
+hovered,
+isAmbient,
+buttons
+
+}){
+
 if(
 variant?.surface === "spotlight"
 ){
@@ -162,16 +175,6 @@ isDarkBackground ? .45 : .24
 `;
 
 }
-isHeroBlock,
-surfaceDepth,
-isDarkBackground,
-background,
-isFeaturedCTA,
-hovered,
-isAmbient,
-buttons
-
-}){
 
 if(isHeroBlock){
 
