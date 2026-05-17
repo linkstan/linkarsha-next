@@ -46,6 +46,10 @@ getActiveHeroPreset
 } from "../app/lib/getActiveHeroPreset";
 
 import {
+getHeroLayout
+} from "../app/lib/heroLayoutEngine";
+
+import {
 useEffect,
 useState
 } from "react";
@@ -331,7 +335,14 @@ const layout = {
 
 const heroPreset =
 getActiveHeroPreset({
+const heroLayout =
+getHeroLayout({
 
+layout,
+heroPreset,
+isMobile
+
+});
 layout,
 background
 
@@ -723,7 +734,11 @@ isSplit
 
 gridTemplateColumns:
 
-isSplit && !isMobile
+isHero && !isMobile
+
+? heroLayout.heroColumns
+
+: isSplit && !isMobile
 
 ? `
 minmax(
@@ -741,7 +756,11 @@ minmax(500px,1fr)
 
 gap:
 
-asymmetricSplit
+isHero
+
+? heroLayout.contentGap
+
+: asymmetricSplit
 
 ? (
 isMobile
@@ -768,7 +787,12 @@ isMobile
 : undefined,
 
 alignItems:
-isSplit
+
+isHero
+
+? heroLayout.contentAlign
+
+: isSplit
 ? "start"
 : "center",
 
