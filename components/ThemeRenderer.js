@@ -32,6 +32,9 @@ from "./renderers/ContentRenderer";
 import HeroContent
 from "./renderers/HeroContent";
 
+import LayoutContainer
+from "./renderers/LayoutContainer";
+
 import {
 useEffect,
 useState
