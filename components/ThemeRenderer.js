@@ -1,7 +1,6 @@
 "use client";
 
 import HeroHeader from "./HeroHeader";
-import ButtonBlock from "./ButtonBlock";
 
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
@@ -113,6 +112,7 @@ const [live,setLive] = useState({});
 
 const [isMobile,setIsMobile] =
 useState(false);
+
 const [mounted,setMounted] =
 useState(false);
 
@@ -199,6 +199,8 @@ handleResize
 };
 
 },[]);
+
+
 /* ================================================= */
 /* ENTRANCE ANIMATION */
 /* ================================================= */
@@ -214,6 +216,7 @@ setMounted(true);
 return ()=>clearTimeout(timer);
 
 },[]);
+
 
 /* ================================================= */
 /* FINAL APPEARANCE */
@@ -273,7 +276,7 @@ const socialLinks = {
 
 
 /* ================================================= */
-/* BACKGROUND SETTINGS */
+/* BACKGROUND */
 /* ================================================= */
 
 const rawBackground = {
@@ -300,7 +303,7 @@ const background = {
 
 
 /* ================================================= */
-/* LAYOUT SETTINGS */
+/* LAYOUT */
 /* ================================================= */
 
 const layout = {
@@ -312,7 +315,7 @@ const layout = {
 
 
 /* ================================================= */
-/* TEXT SETTINGS */
+/* TEXT */
 /* ================================================= */
 
 const presetText = {
@@ -331,15 +334,14 @@ const text = {
 ...(live?.text || {})
 
 };
+
+
 /* ================================================= */
-/* LAYOUT CAPABILITIES */
+/* CAPABILITIES */
 /* ================================================= */
 
 const capabilities =
 presetText?.capabilities || {};
-
-const cinematicHero =
-capabilities?.cinematicHero;
 
 const asymmetricSplit =
 capabilities?.asymmetricSplit;
@@ -347,21 +349,10 @@ capabilities?.asymmetricSplit;
 const stickyIntro =
 capabilities?.stickyIntro;
 
-const featuredCTA =
-capabilities?.featuredCTA;
-
-const editorialComposition =
-capabilities?.editorialComposition;
-
-const immersiveSpacing =
-capabilities?.immersiveSpacing;
 
 /* ================================================= */
 /* LAYOUT TYPES */
 /* ================================================= */
-
-const isCentered =
-layout?.type === "centered";
 
 const isEditorial =
 layout?.type === "editorial";
@@ -374,11 +365,17 @@ layout?.type === "card";
 
 const isSplit =
 layout?.type === "split";
+
 const isHeroCentered =
 layout?.heroAlignment === "center";
 
 const isHeroLeft =
 layout?.heroAlignment === "left";
+
+
+/* ================================================= */
+/* HERO WIDTH */
+/* ================================================= */
 
 const heroContentWidth =
 
@@ -394,30 +391,16 @@ layout?.heroContentWidth || 980
 
 : undefined;
 
+
+/* ================================================= */
+/* ATMOSPHERE */
+/* ================================================= */
+
 const isAmbient =
 background?.type === "ambient";
 
 const surfaceDepth =
 background?.surfaceDepth || 1;
-/* ================================================= */
-/* MOTION ENGINE */
-/* ================================================= */
-
-const motionPreset =
-background?.motionPreset ||
-"cinematic";
-
-const motionDuration =
-background?.motionDuration || 1;
-
-const staggerIntensity =
-background?.staggerIntensity || 1;
-
-const entranceAnimation =
-background?.entranceAnimation !== false;
-
-const floatAnimation =
-background?.floatAnimation !== false;
 
 const isDarkBackground =
 
@@ -433,7 +416,21 @@ themeName === "dark";
 
 
 /* ================================================= */
-/* TYPOGRAPHY ENGINE */
+/* MOTION */
+/* ================================================= */
+
+const motionDuration =
+background?.motionDuration || 1;
+
+const floatAnimation =
+background?.floatAnimation !== false;
+
+const entranceAnimation =
+background?.entranceAnimation !== false;
+
+
+/* ================================================= */
+/* TYPOGRAPHY */
 /* ================================================= */
 
 const typographyIntensity =
@@ -462,7 +459,7 @@ text?.textOpacity || .72
 
 
 /* ================================================= */
-/* DENSITY ENGINE */
+/* DENSITY */
 /* ================================================= */
 
 const density =
@@ -502,7 +499,7 @@ buildSocialUrl
 
 
 /* ================================================= */
-/* ARCHWAY */
+/* CUSTOM THEME ROUTING */
 /* ================================================= */
 
 if(themeName === "archway"){
@@ -515,11 +512,6 @@ return(
 
 }
 
-
-/* ================================================= */
-/* MODERN MINIMAL */
-/* ================================================= */
-
 if(themeName === "modernminimal"){
 
 return(
@@ -529,11 +521,6 @@ return(
 );
 
 }
-
-
-/* ================================================= */
-/* BLUEPRINT */
-/* ================================================= */
 
 if(themeName === "blueprint"){
 
@@ -545,11 +532,6 @@ return(
 
 }
 
-
-/* ================================================= */
-/* SOLSTICE */
-/* ================================================= */
-
 if(themeName === "solstice"){
 
 return(
@@ -560,11 +542,6 @@ return(
 
 }
 
-
-/* ================================================= */
-/* PORTFOLIO */
-/* ================================================= */
-
 if(themeName === "portfolio"){
 
 return(
@@ -574,11 +551,6 @@ return(
 );
 
 }
-
-
-/* ================================================= */
-/* RIPPLE */
-/* ================================================= */
 
 if(themeName === "ripple"){
 
@@ -599,103 +571,26 @@ return(
 
 <>
 
-<div
-style={{
+<LayoutContainer
 
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-maxWidth:
+background={background}
 
-isHero
-? heroContentWidth
-: undefined,
+finalTheme={finalTheme}
 
-margin:
+isHero={isHero}
 
-isHeroCentered
-? "0 auto"
-: undefined,
-justifyContent:
+isSplit={isSplit}
 
-isHero
-? "flex-start"
-: "center",
+isHeroCentered={isHeroCentered}
 
-padding:
+heroContentWidth={heroContentWidth}
 
-isHero
-? "0"
-: (
-isSplit
-? "60px 40px"
-: "40px 20px"
-),
+motionDuration={motionDuration}
 
-width:"100%",
+entranceAnimation={entranceAnimation}
 
-background:
+mounted={mounted}
 
-background?.type === "gradient"
-
-? `linear-gradient(
-${background?.gradientDirection || "135deg"},
-${background?.gradient1 || "#ffffff"},
-${background?.gradient2 || "#e9ecff"}
-)`
-
-: (
-background?.background ||
-finalTheme?.background ||
-"#ffffff"
-),
-
-transition:
-`
-background 900ms ease,
-color 500ms ease,
-opacity ${
-0.9 * motionDuration
-}s cubic-bezier(.22,1,.36,1),
-transform ${
-1.2 * motionDuration
-}s cubic-bezier(.22,1,.36,1)
-`,
-
-color:
-finalTheme?.textColor || "#000000",
-
-minHeight:"100vh",
-
-position:"relative",
-
-overflow:"hidden",
-
-opacity:
-
-entranceAnimation
-
-? (
-mounted
-? 1
-: 0
-)
-
-: 1,
-
-transform:
-
-entranceAnimation
-
-? (
-mounted
-? "translateY(0px)"
-: "translateY(28px)"
-)
-
-: "none",
-
-}}
 >
 
 <BackgroundGlow
@@ -711,6 +606,7 @@ motionDuration={motionDuration}
 floatAnimation={floatAnimation}
 
 />
+
 <HeroHeader
 appearance={finalAppearance}
 theme={finalTheme}
@@ -981,58 +877,7 @@ layout?.heroTopSpacing || 140
 : undefined,
 
 transition:
-"all 700ms cubic-bezier(.22,1,.36,1)",
-
-}}
->
-
-<div
-style={{
-
-display:"flex",
-flexDirection:"column",
-
-alignItems:
-
-isHeroLeft
-
-? "flex-start"
-
-: isEditorial
-
-? "flex-start"
-
-: (
-text?.align === "left"
-? "flex-start"
-: (
-text?.align === "right"
-? "flex-end"
-: "center"
-)
-),
-
-width:"100%",
-
-position:
-
-stickyIntro && !isMobile
-? "sticky"
-
-: isSplit && !isMobile
-? "sticky"
-
-: "relative",
-
-top:
-
-stickyIntro && !isMobile
-? 120
-
-: isSplit && !isMobile
-? 80
-
-: "auto",
+"all 700ms cubic-bezier(.22,1,.36,1)"
 
 }}
 >
@@ -1069,138 +914,9 @@ typographyIntensity={typographyIntensity}
 
 background={background}
 
+stickyIntro={stickyIntro}
+
 />
-
-)}
-
-{header.subtitle && (
-
-<div
-style={{
-
-fontFamily:
-text?.fontFamily ||
-finalTheme?.fonts?.bio ||
-"Inter",
-
-fontSize:
-
-isHero
-? 26
-: 20,
-
-lineHeight:
-text?.lineHeight || 1.5,
-
-opacity:
-adaptiveTextOpacity,
-
-textAlign:
-
-isEditorial
-? "left"
-: (
-text?.align || "center"
-),
-
-marginTop:
-(
-(text?.sectionSpacing || 54)
-/
-1.5
-)
-*
-adaptiveSpacing,
-
-maxWidth:
-
-isEditorial
-? 260
-: 340,
-
-width:"100%"
-
-}}
->
-
-{header.subtitle}
-
-</div>
-
-)}
-
-{header.showBio !== false &&
-profile.bio && (
-
-<p
-style={{
-
-maxWidth:
-
-isEditorial
-? 260
-: 340,
-
-width:"100%",
-
-textAlign:
-
-isEditorial
-? "left"
-: (
-text?.align || "center"
-),
-
-opacity:
-adaptiveTextOpacity,
-
-lineHeight:
-
-(
-text?.lineHeight || 1.7
-)
-
-*
-
-(
-isHero
-? 1.04
-: 1
-),
-
-fontSize:
-text?.bioSize || 15,
-
-marginTop:
-
-(
-(text?.sectionSpacing || 54)
-/
-3
-)
-
-*
-adaptiveSpacing,
-
-marginBottom:0,
-
-fontFamily:
-text?.fontFamily ||
-finalTheme?.fonts?.bio ||
-"Inter"
-
-}}
->
-
-{profile.bio}
-
-</p>
-
-)}
-
-</div>
-
-</div>
 
 <ContentRenderer
 
@@ -1228,7 +944,7 @@ adaptiveSpacing={adaptiveSpacing}
 
 </div>
 
-</div>
+</LayoutContainer>
 
 <style jsx global>{`
 ${floatingGlowKeyframes}
