@@ -1572,31 +1572,6 @@ paddingBottom:80
 }}
 >
 
-isHero
-
-? (
-isMobile
-? (
-60 * adaptiveSpacing
-)
-: (
-90 * adaptiveSpacing
-)
-)
-
-: isSplit
-? 0
-: (
-(text?.sectionSpacing || 54)
-*
-adaptiveSpacing
-),
-
-paddingBottom:80
-
-}}
->
-
 {blocks.map((block,index)=>(
 
 <ButtonBlock
