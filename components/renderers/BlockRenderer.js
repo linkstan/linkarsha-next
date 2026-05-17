@@ -1,7 +1,7 @@
 "use client";
 
-import ButtonBlock
-from "../ButtonBlock";
+import ButtonBlockRenderer
+from "./blocks/ButtonBlockRenderer";
 
 export default function BlockRenderer({
 
@@ -17,7 +17,7 @@ block?.data_json?.type || "button";
 
 
 /* ================================================= */
-/* BUTTON */
+/* BUTTONS */
 /* ================================================= */
 
 if(
@@ -28,7 +28,7 @@ type === "cta"
 
 return(
 
-<ButtonBlock
+<ButtonBlockRenderer
 
 block={block}
 
@@ -41,6 +41,35 @@ index={index}
 />
 
 );
+
+}
+
+
+/* ================================================= */
+/* FUTURE MEDIA */
+/* ================================================= */
+
+if(type === "video"){
+
+return null;
+
+}
+
+if(type === "gallery"){
+
+return null;
+
+}
+
+if(type === "music"){
+
+return null;
+
+}
+
+if(type === "product"){
+
+return null;
 
 }
 
