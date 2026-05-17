@@ -4,6 +4,10 @@ import {
 buildSections
 } from "../../app/lib/sectionEngine";
 
+import {
+getSectionStyles
+} from "../../app/lib/sectionStyles";
+
 import BlockRenderer
 from "./BlockRenderer";
 
@@ -125,12 +129,28 @@ paddingBottom:80
 >
 
 {sections.map((section,sectionIndex)=>(
+const sectionStyles =
+getSectionStyles({
 
+section,
+isMobile,
+adaptiveSpacing
+
+});
 <div
 key={sectionIndex}
 style={{
 
-display:"contents"
+display:"grid",
+
+gap:
+sectionStyles.gap,
+
+marginTop:
+sectionStyles.marginTop,
+
+marginBottom:
+sectionStyles.marginBottom
 
 }}
 >
