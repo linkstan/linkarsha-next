@@ -231,12 +231,6 @@ style={{
 
 display:"block",
 
-gridColumn:
-`span ${variant.colSpan || 1}`,
-
-gridRow:
-`span ${variant.rowSpan || 1}`,
-
 minHeight:
 
 isHeroBlock
