@@ -1,6 +1,7 @@
 "use client";
 
-import ButtonBlock from "../ButtonBlock";
+import BlockRenderer
+from "./BlockRenderer";
 
 export default function ContentRenderer({
 
