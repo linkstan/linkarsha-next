@@ -1,6 +1,3 @@
-import heroPresets
-from "./heroPresets";
-
 export function getActiveHeroPreset({
 
 layout,
@@ -8,28 +5,117 @@ background
 
 }){
 
-const presetName =
+const preset =
+layout?.heroPreset || "cinematic";
 
-layout?.heroPreset
 
-||
+/* ======================================== */
+/* CINEMATIC */
+/* ======================================== */
 
-background?.heroPreset
+if(preset === "cinematic"){
 
-||
+return{
 
-"minimal";
+heroWidth:1280,
 
-return (
+topSpacingDesktop:180,
+topSpacingMobile:110,
 
-heroPresets?.[
-presetName
-]
+titleScale:1.28,
 
-||
+contentGap:120,
 
-heroPresets.minimal
+introWidth:720,
 
-);
+heroColumns:
+"minmax(460px,680px) minmax(320px,1fr)",
+
+contentAlign:"start"
+
+};
+
+}
+
+
+/* ======================================== */
+/* EDITORIAL */
+/* ======================================== */
+
+if(preset === "editorial"){
+
+return{
+
+heroWidth:1180,
+
+topSpacingDesktop:160,
+topSpacingMobile:90,
+
+titleScale:1.18,
+
+contentGap:90,
+
+introWidth:620,
+
+heroColumns:
+"minmax(520px,760px) minmax(260px,1fr)",
+
+contentAlign:"start"
+
+};
+
+}
+
+
+/* ======================================== */
+/* CENTERED */
+/* ======================================== */
+
+if(preset === "centered"){
+
+return{
+
+heroWidth:980,
+
+topSpacingDesktop:140,
+topSpacingMobile:80,
+
+titleScale:1.08,
+
+contentGap:60,
+
+introWidth:680,
+
+heroColumns:"1fr",
+
+contentAlign:"center"
+
+};
+
+}
+
+
+/* ======================================== */
+/* MINIMAL */
+/* ======================================== */
+
+return{
+
+heroWidth:980,
+
+topSpacingDesktop:120,
+topSpacingMobile:70,
+
+titleScale:1,
+
+contentGap:50,
+
+introWidth:560,
+
+heroColumns:"1fr",
+
+contentAlign:"center"
+
+};
 
 }
