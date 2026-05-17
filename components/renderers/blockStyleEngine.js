@@ -142,7 +142,26 @@ return 17;
 
 
 export function getShadow({
+if(
+variant?.surface === "spotlight"
+){
 
+return `
+0 ${
+50 * surfaceDepth
+}px ${
+120 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .45 : .24
+}
+)
+`;
+
+}
 isHeroBlock,
 surfaceDepth,
 isDarkBackground,
