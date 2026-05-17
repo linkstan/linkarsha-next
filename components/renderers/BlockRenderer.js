@@ -3,6 +3,15 @@
 import ButtonBlockRenderer
 from "./blocks/ButtonBlockRenderer";
 
+import VideoBlock
+from "./blocks/media/VideoBlock";
+
+import MusicBlock
+from "./blocks/media/MusicBlock";
+
+import GalleryBlock
+from "./blocks/media/GalleryBlock";
+
 export default function BlockRenderer({
 
 block,
@@ -17,7 +26,7 @@ block?.data_json?.type || "button";
 
 
 /* ================================================= */
-/* BUTTONS */
+/* BUTTON */
 /* ================================================= */
 
 if(
@@ -46,30 +55,52 @@ index={index}
 
 
 /* ================================================= */
-/* FUTURE MEDIA */
+/* VIDEO */
 /* ================================================= */
 
 if(type === "video"){
 
-return null;
+return(
+
+<VideoBlock
+block={block}
+/>
+
+);
 
 }
 
-if(type === "gallery"){
 
-return null;
-
-}
+/* ================================================= */
+/* MUSIC */
+/* ================================================= */
 
 if(type === "music"){
 
-return null;
+return(
+
+<MusicBlock
+block={block}
+/>
+
+);
 
 }
 
-if(type === "product"){
 
-return null;
+/* ================================================= */
+/* GALLERY */
+/* ================================================= */
+
+if(type === "gallery"){
+
+return(
+
+<GalleryBlock
+block={block}
+/>
+
+);
 
 }
 
