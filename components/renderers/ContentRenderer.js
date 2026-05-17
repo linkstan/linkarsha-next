@@ -23,6 +23,10 @@ import {
 getFeaturedBlock
 } from "../../app/lib/featuredBlockEngine";
 
+import {
+getStorytellingFlow
+} from "../../app/lib/storytellingEngine";
+
 export default function ContentRenderer({
 
 blocks,
@@ -184,6 +188,14 @@ isEditorial
 >
 
 {section.blocks.map((block,index)=>{
+const storytelling =
+getStorytellingFlow({
+
+index,
+block,
+isHero
+
+});
 const featuredBlock =
 getFeaturedBlock({
 
@@ -213,7 +225,21 @@ gridColumn:
 `span ${bento.colSpan}`,
 
 gridRow:
-`span ${bento.rowSpan}`
+`span ${bento.rowSpan}`,
+
+marginTop:
+storytelling.spacingTop,
+
+marginBottom:
+storytelling.spacingBottom,
+
+transform:
+`scale(${storytelling.emphasis})`,
+
+transformOrigin:"center",
+
+transition:
+"transform .5s cubic-bezier(.22,1,.36,1)"
 
 }}
 >
