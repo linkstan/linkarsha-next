@@ -42,6 +42,10 @@ import AtmosphereOverlay
 from "./renderers/AtmosphereOverlay";
 
 import {
+getActiveHeroPreset
+} from "../app/lib/getActiveHeroPreset";
+
+import {
 useEffect,
 useState
 } from "react";
