@@ -3,6 +3,9 @@
 import GlassSurface
 from "../surfaces/GlassSurface";
 
+import designTokens
+from "../../../../app/lib/designTokens";
+
 export default function PricingBlock({
 
 block
@@ -28,7 +31,7 @@ display:"grid",
 gridTemplateColumns:
 "repeat(auto-fit,minmax(240px,1fr))",
 
-gap:20,
+gap:designTokens.spacing.lg,
 
 width:"100%"
 
@@ -41,19 +44,22 @@ width:"100%"
 
 key={index}
 
-padding={28}
+padding={designTokens.spacing.lg}
 
-borderRadius={30}
+borderRadius={designTokens.radius.xl}
 
 >
 
 <div
 style={{
 
-fontSize:24,
+fontSize:
+designTokens.typography.cardTitle,
+
 fontWeight:800,
 
-marginBottom:10
+marginBottom:
+designTokens.spacing.sm
 
 }}
 >
@@ -68,7 +74,8 @@ style={{
 fontSize:42,
 fontWeight:900,
 
-marginBottom:18
+marginBottom:
+designTokens.spacing.md
 
 }}
 >
