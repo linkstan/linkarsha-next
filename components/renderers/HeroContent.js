@@ -173,7 +173,6 @@ isHero
 ? heroLayout.introWidth
 
 : composition.textWidth,
-: undefined,
 
 width:"100%"
 
