@@ -70,7 +70,7 @@ index === 0;
 
 const isSecondaryCTA =
 index === 1;
-  
+
 const variant =
 
 blockVariants?.[
@@ -270,6 +270,27 @@ return 17;
 /* ================================================= */
 
 function getShadow(){
+
+if(
+variant?.surface === "spotlight"
+){
+
+return `
+0 ${
+50 * surfaceDepth
+}px ${
+120 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .45 : .24
+}
+)
+`;
+
+}
 
 if(isHeroBlock){
 
@@ -689,10 +710,10 @@ style={{
 display:"block",
 
 gridColumn:
+`span ${variant.colSpan || 1}`,
 
-isWide
-? "span 2"
-: "span 1",
+gridRow:
+`span ${variant.rowSpan || 1}`,
 
 minHeight:
 
@@ -792,7 +813,7 @@ fontWeight:
 isHeroBlock
 ? 900
 
-variant?.emphasis === "primary"
+: variant?.emphasis === "primary"
 ? 800
 
 : variant?.emphasis === "secondary"
@@ -816,18 +837,9 @@ isolation:"isolate",
 
 willChange:
 "transform, box-shadow, background"
-  
-gridColumn:
-`span ${variant.colSpan || 1}`,
 
-gridRow:
-`span ${variant.rowSpan || 1}`,
 }}
 >
-
-{/* ================================================= */}
-{/* GLASS ATMOSPHERE */}
-{/* ================================================= */}
 
 {buttons?.style === "glass" && (
 
@@ -849,7 +861,6 @@ zIndex:0
 />
 
 )}
-
 
 <div
 style={{
@@ -878,7 +889,6 @@ block?.data_json?.title || "Link"
 )}
 
 </div>
-
 
 {block?.data_json?.subtitle && (
 
@@ -912,7 +922,6 @@ fontWeight:500
 </div>
 
 </a>
-
 
 <style jsx global>{`
 
