@@ -326,6 +326,19 @@ const layout = {
 
 
 /* ================================================= */
+/* HERO PRESET */
+/* ================================================= */
+
+const heroPreset =
+getActiveHeroPreset({
+
+layout,
+background
+
+});
+
+
+/* ================================================= */
 /* TEXT */
 /* ================================================= */
 
@@ -382,6 +395,12 @@ layout?.heroAlignment === "center";
 
 const isHeroLeft =
 layout?.heroAlignment === "left";
+
+
+/* ================================================= */
+/* ATMOSPHERE */
+/* ================================================= */
+
 const atmosphere =
 getAtmosphere({
 
@@ -391,30 +410,6 @@ isHero,
 isMobile
 
 });
-
-
-/* ================================================= */
-/* HERO WIDTH */
-/* ================================================= */
-
-const heroContentWidth =
-
-isHero
-
-? (
-isMobile
-? "100%"
-: (
-layout?.heroContentWidth || 980
-)
-)
-
-: undefined;
-
-
-/* ================================================= */
-/* ATMOSPHERE */
-/* ================================================= */
 
 const isAmbient =
 background?.type === "ambient";
@@ -433,6 +428,29 @@ themeName === "blueprint"
 ||
 
 themeName === "dark";
+
+
+/* ================================================= */
+/* HERO WIDTH */
+/* ================================================= */
+
+const heroContentWidth =
+
+isHero
+
+? (
+isMobile
+? "100%"
+: (
+layout?.heroContentWidth
+||
+heroPreset?.heroWidth
+||
+980
+)
+)
+
+: undefined;
 
 
 /* ================================================= */
@@ -459,12 +477,23 @@ const typographyIntensity =
 (background?.heroIntensity || 1);
 
 const headingScale =
+
 isHero
+
 ? (
 isMobile
-? 1.08
-: 1.18
+
+? (
+heroPreset?.titleScale || 1
 )
+
+: (
+(heroPreset?.titleScale || 1)
+*
+1.08
+)
+)
+
 : 1;
 
 const adaptiveTextOpacity =
@@ -620,7 +649,7 @@ atmosphere={atmosphere}
 background={background}
 
 />
-  
+
 <BackgroundGlow
 
 background={background}
@@ -894,11 +923,21 @@ isHero
 
 ? (
 isMobile
+
 ? (
-layout?.heroTopSpacingMobile || 60
+layout?.heroTopSpacingMobile
+||
+heroPreset?.topSpacingMobile
+||
+80
 )
+
 : (
-layout?.heroTopSpacing || 140
+layout?.heroTopSpacing
+||
+heroPreset?.topSpacingDesktop
+||
+140
 )
 )
 
