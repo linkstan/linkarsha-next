@@ -1,7 +1,7 @@
 "use client";
 
-import ButtonBlockRenderer
-from "./blocks/ButtonBlockRenderer";
+import ButtonBlock
+from "../ButtonBlock";
 
 import VideoBlock
 from "./blocks/media/VideoBlock";
