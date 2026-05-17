@@ -2,19 +2,11 @@ const blockVariants = {
 
 default:{
 
-colSpan:1,
-rowSpan:1,
-
-emphasis:"normal",
-
-surface:"default"
+emphasis:"secondary"
 
 },
 
-featured:{
-
-colSpan:2,
-rowSpan:1,
+spotlight:{
 
 emphasis:"primary",
 
@@ -22,36 +14,21 @@ surface:"spotlight"
 
 },
 
-tall:{
+minimal:{
 
-colSpan:1,
-rowSpan:2,
-
-emphasis:"secondary",
-
-surface:"elevated"
+emphasis:"secondary"
 
 },
 
-hero:{
+feature:{
 
-colSpan:2,
-rowSpan:2,
-
-emphasis:"primary",
-
-surface:"cinematic"
+emphasis:"primary"
 
 },
 
-wide:{
+editorial:{
 
-colSpan:2,
-rowSpan:1,
-
-emphasis:"secondary",
-
-surface:"glass"
+emphasis:"secondary"
 
 }
 
