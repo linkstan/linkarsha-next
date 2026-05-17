@@ -985,6 +985,8 @@ finalTheme={finalTheme}
 
 layout={layout}
 
+heroLayout={heroLayout}
+
 isHero={isHero}
 
 isEditorial={isEditorial}
