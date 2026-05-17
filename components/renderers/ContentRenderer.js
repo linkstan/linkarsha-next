@@ -12,6 +12,10 @@ import {
 getSectionRhythm
 } from "../../app/lib/sectionRhythmEngine";
 
+import {
+getStorytellingFlow
+} from "../../app/lib/storytellingEngine";
+
 import BlockRenderer
 from "./BlockRenderer";
 
@@ -188,6 +192,14 @@ isEditorial
 >
 
 {section.blocks.map((block,index)=>{
+const story =
+getStorytellingFlow({
+
+index,
+block,
+isHero
+
+});
 const storytelling =
 getStorytellingFlow({
 
