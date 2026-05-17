@@ -358,6 +358,25 @@ layout?.type === "card";
 
 const isSplit =
 layout?.type === "split";
+const isHeroCentered =
+layout?.heroAlignment === "center";
+
+const isHeroLeft =
+layout?.heroAlignment === "left";
+
+const heroContentWidth =
+
+isHero
+
+? (
+isMobile
+? "100%"
+: (
+layout?.heroContentWidth || 980
+)
+)
+
+: undefined;
 
 const isAmbient =
 background?.type === "ambient";
@@ -570,7 +589,17 @@ style={{
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
+maxWidth:
 
+isHero
+? heroContentWidth
+: undefined,
+
+margin:
+
+isHeroCentered
+? "0 auto"
+: undefined,
 justifyContent:
 
 isHero
@@ -836,13 +865,19 @@ isSplit
 
 gridTemplateColumns:
 
-asymmetricSplit && !isMobile
+isSplit && !isMobile
 
-? "minmax(320px,460px) minmax(520px,1fr)"
-
-: isSplit && !isMobile
-
-? "420px minmax(400px,1fr)"
+? `
+minmax(
+${
+layout?.splitLeftWidth || 420
+}px,
+${
+layout?.splitLeftWidth || 420
+}px
+)
+minmax(500px,1fr)
+`
 
 : undefined,
 
@@ -1030,8 +1065,12 @@ isHero
 
 ? (
 isMobile
-? 40
-: 120
+? (
+layout?.heroTopSpacingMobile || 60
+)
+: (
+layout?.heroTopSpacing || 140
+)
 )
 
 : undefined,
@@ -1167,7 +1206,25 @@ finalTheme?.avatar?.shadow
 
 }}
 />
+<div
+style={{
 
+maxWidth:
+
+isHero
+
+? (
+isMobile
+? 520
+: 860
+)
+
+: undefined,
+
+width:"100%"
+
+}}
+>
 {header.showDisplayName !== false && (
 
 <h1
@@ -1421,7 +1478,7 @@ finalTheme?.fonts?.bio ||
 {profile.bio}
 
 </p>
-
+</div>
 )}
 
 </div>
