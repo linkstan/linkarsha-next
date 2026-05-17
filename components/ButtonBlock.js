@@ -397,6 +397,7 @@ letterSpacing:"-.02em",
 boxShadow:
 getShadow({
 
+variant,
 isHeroBlock,
 surfaceDepth,
 isDarkBackground,
@@ -404,8 +405,7 @@ background,
 isFeaturedCTA,
 hovered,
 isAmbient,
-buttons,
-variant
+buttons
 
 }),
 
