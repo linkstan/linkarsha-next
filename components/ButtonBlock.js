@@ -3,6 +3,9 @@
 import buttonPresets
 from "../app/lib/buttonPresets";
 
+import blockVariants
+from "../app/lib/blockVariants";
+
 import {
 useState
 } from "react";
@@ -67,6 +70,14 @@ index === 0;
 
 const isSecondaryCTA =
 index === 1;
+  
+const variant =
+
+blockVariants?.[
+block?.data_json?.variant
+] ||
+
+blockVariants.default;
 
 
 /* ================================================= */
@@ -781,10 +792,13 @@ fontWeight:
 isHeroBlock
 ? 900
 
-: isFeaturedCTA
+variant?.emphasis === "primary"
 ? 800
 
-: 700,
+: variant?.emphasis === "secondary"
+? 700
+
+: 600,
 
 fontSize:
 getFontSize(),
@@ -802,7 +816,12 @@ isolation:"isolate",
 
 willChange:
 "transform, box-shadow, background"
+  
+gridColumn:
+`span ${variant.colSpan || 1}`,
 
+gridRow:
+`span ${variant.rowSpan || 1}`,
 }}
 >
 
