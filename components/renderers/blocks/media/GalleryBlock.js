@@ -1,5 +1,8 @@
 "use client";
 
+import GlassSurface
+from "../surfaces/GlassSurface";
+
 export default function GalleryBlock({
 
 block
@@ -17,6 +20,20 @@ return null;
 
 return(
 
+<GlassSurface
+
+padding={18}
+
+borderRadius={30}
+
+style={{
+
+width:"100%"
+
+}}
+
+>
+
 <div
 style={{
 
@@ -25,9 +42,7 @@ display:"grid",
 gridTemplateColumns:
 "repeat(2,minmax(0,1fr))",
 
-gap:14,
-
-width:"100%"
+gap:14
 
 }}
 >
@@ -49,7 +64,7 @@ aspectRatio:"1 / 1",
 
 objectFit:"cover",
 
-borderRadius:22,
+borderRadius:20,
 
 display:"block"
 
@@ -59,6 +74,8 @@ display:"block"
 ))}
 
 </div>
+
+</GlassSurface>
 
 );
 
