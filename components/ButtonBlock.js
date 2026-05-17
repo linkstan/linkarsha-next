@@ -34,10 +34,13 @@ useState
 } from "react";
 
 export default function ButtonBlock({
+
 block,
 theme,
 appearance,
-index
+index,
+featuredBlock
+
 }){
 
 const [hovered,setHovered] =
@@ -101,6 +104,11 @@ block?.data_json?.variant
 ] ||
 
 blockVariants.default;
+const isFeatured =
+featuredBlock?.featured;
+
+const emphasis =
+featuredBlock?.emphasis;
 
 
 /* ================================================= */
@@ -114,7 +122,12 @@ const isWide =
 blockSize === "wide";
 
 const isFeature =
-blockSize === "feature";
+
+blockSize === "feature"
+
+||
+
+isFeatured;
 
 const isHeroBlock =
 blockSize === "hero";
@@ -371,6 +384,12 @@ fontWeight:
 
 isHeroBlock
 ? 900
+
+: emphasis === "primary"
+? 800
+
+: emphasis === "secondary"
+? 700
 
 : variant?.emphasis === "primary"
 ? 800
