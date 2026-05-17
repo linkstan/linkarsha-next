@@ -836,13 +836,31 @@ isSplit
 
 gridTemplateColumns:
 
-isSplit && !isMobile
+asymmetricSplit && !isMobile
+
+? "minmax(320px,460px) minmax(520px,1fr)"
+
+: isSplit && !isMobile
+
 ? "420px minmax(400px,1fr)"
+
 : undefined,
 
 gap:
 
-isSplit
+asymmetricSplit
+
+? (
+isMobile
+? (
+60 * adaptiveSpacing
+)
+: (
+160 * adaptiveSpacing
+)
+)
+
+: isSplit
 
 ? (
 isMobile
@@ -1050,14 +1068,22 @@ width:"100%",
 
 position:
 
-isSplit && !isMobile
+stickyIntro && !isMobile
 ? "sticky"
+
+: isSplit && !isMobile
+? "sticky"
+
 : "relative",
 
 top:
 
-isSplit && !isMobile
+stickyIntro && !isMobile
+? 120
+
+: isSplit && !isMobile
 ? 80
+
 : "auto",
 
 }}
