@@ -3,6 +3,10 @@
 import BlockRenderer
 from "./BlockRenderer";
 
+import {
+getBentoConfig
+} from "../../app/lib/bentoEngine";
+
 export default function ContentRenderer({
 
 blocks,
@@ -22,6 +26,9 @@ adaptiveSpacing
 
 }){
 
+const isBento =
+layout?.enableBento;
+
 return(
 
 <div
@@ -36,26 +43,26 @@ isSplit
 ? (
 isMobile
 ? "100%"
-: 680
+: 820
 )
 
 : "100%",
 
 display:
 
-layout?.enableBento
+isBento
 ? "grid"
 : "flex",
 
 flexDirection:
 
-layout?.enableBento
+isBento
 ? undefined
 : "column",
 
 gridTemplateColumns:
 
-layout?.enableBento
+isBento
 
 ? (
 isMobile
@@ -67,14 +74,14 @@ isMobile
 
 gridAutoRows:
 
-layout?.enableBento
-? "minmax(140px,auto)"
+isBento
+? "minmax(160px,auto)"
 : undefined,
 
 gap:
 
-layout?.enableBento
-? 22
+isBento
+? 24
 : undefined,
 
 alignItems:
@@ -110,11 +117,35 @@ paddingBottom:80
 }}
 >
 
-{blocks.map((block,index)=>(
+{blocks.map((block,index)=>{
 
-<BlockRenderer
+const bento =
+getBentoConfig({
+
+block,
+index,
+isMobile
+
+});
+
+return(
+
+<div
 
 key={block.id}
+
+style={{
+
+gridColumn:
+`span ${bento.colSpan}`,
+
+gridRow:
+`span ${bento.rowSpan}`
+
+}}
+>
+
+<BlockRenderer
 
 block={block}
 
@@ -126,7 +157,11 @@ index={index}
 
 />
 
-))}
+</div>
+
+);
+
+})}
 
 </div>
 
