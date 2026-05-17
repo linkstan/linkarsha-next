@@ -1,5 +1,9 @@
 "use client";
 
+import {
+getHeroComposition
+} from "../../app/lib/heroCompositionEngine";
+
 export default function HeroContent({
 
 profile,
@@ -22,9 +26,20 @@ adaptiveTextOpacity,
 headingScale,
 typographyIntensity,
 
-background
+background,
+layout
 
 }){
+
+const composition =
+getHeroComposition({
+
+layout,
+isMobile,
+background,
+text
+
+});
 
 return(
 
@@ -54,7 +69,10 @@ text?.align === "right"
 )
 ),
 
-width:"100%"
+width:"100%",
+
+gap:
+composition.compositionGap
 
 }}
 >
@@ -70,7 +88,7 @@ isHero
 
 ? (
 140 *
-(background?.heroIntensity || 1)
+composition.heroScale
 )
 
 : (
@@ -83,7 +101,7 @@ isHero
 
 ? (
 140 *
-(background?.heroIntensity || 1)
+composition.heroScale
 )
 
 : (
@@ -104,9 +122,7 @@ isSplit
 
 : isHero
 ? (
-isMobile
-? 120
-: 220
+composition.topSpacing
 )
 
 : finalTheme?.layout?.avatarOverlap
@@ -149,11 +165,7 @@ maxWidth:
 
 isHero
 
-? (
-isMobile
-? 520
-: 860
-)
+? composition.textWidth
 
 : undefined,
 
@@ -192,7 +204,7 @@ isMobile
 }px,${
 10 * headingScale
 }vw,${
-140 * headingScale
+160 * composition.heroScale
 }px)`
 )
 
@@ -306,7 +318,7 @@ finalTheme?.fonts?.bio ||
 fontSize:
 
 isHero
-? 26
+? 28
 : 20,
 
 lineHeight:
@@ -334,7 +346,11 @@ adaptiveSpacing,
 
 maxWidth:
 
-isEditorial
+isHero
+
+? composition.textWidth
+
+: isEditorial
 ? 260
 : 340,
 
@@ -357,7 +373,11 @@ style={{
 
 maxWidth:
 
-isEditorial
+isHero
+
+? composition.textWidth
+
+: isEditorial
 ? 260
 : 340,
 
