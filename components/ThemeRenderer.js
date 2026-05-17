@@ -302,6 +302,15 @@ rawBackground?.preset
 };
 
 const background = {
+const atmosphere =
+getAtmosphere({
+
+background,
+theme:finalTheme,
+isHero,
+isMobile
+
+});
 
 ...presetBackground,
 ...rawBackground
@@ -600,6 +609,14 @@ mounted={mounted}
 
 >
 
+<AtmosphereOverlay
+
+atmosphere={atmosphere}
+
+background={background}
+
+/>
+  
 <BackgroundGlow
 
 background={background}
