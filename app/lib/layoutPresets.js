@@ -16,7 +16,19 @@ lineHeight:1.6,
 
 letterSpacing:-0.045,
 
-textOpacity:.72
+textOpacity:.72,
+
+/* ================================================= */
+/* CAPABILITIES */
+/* ================================================= */
+
+capabilities:{
+
+centeredComposition:true,
+balancedSpacing:true,
+standardHierarchy:true
+
+}
 
 },
 
@@ -37,7 +49,22 @@ lineHeight:1.05,
 
 letterSpacing:-0.075,
 
-textOpacity:.82
+textOpacity:.82,
+
+/* ================================================= */
+/* CAPABILITIES */
+/* ================================================= */
+
+capabilities:{
+
+cinematicHero:true,
+largeAvatar:true,
+immersiveSpacing:true,
+largeCTA:true,
+adaptiveHero:true,
+heroTypography:true
+
+}
 
 },
 
@@ -58,7 +85,20 @@ lineHeight:1.95,
 
 letterSpacing:-0.055,
 
-textOpacity:.68
+textOpacity:.68,
+
+/* ================================================= */
+/* CAPABILITIES */
+/* ================================================= */
+
+capabilities:{
+
+editorialComposition:true,
+leftWeighted:true,
+cinematicTypography:true,
+immersiveSpacing:true
+
+}
 
 },
 
@@ -79,7 +119,22 @@ lineHeight:1.55,
 
 letterSpacing:-0.05,
 
-textOpacity:.72
+textOpacity:.72,
+
+/* ================================================= */
+/* CAPABILITIES */
+/* ================================================= */
+
+capabilities:{
+
+asymmetricSplit:true,
+stickyIntro:true,
+featuredCTA:true,
+editorialComposition:true,
+cinematicSpacing:true,
+adaptiveColumns:true
+
+}
 
 },
 
@@ -100,7 +155,20 @@ lineHeight:1.6,
 
 letterSpacing:-0.045,
 
-textOpacity:.74
+textOpacity:.74,
+
+/* ================================================= */
+/* CAPABILITIES */
+/* ================================================= */
+
+capabilities:{
+
+floatingCard:true,
+glassSurface:true,
+centeredComposition:true,
+surfaceDepth:true
+
+}
 
 }
 
