@@ -33,6 +33,9 @@ adaptiveSpacing
 const isBento =
 layout?.enableBento;
 
+const sections =
+buildSections(blocks);
+
 return(
 
 <div
@@ -121,7 +124,18 @@ paddingBottom:80
 }}
 >
 
-{blocks.map((block,index)=>{
+{sections.map((section,sectionIndex)=>(
+
+<div
+key={sectionIndex}
+style={{
+
+display:"contents"
+
+}}
+>
+
+{section.blocks.map((block,index)=>{
 
 const bento =
 getBentoConfig({
@@ -166,6 +180,10 @@ index={index}
 );
 
 })}
+
+</div>
+
+))}
 
 </div>
 
