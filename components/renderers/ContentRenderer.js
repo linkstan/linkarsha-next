@@ -112,9 +112,7 @@ paddingBottom:80
 
 {blocks.map((block,index)=>(
 
-<ButtonBlock
-
-index={index}
+<BlockRenderer
 
 key={block.id}
 
@@ -123,6 +121,8 @@ block={block}
 theme={finalTheme}
 
 appearance={finalAppearance}
+
+index={index}
 
 />
 
