@@ -8,6 +8,10 @@ import {
 getSectionStyles
 } from "../../app/lib/sectionStyles";
 
+import {
+getSectionRhythm
+} from "../../app/lib/sectionRhythmEngine";
+
 import BlockRenderer
 from "./BlockRenderer";
 
@@ -112,6 +116,16 @@ isMobile,
 adaptiveSpacing
 
 });
+const rhythm =
+getSectionRhythm({
+
+section,
+index:sectionIndex,
+isHero,
+isMobile,
+adaptiveSpacing
+
+});
 
 return(
 
@@ -150,13 +164,13 @@ isBento
 : undefined,
 
 gap:
-sectionStyles.gap,
+rhythm.gap,
 
 marginTop:
 sectionStyles.marginTop,
 
 marginBottom:
-sectionStyles.marginBottom,
+rhythm.marginBottom
 
 width:"100%",
 
