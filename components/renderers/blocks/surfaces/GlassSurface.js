@@ -1,5 +1,8 @@
 "use client";
 
+import designTokens
+from "../../../app/lib/designTokens";
+
 export default function GlassSurface({
 
 children,
@@ -10,9 +13,9 @@ isDarkBackground,
 
 surfaceDepth = 1,
 
-borderRadius = 28,
+borderRadius,
 
-padding = 0,
+padding,
 
 style = {}
 
@@ -27,9 +30,13 @@ position:"relative",
 
 overflow:"hidden",
 
-borderRadius,
+borderRadius:
+borderRadius ||
+designTokens.radius.lg,
 
-padding,
+padding:
+padding ??
+designTokens.spacing.glassPadding,
 
 background:`rgba(
 255,
