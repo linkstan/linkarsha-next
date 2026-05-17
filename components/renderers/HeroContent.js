@@ -27,7 +27,8 @@ headingScale,
 typographyIntensity,
 
 background,
-layout
+layout,
+heroLayout
 
 }){
 
@@ -51,7 +52,11 @@ flexDirection:"column",
 
 alignItems:
 
-isHeroLeft
+isHero
+
+? heroLayout.contentAlign
+
+: isHeroLeft
 
 ? "flex-start"
 
@@ -165,8 +170,9 @@ maxWidth:
 
 isHero
 
-? composition.textWidth
+? heroLayout.introWidth
 
+: composition.textWidth,
 : undefined,
 
 width:"100%"
