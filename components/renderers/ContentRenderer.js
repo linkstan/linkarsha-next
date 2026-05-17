@@ -15,6 +15,10 @@ import {
 getBentoConfig
 } from "../../app/lib/bentoEngine";
 
+import {
+getFeaturedBlock
+} from "../../app/lib/featuredBlockEngine";
+
 export default function ContentRenderer({
 
 blocks,
@@ -166,7 +170,14 @@ isEditorial
 >
 
 {section.blocks.map((block,index)=>{
+const featuredBlock =
+getFeaturedBlock({
 
+block,
+index,
+layout
+
+});
 const bento =
 getBentoConfig({
 
@@ -195,7 +206,13 @@ gridRow:
 
 <BlockRenderer
 
-block={block}
+block={{
+
+...block,
+
+featuredBlock
+
+}}
 
 theme={finalTheme}
 
