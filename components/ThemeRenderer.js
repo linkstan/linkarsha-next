@@ -302,15 +302,6 @@ rawBackground?.preset
 };
 
 const background = {
-const atmosphere =
-getAtmosphere({
-
-background,
-theme:finalTheme,
-isHero,
-isMobile
-
-});
 
 ...presetBackground,
 ...rawBackground
@@ -387,6 +378,15 @@ layout?.heroAlignment === "center";
 
 const isHeroLeft =
 layout?.heroAlignment === "left";
+const atmosphere =
+getAtmosphere({
+
+background,
+theme:finalTheme,
+isHero,
+isMobile
+
+});
 
 
 /* ================================================= */
