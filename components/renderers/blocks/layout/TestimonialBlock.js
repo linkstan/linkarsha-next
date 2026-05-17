@@ -3,6 +3,9 @@
 import GlassSurface
 from "../surfaces/GlassSurface";
 
+import designTokens
+from "../../../../app/lib/designTokens";
+
 export default function TestimonialBlock({
 
 block
@@ -25,7 +28,7 @@ style={{
 
 display:"grid",
 
-gap:20,
+gap:designTokens.spacing.md,
 
 width:"100%"
 
@@ -38,9 +41,9 @@ width:"100%"
 
 key={index}
 
-padding={26}
+padding={designTokens.spacing.lg}
 
-borderRadius={28}
+borderRadius={designTokens.radius.lg}
 
 >
 
@@ -51,7 +54,8 @@ fontSize:18,
 
 lineHeight:1.7,
 
-marginBottom:18
+marginBottom:
+designTokens.spacing.md
 
 }}
 >
