@@ -174,7 +174,7 @@ marginTop:
 sectionStyles.marginTop,
 
 marginBottom:
-rhythm.marginBottom
+rhythm.marginBottom,
 
 width:"100%",
 
