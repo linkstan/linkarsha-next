@@ -1,5 +1,9 @@
 "use client";
 
+import {
+buildSections
+} from "../../app/lib/sectionEngine";
+
 import BlockRenderer
 from "./BlockRenderer";
 
