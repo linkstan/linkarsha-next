@@ -26,6 +26,9 @@ floatingGlowKeyframes
 import BackgroundGlow
 from "./renderers/BackgroundGlow";
 
+import ContentRenderer
+from "./renderers/ContentRenderer";
+
 import {
 useEffect,
 useState
@@ -1385,111 +1388,29 @@ finalTheme?.fonts?.bio ||
 
 </div>
 
-<div
-style={{
+<ContentRenderer
 
-width:"100%",
+blocks={blocks}
 
-maxWidth:
+finalTheme={finalTheme}
 
-isSplit
+finalAppearance={finalAppearance}
 
-? (
-isMobile
-? "100%"
-: 680
-)
+layout={layout}
 
-: "100%",
+text={text}
 
-display:
+isHero={isHero}
 
-layout?.enableBento
-? "grid"
-: "flex",
+isSplit={isSplit}
 
-flexDirection:
+isEditorial={isEditorial}
 
-layout?.enableBento
-? undefined
-: "column",
+isMobile={isMobile}
 
-gridTemplateColumns:
-
-layout?.enableBento
-
-? (
-isMobile
-? "1fr"
-: "repeat(2,minmax(0,1fr))"
-)
-
-: undefined,
-
-gridAutoRows:
-
-layout?.enableBento
-? "minmax(140px,auto)"
-: undefined,
-
-gap:
-
-layout?.enableBento
-? 22
-: undefined,
-
-alignItems:
-
-isEditorial
-? "flex-start"
-: "stretch",
-
-marginTop:
-
-isHero
-
-? (
-isMobile
-? (
-60 * adaptiveSpacing
-)
-: (
-90 * adaptiveSpacing
-)
-)
-
-: isSplit
-? 0
-: (
-(text?.sectionSpacing || 54)
-*
-adaptiveSpacing
-),
-
-paddingBottom:80
-
-}}
->
-
-{blocks.map((block,index)=>(
-
-<ButtonBlock
-  
-index={index}
- 
-key={block.id}
-
-block={block}
-
-theme={finalTheme}
-
-appearance={finalAppearance}
+adaptiveSpacing={adaptiveSpacing}
 
 />
-
-))}
-
-</div>
 
 </div>
 
