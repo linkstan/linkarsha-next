@@ -1,5 +1,8 @@
 "use client";
 
+import GlassSurface
+from "../surfaces/GlassSurface";
+
 export default function MusicBlock({
 
 block
@@ -17,18 +20,18 @@ return null;
 
 return(
 
-<div
+<GlassSurface
+
+borderRadius={24}
+
+padding={0}
+
 style={{
 
-width:"100%",
-
-borderRadius:24,
-
-overflow:"hidden",
-
-background:"#111111"
+width:"100%"
 
 }}
+
 >
 
 <iframe
@@ -46,7 +49,7 @@ border:"none"
 }}
 />
 
-</div>
+</GlassSurface>
 
 );
 
