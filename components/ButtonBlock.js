@@ -57,6 +57,11 @@ block?.data_json?.type === "cta";
 
 const isHero =
 layout?.type === "hero";
+const isFeaturedCTA =
+
+layout?.type === "split"
+&&
+index === 0;
 
 const isCard =
 layout?.type === "card";
@@ -132,6 +137,12 @@ return buttons?.radiusValue ||
 
 function getPadding(){
 
+if(isFeaturedCTA){
+
+return "32px 38px";
+
+}
+
 if(isHero){
 
 return "26px 34px";
@@ -154,6 +165,12 @@ return "18px 24px";
 }
 
 function getFontSize(){
+
+if(isFeaturedCTA){
+
+return 22;
+
+}
 
 if(isHero){
 
