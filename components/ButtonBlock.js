@@ -7,6 +7,19 @@ import blockVariants
 from "../app/lib/blockVariants";
 
 import {
+
+getRadius,
+getPadding,
+getFontSize,
+getShadow,
+getBackground,
+getBorder,
+getTextColor,
+getTransform
+
+} from "./renderers/blockStyleEngine";
+
+import {
 useState
 } from "react";
 
