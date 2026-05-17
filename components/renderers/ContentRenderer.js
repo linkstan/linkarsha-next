@@ -59,6 +59,62 @@ isMobile
 
 : "100%",
 
+display:"flex",
+
+flexDirection:"column",
+
+alignItems:
+
+isEditorial
+? "flex-start"
+: "stretch",
+
+marginTop:
+
+isHero
+
+? (
+isMobile
+? (
+60 * adaptiveSpacing
+)
+: (
+90 * adaptiveSpacing
+)
+)
+
+: isSplit
+? 0
+: (
+(text?.sectionSpacing || 54)
+*
+adaptiveSpacing
+),
+
+paddingBottom:80,
+
+width:"100%"
+
+}}
+>
+
+{sections.map((section,sectionIndex)=>{
+
+const sectionStyles =
+getSectionStyles({
+
+section,
+isMobile,
+adaptiveSpacing
+
+});
+
+return(
+
+<div
+key={sectionIndex}
+style={{
+
 display:
 
 isBento
@@ -90,71 +146,21 @@ isBento
 : undefined,
 
 gap:
-
-isBento
-? 24
-: undefined,
-
-alignItems:
-
-isEditorial
-? "flex-start"
-: "stretch",
-
-marginTop:
-
-isHero
-
-? (
-isMobile
-? (
-60 * adaptiveSpacing
-)
-: (
-90 * adaptiveSpacing
-)
-)
-
-: isSplit
-? 0
-: (
-(text?.sectionSpacing || 54)
-*
-adaptiveSpacing
-),
-
-paddingBottom:80
-
-}}
->
-
-{sections.map((section,sectionIndex)=>{
-
-const sectionStyles =
-getSectionStyles({
-
-section,
-isMobile,
-adaptiveSpacing
-
-});
-
-return(
-
-<div
-key={sectionIndex}
-style={{
-
-display:"grid",
-
-gap:
 sectionStyles.gap,
 
 marginTop:
 sectionStyles.marginTop,
 
 marginBottom:
-sectionStyles.marginBottom
+sectionStyles.marginBottom,
+
+width:"100%",
+
+alignItems:
+
+isEditorial
+? "flex-start"
+: "stretch"
 
 }}
 >
