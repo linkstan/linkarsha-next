@@ -128,7 +128,8 @@ paddingBottom:80
 }}
 >
 
-{sections.map((section,sectionIndex)=>(
+{sections.map((section,sectionIndex)=>{
+
 const sectionStyles =
 getSectionStyles({
 
@@ -137,6 +138,9 @@ isMobile,
 adaptiveSpacing
 
 });
+
+return(
+
 <div
 key={sectionIndex}
 style={{
@@ -203,7 +207,9 @@ index={index}
 
 </div>
 
-))}
+);
+
+})}
 
 </div>
 
