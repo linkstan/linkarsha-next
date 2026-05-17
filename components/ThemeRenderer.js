@@ -335,6 +335,12 @@ const layout = {
 
 const heroPreset =
 getActiveHeroPreset({
+
+layout,
+background
+
+});
+
 const heroLayout =
 getHeroLayout({
 
@@ -343,11 +349,6 @@ heroPreset,
 isMobile
 
 });
-layout,
-background
-
-});
-
 
 /* ================================================= */
 /* TEXT */
