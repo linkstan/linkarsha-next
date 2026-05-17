@@ -3,6 +3,9 @@
 import GlassSurface
 from "../surfaces/GlassSurface";
 
+import designTokens
+from "../../../../app/lib/designTokens";
+
 export default function FAQBlock({
 
 block
@@ -25,7 +28,7 @@ style={{
 
 display:"grid",
 
-gap:18,
+gap:designTokens.spacing.md,
 
 width:"100%"
 
@@ -38,9 +41,9 @@ width:"100%"
 
 key={index}
 
-padding={24}
+padding={designTokens.spacing.lg}
 
-borderRadius={24}
+borderRadius={designTokens.radius.lg}
 
 >
 
@@ -49,7 +52,8 @@ style={{
 
 fontWeight:800,
 
-marginBottom:10,
+marginBottom:
+designTokens.spacing.sm,
 
 fontSize:18
 
