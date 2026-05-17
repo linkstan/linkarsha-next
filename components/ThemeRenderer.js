@@ -892,6 +892,8 @@ text={text}
 
 finalTheme={finalTheme}
 
+layout={layout}
+
 isHero={isHero}
 
 isEditorial={isEditorial}
