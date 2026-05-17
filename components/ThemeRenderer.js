@@ -638,15 +638,12 @@ transition:
 `
 background 900ms ease,
 color 500ms ease,
-
 opacity ${
 0.9 * motionDuration
 }s cubic-bezier(.22,1,.36,1),
-
 transform ${
 1.2 * motionDuration
 }s cubic-bezier(.22,1,.36,1)
-s cubic-bezier(.22,1,.36,1)
 `,
 
 color:
@@ -1089,7 +1086,11 @@ flexDirection:"column",
 
 alignItems:
 
-isEditorial
+isHeroLeft
+
+? "flex-start"
+
+: isEditorial
 
 ? "flex-start"
 
@@ -1478,8 +1479,10 @@ finalTheme?.fonts?.bio ||
 {profile.bio}
 
 </p>
-</div>
+
 )}
+
+</div>
 
 </div>
 
@@ -1500,8 +1503,41 @@ isMobile
 
 : "100%",
 
-display:"flex",
-flexDirection:"column",
+display:
+
+layout?.enableBento
+? "grid"
+: "flex",
+
+flexDirection:
+
+layout?.enableBento
+? undefined
+: "column",
+
+gridTemplateColumns:
+
+layout?.enableBento
+
+? (
+isMobile
+? "1fr"
+: "repeat(2,minmax(0,1fr))"
+)
+
+: undefined,
+
+gridAutoRows:
+
+layout?.enableBento
+? "minmax(140px,auto)"
+: undefined,
+
+gap:
+
+layout?.enableBento
+? 22
+: undefined,
 
 alignItems:
 
@@ -1510,6 +1546,31 @@ isEditorial
 : "stretch",
 
 marginTop:
+
+isHero
+
+? (
+isMobile
+? (
+60 * adaptiveSpacing
+)
+: (
+90 * adaptiveSpacing
+)
+)
+
+: isSplit
+? 0
+: (
+(text?.sectionSpacing || 54)
+*
+adaptiveSpacing
+),
+
+paddingBottom:80
+
+}}
+>
 
 isHero
 
