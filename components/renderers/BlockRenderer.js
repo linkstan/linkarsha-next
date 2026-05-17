@@ -46,7 +46,7 @@ type === "cta"
 
 return(
 
-<ButtonBlockRenderer
+<ButtonBlock
 
 block={block}
 
@@ -55,6 +55,10 @@ theme={theme}
 appearance={appearance}
 
 index={index}
+
+featuredBlock={
+block?.featuredBlock
+}
 
 />
 
