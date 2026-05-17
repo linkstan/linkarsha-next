@@ -43,6 +43,7 @@ appearance?.layout || {};
 
 const background =
 appearance?.background || {};
+
 const motionDuration =
 background?.motionDuration || 1;
 
@@ -57,17 +58,22 @@ block?.data_json?.type === "cta";
 
 const isHero =
 layout?.type === "hero";
+
 const isFeaturedCTA =
 
 layout?.type === "split"
 &&
 index === 0;
 
+const isSecondaryCTA =
+index === 1;
+
 const isCard =
 layout?.type === "card";
 
 const isAmbient =
 background?.type === "ambient";
+
 const isDarkBackground =
 
 background?.background
@@ -82,7 +88,6 @@ background.background === "#071b2b"
 )
 
 : false;
-
 
 const surfaceDepth =
 background?.surfaceDepth || 1;
@@ -143,6 +148,12 @@ return "32px 38px";
 
 }
 
+if(isSecondaryCTA){
+
+return "24px 28px";
+
+}
+
 if(isHero){
 
 return "26px 34px";
@@ -164,11 +175,18 @@ return "18px 24px";
 
 }
 
+
 function getFontSize(){
 
 if(isFeaturedCTA){
 
 return 22;
+
+}
+
+if(isSecondaryCTA){
+
+return 18;
 
 }
 
@@ -203,6 +221,25 @@ function getShadow(){
 const intensity =
 surfaceDepth *
 (background?.atmosphereIntensity || 1);
+
+if(isFeaturedCTA){
+
+return `
+0 ${
+36 * surfaceDepth
+}px ${
+90 * surfaceDepth
+}px rgba(
+0,
+0,
+0,
+${
+isDarkBackground ? .38 : .22
+}
+)
+`;
+
+}
 
 if(hovered){
 
@@ -322,12 +359,34 @@ return "transparent";
 if(
 buttons?.style === "glass"
 ||
-
 isCard
 ||
-
 isAmbient
 ){
+
+if(isFeaturedCTA){
+
+return hovered
+
+? `rgba(
+255,
+255,
+255,
+${
+isDarkBackground ? .24 : .38
+}
+)`
+
+: `rgba(
+255,
+255,
+255,
+${
+isDarkBackground ? .16 : .26
+}
+)`;
+
+}
 
 return hovered
 
@@ -375,10 +434,8 @@ return "1.5px solid rgba(0,0,0,.18)";
 if(
 buttons?.style === "glass"
 ||
-
 isCard
 ||
-
 isAmbient
 ){
 
@@ -439,7 +496,13 @@ function getTransform(){
 if(hovered){
 
 return `translateY(-${
-4 * (background?.animationIntensity || 1)
+(
+isFeaturedCTA
+? 7
+: 4
+)
+*
+(background?.animationIntensity || 1)
 }px) scale(${
 1 + (
 0.01 *
@@ -453,6 +516,10 @@ return "translateY(0px) scale(1)";
 
 }
 
+
+/* ================================================= */
+/* COMPONENT */
+/* ================================================= */
 
 return(
 
@@ -568,10 +635,8 @@ backdropFilter:
 (
 buttons?.style === "glass"
 ||
-
 isCard
 ||
-
 isAmbient
 )
 
@@ -586,10 +651,8 @@ WebkitBackdropFilter:
 (
 buttons?.style === "glass"
 ||
-
 isCard
 ||
-
 isAmbient
 )
 
@@ -608,7 +671,10 @@ getTextColor(),
 fontFamily:
 theme?.fonts?.buttons || "Inter",
 
-fontWeight:700,
+fontWeight:
+isFeaturedCTA
+? 800
+: 700,
 
 fontSize:
 getFontSize(),
@@ -629,6 +695,7 @@ willChange:
 
 }}
 >
+
 {/* ================================================= */}
 {/* GLASS ATMOSPHERE */}
 {/* ================================================= */}
@@ -654,6 +721,7 @@ zIndex:0
 
 )}
 
+
 <div
 style={{
 
@@ -675,6 +743,7 @@ block?.data_json?.title || "Link"
 )}
 
 </div>
+
 
 {block?.data_json?.subtitle && (
 
@@ -702,6 +771,7 @@ fontWeight:500
 </div>
 
 </a>
+
 
 <style jsx global>{`
 
