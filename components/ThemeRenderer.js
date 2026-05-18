@@ -90,6 +90,13 @@ import HeroSpotlight
 from "./renderers/HeroSpotlight";
 
 import {
+getSectionTransition
+} from "../app/lib/sectionTransitionEngine";
+
+import SectionTransitionLayer
+from "./renderers/SectionTransitionLayer";
+
+import {
 useEffect,
 useState
 } from "react";
@@ -448,6 +455,14 @@ isMobile
 });
 const heroSpotlight =
 getHeroSpotlight({
+const sectionTransition =
+getSectionTransition({
+
+layout,
+background,
+isMobile
+
+});
 
 background,
 layout,
@@ -794,6 +809,13 @@ background={background}
 <HeroHeader
 appearance={finalAppearance}
 theme={finalTheme}
+/>
+<SectionTransitionLayer
+
+transition={sectionTransition}
+
+background={background}
+
 />
 
 <div
