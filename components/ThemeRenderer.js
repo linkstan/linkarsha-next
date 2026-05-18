@@ -54,6 +54,10 @@ getHeroVisualHierarchy
 } from "../app/lib/heroVisualHierarchy";
 
 import {
+getPremiumComposition
+} from "../app/lib/premiumCompositionEngine";
+
+import {
 useEffect,
 useState
 } from "react";
@@ -418,6 +422,13 @@ getHeroVisualHierarchy({
 heroPreset,
 isHero,
 isMobile
+  
+const premiumComposition =
+getPremiumComposition({
+
+layout,
+isHero,
+isMobile
 
 });
 
@@ -738,21 +749,15 @@ gridTemplateColumns:
 
 isHero && !isMobile
 
-? heroLayout.heroColumns
+? (
+premiumComposition.heroColumns
+||
+heroLayout.heroColumns
+)
 
 : isSplit && !isMobile
 
-? `
-minmax(
-${
-layout?.splitLeftWidth || 420
-}px,
-${
-layout?.splitLeftWidth || 420
-}px
-)
-minmax(500px,1fr)
-`
+? premiumComposition.contentColumns
 
 : undefined,
 
@@ -760,9 +765,11 @@ gap:
 
 isHero
 
-? heroLayout.contentGap
-*
-hierarchy.spacingScale
+? premiumComposition.heroGap
+
+: isSplit
+
+? premiumComposition.contentGap
 
 : asymmetricSplit
 
@@ -776,25 +783,13 @@ isMobile
 )
 )
 
-: isSplit
-
-? (
-isMobile
-? (
-50 * adaptiveSpacing
-)
-: (
-120 * adaptiveSpacing
-)
-)
-
 : undefined,
 
 alignItems:
 
 isHero
 
-? heroLayout.contentAlign
+? premiumComposition.heroAlignment
 
 : isSplit
 ? "start"
