@@ -27,6 +27,13 @@ import {
 getFeaturedBlock
 } from "../../app/lib/featuredBlockEngine";
 
+import {
+getContentCinematic
+} from "../../app/lib/contentCinematicEngine";
+
+import CinematicSectionShell
+from "./blocks/layout/CinematicSectionShell";
+
 export default function ContentRenderer({
 
 blocks,
@@ -129,11 +136,32 @@ isMobile,
 adaptiveSpacing
 
 });
+  
+const cinematic =
+getContentCinematic({
+
+layout,
+block:section.blocks?.[0],
+index:sectionIndex,
+isMobile
+
+});
 
 return(
 
-<div
+<CinematicSectionShell
+
 key={sectionIndex}
+
+cinematic={cinematic}
+
+background={
+finalAppearance?.background
+}
+
+>
+
+<div
 style={{
 
 display:
@@ -267,6 +295,8 @@ index={index}
 />
 
 </div>
+
+</CinematicSectionShell>
 
 );
 
