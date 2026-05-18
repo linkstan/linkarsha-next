@@ -12,6 +12,14 @@ import {
 getHeroDepth
 } from "../../app/lib/heroDepthEngine";
 
+import {
+getHeroCompositionRefinement
+} from "../../app/lib/heroCompositionRefinement";
+
+import {
+getHeroCinematicFlow
+} from "../../app/lib/heroCinematicFlow";
+
 export default function HeroContent({
 
 profile,
@@ -56,11 +64,29 @@ text
 
 });
 
+const refinement =
+getHeroCompositionRefinement({
+
+layout,
+isMobile
+
+});
+
+const cinematicFlow =
+getHeroCinematicFlow({
+
+layout,
+isMobile
+
+});
+
 const cinematicWidth =
 
 isHero
 
 ? (
+refinement?.contentWidth
+||
 heroWidths?.introWidth
 ||
 advancedHeroLayout?.introWidth
@@ -127,9 +153,19 @@ gap:
 
 isHero
 
-? cinematicSpacing.heroGap / 3
+? cinematicFlow.heroGap
 
-: composition.compositionGap
+: composition.compositionGap,
+
+transform:
+
+isHero
+
+? `translateX(${
+refinement?.introOffset || 0
+}px)`
+
+: "none"
 
 }}
 >
@@ -219,17 +255,7 @@ style={{
 maxWidth:
 cinematicWidth,
 
-width:"100%",
-
-transform:
-
-isHero
-
-? `translateX(${
-visualBalance?.introOffset || 0
-}px)`
-
-: "none"
+width:"100%"
 
 }}
 >
@@ -468,7 +494,7 @@ text?.lineHeight || 1.7
 
 (
 isHero
-? 1.04
+? refinement?.verticalFlow || 1.04
 : 1
 ),
 
