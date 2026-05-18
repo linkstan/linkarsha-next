@@ -296,13 +296,13 @@ index={index}
 
 </div>
 
-</CinematicSectionShell>
-
 );
 
 })}
 
 </div>
+
+</CinematicSectionShell>
 
 );
 
