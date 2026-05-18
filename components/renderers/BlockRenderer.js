@@ -21,6 +21,13 @@ from "./blocks/layout/TestimonialBlock";
 import FAQBlock
 from "./blocks/layout/FAQBlock";
 
+import {
+getMediaPresentation
+} from "../../app/lib/mediaPresentationEngine";
+
+import PremiumMediaShell
+from "./blocks/media/PremiumMediaShell";
+
 export default function BlockRenderer({
 
 block,
@@ -73,11 +80,27 @@ block?.featuredBlock
 
 if(type === "video"){
 
+const presentation =
+getMediaPresentation({
+
+type,
+isHero:false,
+isMobile:false
+
+});
+
 return(
+
+<PremiumMediaShell
+presentation={presentation}
+background={appearance?.background}
+>
 
 <VideoBlock
 block={block}
 />
+
+</PremiumMediaShell>
 
 );
 
@@ -107,11 +130,27 @@ block={block}
 
 if(type === "gallery"){
 
+const presentation =
+getMediaPresentation({
+
+type,
+isHero:false,
+isMobile:false
+
+});
+
 return(
+
+<PremiumMediaShell
+presentation={presentation}
+background={appearance?.background}
+>
 
 <GalleryBlock
 block={block}
 />
+
+</PremiumMediaShell>
 
 );
 
