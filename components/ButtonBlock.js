@@ -152,7 +152,7 @@ isFeatured
 
 ||
 
-cinematicCTA.featured;
+cinematicCTA?.featured;
 
 const isHeroBlock =
 blockSize === "hero";
@@ -190,6 +190,18 @@ return(
 
 <>
 
+<CinematicCTAGroup
+
+cinematic={cinematicCTA}
+
+background={background}
+
+>
+
+<FeaturedCTAAccent
+featured={cinematicCTA?.featured}
+/>
+
 <a
 href={block?.data_json?.url || "#"}
 target="_blank"
@@ -224,7 +236,7 @@ onMouseUp={(e)=>{
 e.currentTarget.style.transform =
 
 `
-scale(${cinematicCTA.scale})
+scale(${cinematicCTA?.scale || 1})
 ${getTransform({
 
 hovered,
@@ -258,7 +270,7 @@ onTouchEnd={(e)=>{
 e.currentTarget.style.transform =
 
 `
-scale(${cinematicCTA.scale})
+scale(${cinematicCTA?.scale || 1})
 ${getTransform({
 
 hovered,
@@ -277,7 +289,7 @@ display:"block",
 
 minHeight:
 
-cinematicCTA.minHeight
+cinematicCTA?.minHeight
 
 ||
 
@@ -326,16 +338,12 @@ index * 0.08 * staggerIntensity
 
 transition:
 `
-transform .32s cubic-bezier(.22,1,.36,1),
-box-shadow .32s cubic-bezier(.22,1,.36,1),
-background .5s ease,
-border .5s ease,
-backdrop-filter .5s ease
+all 700ms cubic-bezier(.22,1,.36,1)
 `,
 
 transform:
 `
-scale(${cinematicCTA.scale})
+scale(${cinematicCTA?.scale || 1})
 ${getTransform({
 
 hovered,
@@ -462,7 +470,9 @@ isHeroBlock,
 surfaceDepth:
 surfaceDepth
 *
-cinematicCTA.shadowIntensity,
+(
+cinematicCTA?.shadowIntensity || 1
+),
 
 isDarkBackground,
 background,
@@ -476,6 +486,8 @@ buttons
 overflow:"hidden",
 
 position:"relative",
+
+zIndex:2,
 
 isolation:"isolate",
 
@@ -522,6 +534,8 @@ isHero={isHero}
 </div>
 
 </a>
+
+</CinematicCTAGroup>
 
 <style jsx global>{`
 ${buttonEntranceKeyframes}
