@@ -353,14 +353,7 @@ heroPreset,
 isMobile
 
 });
-const hierarchy =
-getHeroVisualHierarchy({
 
-heroPreset,
-isHero,
-isMobile
-
-});
 /* ================================================= */
 /* TEXT */
 /* ================================================= */
@@ -418,6 +411,15 @@ layout?.heroAlignment === "center";
 
 const isHeroLeft =
 layout?.heroAlignment === "left";
+
+const hierarchy =
+getHeroVisualHierarchy({
+
+heroPreset,
+isHero,
+isMobile
+
+});
 
 
 /* ================================================= */
@@ -504,10 +506,6 @@ const headingScale =
 isHero
 
 ? hierarchy.titleScale
-
-: 1;
-)
-)
 
 : 1;
 
