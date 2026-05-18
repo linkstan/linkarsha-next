@@ -7,6 +7,10 @@ import blockVariants
 from "../app/lib/blockVariants";
 
 import {
+getCinematicCTA
+} from "../app/lib/cinematicCTAEngine";
+
+import {
 
 getRadius,
 getPadding,
@@ -104,11 +108,22 @@ block?.data_json?.variant
 ] ||
 
 blockVariants.default;
+
 const isFeatured =
 featuredBlock?.featured;
 
 const emphasis =
 featuredBlock?.emphasis;
+
+const cinematicCTA =
+getCinematicCTA({
+
+block,
+index,
+isHero,
+isMobile:false
+
+});
 
 
 /* ================================================= */
@@ -127,7 +142,11 @@ blockSize === "feature"
 
 ||
 
-isFeatured;
+isFeatured
+
+||
+
+cinematicCTA.featured;
 
 const isHeroBlock =
 blockSize === "hero";
@@ -198,14 +217,17 @@ onMouseUp={(e)=>{
 
 e.currentTarget.style.transform =
 
-getTransform({
+`
+scale(${cinematicCTA.scale})
+${getTransform({
 
 hovered,
 isHeroBlock,
 isFeaturedCTA,
 background
 
-});
+})}
+`;
 
 }}
 
@@ -229,14 +251,17 @@ onTouchEnd={(e)=>{
 
 e.currentTarget.style.transform =
 
-getTransform({
+`
+scale(${cinematicCTA.scale})
+${getTransform({
 
 hovered,
 isHeroBlock,
 isFeaturedCTA,
 background
 
-});
+})}
+`;
 
 }}
 
@@ -246,13 +271,19 @@ display:"block",
 
 minHeight:
 
+cinematicCTA.minHeight
+
+||
+
+(
 isHeroBlock
 ? 220
 
 : isFeature
 ? 170
 
-: undefined,
+: undefined
+),
 
 padding:getPadding({
 
@@ -297,14 +328,17 @@ backdrop-filter .5s ease
 `,
 
 transform:
-getTransform({
+`
+scale(${cinematicCTA.scale})
+${getTransform({
 
 hovered,
 isHeroBlock,
 isFeaturedCTA,
 background
 
-}),
+})}
+`,
 
 background:
 getBackground({
@@ -418,7 +452,12 @@ getShadow({
 
 variant,
 isHeroBlock,
-surfaceDepth,
+
+surfaceDepth:
+surfaceDepth
+*
+cinematicCTA.shadowIntensity,
+
 isDarkBackground,
 background,
 isFeaturedCTA,
