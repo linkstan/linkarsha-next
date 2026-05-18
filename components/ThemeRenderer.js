@@ -62,14 +62,22 @@ getAdvancedHeroLayout
 } from "../app/lib/getAdvancedHeroLayout";
 
 import {
+getCinematicSpacing
+} from "../app/lib/cinematicSpacingEngine";
+
+import {
+getVisualBalance
+} from "../app/lib/visualBalanceEngine";
+
+import {
+getHeroWidths
+} from "../app/lib/heroWidthEngine";
+
+import {
 useEffect,
 useState
 } from "react";
 
-
-/* ================================================= */
-/* SOCIAL URL */
-/* ================================================= */
 
 function buildSocialUrl(
 platform,
@@ -125,10 +133,6 @@ return `https://${platform}.com/${username}`;
 }
 
 
-/* ================================================= */
-/* COMPONENT */
-/* ================================================= */
-
 export default function ThemeRenderer({
 profile,
 appearance,
@@ -145,7 +149,7 @@ useState(false);
 
 
 /* ================================================= */
-/* LIVE EVENTS */
+/* LIVE */
 /* ================================================= */
 
 useEffect(()=>{
@@ -246,7 +250,7 @@ return ()=>clearTimeout(timer);
 
 
 /* ================================================= */
-/* FINAL APPEARANCE */
+/* APPEARANCE */
 /* ================================================= */
 
 const finalAppearance = {
@@ -342,7 +346,7 @@ const layout = {
 
 
 /* ================================================= */
-/* HERO PRESET */
+/* HERO */
 /* ================================================= */
 
 const heroPreset =
@@ -366,6 +370,56 @@ const advancedHeroLayout =
 getAdvancedHeroLayout({
 
 layout
+
+});
+
+const hierarchy =
+getHeroVisualHierarchy({
+
+heroPreset,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
+const premiumComposition =
+getPremiumComposition({
+
+layout,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
+const cinematicSpacing =
+getCinematicSpacing({
+
+layout,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
+const visualBalance =
+getVisualBalance({
+
+layout,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
+const heroWidths =
+getHeroWidths({
+
+layout,
+isHero:
+layout?.type === "hero",
+isMobile
 
 });
 
@@ -393,21 +447,7 @@ const text = {
 
 
 /* ================================================= */
-/* CAPABILITIES */
-/* ================================================= */
-
-const capabilities =
-presetText?.capabilities || {};
-
-const asymmetricSplit =
-capabilities?.asymmetricSplit;
-
-const stickyIntro =
-capabilities?.stickyIntro;
-
-
-/* ================================================= */
-/* LAYOUT TYPES */
+/* TYPES */
 /* ================================================= */
 
 const isEditorial =
@@ -430,26 +470,17 @@ layout?.heroAlignment === "left";
 
 
 /* ================================================= */
-/* HIERARCHY */
+/* CAPABILITIES */
 /* ================================================= */
 
-const hierarchy =
-getHeroVisualHierarchy({
+const capabilities =
+presetText?.capabilities || {};
 
-heroPreset,
-isHero,
-isMobile
+const asymmetricSplit =
+capabilities?.asymmetricSplit;
 
-});
-
-const premiumComposition =
-getPremiumComposition({
-
-layout,
-isHero,
-isMobile
-
-});
+const stickyIntro =
+capabilities?.stickyIntro;
 
 
 /* ================================================= */
@@ -498,6 +529,8 @@ isMobile
 ? "100%"
 : (
 layout?.heroContentWidth
+||
+heroWidths?.introWidth
 ||
 heroPreset?.heroWidth
 ||
@@ -591,7 +624,7 @@ buildSocialUrl
 
 
 /* ================================================= */
-/* CUSTOM THEME ROUTING */
+/* ROUTING */
 /* ================================================= */
 
 if(themeName === "archway"){
@@ -769,7 +802,11 @@ gridTemplateColumns:
 isHero && !isMobile
 
 ? (
-advancedHeroLayout.heroColumns
+layout?.heroStyle === "asymmetric"
+
+? "minmax(560px,1.25fr) minmax(320px,.75fr)"
+
+: advancedHeroLayout.heroColumns
 ||
 premiumComposition.heroColumns
 ||
@@ -786,11 +823,9 @@ gap:
 
 isHero
 
-? (
-advancedHeroLayout.heroGap
-||
-premiumComposition.heroGap
-)
+? cinematicSpacing.heroGap
+*
+hierarchy.spacingScale
 
 : isSplit
 
@@ -814,11 +849,7 @@ alignItems:
 
 isHero
 
-? (
-advancedHeroLayout.heroAlignment
-||
-premiumComposition.heroAlignment
-)
+? heroLayout.contentAlign
 
 : isSplit
 ? "start"
@@ -905,7 +936,6 @@ isDarkBackground
 : "none",
 
 borderRadius:
-
 isCard
 ? 48
 : 0,
@@ -979,6 +1009,8 @@ isMobile
 ? (
 layout?.heroTopSpacingMobile
 ||
+cinematicSpacing.heroTopSpacing
+||
 heroPreset?.topSpacingMobile
 ||
 80
@@ -986,6 +1018,8 @@ heroPreset?.topSpacingMobile
 
 : (
 layout?.heroTopSpacing
+||
+cinematicSpacing.heroTopSpacing
 ||
 heroPreset?.topSpacingDesktop
 ||
@@ -1018,6 +1052,12 @@ heroLayout={heroLayout}
 advancedHeroLayout={
 advancedHeroLayout
 }
+
+visualBalance={visualBalance}
+
+heroWidths={heroWidths}
+
+cinematicSpacing={cinematicSpacing}
 
 isHero={isHero}
 
