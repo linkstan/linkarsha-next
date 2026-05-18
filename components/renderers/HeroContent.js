@@ -90,7 +90,8 @@ layout,
 isMobile
 
 });
-const asymmetry =
+
+const asymmetricHero =
 getAsymmetricHero({
 
 layout,
@@ -98,7 +99,7 @@ isMobile
 
 });
 
-const ctaAnchor =
+const heroCTAAnchor =
 getHeroCTAAnchor({
 
 layout,
@@ -144,7 +145,13 @@ layout
 return(
 
 <HeroAsymmetricLayout
-asymmetry={asymmetry}
+
+asymmetricHero={asymmetricHero}
+
+isHero={isHero}
+
+isMobile={isMobile}
+
 >
 
 <div
@@ -195,7 +202,23 @@ isHero
 refinement?.introOffset || 0
 }px)`
 
-: "none"
+: "none",
+
+position:"relative",
+
+zIndex:4,
+
+maxWidth:
+
+isHero
+
+? (
+refinement?.heroMaxWidth
+||
+"100%"
+)
+
+: "100%"
 
 }}
 >
@@ -279,13 +302,27 @@ finalTheme?.avatar?.shadow
 }}
 />
 
+<HeroAsymmetricLayout
+
+asymmetricHero={asymmetricHero}
+
+isHero={isHero}
+
+isMobile={isMobile}
+
+>
+
 <div
 style={{
 
 maxWidth:
 cinematicWidth,
 
-width:"100%"
+width:"100%",
+
+position:"relative",
+
+zIndex:3
 
 }}
 >
@@ -357,6 +394,28 @@ fontWeight:
 text?.fontWeight || 700,
 
 margin:0,
+
+maxWidth:
+
+isHero
+
+? (
+heroCTAAnchor?.titleWidth
+||
+"100%"
+)
+
+: "100%",
+
+marginBottom:
+
+isHero
+
+? (
+cinematicFlow?.titleSpacing || 0
+)
+
+: 0,
 
 textAlign:
 
@@ -470,10 +529,11 @@ composition.textWidth
 ? 260
 : 340,
 
-width:"100%"
+width:"100%",
+
 position:"relative",
 
-zIndex:2,
+zIndex:2
 
 }}
 >
@@ -495,6 +555,8 @@ maxWidth:
 isHero
 
 ? (
+refinement?.bioWidth
+||
 heroLayout?.bioWidth
 ||
 composition.textWidth
@@ -554,6 +616,8 @@ finalTheme?.fonts?.bio ||
 )}
 
 </div>
+
+</HeroAsymmetricLayout>
 
 </div>
 
