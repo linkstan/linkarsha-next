@@ -422,7 +422,9 @@ getHeroVisualHierarchy({
 heroPreset,
 isHero,
 isMobile
-  
+
+});
+
 const premiumComposition =
 getPremiumComposition({
 
