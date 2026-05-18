@@ -25,6 +25,9 @@ floatingGlowKeyframes
 import BackgroundGlow
 from "./renderers/BackgroundGlow";
 
+import HeroDepthLayers
+from "./renderers/HeroDepthLayers";
+
 import ContentRenderer
 from "./renderers/ContentRenderer";
 
@@ -737,6 +740,18 @@ isMobile={isMobile}
 motionDuration={motionDuration}
 
 floatAnimation={floatAnimation}
+
+/>
+
+<HeroDepthLayers
+
+background={background}
+
+isHero={isHero}
+
+isMobile={isMobile}
+
+layout={layout}
 
 />
 
