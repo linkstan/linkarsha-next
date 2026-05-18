@@ -34,7 +34,18 @@ heroLayout
 
 const composition =
 getHeroComposition({
+  
+const cinematicWidth =
 
+isHero
+
+? (
+heroLayout?.introWidth
+||
+760
+)
+
+: composition.textWidth;
 layout,
 isMobile,
 background,
@@ -380,7 +391,11 @@ maxWidth:
 
 isHero
 
-? composition.textWidth
+? (
+heroLayout?.bioWidth
+||
+composition.textWidth
+)
 
 : isEditorial
 ? 260
