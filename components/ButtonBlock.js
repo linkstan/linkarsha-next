@@ -10,11 +10,21 @@ import {
 getCinematicCTA
 } from "../app/lib/cinematicCTAEngine";
 
+import {
+getInteractionAtmosphere
+} from "../app/lib/interactionAtmosphereEngine";
+
 import CinematicCTAGroup
 from "./renderers/cta/CinematicCTAGroup";
 
 import FeaturedCTAAccent
 from "./renderers/cta/FeaturedCTAAccent";
+
+import PremiumInteractionSurface
+from "./renderers/interaction/PremiumInteractionSurface";
+
+import PremiumDepthGlow
+from "./renderers/interaction/PremiumDepthGlow";
 
 import {
 
@@ -131,6 +141,15 @@ isMobile:false
 
 });
 
+const interaction =
+getInteractionAtmosphere({
+
+background,
+isHero,
+isMobile:false
+
+});
+
 
 /* ================================================= */
 /* BLOCK SIZE ENGINE */
@@ -190,6 +209,10 @@ return(
 
 <>
 
+<PremiumInteractionSurface
+interaction={interaction}
+>
+
 <CinematicCTAGroup
 
 cinematic={cinematicCTA}
@@ -197,6 +220,10 @@ cinematic={cinematicCTA}
 background={background}
 
 >
+
+<PremiumDepthGlow
+interaction={interaction}
+/>
 
 <FeaturedCTAAccent
 featured={cinematicCTA?.featured}
@@ -237,6 +264,9 @@ e.currentTarget.style.transform =
 
 `
 scale(${cinematicCTA?.scale || 1})
+translateY(-${
+interaction?.hoverLift || 0
+}px)
 ${getTransform({
 
 hovered,
@@ -271,6 +301,9 @@ e.currentTarget.style.transform =
 
 `
 scale(${cinematicCTA?.scale || 1})
+translateY(-${
+interaction?.hoverLift || 0
+}px)
 ${getTransform({
 
 hovered,
@@ -338,12 +371,20 @@ index * 0.08 * staggerIntensity
 
 transition:
 `
-all 700ms cubic-bezier(.22,1,.36,1)
+all ${
+interaction?.motionSmoothness || .32
+}s cubic-bezier(.22,1,.36,1)
 `,
 
 transform:
 `
 scale(${cinematicCTA?.scale || 1})
+${hovered
+? `translateY(-${
+interaction?.hoverLift || 0
+}px)`
+: "translateY(0px)"
+}
 ${getTransform({
 
 hovered,
@@ -536,6 +577,8 @@ isHero={isHero}
 </a>
 
 </CinematicCTAGroup>
+
+</PremiumInteractionSurface>
 
 <style jsx global>{`
 ${buttonEntranceKeyframes}
