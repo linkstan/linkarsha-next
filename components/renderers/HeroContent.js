@@ -4,6 +4,14 @@ import {
 getHeroComposition
 } from "../../app/lib/heroCompositionEngine";
 
+import {
+getPremiumHeroRhythm
+} from "../../app/lib/premiumHeroRhythm";
+
+import {
+getHeroDepth
+} from "../../app/lib/heroDepthEngine";
+
 export default function HeroContent({
 
 profile,
@@ -30,7 +38,11 @@ background,
 layout,
 
 heroLayout,
-advancedHeroLayout
+advancedHeroLayout,
+
+visualBalance,
+heroWidths,
+cinematicSpacing
 
 }){
 
@@ -49,6 +61,8 @@ const cinematicWidth =
 isHero
 
 ? (
+heroWidths?.introWidth
+||
 advancedHeroLayout?.introWidth
 ||
 heroLayout?.introWidth
@@ -57,6 +71,23 @@ heroLayout?.introWidth
 )
 
 : composition.textWidth;
+
+const rhythm =
+getPremiumHeroRhythm({
+
+layout,
+isHero,
+isMobile
+
+});
+
+const heroDepth =
+getHeroDepth({
+
+background,
+layout
+
+});
 
 return(
 
@@ -96,9 +127,7 @@ gap:
 
 isHero
 
-? (
-composition.compositionGap * 1.4
-)
+? cinematicSpacing.heroGap / 3
 
 : composition.compositionGap
 
@@ -168,11 +197,7 @@ finalTheme?.layout?.avatarOverlap
 : "none",
 
 marginBottom:
-(
-text?.sectionSpacing || 22
-)
-*
-adaptiveSpacing,
+rhythm.avatarSpacing,
 
 position:"relative",
 zIndex:10,
@@ -180,7 +205,9 @@ zIndex:10,
 boxShadow:
 
 finalTheme?.avatar?.shadow
-? "0 10px 25px rgba(0,0,0,.18)"
+
+? heroDepth.avatarShadow
+
 : "none"
 
 }}
@@ -192,7 +219,17 @@ style={{
 maxWidth:
 cinematicWidth,
 
-width:"100%"
+width:"100%",
+
+transform:
+
+isHero
+
+? `translateX(${
+visualBalance?.introOffset || 0
+}px)`
+
+: "none"
 
 }}
 >
@@ -296,11 +333,7 @@ fontSize:
 text?.usernameSize || 18,
 
 marginTop:
-(
-text?.nameBottomSpacing || 14
-)
-*
-adaptiveSpacing,
+rhythm.titleSpacing,
 
 letterSpacing:
 `${(text?.letterSpacing || -0.04)/4}em`,
@@ -365,13 +398,7 @@ text?.align || "center"
 ),
 
 marginTop:
-(
-(text?.sectionSpacing || 54)
-/
-1.5
-)
-*
-adaptiveSpacing,
+rhythm.subtitleSpacing,
 
 maxWidth:
 
@@ -449,15 +476,7 @@ fontSize:
 text?.bioSize || 15,
 
 marginTop:
-
-(
-(text?.sectionSpacing || 54)
-/
-3
-)
-
-*
-adaptiveSpacing,
+rhythm.bioSpacing,
 
 marginBottom:0,
 
