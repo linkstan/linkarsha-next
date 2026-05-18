@@ -79,8 +79,15 @@ import {
 getFloatingHeroSurface
 } from "../app/lib/floatingHeroSurfaceEngine";
 
+import {
+getHeroSpotlight
+} from "../app/lib/heroSpotlightEngine";
+
 import FloatingHeroSurface
 from "./renderers/FloatingHeroSurface";
+
+import HeroSpotlight
+from "./renderers/HeroSpotlight";
 
 import {
 useEffect,
@@ -439,7 +446,14 @@ background,
 isMobile
 
 });
+const heroSpotlight =
+getHeroSpotlight({
 
+background,
+layout,
+isMobile
+
+});
 
 /* ================================================= */
 /* TEXT */
@@ -766,6 +780,14 @@ isHero={isHero}
 isMobile={isMobile}
 
 layout={layout}
+
+/>
+  
+<HeroSpotlight
+
+spotlight={heroSpotlight}
+
+background={background}
 
 />
 
