@@ -89,7 +89,14 @@ text?.align === "right"
 width:"100%",
 
 gap:
-composition.compositionGap
+
+isHero
+
+? (
+composition.compositionGap * 1.4
+)
+
+: composition.compositionGap
 
 }}
 >
