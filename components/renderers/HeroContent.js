@@ -34,7 +34,14 @@ heroLayout
 
 const composition =
 getHeroComposition({
-  
+
+layout,
+isMobile,
+background,
+text
+
+});
+
 const cinematicWidth =
 
 isHero
@@ -46,12 +53,6 @@ heroLayout?.introWidth
 )
 
 : composition.textWidth;
-layout,
-isMobile,
-background,
-text
-
-});
 
 return(
 
@@ -178,12 +179,7 @@ finalTheme?.avatar?.shadow
 style={{
 
 maxWidth:
-
-isHero
-
-? heroLayout.introWidth
-
-: composition.textWidth,
+cinematicWidth,
 
 width:"100%"
 
@@ -334,7 +330,13 @@ finalTheme?.fonts?.bio ||
 fontSize:
 
 isHero
-? 28
+
+? (
+isMobile
+? 22
+: 30
+)
+
 : 20,
 
 lineHeight:
@@ -364,7 +366,11 @@ maxWidth:
 
 isHero
 
-? composition.textWidth
+? (
+heroLayout?.bioWidth
+||
+composition.textWidth
+)
 
 : isEditorial
 ? 260
