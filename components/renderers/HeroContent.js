@@ -20,6 +20,17 @@ import {
 getHeroCinematicFlow
 } from "../../app/lib/heroCinematicFlow";
 
+import {
+getAsymmetricHero
+} from "../../app/lib/asymmetricHeroEngine";
+
+import {
+getHeroCTAAnchor
+} from "../../app/lib/heroCTAAnchorEngine";
+
+import HeroAsymmetricLayout
+from "./HeroAsymmetricLayout";
+
 export default function HeroContent({
 
 profile,
@@ -79,6 +90,21 @@ layout,
 isMobile
 
 });
+const asymmetry =
+getAsymmetricHero({
+
+layout,
+isMobile
+
+});
+
+const ctaAnchor =
+getHeroCTAAnchor({
+
+layout,
+isMobile
+
+});
 
 const cinematicWidth =
 
@@ -116,6 +142,10 @@ layout
 });
 
 return(
+
+<HeroAsymmetricLayout
+asymmetry={asymmetry}
+>
 
 <div
 style={{
@@ -441,6 +471,9 @@ composition.textWidth
 : 340,
 
 width:"100%"
+position:"relative",
+
+zIndex:2,
 
 }}
 >
@@ -523,6 +556,8 @@ finalTheme?.fonts?.bio ||
 </div>
 
 </div>
+
+</HeroAsymmetricLayout>
 
 );
 
