@@ -50,6 +50,10 @@ getHeroLayout
 } from "../app/lib/heroLayoutEngine";
 
 import {
+getHeroVisualHierarchy
+} from "../app/lib/heroVisualHierarchy";
+
+import {
 useEffect,
 useState
 } from "react";
@@ -349,7 +353,14 @@ heroPreset,
 isMobile
 
 });
+const hierarchy =
+getHeroVisualHierarchy({
 
+heroPreset,
+isHero,
+isMobile
+
+});
 /* ================================================= */
 /* TEXT */
 /* ================================================= */
@@ -492,17 +503,9 @@ const headingScale =
 
 isHero
 
-? (
-isMobile
+? hierarchy.titleScale
 
-? (
-heroPreset?.titleScale || 1
-)
-
-: (
-(heroPreset?.titleScale || 1)
-*
-1.08
+: 1;
 )
 )
 
@@ -760,6 +763,8 @@ gap:
 isHero
 
 ? heroLayout.contentGap
+*
+hierarchy.spacingScale
 
 : asymmetricSplit
 
