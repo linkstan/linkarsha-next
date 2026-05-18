@@ -75,6 +75,7 @@ getVisualBalance
 import {
 getHeroWidths
 } from "../app/lib/heroWidthEngine";
+
 import {
 getFloatingHeroSurface
 } from "../app/lib/floatingHeroSurfaceEngine";
@@ -95,6 +96,23 @@ getSectionTransition
 
 import SectionTransitionLayer
 from "./renderers/SectionTransitionLayer";
+
+import {
+getAmbientLight
+} from "../app/lib/ambientLightEngine";
+
+import {
+getDepthFog
+} from "../app/lib/depthFogEngine";
+
+import AmbientLightLayer
+from "./renderers/atmosphere/AmbientLightLayer";
+
+import DepthFogLayer
+from "./renderers/atmosphere/DepthFogLayer";
+
+import CinematicAtmosphereStack
+from "./renderers/atmosphere/CinematicAtmosphereStack";
 
 import {
 useEffect,
@@ -445,6 +463,7 @@ layout?.type === "hero",
 isMobile
 
 });
+
 const floatingHeroSurface =
 getFloatingHeroSurface({
 
@@ -471,6 +490,27 @@ background,
 isMobile
 
 });
+
+const ambientLight =
+getAmbientLight({
+
+background,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
+const depthFog =
+getDepthFog({
+
+background,
+isHero:
+layout?.type === "hero",
+isMobile
+
+});
+
 
 /* ================================================= */
 /* TEXT */
@@ -744,6 +784,8 @@ return(
 
 <>
 
+<CinematicAtmosphereStack>
+
 <LayoutContainer
 
 background={background}
@@ -765,6 +807,14 @@ entranceAnimation={entranceAnimation}
 mounted={mounted}
 
 >
+
+<AmbientLightLayer
+ambient={ambientLight}
+/>
+
+<DepthFogLayer
+fog={depthFog}
+/>
 
 <AtmosphereOverlay
 
@@ -799,7 +849,7 @@ isMobile={isMobile}
 layout={layout}
 
 />
-  
+
 <HeroSpotlight
 
 spotlight={heroSpotlight}
@@ -812,6 +862,7 @@ background={background}
 appearance={finalAppearance}
 theme={finalTheme}
 />
+
 <SectionTransitionLayer
 
 transition={sectionTransition}
@@ -1169,6 +1220,7 @@ stickyIntro={stickyIntro}
 />
 
 </FloatingHeroSurface>
+
 <ContentRenderer
 
 blocks={blocks}
@@ -1196,6 +1248,8 @@ adaptiveSpacing={adaptiveSpacing}
 </div>
 
 </LayoutContainer>
+
+</CinematicAtmosphereStack>
 
 <style jsx global>{`
 ${floatingGlowKeyframes}
