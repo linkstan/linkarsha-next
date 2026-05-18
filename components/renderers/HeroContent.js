@@ -302,16 +302,6 @@ finalTheme?.avatar?.shadow
 }}
 />
 
-<HeroAsymmetricLayout
-
-asymmetricHero={asymmetricHero}
-
-isHero={isHero}
-
-isMobile={isMobile}
-
->
-
 <div
 style={{
 
@@ -616,8 +606,6 @@ finalTheme?.fonts?.bio ||
 )}
 
 </div>
-
-</HeroAsymmetricLayout>
 
 </div>
 
