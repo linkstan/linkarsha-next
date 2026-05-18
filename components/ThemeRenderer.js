@@ -58,6 +58,10 @@ getPremiumComposition
 } from "../app/lib/premiumCompositionEngine";
 
 import {
+getAdvancedHeroLayout
+} from "../app/lib/getAdvancedHeroLayout";
+
+import {
 useEffect,
 useState
 } from "react";
@@ -225,7 +229,7 @@ handleResize
 
 
 /* ================================================= */
-/* ENTRANCE ANIMATION */
+/* ENTRANCE */
 /* ================================================= */
 
 useEffect(()=>{
@@ -358,6 +362,14 @@ isMobile
 
 });
 
+const advancedHeroLayout =
+getAdvancedHeroLayout({
+
+layout
+
+});
+
+
 /* ================================================= */
 /* TEXT */
 /* ================================================= */
@@ -415,6 +427,11 @@ layout?.heroAlignment === "center";
 
 const isHeroLeft =
 layout?.heroAlignment === "left";
+
+
+/* ================================================= */
+/* HIERARCHY */
+/* ================================================= */
 
 const hierarchy =
 getHeroVisualHierarchy({
@@ -639,7 +656,7 @@ return(
 
 
 /* ================================================= */
-/* DEFAULT THEMES */
+/* DEFAULT */
 /* ================================================= */
 
 return(
@@ -752,6 +769,8 @@ gridTemplateColumns:
 isHero && !isMobile
 
 ? (
+advancedHeroLayout.heroColumns
+||
 premiumComposition.heroColumns
 ||
 heroLayout.heroColumns
@@ -767,7 +786,11 @@ gap:
 
 isHero
 
-? premiumComposition.heroGap
+? (
+advancedHeroLayout.heroGap
+||
+premiumComposition.heroGap
+)
 
 : isSplit
 
@@ -791,7 +814,11 @@ alignItems:
 
 isHero
 
-? premiumComposition.heroAlignment
+? (
+advancedHeroLayout.heroAlignment
+||
+premiumComposition.heroAlignment
+)
 
 : isSplit
 ? "start"
@@ -987,6 +1014,10 @@ finalTheme={finalTheme}
 layout={layout}
 
 heroLayout={heroLayout}
+
+advancedHeroLayout={
+advancedHeroLayout
+}
 
 isHero={isHero}
 
