@@ -75,6 +75,12 @@ getVisualBalance
 import {
 getHeroWidths
 } from "../app/lib/heroWidthEngine";
+import {
+getFloatingHeroSurface
+} from "../app/lib/floatingHeroSurfaceEngine";
+
+import FloatingHeroSurface
+from "./renderers/FloatingHeroSurface";
 
 import {
 useEffect,
@@ -422,6 +428,14 @@ getHeroWidths({
 layout,
 isHero:
 layout?.type === "hero",
+isMobile
+
+});
+const floatingHeroSurface =
+getFloatingHeroSurface({
+
+layout,
+background,
 isMobile
 
 });
@@ -1050,6 +1064,14 @@ transition:
 }}
 >
 
+<FloatingHeroSurface
+
+surface={floatingHeroSurface}
+
+background={background}
+
+>
+
 <HeroContent
 
 profile={profile}
@@ -1100,6 +1122,7 @@ stickyIntro={stickyIntro}
 
 />
 
+</FloatingHeroSurface>
 <ContentRenderer
 
 blocks={blocks}
