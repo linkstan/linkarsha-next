@@ -28,7 +28,9 @@ typographyIntensity,
 
 background,
 layout,
-heroLayout
+
+heroLayout,
+advancedHeroLayout
 
 }){
 
@@ -47,6 +49,8 @@ const cinematicWidth =
 isHero
 
 ? (
+advancedHeroLayout?.introWidth
+||
 heroLayout?.introWidth
 ||
 760
