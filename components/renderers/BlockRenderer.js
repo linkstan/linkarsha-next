@@ -32,11 +32,28 @@ import {
 getCinematicMedia
 } from "../../app/lib/cinematicMediaEngine";
 
+import {
+getMediaStack
+} from "../../app/lib/mediaStackEngine";
+
+import {
+getEditorialMediaRhythm
+} from "../../app/lib/editorialMediaRhythm";
+
 import CinematicMediaFrame
 from "./media/CinematicMediaFrame";
 
 import CinematicMediaGlow
 from "./media/CinematicMediaGlow";
+
+import FloatingMediaStack
+from "./media/FloatingMediaStack";
+
+import CinematicMediaMask
+from "./media/CinematicMediaMask";
+
+import EditorialMediaLayout
+from "./media/EditorialMediaLayout";
 
 export default function BlockRenderer({
 
@@ -49,6 +66,12 @@ index
 
 const type =
 block?.data_json?.type || "button";
+
+const background =
+appearance?.background;
+
+const layout =
+appearance?.layout;
 
 
 /* ================================================= */
@@ -98,23 +121,53 @@ isHero:false,
 isMobile:false
 
 });
+
 const cinematic =
 getCinematicMedia({
 
 block,
-layout:appearance?.layout,
-background:appearance?.background,
+layout,
+background,
+isMobile:false
+
+});
+
+const mediaStack =
+getMediaStack({
+
+block,
+layout,
+background,
+index,
+isMobile:false
+
+});
+
+const editorialRhythm =
+getEditorialMediaRhythm({
+
+block,
+layout,
+index,
 isMobile:false
 
 });
 
 return(
 
+<EditorialMediaLayout
+rhythm={editorialRhythm}
+>
+
+<FloatingMediaStack
+stack={mediaStack}
+>
+
 <CinematicMediaFrame
 
 cinematic={cinematic}
 
-background={appearance?.background}
+background={background}
 
 >
 
@@ -122,9 +175,13 @@ background={appearance?.background}
 cinematic={cinematic}
 />
 
+<CinematicMediaMask
+cinematic={cinematic}
+>
+
 <PremiumMediaShell
 presentation={presentation}
-background={appearance?.background}
+background={background}
 >
 
 <VideoBlock
@@ -133,7 +190,13 @@ block={block}
 
 </PremiumMediaShell>
 
+</CinematicMediaMask>
+
 </CinematicMediaFrame>
+
+</FloatingMediaStack>
+
+</EditorialMediaLayout>
 
 );
 
@@ -171,23 +234,53 @@ isHero:false,
 isMobile:false
 
 });
+
 const cinematic =
 getCinematicMedia({
 
 block,
-layout:appearance?.layout,
-background:appearance?.background,
+layout,
+background,
+isMobile:false
+
+});
+
+const mediaStack =
+getMediaStack({
+
+block,
+layout,
+background,
+index,
+isMobile:false
+
+});
+
+const editorialRhythm =
+getEditorialMediaRhythm({
+
+block,
+layout,
+index,
 isMobile:false
 
 });
 
 return(
 
+<EditorialMediaLayout
+rhythm={editorialRhythm}
+>
+
+<FloatingMediaStack
+stack={mediaStack}
+>
+
 <CinematicMediaFrame
 
 cinematic={cinematic}
 
-background={appearance?.background}
+background={background}
 
 >
 
@@ -195,9 +288,13 @@ background={appearance?.background}
 cinematic={cinematic}
 />
 
+<CinematicMediaMask
+cinematic={cinematic}
+>
+
 <PremiumMediaShell
 presentation={presentation}
-background={appearance?.background}
+background={background}
 >
 
 <GalleryBlock
@@ -206,7 +303,13 @@ block={block}
 
 </PremiumMediaShell>
 
+</CinematicMediaMask>
+
 </CinematicMediaFrame>
+
+</FloatingMediaStack>
+
+</EditorialMediaLayout>
 
 );
 
