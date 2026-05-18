@@ -10,6 +10,12 @@ import {
 getCinematicCTA
 } from "../app/lib/cinematicCTAEngine";
 
+import CinematicCTAGroup
+from "./renderers/cta/CinematicCTAGroup";
+
+import FeaturedCTAAccent
+from "./renderers/cta/FeaturedCTAAccent";
+
 import {
 
 getRadius,
