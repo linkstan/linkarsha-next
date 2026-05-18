@@ -453,19 +453,21 @@ background,
 isMobile
 
 });
+
 const heroSpotlight =
 getHeroSpotlight({
+
+background,
+layout,
+isMobile
+
+});
+
 const sectionTransition =
 getSectionTransition({
 
 layout,
 background,
-isMobile
-
-});
-
-background,
-layout,
 isMobile
 
 });
