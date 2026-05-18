@@ -28,8 +28,15 @@ import {
 getHeroCTAAnchor
 } from "../../app/lib/heroCTAAnchorEngine";
 
+import {
+getHeroStoryPanel
+} from "../../app/lib/heroStoryPanelEngine";
+
 import HeroAsymmetricLayout
 from "./HeroAsymmetricLayout";
+
+import HeroStoryPanel
+from "./HeroStoryPanel";
 
 export default function HeroContent({
 
@@ -107,6 +114,15 @@ isMobile
 
 });
 
+const heroStoryPanel =
+getHeroStoryPanel({
+
+layout,
+background,
+isMobile
+
+});
+
 const cinematicWidth =
 
 isHero
@@ -143,6 +159,14 @@ layout
 });
 
 return(
+
+<HeroStoryPanel
+
+panel={heroStoryPanel}
+
+background={background}
+
+>
 
 <HeroAsymmetricLayout
 
@@ -610,6 +634,8 @@ finalTheme?.fonts?.bio ||
 </div>
 
 </HeroAsymmetricLayout>
+
+</HeroStoryPanel>
 
 );
 
