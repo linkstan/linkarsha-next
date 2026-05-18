@@ -28,6 +28,16 @@ getMediaPresentation
 import PremiumMediaShell
 from "./blocks/media/PremiumMediaShell";
 
+import {
+getCinematicMedia
+} from "../../app/lib/cinematicMediaEngine";
+
+import CinematicMediaFrame
+from "./media/CinematicMediaFrame";
+
+import CinematicMediaGlow
+from "./media/CinematicMediaGlow";
+
 export default function BlockRenderer({
 
 block,
@@ -88,8 +98,29 @@ isHero:false,
 isMobile:false
 
 });
+const cinematic =
+getCinematicMedia({
+
+block,
+layout:appearance?.layout,
+background:appearance?.background,
+isMobile:false
+
+});
 
 return(
+
+<CinematicMediaFrame
+
+cinematic={cinematic}
+
+background={appearance?.background}
+
+>
+
+<CinematicMediaGlow
+cinematic={cinematic}
+/>
 
 <PremiumMediaShell
 presentation={presentation}
@@ -101,6 +132,8 @@ block={block}
 />
 
 </PremiumMediaShell>
+
+</CinematicMediaFrame>
 
 );
 
@@ -138,8 +171,29 @@ isHero:false,
 isMobile:false
 
 });
+const cinematic =
+getCinematicMedia({
+
+block,
+layout:appearance?.layout,
+background:appearance?.background,
+isMobile:false
+
+});
 
 return(
+
+<CinematicMediaFrame
+
+cinematic={cinematic}
+
+background={appearance?.background}
+
+>
+
+<CinematicMediaGlow
+cinematic={cinematic}
+/>
 
 <PremiumMediaShell
 presentation={presentation}
@@ -151,6 +205,8 @@ block={block}
 />
 
 </PremiumMediaShell>
+
+</CinematicMediaFrame>
 
 );
 
