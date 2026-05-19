@@ -291,9 +291,7 @@ isSplit
 ? 20
 
 : isHero
-? (
-composition.topSpacing
-)
+? 32
 
 : finalTheme?.layout?.avatarOverlap
 ? -20
@@ -416,7 +414,11 @@ isHero
 ? (
 heroCTAAnchor?.titleWidth
 ||
-"100%"
+(
+isMobile
+? "92%"
+: "82%"
+)
 )
 
 : "100%",
