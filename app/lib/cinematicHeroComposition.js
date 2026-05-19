@@ -103,17 +103,26 @@ isMobile
 titleOffsetX:
 
 layout === "left"
-? -2
+? -6
 : 0,
 
 usernameOffsetX:
-0,
+
+layout === "left"
+? 2
+: 0,
 
 subtitleOffsetX:
-0,
+
+layout === "left"
+? 10
+: 0,
 
 bioOffsetX:
-0,
+
+layout === "left"
+? 16
+: 0,
 
 textAlign:
 
