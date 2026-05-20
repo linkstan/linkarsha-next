@@ -1,5 +1,9 @@
+"use client";
+
 export default function VerificationBadge({
+
 signals
+
 }){
 
 if(!signals?.verified){
@@ -26,12 +30,12 @@ fontSize:12,
 fontWeight:700,
 
 background:
-"rgba(255,255,255,.12)",
+"linear-gradient(135deg,#4da3ff,#7bc2ff)",
 
-backdropFilter:"blur(10px)",
+color:"#fff",
 
-border:
-"1px solid rgba(255,255,255,.16)"
+boxShadow:
+"0 10px 30px rgba(77,163,255,.28)"
 
 }}
 >
