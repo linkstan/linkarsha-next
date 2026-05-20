@@ -41,8 +41,8 @@ titleLineHeight:0.92
 
 }
 
-const isDark =
-background?.mode === "dark";
+const isLeft =
+layout === "left";
 
 return{
 
@@ -55,85 +55,95 @@ isMobile
 heroGap:
 
 isMobile
-? 24
-: 36,
+? 26
+: 40,
 
 contentAlign:
 
-layout === "left"
+isLeft
 ? "flex-start"
 : "center",
 
 horizontalOffset:
 
-layout === "left"
-? -20
+isLeft
+? -12
 : 0,
 
 verticalOffset:
-0,
+
+isMobile
+? 0
+: 6,
 
 avatarScale:
 
 isMobile
-? 0.92
-: 1,
+? 0.94
+: 1.02,
 
 avatarOffsetX:
 
-layout === "left"
-? -6
+isLeft
+? -4
 : 0,
 
 avatarOffsetY:
-0,
+
+isMobile
+? 0
+: -2,
 
 avatarOffsetTop:
 
 isMobile
-? 10
-: 18,
+? 12
+: 22,
 
 titleSpacing:
 
 isMobile
 ? 10
-: 14,
+: 16,
+
+/* ====================================== */
+/* EDITORIAL STAGGER RHYTHM */
+/* ====================================== */
 
 titleOffsetX:
 
-layout === "left"
-? -6
+isLeft
+? -8
 : 0,
 
 usernameOffsetX:
 
-layout === "left"
-? 2
+isLeft
+? 4
 : 0,
 
 subtitleOffsetX:
 
-layout === "left"
-? 10
+isLeft
+? 14
 : 0,
 
 bioOffsetX:
 
-layout === "left"
-? 16
+isLeft
+? 22
 : 0,
 
 textAlign:
 
-layout === "left"
+isLeft
 ? "left"
 : "center",
 
 titleLineHeight:
 
 isMobile
-? 0.96
+? 0.98
 : 0.9
 
 };
