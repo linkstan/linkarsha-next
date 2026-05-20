@@ -6,65 +6,186 @@ appearance,
 blocks
 }){
 
-const mainLinks = blocks.slice(0,4);
-const bottomLink = blocks[4];
+const heroImage =
+appearance?.hero?.image
+||
+appearance?.header?.heroImage
+||
+'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1600';
+
+const featuredLinks = blocks.slice(0,4);
+
+const secondaryLinks = blocks.slice(4,8);
 
 return(
 
 <div
 style={{
 minHeight:"100vh",
-background:'url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200") center / cover no-repeat',
-display:"flex",
-flexDirection:"column",
-alignItems:"center",
-paddingTop:120,
-fontFamily:"Georgia, serif",
-color:"#ffffff"
+
+background:"#0f0f10",
+
+fontFamily:"Inter, sans-serif",
+
+color:"#ffffff",
+
+overflow:"hidden",
+
+position:"relative"
 }}
 >
 
-{/* MAIN CARD */}
+{/* HERO IMAGE */}
 
 <div
 style={{
-width:360,
-background:"rgba(255,255,255,0.08)",
-border:"2px solid rgba(255,255,255,0.35)",
-borderRadius:22,
-padding:"90px 25px 40px",
-textAlign:"center",
-backdropFilter:"blur(6px)",
-position:"relative",
-overflow:"visible"
-}}
->
-
-{/* PROFILE IMAGE */}
-
-<div
-style={{
-width:120,
-height:120,
-borderRadius:"50%",
-background:`url(${profile.avatar || ""}) center / cover`,
-border:"6px solid white",
 position:"absolute",
-top:-70,
-left:"50%",
-transform:"translateX(-50%)"
+inset:0,
+
+background:
+`url("${heroImage}") center / cover no-repeat`,
+
+transform:"scale(1.06)"
 }}
 />
 
-{/* NAME */}
+{/* DARK CINEMATIC OVERLAY */}
 
 <div
 style={{
-fontSize:36,
-marginBottom:6
+position:"absolute",
+inset:0,
+
+background:
+`
+linear-gradient(
+180deg,
+rgba(0,0,0,.18) 0%,
+rgba(0,0,0,.48) 42%,
+rgba(8,8,10,.92) 100%
+)
+`
+}}
+/>
+
+{/* ATMOSPHERIC LIGHT */}
+
+<div
+style={{
+position:"absolute",
+
+top:-240,
+left:"50%",
+
+transform:"translateX(-50%)",
+
+width:920,
+height:920,
+
+borderRadius:"50%",
+
+background:
+"radial-gradient(circle, rgba(255,255,255,.10) 0%, transparent 72%)",
+
+pointerEvents:"none"
+}}
+/>
+
+{/* CONTENT */}
+
+<div
+style={{
+position:"relative",
+
+zIndex:2,
+
+width:"100%",
+
+maxWidth:1280,
+
+margin:"0 auto",
+
+padding:"110px 24px 120px"
+}}
+>
+
+{/* TOP LABEL */}
+
+<div
+style={{
+fontSize:12,
+
+letterSpacing:".28em",
+
+textTransform:"uppercase",
+
+fontWeight:700,
+
+opacity:.58,
+
+marginBottom:26
+}}
+>
+Visual Portfolio
+</div>
+
+{/* HERO GRID */}
+
+<div
+style={{
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(320px,1fr))",
+
+gap:54,
+
+alignItems:"end"
+}}
+>
+
+{/* LEFT SIDE */}
+
+<div>
+
+{/* NAME */}
+
+<h1
+style={{
+fontSize:"clamp(64px,11vw,148px)",
+
+lineHeight:.88,
+
+letterSpacing:"-.08em",
+
+fontWeight:700,
+
+margin:0,
+
+maxWidth:760
 }}
 >
 {profile.display_name || profile.username}
+</h1>
+
+{/* USERNAME */}
+
+<div
+style={{
+marginTop:24,
+
+fontSize:14,
+
+letterSpacing:".18em",
+
+textTransform:"uppercase",
+
+opacity:.42,
+
+fontWeight:600
+}}
+>
+@{profile.username}
 </div>
 
 {/* SUBTITLE */}
@@ -73,8 +194,17 @@ marginBottom:6
 
 <div
 style={{
-fontFamily:"Arial",
-opacity:.85
+marginTop:34,
+
+maxWidth:640,
+
+fontSize:"clamp(20px,4vw,34px)",
+
+lineHeight:1.4,
+
+opacity:.84,
+
+fontWeight:500
 }}
 >
 {appearance.header.subtitle}
@@ -82,121 +212,387 @@ opacity:.85
 
 )}
 
-{/* USERNAME */}
+{/* BIO */}
+
+{profile.bio && (
 
 <div
 style={{
-fontFamily:"Arial",
-marginTop:6,
-opacity:.7
+marginTop:28,
+
+maxWidth:620,
+
+fontSize:17,
+
+lineHeight:1.9,
+
+opacity:.66
 }}
 >
-@{profile.username}
+{profile.bio}
 </div>
-
-{/* DOTTED LINE */}
-
-<div
-style={{
-margin:"18px auto",
-width:160,
-borderBottom:"3px dotted rgba(255,255,255,0.7)"
-}}
-/>
-
-{/* BUTTONS */}
-
-{mainLinks.map((block)=>(
-<a
-key={block.id}
-href={block?.data_json?.url || "#"}
-target="_blank"
-style={{
-display:"block",
-width:"100%",
-padding:14,
-margin:"14px auto",
-borderRadius:40,
-background:"rgba(255,255,255,0.85)",
-color:"#333",
-fontFamily:"Arial",
-letterSpacing:3,
-textDecoration:"none"
-}}
->
-{block?.data_json?.title}
-</a>
-))}
-
-</div>
-
-
-{/* SECOND CARD */}
-
-<div
-style={{
-width:360,
-marginTop:24,
-background:"rgba(255,255,255,0.08)",
-border:"2px solid rgba(255,255,255,0.35)",
-borderRadius:22,
-padding:30,
-textAlign:"center",
-backdropFilter:"blur(6px)"
-}}
->
-
-<h2
-style={{
-fontStyle:"italic",
-marginBottom:15
-}}
->
-Free Template
-</h2>
-
-{bottomLink && (
-
-<a
-href={bottomLink?.data_json?.url || "#"}
-target="_blank"
-style={{
-display:"block",
-padding:14,
-borderRadius:40,
-background:"rgba(255,255,255,0.85)",
-color:"#333",
-fontFamily:"Arial",
-letterSpacing:3,
-textDecoration:"none"
-}}
->
-{bottomLink?.data_json?.title}
-</a>
 
 )}
 
 </div>
 
-
-{/* FLOAT BUTTON */}
+{/* RIGHT PANEL */}
 
 <div
 style={{
-position:"fixed",
-right:20,
-bottom:20,
-width:48,
-height:48,
-background:"#111",
-borderRadius:12,
 display:"flex",
-alignItems:"center",
-justifyContent:"center",
-fontSize:22
+justifyContent:"flex-end"
 }}
 >
-☾
+
+<div
+style={{
+width:"100%",
+maxWidth:420,
+
+background:"rgba(255,255,255,.08)",
+
+backdropFilter:"blur(20px)",
+
+border:
+"1px solid rgba(255,255,255,.10)",
+
+borderRadius:40,
+
+padding:"34px",
+
+boxShadow:
+"0 30px 80px rgba(0,0,0,.28)"
+}}
+>
+
+{/* PROFILE */}
+
+<div
+style={{
+display:"flex",
+alignItems:"center",
+gap:18,
+
+marginBottom:30
+}}
+>
+
+<div
+style={{
+width:72,
+height:72,
+
+borderRadius:"50%",
+
+overflow:"hidden",
+
+border:
+"2px solid rgba(255,255,255,.35)"
+}}
+>
+
+<img
+src={profile.avatar || ""}
+
+style={{
+width:"100%",
+height:"100%",
+
+objectFit:"cover"
+}}
+/>
+
+</div>
+
+<div>
+
+<div
+style={{
+fontSize:18,
+fontWeight:600
+}}
+>
+{profile.display_name || profile.username}
+</div>
+
+<div
+style={{
+marginTop:6,
+
+fontSize:13,
+
+letterSpacing:".12em",
+
+textTransform:"uppercase",
+
+opacity:.48
+}}
+>
+Creative Direction
+</div>
+
+</div>
+
+</div>
+
+{/* FEATURED LINKS */}
+
+<div
+style={{
+display:"flex",
+flexDirection:"column",
+gap:16
+}}
+>
+
+{featuredLinks.map((block,index)=>(
+
+<a
+key={block.id}
+
+href={block?.data_json?.url || "#"}
+
+target="_blank"
+
+rel="noopener noreferrer"
+
+style={{
+display:"flex",
+
+alignItems:"center",
+
+justifyContent:"space-between",
+
+padding:"22px 22px",
+
+borderRadius:24,
+
+textDecoration:"none",
+
+background:
+
+index===0
+
+? "#ffffff"
+
+: "rgba(255,255,255,.05)",
+
+color:
+
+index===0
+? "#111111"
+: "#ffffff",
+
+border:
+"1px solid rgba(255,255,255,.06)"
+}}
+>
+
+<div>
+
+<div
+style={{
+fontSize:18,
+
+fontWeight:600,
+
+letterSpacing:"-.03em"
+}}
+>
+{block?.data_json?.title}
+</div>
+
+{block?.data_json?.description && (
+
+<div
+style={{
+marginTop:8,
+
+fontSize:14,
+
+lineHeight:1.6,
+
+opacity:.62
+}}
+>
+{block?.data_json?.description}
+</div>
+
+)}
+
+</div>
+
+<div
+style={{
+fontSize:20,
+
+opacity:.4
+}}
+>
+↗
+</div>
+
+</a>
+
+))}
+
+</div>
+
+</div>
+
+</div>
+
+
+{/* SECONDARY SECTION */}
+
+{secondaryLinks.length > 0 && (
+
+<div
+style={{
+marginTop:120
+}}
+>
+
+<div
+style={{
+fontSize:13,
+
+letterSpacing:".24em",
+
+textTransform:"uppercase",
+
+opacity:.42,
+
+marginBottom:34
+}}
+>
+Selected Destinations
+</div>
+
+<div
+style={{
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(260px,1fr))",
+
+gap:24
+}}
+>
+
+{secondaryLinks.map((block,index)=>(
+
+<a
+key={block.id}
+
+href={block?.data_json?.url || "#"}
+
+target="_blank"
+
+rel="noopener noreferrer"
+
+style={{
+minHeight:240,
+
+padding:"30px",
+
+borderRadius:34,
+
+textDecoration:"none",
+
+background:
+"rgba(255,255,255,.04)",
+
+border:
+"1px solid rgba(255,255,255,.08)",
+
+display:"flex",
+flexDirection:"column",
+justifyContent:"space-between",
+
+backdropFilter:"blur(14px)"
+}}
+>
+
+<div
+style={{
+fontSize:12,
+
+letterSpacing:".16em",
+
+textTransform:"uppercase",
+
+opacity:.4
+}}
+>
+0{index+1}
+</div>
+
+<div
+style={{
+marginTop:34,
+
+fontSize:34,
+
+lineHeight:1,
+
+fontWeight:700,
+
+letterSpacing:"-.06em",
+
+color:"#ffffff"
+}}
+>
+{block?.data_json?.title}
+</div>
+
+<div
+style={{
+marginTop:20,
+
+fontSize:15,
+
+lineHeight:1.7,
+
+opacity:.62,
+
+color:"#ffffff"
+}}
+>
+{block?.data_json?.description
+||
+"Curated visual experience and premium destination."}
+</div>
+
+<div
+style={{
+marginTop:30,
+
+fontSize:14,
+
+letterSpacing:".14em",
+
+textTransform:"uppercase",
+
+opacity:.46,
+
+color:"#ffffff"
+}}
+>
+Open ↗
+</div>
+
+</a>
+
+))}
+
+</div>
+
+</div>
+
+)}
+
 </div>
 
 </div>
