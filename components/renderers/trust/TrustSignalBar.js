@@ -1,8 +1,12 @@
+"use client";
+
 export default function TrustSignalBar({
+
 signals
+
 }){
 
-if(!signals?.showBar){
+if(!signals?.showTrustBar){
 
 return null;
 
@@ -16,56 +20,38 @@ style={{
 display:"flex",
 flexWrap:"wrap",
 
-gap:12,
+gap:10,
 
 marginTop:28
 
 }}
 >
 
-<div
-style={{
+<SignalChip>
+Trusted Identity
+</SignalChip>
 
-padding:"10px 14px",
+<SignalChip>
+Professional Presence
+</SignalChip>
 
-borderRadius:999,
-
-background:
-"rgba(255,255,255,.08)",
-
-border:
-"1px solid rgba(255,255,255,.10)",
-
-fontSize:13
-
-}}
->
-
-Verified Identity
+<SignalChip>
+Premium Profile
+</SignalChip>
 
 </div>
 
-<div
-style={{
+);
 
-padding:"10px 14px",
+}
 
-borderRadius:999,
+function SignalChip({
 
-background:
-"rgba(255,255,255,.08)",
+children
 
-border:
-"1px solid rgba(255,255,255,.10)",
+}){
 
-fontSize:13
-
-}}
->
-
-Professional Profile
-
-</div>
+return(
 
 <div
 style={{
@@ -74,20 +60,21 @@ padding:"10px 14px",
 
 borderRadius:999,
 
-background:
-"rgba(255,255,255,.08)",
+fontSize:12,
+fontWeight:600,
 
-border:
-"1px solid rgba(255,255,255,.10)",
+letterSpacing:"-.01em",
 
-fontSize:13
+background:"rgba(255,255,255,.06)",
+
+border:"1px solid rgba(255,255,255,.08)",
+
+backdropFilter:"blur(12px)"
 
 }}
 >
 
-Business Ready
-
-</div>
+{children}
 
 </div>
 
