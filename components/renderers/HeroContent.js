@@ -32,11 +32,28 @@ import {
 getHeroStoryPanel
 } from "../../app/lib/heroStoryPanelEngine";
 
+import {
+getTrustSignals
+} from "../../app/lib/trustSignalEngine";
+
 import HeroAsymmetricLayout
 from "./HeroAsymmetricLayout";
 
 import HeroStoryPanel
 from "./HeroStoryPanel";
+
+import TrustSignalBar
+from "./trust/TrustSignalBar";
+
+import CreatorIdentityStrip
+from "./trust/CreatorIdentityStrip";
+
+import PremiumMetadataRow
+from "./trust/PremiumMetadataRow";
+
+import VerificationBadge
+from "./trust/VerificationBadge";
+
 
 export default function HeroContent({
 
@@ -117,6 +134,16 @@ isMobile
 const heroStoryPanel =
 getHeroStoryPanel({
 
+layout,
+background,
+isMobile
+
+});
+
+const trustSignals =
+getTrustSignals({
+
+profile,
 layout,
 background,
 isMobile
@@ -247,6 +274,10 @@ refinement?.heroMaxWidth
 }}
 >
 
+<CreatorIdentityStrip
+signals={trustSignals}
+/>
+
 <img
 src={profile.avatar || ""}
 
@@ -341,6 +372,31 @@ zIndex:3
 
 {header.showDisplayName !== false && (
 
+<div
+style={{
+
+display:"flex",
+alignItems:"center",
+
+gap:
+
+isMobile
+? 10
+: 14,
+
+justifyContent:
+
+isEditorial
+? "flex-start"
+: (
+text?.align === "left"
+? "flex-start"
+: "center"
+)
+
+}}
+>
+
 <h1
 style={{
 
@@ -394,8 +450,7 @@ isHero
 : 1,
 
 letterSpacing:
-`${
-(
+`${(
 text?.letterSpacing || -0.04
 )
 *
@@ -441,7 +496,7 @@ isEditorial
 text?.align || "center"
 ),
 
-width:"100%"
+width:"fit-content"
 
 }}
 >
@@ -449,6 +504,12 @@ width:"100%"
 {profile.display_name || profile.username}
 
 </h1>
+
+<VerificationBadge
+signals={trustSignals}
+/>
+
+</div>
 
 )}
 
@@ -491,6 +552,10 @@ text?.fontFamily ||
 </div>
 
 )}
+
+<PremiumMetadataRow
+signals={trustSignals}
+/>
 
 {header.subtitle && (
 
@@ -630,6 +695,10 @@ finalTheme?.fonts?.bio ||
 </p>
 
 )}
+
+<TrustSignalBar
+signals={trustSignals}
+/>
 
 </div>
 
