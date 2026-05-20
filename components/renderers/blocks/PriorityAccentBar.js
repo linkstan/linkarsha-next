@@ -19,19 +19,20 @@ style={{
 
 position:"absolute",
 
-top:0,
+top:-14,
 left:0,
 
-width:4,
-
-height:"100%",
+width:120,
+height:2,
 
 borderRadius:999,
 
 background:
-"linear-gradient(to bottom,#ffffff,#8b5cf6)",
+"linear-gradient(90deg, rgba(255,255,255,.95), rgba(255,255,255,0))",
 
-opacity:.9
+opacity:.8,
+
+pointerEvents:"none"
 
 }}
 />
