@@ -2,6 +2,7 @@
 
 import HeroHeader from "./HeroHeader";
 
+import MinimalTheme from "./themes/MinimalTheme";
 import ModernMinimalTheme from "./themes/ModernMinimalTheme";
 import ArchwayTheme from "./themes/ArchwayTheme";
 import BlueprintTheme from "./themes/BlueprintTheme";
@@ -714,7 +715,16 @@ buildSocialUrl
 /* ================================================= */
 /* ROUTING */
 /* ================================================= */
+if(themeName === "minimal"){
 
+return(
+<MinimalTheme
+{...customThemeProps}
+/>
+);
+
+}
+  
 if(themeName === "archway"){
 
 return(
