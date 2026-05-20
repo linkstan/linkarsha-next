@@ -9,434 +9,368 @@ buildSocialUrl
 
 const header = appearance?.header || {};
 
-const defaultImage =
-"https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=1200";
+const heroImage =
+appearance?.hero?.image
+||
+appearance?.header?.heroImage
+||
+"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1400";
 
 return (
 
 <div
 style={{
-margin:0,
-background:"#d8c9be",
-fontFamily:"Arial, sans-serif",
 minHeight:"100vh",
-overflow:"hidden"
+
+background:
+"linear-gradient(180deg,#f7f1ec 0%,#ead9cf 100%)",
+
+fontFamily:"Inter, sans-serif",
+
+overflow:"hidden",
+
+color:"#2b1d1d"
 }}
 >
-
-{/* HEADER */}
-
-<div
-style={{
-textAlign:"center",
-padding:"50px 20px 20px",
-color:"#8b5e5e",
-position:"relative",
-zIndex:10
-}}
->
-
-<div style={{
-fontSize:35,
-marginBottom:10
-}}>
-🦷
-</div>
-
-<h1
-style={{
-margin:0,
-letterSpacing:2,
-fontSize:34,
-fontWeight:700
-}}
->
-{profile.display_name || profile.username}
-</h1>
-
-{header.subtitle && (
-
-<p
-style={{
-marginTop:12,
-fontSize:16,
-opacity:.9
-}}
->
-{header.subtitle}
-</p>
-
-)}
-
-</div>
-
 
 {/* HERO */}
 
-<div
+<section
 style={{
 position:"relative",
-height:320,
-overflow:"hidden",
-marginTop:-10
+
+height:420,
+
+overflow:"hidden"
 }}
 >
 
 {/* IMAGE */}
 
 <img
-src={appearance?.hero?.image || defaultImage}
+src={heroImage}
 alt=""
+
 style={{
 width:"100%",
 height:"100%",
+
 objectFit:"cover",
+
 display:"block"
 }}
 />
 
+{/* OVERLAY */}
 
-{/* TOP WAVE */}
-
-<svg
-viewBox="0 0 1440 260"
-preserveAspectRatio="none"
+<div
 style={{
 position:"absolute",
-top:0,
-left:0,
-width:"100%",
-height:120,
-zIndex:2
+inset:0,
+
+background:
+"linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.48) 100%)"
 }}
->
-
-<defs>
-
-{/* BIG 3D SHADOW */}
-
-<filter id="top3d" x="-20%" y="-20%" width="140%" height="200%">
-<feGaussianBlur stdDeviation="18" result="blur"/>
-</filter>
-
-<linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0%" stopColor="rgba(255,255,255,0)" />
-<stop offset="40%" stopColor="rgba(0,0,0,0.35)" />
-<stop offset="100%" stopColor="rgba(0,0,0,0)" />
-</linearGradient>
-
-</defs>
-
-{/* MAIN TOP SHAPE */}
-
-<path
-fill="#d8c9be"
-d="
-M0,80
-C317,245 320,130 540,55
-C635,12 726,55 913,83
-C1213,131 1244,40 1440,20
-L1440,0
-L0,0
-Z
-"
 />
 
-{/* STRONG WHITE EDGE */}
+{/* TOP LABEL */}
 
-<path
-d="
-M0,80
-C317,245 320,130 540,55
-C635,12 726,55 913,83
-C1213,131 1244,40 1440,20
-"
-fill="none"
-stroke="rgba(255,255,255,0.95)"
-strokeWidth="6"
-strokeLinecap="round"
-/>
-
-{/* 3D FADE SHADOW */}
-
-<path
-filter="url(#top3d)"
-fill="url(#topFade)"
-opacity=".95"
-d="
-M0,80
-C317,245 320,130 540,55
-C635,12 726,55 913,83
-C1213,131 1244,40 1440,20
-L1440,160
-L0,160
-Z
-"
-/>
-
-</svg>
-
-
-{/* BOTTOM WAVE */}
-
-<svg
-viewBox="0 0 1440 260"
-preserveAspectRatio="none"
+<div
 style={{
 position:"absolute",
-bottom:-1,
-left:0,
-width:"100%",
-height:140,
-zIndex:3,
-overflow:"visible"
+
+top:34,
+left:"50%",
+
+transform:"translateX(-50%)",
+
+fontSize:12,
+
+letterSpacing:".24em",
+
+textTransform:"uppercase",
+
+color:"rgba(255,255,255,.72)",
+
+fontWeight:700
 }}
 >
-
-<defs>
-
-{/* REAL CURVE SHADOW */}
-<filter
-id="waveShadow"
-x="-20%"
-y="-50%"
-width="160%"
-height="250%"
->
-<feGaussianBlur
-in="SourceAlpha"
-stdDeviation="18"
-result="blur"
-/>
-
-<feOffset
-dy="1"
-result="offsetBlur"
-/>
-
-<feFlood
-floodColor="rgba(0,0,0,2)"
-result="shadowColor"
-/>
-
-<feComposite
-in="shadowColor"
-in2="offsetBlur"
-operator="in"
-result="shadow"
-/>
-
-<feMerge>
-<feMergeNode in="shadow"/>
-<feMergeNode in="SourceGraphic"/>
-</feMerge>
-
-</filter>
-
-</defs>
-
-
-{/* MAIN BROWN WAVE */}
-
-<path
-filter="url(#waveShadow)"
-fill="#7a4c4c"
-d="
-M0,120
-C317,285 320,170 540,95
-C635,52 726,95 913,123
-C1213,171 1244,80 1440,60
-L1440,260
-L0,260
-Z
-"
-/>
-
-
-{/* WHITE EDGE */}
-
-<path
-d="
-M0,120
-C317,285 320,170 540,95
-C635,52 726,95 913,123
-C1213,171 1244,80 1440,60
-"
-fill="none"
-stroke="rgba(255,255,255,0.20)"
-strokeWidth="3"
-strokeLinecap="round"
-/>
-
-</svg>
-
+Creator Profile
 </div>
 
-
-{/* CONTENT */}
-
-<div
-style={{
-background:"#7a4c4c",
-color:"#fff",
-padding:"120px 20px 60px",
-position:"relative",
-marginTop:-2
-}}
->
-
-{/* PROFILE */}
+{/* WAVE */}
 
 <div
 style={{
 position:"absolute",
-top:-68,
-left:32,
-zIndex:20
-}}
->
 
-{/* OUTER RING */}
+bottom:-1,
+left:0,
+right:0,
 
-<div
-style={{
-position:"absolute",
-width:150,
-height:150,
-borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.25)",
-top:-10,
-left:-10
+height:130,
+
+background:"#f7f1ec",
+
+borderTopLeftRadius:"55% 100%",
+borderTopRightRadius:"55% 100%"
 }}
 />
 
-{/* SECOND RING */}
+</section>
+
+
+{/* PROFILE SECTION */}
+
+<section
+style={{
+position:"relative",
+
+marginTop:-90,
+
+padding:"0 24px 100px",
+
+zIndex:5
+}}
+>
+
+{/* PROFILE CARD */}
 
 <div
 style={{
-position:"absolute",
+maxWidth:820,
+
+margin:"0 auto",
+
+background:"rgba(255,255,255,.72)",
+
+backdropFilter:"blur(18px)",
+
+border:
+"1px solid rgba(255,255,255,.42)",
+
+borderRadius:38,
+
+padding:"38px 28px 34px",
+
+boxShadow:
+"0 30px 80px rgba(0,0,0,.10)"
+}}
+>
+
+{/* TOP */}
+
+<div
+style={{
+display:"flex",
+
+flexDirection:"column",
+
+alignItems:"center",
+
+textAlign:"center"
+}}
+>
+
+{/* AVATAR */}
+
+<div
+style={{
 width:138,
 height:138,
+
 borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.2)",
-top:-4,
-left:-4
+
+padding:6,
+
+background:
+"linear-gradient(135deg,#ffffff,#e7d7cc)",
+
+boxShadow:
+"0 16px 40px rgba(0,0,0,.12)"
 }}
-/>
+>
 
 <img
-src={profile.avatar || "https://randomuser.me/api/portraits/women/44.jpg"}
+src={
+profile.avatar
+||
+"https://randomuser.me/api/portraits/women/44.jpg"
+}
+
 alt=""
+
 style={{
-width:130,
-height:130,
+width:"100%",
+height:"100%",
+
 borderRadius:"50%",
-border:"6px solid rgba(255,255,255,0.6)",
-display:"block",
+
 objectFit:"cover"
 }}
 />
 
 </div>
 
+{/* NAME */}
 
-{/* TEXT */}
-
-<div
+<h1
 style={{
-marginLeft:185,
-marginTop:5,
-maxWidth:220
-}}
->
+fontSize:"clamp(38px,8vw,72px)",
 
-<h2
-style={{
-margin:0,
-fontSize:24,
-lineHeight:1.2,
-fontWeight:700
+lineHeight:.92,
+
+letterSpacing:"-.07em",
+
+margin:"26px 0 12px",
+
+fontWeight:700,
+
+maxWidth:620
 }}
 >
 {profile.display_name || profile.username}
-</h2>
+</h1>
 
-{header.showBio && profile.bio && (
+{/* USERNAME */}
 
-<p
+<div
 style={{
-margin:"10px 0 0",
-opacity:.82,
-lineHeight:1.45,
-fontSize:15
+fontSize:14,
+
+letterSpacing:".16em",
+
+textTransform:"uppercase",
+
+opacity:.48,
+
+fontWeight:600
+}}
+>
+@{profile.username}
+</div>
+
+{/* BIO */}
+
+{header.showBio !== false && profile.bio && (
+
+<div
+style={{
+marginTop:28,
+
+maxWidth:620,
+
+fontSize:"clamp(16px,3vw,22px)",
+
+lineHeight:1.8,
+
+opacity:.72
 }}
 >
 {profile.bio}
-</p>
+</div>
 
 )}
 
 </div>
 
 
-{/* ICON GRID */}
+{/* SOCIAL GRID */}
 
 <div
 style={{
 display:"grid",
-gridTemplateColumns:"repeat(3,1fr)",
-gap:30,
-marginTop:55,
-textAlign:"center"
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(140px,1fr))",
+
+gap:18,
+
+marginTop:54
 }}
 >
 
-{Object.entries(socialLinks || {}).slice(0,6).map(([platform,usernames]) =>
+{Object.entries(socialLinks || {})
+.slice(0,8)
+.map(([platform,usernames]) =>
 
-usernames?.map((username,i) => {
-
-const icon =
-platform==="whatsapp" ? "💬" :
-platform==="phone" ? "📞" :
-platform==="email" ? "✉️" :
-platform==="facebook" ? "f" :
-platform==="instagram" ? "📷" :
-"📍";
-
-return (
+usernames?.map((username,i)=>(
 
 <a
 key={platform+i}
+
 href={buildSocialUrl(platform,username)}
+
 target="_blank"
+
 rel="noopener noreferrer"
+
 style={{
+background:"#ffffff",
+
+borderRadius:26,
+
+padding:"22px 18px",
+
 textDecoration:"none",
-color:"#fff"
+
+color:"#2b1d1d",
+
+display:"flex",
+flexDirection:"column",
+
+alignItems:"center",
+
+justifyContent:"center",
+
+minHeight:132,
+
+boxShadow:
+"0 10px 30px rgba(0,0,0,.05)",
+
+border:
+"1px solid rgba(0,0,0,.04)"
 }}
 >
 
 <div
 style={{
-width:86,
-height:86,
+width:54,
+height:54,
+
 borderRadius:"50%",
-border:"2px solid rgba(255,255,255,0.35)",
+
+background:"#f4ece7",
+
 display:"flex",
+
 alignItems:"center",
+
 justifyContent:"center",
-margin:"auto",
-fontSize:24
+
+fontSize:22,
+
+marginBottom:14
 }}
 >
-{icon}
+{
+platform==="instagram" ? "◎" :
+platform==="tiktok" ? "◉" :
+platform==="youtube" ? "▶" :
+platform==="linkedin" ? "in" :
+platform==="twitter" ? "𝕏" :
+platform==="email" ? "✉" :
+platform==="whatsapp" ? "✆" :
+"◌"
+}
 </div>
 
 <div
 style={{
-marginTop:10,
 fontSize:15,
-opacity:.85,
+
+fontWeight:600,
+
 textTransform:"capitalize"
 }}
 >
@@ -445,29 +379,15 @@ textTransform:"capitalize"
 
 </a>
 
-);
-
-})
+))
 
 )}
 
 </div>
 
-
-{/* FOOTER */}
-
-<div
-style={{
-textAlign:"center",
-marginTop:45,
-opacity:.6,
-fontSize:14
-}}
->
-👆 TOQUE NOS ÍCONES
 </div>
 
-</div>
+</section>
 
 </div>
 
