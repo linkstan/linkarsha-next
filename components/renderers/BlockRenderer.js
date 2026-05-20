@@ -40,6 +40,10 @@ import {
 getEditorialMediaRhythm
 } from "../../app/lib/editorialMediaRhythm";
 
+import {
+getBlockPriority
+} from "../../app/lib/blockPriorityEngine";
+
 import CinematicMediaFrame
 from "./media/CinematicMediaFrame";
 
@@ -54,6 +58,9 @@ from "./media/CinematicMediaMask";
 
 import EditorialMediaLayout
 from "./media/EditorialMediaLayout";
+
+import PriorityBlockShell
+from "./blocks/PriorityBlockShell";
 
 export default function BlockRenderer({
 
@@ -73,6 +80,16 @@ appearance?.background;
 const layout =
 appearance?.layout;
 
+const priority =
+getBlockPriority({
+
+block,
+index,
+layout,
+isMobile:false
+
+});
+
 
 /* ================================================= */
 /* BUTTON */
@@ -85,6 +102,10 @@ type === "cta"
 ){
 
 return(
+
+<PriorityBlockShell
+priority={priority}
+>
 
 <ButtonBlock
 
@@ -101,6 +122,8 @@ block?.featuredBlock
 }
 
 />
+
+</PriorityBlockShell>
 
 );
 
@@ -155,6 +178,10 @@ isMobile:false
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
 <EditorialMediaLayout
 rhythm={editorialRhythm}
 >
@@ -197,6 +224,8 @@ block={block}
 </FloatingMediaStack>
 
 </EditorialMediaLayout>
+
+</PriorityBlockShell>
 
 );
 
@@ -268,6 +297,10 @@ isMobile:false
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
 <EditorialMediaLayout
 rhythm={editorialRhythm}
 >
@@ -311,6 +344,8 @@ block={block}
 
 </EditorialMediaLayout>
 
+</PriorityBlockShell>
+
 );
 
 }
@@ -324,9 +359,15 @@ if(type === "pricing"){
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
 <PricingBlock
 block={block}
 />
+
+</PriorityBlockShell>
 
 );
 
@@ -341,9 +382,15 @@ if(type === "testimonials"){
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
 <TestimonialBlock
 block={block}
 />
+
+</PriorityBlockShell>
 
 );
 
@@ -358,9 +405,15 @@ if(type === "faq"){
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
 <FAQBlock
 block={block}
 />
+
+</PriorityBlockShell>
 
 );
 
