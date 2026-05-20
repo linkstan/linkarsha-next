@@ -1,6 +1,16 @@
+"use client";
+
 export default function PremiumMetadataRow({
+
 signals
+
 }){
+
+if(!signals?.showMetadata){
+
+return null;
+
+}
 
 return(
 
@@ -14,26 +24,38 @@ gap:12,
 
 marginTop:18,
 
-opacity:.74,
+opacity:.82,
 
 fontSize:13,
 
-letterSpacing:".02em"
+letterSpacing:"-.01em"
 
 }}
 >
 
-<div>
-{signals?.role}
-</div>
+{signals?.creatorLabel && (
 
 <div>
-• {signals?.location}
+{signals.creatorLabel}
 </div>
 
+)}
+
+{signals?.availability && (
+
 <div>
-• {signals?.response}
+• {signals.availability}
 </div>
+
+)}
+
+{signals?.responseTime && (
+
+<div>
+• {signals.responseTime}
+</div>
+
+)}
 
 </div>
 
