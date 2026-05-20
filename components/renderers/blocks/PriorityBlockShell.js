@@ -1,8 +1,5 @@
 "use client";
 
-import PriorityAccentBar
-from "./PriorityAccentBar";
-
 export default function PriorityBlockShell({
 
 priority,
@@ -15,14 +12,12 @@ return(
 <div
 style={{
 
-position:"relative",
-
 width:"100%",
 
-maxWidth:
-priority?.maxWidth || "100%",
+display:"flex",
+justifyContent:"center",
 
-margin:"0 auto",
+position:"relative",
 
 marginTop:
 priority?.spacingTop || 0,
@@ -31,7 +26,9 @@ marginBottom:
 priority?.spacingBottom || 0,
 
 transform:
-`scale(${priority?.scale || 1})`,
+`scale(${
+priority?.scale || 1
+})`,
 
 transition:
 "all 700ms cubic-bezier(.22,1,.36,1)"
@@ -39,16 +36,20 @@ transition:
 }}
 >
 
-<PriorityAccentBar
-priority={priority}
-/>
-
 <div
 style={{
 
+width:"100%",
+
+maxWidth:
+priority?.contentWidth || "100%",
+
 position:"relative",
 
-zIndex:2
+zIndex:
+priority?.elevated
+? 3
+: 1
 
 }}
 >
