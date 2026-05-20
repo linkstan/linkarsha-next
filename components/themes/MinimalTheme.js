@@ -17,11 +17,16 @@ return(
 style={{
 width:"100%",
 minHeight:"100vh",
-background:"#ffffff",
+
+background:
+"linear-gradient(to bottom,#ffffff 0%,#fcfcfc 100%)",
+
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
+
 padding:"92px 24px 140px",
+
 fontFamily:"Inter, sans-serif",
 color:"#111111"
 }}
@@ -49,7 +54,9 @@ width:124,
 height:124,
 borderRadius:"50%",
 objectFit:"cover",
+
 marginBottom:28,
+
 boxShadow:
 "0 18px 50px rgba(0,0,0,.08)"
 }}
@@ -59,13 +66,20 @@ boxShadow:
 
 <div
 style={{
-fontSize:"clamp(42px,8vw,76px)",
+
+fontSize:"clamp(40px,9vw,76px)",
+
 fontWeight:700,
+
 letterSpacing:"-.075em",
+
 lineHeight:.92,
+
 maxWidth:620,
+
 fontFeatureSettings:
 '"ss01" on, "cv01" on'
+
 }}
 >
 {profile?.display_name || profile?.username}
@@ -76,10 +90,15 @@ fontFeatureSettings:
 <div
 style={{
 marginTop:16,
+
 fontSize:15,
+
 letterSpacing:".08em",
+
 textTransform:"uppercase",
+
 opacity:.38,
+
 fontWeight:600
 }}
 >
@@ -93,10 +112,15 @@ fontWeight:600
 <div
 style={{
 marginTop:28,
+
 fontSize:"clamp(20px,4vw,28px)",
+
 lineHeight:1.5,
+
 maxWidth:620,
+
 opacity:.72,
+
 fontWeight:500
 }}
 >
@@ -112,9 +136,13 @@ fontWeight:500
 <div
 style={{
 marginTop:24,
+
 fontSize:16,
+
 lineHeight:1.8,
+
 maxWidth:540,
+
 opacity:.68
 }}
 >
@@ -126,15 +154,31 @@ opacity:.68
 </div>
 
 
+{/* PREMIUM DIVIDER */}
+
+<div
+style={{
+width:72,
+height:1,
+background:"rgba(0,0,0,.08)",
+marginTop:54,
+marginBottom:-18
+}}
+/>
+
+
 {/* CTA STACK */}
 
 <div
 style={{
 width:"100%",
 maxWidth:640,
+
 display:"flex",
 flexDirection:"column",
+
 gap:22,
+
 marginTop:84
 }}
 >
@@ -143,36 +187,55 @@ marginTop:84
 
 <a
 key={block.id}
+
 href={block?.data_json?.url || "#"}
+
 target="_blank"
+
 rel="noopener noreferrer"
+
 style={{
+
 width:"100%",
+
 padding:"24px 26px",
+
 borderRadius:28,
 
 border:
+
 index===0
+
 ? "2px solid #111"
+
 : "1px solid rgba(0,0,0,.05)",
 
 background:
+
 index===0
+
 ? "#0f0f10"
+
 : "#fafafa",
 
 color:
+
 index===0
+
 ? "#ffffff"
+
 : "#111111",
 
 textDecoration:"none",
 
 display:"flex",
+
 alignItems:"center",
+
 justifyContent:"space-between",
 
-transition:"all .25s ease",
+transition:
+"transform .22s ease, box-shadow .22s ease, background .22s ease",
 
 boxShadow:
 
@@ -180,7 +243,13 @@ index===0
 
 ? "0 24px 60px rgba(0,0,0,.14)"
 
-: "none"
+: "none",
+
+transform:
+index===0
+? "translateY(0)"
+: "translateY(0)"
+
 }}
 >
 
@@ -254,19 +323,36 @@ usernames?.map((username,i)=>(
 
 <a
 key={platform+i}
+
 href={buildSocialUrl(platform,username)}
+
 target="_blank"
+
 rel="noopener noreferrer"
+
 style={{
+
 padding:"13px 20px",
+
 borderRadius:999,
-background:"#f7f7f7",
+
+background:"#fafafa",
+
 border:"1px solid rgba(0,0,0,.04)",
+
+boxShadow:
+"0 2px 10px rgba(0,0,0,.03)",
+
 textDecoration:"none",
+
 color:"#111111",
+
 fontSize:14,
+
 fontWeight:500,
+
 letterSpacing:"-.01em"
+
 }}
 >
 {platform}
