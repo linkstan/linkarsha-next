@@ -13,72 +13,70 @@ block?.data_json?.type || "button";
 const size =
 block?.data_json?.size || "normal";
 
-const isHero =
-layout?.type === "hero";
+const featured =
+block?.featuredBlock?.featured;
 
-/* ======================================= */
+
+/* ======================================== */
 /* DEFAULT */
-/* ======================================= */
+/* ======================================== */
 
-const priority = {
+const config = {
 
-tier:"normal",
+priority:"normal",
 
 scale:1,
 
-spacingTop:
-isMobile
-? 22
-: 30,
+spacingTop:0,
+spacingBottom:0,
 
-spacingBottom:
-isMobile
-? 22
-: 30,
-
-highlight:false,
+paddingMultiplier:1,
 
 accent:false,
 
 elevated:false,
 
-maxWidth:"100%"
+width:"100%",
+
+contentWidth:"100%"
 
 };
 
 
-/* ======================================= */
-/* HERO PRIMARY CTA */
-/* ======================================= */
+/* ======================================== */
+/* HERO CTA */
+/* ======================================== */
 
 if(
-(type === "cta" || type === "button")
+type === "cta"
 &&
 index === 0
 ){
 
-priority.tier = "primary";
+config.priority = "hero";
 
-priority.scale =
+config.scale =
 isMobile
 ? 1.02
 : 1.04;
 
-priority.spacingTop =
+config.spacingTop =
 isMobile
-? 34
-: 52;
+? 18
+: 40;
 
-priority.spacingBottom =
+config.spacingBottom =
 isMobile
-? 30
-: 44;
+? 24
+: 56;
 
-priority.highlight = true;
+config.paddingMultiplier = 1.2;
 
-priority.elevated = true;
+config.elevated = true;
 
-priority.maxWidth =
+config.accent = true;
+
+config.contentWidth =
 isMobile
 ? "100%"
 : "min(760px,100%)";
@@ -86,40 +84,62 @@ isMobile
 }
 
 
-/* ======================================= */
-/* FEATURE BLOCK */
-/* ======================================= */
+/* ======================================== */
+/* FEATURED */
+/* ======================================== */
 
 if(
-size === "feature"
+featured
 ||
-type === "pricing"
+size === "feature"
 ){
 
-priority.tier = "feature";
+config.priority = "feature";
 
-priority.scale =
+config.scale =
 isMobile
-? 1.03
-: 1.06;
+? 1.01
+: 1.03;
 
-priority.spacingTop =
+config.spacingTop +=
 isMobile
-? 42
-: 70;
+? 14
+: 30;
 
-priority.spacingBottom =
+config.spacingBottom +=
 isMobile
-? 34
-: 60;
+? 18
+: 40;
 
-priority.highlight = true;
+config.paddingMultiplier *= 1.12;
 
-priority.accent = true;
+config.elevated = true;
 
-priority.elevated = true;
+config.contentWidth =
+isMobile
+? "100%"
+: "min(820px,100%)";
 
-priority.maxWidth =
+}
+
+
+/* ======================================== */
+/* VIDEO */
+/* ======================================== */
+
+if(type === "video"){
+
+config.spacingTop +=
+isMobile
+? 20
+: 44;
+
+config.spacingBottom +=
+isMobile
+? 28
+: 54;
+
+config.contentWidth =
 isMobile
 ? "100%"
 : "min(920px,100%)";
@@ -127,29 +147,23 @@ isMobile
 }
 
 
-/* ======================================= */
-/* MEDIA */
-/* ======================================= */
+/* ======================================== */
+/* GALLERY */
+/* ======================================== */
 
-if(
-type === "video"
-||
-type === "gallery"
-){
+if(type === "gallery"){
 
-priority.tier = "media";
-
-priority.spacingTop =
+config.spacingTop +=
 isMobile
-? 36
-: 56;
+? 18
+: 40;
 
-priority.spacingBottom =
+config.spacingBottom +=
 isMobile
-? 30
-: 46;
+? 26
+: 50;
 
-priority.maxWidth =
+config.contentWidth =
 isMobile
 ? "100%"
 : "min(980px,100%)";
@@ -157,29 +171,55 @@ isMobile
 }
 
 
-/* ======================================= */
-/* TRUST */
-/* ======================================= */
+/* ======================================== */
+/* TESTIMONIALS */
+/* ======================================== */
 
-if(
-type === "testimonials"
-||
-type === "faq"
-){
+if(type === "testimonials"){
 
-priority.tier = "trust";
-
-priority.spacingTop =
+config.spacingTop +=
 isMobile
-? 44
-: 72;
+? 30
+: 80;
 
-priority.spacingBottom =
+config.spacingBottom +=
+isMobile
+? 26
+: 60;
+
+config.contentWidth =
+isMobile
+? "100%"
+: "min(760px,100%)";
+
+}
+
+
+/* ======================================== */
+/* PRICING */
+/* ======================================== */
+
+if(type === "pricing"){
+
+config.priority = "conversion";
+
+config.spacingTop +=
+isMobile
+? 34
+: 90;
+
+config.spacingBottom +=
 isMobile
 ? 38
-: 64;
+: 100;
 
-priority.maxWidth =
+config.paddingMultiplier *= 1.18;
+
+config.elevated = true;
+
+config.accent = true;
+
+config.contentWidth =
 isMobile
 ? "100%"
 : "min(860px,100%)";
@@ -187,22 +227,54 @@ isMobile
 }
 
 
-/* ======================================= */
-/* HERO ADJUSTMENT */
-/* ======================================= */
+/* ======================================== */
+/* FAQ */
+/* ======================================== */
 
-if(
-isHero
-&&
-priority.tier === "normal"
-){
+if(type === "faq"){
 
-priority.spacingTop += 8;
-priority.spacingBottom += 8;
+config.spacingTop +=
+isMobile
+? 24
+: 64;
+
+config.spacingBottom +=
+isMobile
+? 24
+: 64;
+
+config.contentWidth =
+isMobile
+? "100%"
+: "min(760px,100%)";
 
 }
 
 
-return priority;
+/* ======================================== */
+/* MUSIC */
+/* ======================================== */
+
+if(type === "music"){
+
+config.spacingTop +=
+isMobile
+? 14
+: 32;
+
+config.spacingBottom +=
+isMobile
+? 20
+: 42;
+
+config.contentWidth =
+isMobile
+? "100%"
+: "min(680px,100%)";
+
+}
+
+
+return config;
 
 }
