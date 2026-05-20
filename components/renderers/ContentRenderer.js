@@ -31,8 +31,19 @@ import {
 getContentCinematic
 } from "../../app/lib/contentCinematicEngine";
 
+import {
+getMobileDensity
+} from "../../app/lib/mobileDensityEngine";
+
 import CinematicSectionShell
 from "./blocks/layout/CinematicSectionShell";
+
+import MobileDensityWrapper
+from "./layout/MobileDensityWrapper";
+
+import CinematicSectionSpacing
+from "./layout/CinematicSectionSpacing";
+
 
 export default function ContentRenderer({
 
@@ -95,10 +106,10 @@ isHero
 ? (
 isMobile
 ? (
-60 * adaptiveSpacing
+42 * adaptiveSpacing
 )
 : (
-90 * adaptiveSpacing
+84 * adaptiveSpacing
 )
 )
 
@@ -110,7 +121,11 @@ isMobile
 adaptiveSpacing
 ),
 
-paddingBottom:80
+paddingBottom:
+
+isMobile
+? 60
+: 110
 
 }}
 >
@@ -136,7 +151,7 @@ isMobile,
 adaptiveSpacing
 
 });
-  
+
 const cinematic =
 getContentCinematic({
 
@@ -147,18 +162,39 @@ isMobile
 
 });
 
+const density =
+getMobileDensity({
+
+type:
+section.blocks?.[0]?.data_json?.type,
+
+layout,
+index:sectionIndex,
+isMobile
+
+});
+
 return(
+
+<div
+key={sectionIndex}
+style={{
+width:"100%"
+}}
+>
 
 <CinematicSectionShell
 
-key={sectionIndex}
-
-cinematic={cinematic}
+cinematic={cinatic}
 
 background={
 finalAppearance?.background
 }
 
+>
+
+<MobileDensityWrapper
+density={density}
 >
 
 <div
@@ -195,7 +231,16 @@ isBento
 : undefined,
 
 gap:
-rhythm.gap,
+
+isMobile
+
+? (
+density?.stackGap
+||
+rhythm.gap
+)
+
+: rhythm.gap,
 
 marginTop:
 sectionStyles.marginTop,
@@ -258,13 +303,32 @@ gridRow:
 `span ${bento.rowSpan}`,
 
 marginTop:
-story.spacingTop,
+
+isMobile
+
+? (
+story.spacingTop * .55
+)
+
+: story.spacingTop,
 
 marginBottom:
-story.spacingBottom,
+
+isMobile
+
+? (
+story.spacingBottom * .55
+)
+
+: story.spacingBottom,
 
 transform:
-`scale(${story.emphasis})`,
+
+isMobile
+
+? "none"
+
+: `scale(${story.emphasis})`,
 
 transformOrigin:
 "center top",
@@ -302,7 +366,15 @@ index={index}
 
 </div>
 
+</MobileDensityWrapper>
+
 </CinematicSectionShell>
+
+<CinematicSectionSpacing
+density={density}
+/>
+
+</div>
 
 );
 
