@@ -35,15 +35,11 @@ import {
 getMobileDensity
 } from "../../app/lib/mobileDensityEngine";
 
-import CinematicSectionShell
-from "./blocks/layout/CinematicSectionShell";
-
 import MobileDensityWrapper
 from "./layout/MobileDensityWrapper";
 
 import CinematicSectionSpacing
 from "./layout/CinematicSectionSpacing";
-
 
 export default function ContentRenderer({
 
@@ -183,16 +179,6 @@ width:"100%"
 }}
 >
 
-<CinematicSectionShell
-
-cinematic={cinatic}
-
-background={
-finalAppearance?.background
-}
-
->
-
 <MobileDensityWrapper
 density={density}
 >
@@ -254,7 +240,12 @@ alignItems:
 
 isEditorial
 ? "flex-start"
-: "stretch"
+: "stretch",
+
+position:"relative",
+
+zIndex:
+cinematic?.zIndex || 1
 
 }}
 >
@@ -367,8 +358,6 @@ index={index}
 </div>
 
 </MobileDensityWrapper>
-
-</CinematicSectionShell>
 
 <CinematicSectionSpacing
 density={density}
