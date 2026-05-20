@@ -22,48 +22,17 @@ import FAQBlock
 from "./blocks/layout/FAQBlock";
 
 import {
-getMediaPresentation
-} from "../../app/lib/mediaPresentationEngine";
-
-import PremiumMediaShell
-from "./blocks/media/PremiumMediaShell";
-
-import {
-getCinematicMedia
-} from "../../app/lib/cinematicMediaEngine";
-
-import {
-getMediaStack
-} from "../../app/lib/mediaStackEngine";
-
-import {
-getEditorialMediaRhythm
-} from "../../app/lib/editorialMediaRhythm";
-
-import {
 getBlockPriority
 } from "../../app/lib/blockPriorityEngine";
-
-import CinematicMediaFrame
-from "./media/CinematicMediaFrame";
-
-import CinematicMediaGlow
-from "./media/CinematicMediaGlow";
-
-import FloatingMediaStack
-from "./media/FloatingMediaStack";
-
-import CinematicMediaMask
-from "./media/CinematicMediaMask";
-
-import EditorialMediaLayout
-from "./media/EditorialMediaLayout";
 
 import PriorityBlockShell
 from "./blocks/PriorityBlockShell";
 
 import PriorityAccentBar
 from "./blocks/PriorityAccentBar";
+
+import CinematicMediaRenderer
+from "./media/CinematicMediaRenderer";
 
 
 export default function BlockRenderer({
@@ -144,100 +113,29 @@ block?.featuredBlock
 
 if(type === "video"){
 
-const presentation =
-getMediaPresentation({
-
-type,
-isHero:false,
-isMobile:false
-
-});
-
-const cinematic =
-getCinematicMedia({
-
-block,
-layout,
-background,
-isMobile:false
-
-});
-
-const mediaStack =
-getMediaStack({
-
-block,
-layout,
-background,
-index,
-isMobile:false
-
-});
-
-const editorialRhythm =
-getEditorialMediaRhythm({
-
-block,
-layout,
-index,
-isMobile:false
-
-});
-
 return(
 
-<PriorityBlockShell
-priority={priority}
->
+<CinematicMediaRenderer
 
-<PriorityAccentBar
-priority={priority}
-/>
+type="video"
 
-<EditorialMediaLayout
-rhythm={editorialRhythm}
->
+block={block}
 
-<FloatingMediaStack
-stack={mediaStack}
->
-
-<CinematicMediaFrame
-
-cinematic={cinematic}
+layout={layout}
 
 background={background}
 
->
+index={index}
 
-<CinematicMediaGlow
-cinematic={cinematic}
-/>
+priority={priority}
 
-<CinematicMediaMask
-cinematic={cinematic}
->
-
-<PremiumMediaShell
-presentation={presentation}
-background={background}
 >
 
 <VideoBlock
 block={block}
 />
 
-</PremiumMediaShell>
-
-</CinematicMediaMask>
-
-</CinematicMediaFrame>
-
-</FloatingMediaStack>
-
-</EditorialMediaLayout>
-
-</PriorityBlockShell>
+</CinematicMediaRenderer>
 
 );
 
@@ -277,100 +175,29 @@ block={block}
 
 if(type === "gallery"){
 
-const presentation =
-getMediaPresentation({
-
-type,
-isHero:false,
-isMobile:false
-
-});
-
-const cinematic =
-getCinematicMedia({
-
-block,
-layout,
-background,
-isMobile:false
-
-});
-
-const mediaStack =
-getMediaStack({
-
-block,
-layout,
-background,
-index,
-isMobile:false
-
-});
-
-const editorialRhythm =
-getEditorialMediaRhythm({
-
-block,
-layout,
-index,
-isMobile:false
-
-});
-
 return(
 
-<PriorityBlockShell
-priority={priority}
->
+<CinematicMediaRenderer
 
-<PriorityAccentBar
-priority={priority}
-/>
+type="gallery"
 
-<EditorialMediaLayout
-rhythm={editorialRhythm}
->
+block={block}
 
-<FloatingMediaStack
-stack={mediaStack}
->
-
-<CinematicMediaFrame
-
-cinematic={cinematic}
+layout={layout}
 
 background={background}
 
->
+index={index}
 
-<CinematicMediaGlow
-cinematic={cinematic}
-/>
+priority={priority}
 
-<CinematicMediaMask
-cinematic={cinematic}
->
-
-<PremiumMediaShell
-presentation={presentation}
-background={background}
 >
 
 <GalleryBlock
 block={block}
 />
 
-</PremiumMediaShell>
-
-</CinematicMediaMask>
-
-</CinematicMediaFrame>
-
-</FloatingMediaStack>
-
-</EditorialMediaLayout>
-
-</PriorityBlockShell>
+</CinematicMediaRenderer>
 
 );
 
