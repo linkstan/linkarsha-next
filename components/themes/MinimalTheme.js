@@ -21,7 +21,7 @@ background:"#ffffff",
 display:"flex",
 flexDirection:"column",
 alignItems:"center",
-padding:"64px 20px 120px",
+padding:"92px 24px 140px",
 fontFamily:"Inter, sans-serif",
 color:"#111111"
 }}
@@ -45,11 +45,13 @@ textAlign:"center"
 <img
 src={profile?.avatar || ""}
 style={{
-width:112,
-height:112,
+width:124,
+height:124,
 borderRadius:"50%",
 objectFit:"cover",
-marginBottom:28
+marginBottom:28,
+boxShadow:
+"0 18px 50px rgba(0,0,0,.08)"
 }}
 />
 
@@ -59,9 +61,11 @@ marginBottom:28
 style={{
 fontSize:"clamp(42px,8vw,76px)",
 fontWeight:700,
-letterSpacing:"-.06em",
+letterSpacing:"-.075em",
 lineHeight:.92,
-maxWidth:620
+maxWidth:620,
+fontFeatureSettings:
+'"ss01" on, "cv01" on'
 }}
 >
 {profile?.display_name || profile?.username}
@@ -75,7 +79,8 @@ marginTop:16,
 fontSize:15,
 letterSpacing:".08em",
 textTransform:"uppercase",
-opacity:.45
+opacity:.38,
+fontWeight:600
 }}
 >
 @{profile?.username}
@@ -88,10 +93,10 @@ opacity:.45
 <div
 style={{
 marginTop:28,
-fontSize:22,
-lineHeight:1.4,
+fontSize:"clamp(20px,4vw,28px)",
+lineHeight:1.5,
 maxWidth:620,
-opacity:.82,
+opacity:.72,
 fontWeight:500
 }}
 >
@@ -129,8 +134,8 @@ width:"100%",
 maxWidth:640,
 display:"flex",
 flexDirection:"column",
-gap:18,
-marginTop:64
+gap:22,
+marginTop:84
 }}
 >
 
@@ -145,15 +150,16 @@ style={{
 width:"100%",
 padding:"24px 26px",
 borderRadius:28,
+
 border:
 index===0
 ? "2px solid #111"
-: "1px solid rgba(0,0,0,.08)",
+: "1px solid rgba(0,0,0,.05)",
 
 background:
 index===0
-? "#111111"
-: "#f7f7f7",
+? "#0f0f10"
+: "#fafafa",
 
 color:
 index===0
@@ -172,7 +178,7 @@ boxShadow:
 
 index===0
 
-? "0 14px 40px rgba(0,0,0,.12)"
+? "0 24px 60px rgba(0,0,0,.14)"
 
 : "none"
 }}
@@ -252,9 +258,10 @@ href={buildSocialUrl(platform,username)}
 target="_blank"
 rel="noopener noreferrer"
 style={{
-padding:"12px 18px",
+padding:"13px 20px",
 borderRadius:999,
-background:"#f4f4f4",
+background:"#f7f7f7",
+border:"1px solid rgba(0,0,0,.04)",
 textDecoration:"none",
 color:"#111111",
 fontSize:14,
@@ -272,21 +279,6 @@ letterSpacing:"-.01em"
 </div>
 
 )}
-
-
-{/* FOOTER */}
-
-<div
-style={{
-marginTop:80,
-fontSize:13,
-opacity:.35,
-letterSpacing:".08em",
-textTransform:"uppercase"
-}}
->
-minimal theme
-</div>
 
 </div>
 
