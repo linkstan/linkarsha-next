@@ -62,6 +62,10 @@ from "./media/EditorialMediaLayout";
 import PriorityBlockShell
 from "./blocks/PriorityBlockShell";
 
+import PriorityAccentBar
+from "./blocks/PriorityAccentBar";
+
+
 export default function BlockRenderer({
 
 block,
@@ -106,6 +110,10 @@ return(
 <PriorityBlockShell
 priority={priority}
 >
+
+<PriorityAccentBar
+priority={priority}
+/>
 
 <ButtonBlock
 
@@ -182,6 +190,10 @@ return(
 priority={priority}
 >
 
+<PriorityAccentBar
+priority={priority}
+/>
+
 <EditorialMediaLayout
 rhythm={editorialRhythm}
 >
@@ -240,9 +252,19 @@ if(type === "music"){
 
 return(
 
+<PriorityBlockShell
+priority={priority}
+>
+
+<PriorityAccentBar
+priority={priority}
+/>
+
 <MusicBlock
 block={block}
 />
+
+</PriorityBlockShell>
 
 );
 
@@ -300,6 +322,10 @@ return(
 <PriorityBlockShell
 priority={priority}
 >
+
+<PriorityAccentBar
+priority={priority}
+/>
 
 <EditorialMediaLayout
 rhythm={editorialRhythm}
@@ -363,6 +389,10 @@ return(
 priority={priority}
 >
 
+<PriorityAccentBar
+priority={priority}
+/>
+
 <PricingBlock
 block={block}
 />
@@ -386,6 +416,10 @@ return(
 priority={priority}
 >
 
+<PriorityAccentBar
+priority={priority}
+/>
+
 <TestimonialBlock
 block={block}
 />
@@ -408,6 +442,10 @@ return(
 <PriorityBlockShell
 priority={priority}
 >
+
+<PriorityAccentBar
+priority={priority}
+/>
 
 <FAQBlock
 block={block}
