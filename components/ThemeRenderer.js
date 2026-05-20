@@ -9,6 +9,7 @@ import BlueprintTheme from "./themes/BlueprintTheme";
 import SolsticeTheme from "./themes/SolsticeTheme";
 import PortfolioTheme from "./themes/PortfolioTheme";
 import RippleTheme from "./themes/RippleTheme";
+import SamiraTheme from "./themes/SamiraTheme";
 
 import backgroundPresets
 from "../app/lib/backgroundPresets";
@@ -779,6 +780,16 @@ if(themeName === "ripple"){
 
 return(
 <RippleTheme
+{...customThemeProps}
+/>
+);
+
+}
+
+if(themeName === "samira"){
+
+return(
+<SamiraTheme
 {...customThemeProps}
 />
 );
