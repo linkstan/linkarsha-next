@@ -32,11 +32,24 @@ import {
 getHeroStoryPanel
 } from "../../app/lib/heroStoryPanelEngine";
 
+import {
+getTrustSignals
+} from "../../app/lib/trustSignalEngine";
+
 import HeroAsymmetricLayout
 from "./HeroAsymmetricLayout";
 
 import HeroStoryPanel
 from "./HeroStoryPanel";
+
+import TrustSignalBar
+from "./trust/TrustSignalBar";
+
+import PremiumMetadataRow
+from "./trust/PremiumMetadataRow";
+
+import VerificationBadge
+from "./trust/VerificationBadge";
 
 export default function HeroContent({
 
@@ -117,6 +130,16 @@ isMobile
 const heroStoryPanel =
 getHeroStoryPanel({
 
+layout,
+background,
+isMobile
+
+});
+
+const trustSignals =
+getTrustSignals({
+
+profile,
 layout,
 background,
 isMobile
@@ -341,6 +364,30 @@ zIndex:3
 
 {header?.showDisplayName !== false && (
 
+<div
+style={{
+
+display:"flex",
+alignItems:"center",
+
+justifyContent:
+
+isEditorial
+? "flex-start"
+: (
+text?.align === "left"
+? "flex-start"
+: "center"
+),
+
+gap:
+10,
+
+flexWrap:"wrap"
+
+}}
+>
+
 <h1
 style={{
 
@@ -388,10 +435,7 @@ isMobile
 : "clamp(42px,6vw,62px)",
 
 lineHeight:
-
-isHero
-? 0.92
-: 1,
+isHero ? 0.92 : 1,
 
 letterSpacing:
 `${(
@@ -406,31 +450,45 @@ text?.fontWeight || 700,
 
 margin:0,
 
-maxWidth:
+textAlign:
 
-isHero
-
-? (
-heroCTAAnchor?.titleWidth
-||
-(
-isMobile
-? "92%"
-: "82%"
-)
+isEditorial
+? "left"
+: (
+text?.align || "center"
 )
 
-: "100%",
+}}
+>
 
-marginBottom:
+{profile?.display_name || profile?.username}
 
-isHero
+</h1>
 
-? (
-cinematicFlow?.titleSpacing || 0
-)
+<VerificationBadge
+signals={trustSignals}
+/>
 
-: 0,
+</div>
+
+)}
+
+{header?.showUsername !== false && (
+
+<div
+style={{
+
+opacity:
+adaptiveTextOpacity,
+
+fontSize:
+text?.usernameSize || 18,
+
+marginTop:
+rhythm.titleSpacing,
+
+letterSpacing:
+`${(text?.letterSpacing || -0.04)/4}em`,
 
 textAlign:
 
@@ -440,16 +498,163 @@ isEditorial
 text?.align || "center"
 ),
 
+width:"100%",
+
+fontFamily:
+text?.fontFamily ||
+"Inter"
+
+}}
+>
+
+@{profile?.username}
+
+</div>
+
+)}
+
+<PremiumMetadataRow
+signals={trustSignals}
+/>
+
+{header?.subtitle && (
+
+<div
+style={{
+
+fontFamily:
+text?.fontFamily ||
+finalTheme?.fonts?.bio ||
+"Inter",
+
+fontSize:
+
+isHero
+
+? (
+isMobile
+? 22
+: 30
+)
+
+: 20,
+
+lineHeight:
+text?.lineHeight || 1.5,
+
+opacity:
+adaptiveTextOpacity,
+
+textAlign:
+
+isEditorial
+? "left"
+: (
+text?.align || "center"
+),
+
+marginTop:
+rhythm.subtitleSpacing,
+
+maxWidth:
+
+isHero
+
+? (
+heroLayout?.bioWidth
+||
+composition.textWidth
+)
+
+: isEditorial
+? 260
+: 340,
+
 width:"100%"
 
 }}
 >
 
-{profile?.display_name || profile?.username}
+{header?.subtitle}
 
-</h1>
+</div>
 
 )}
+
+{header?.showBio !== false &&
+profile?.bio && (
+
+<p
+style={{
+
+maxWidth:
+
+isHero
+
+? (
+refinement?.bioWidth
+||
+heroLayout?.bioWidth
+||
+composition.textWidth
+)
+
+: isEditorial
+? 260
+: 340,
+
+width:"100%",
+
+textAlign:
+
+isEditorial
+? "left"
+: (
+text?.align || "center"
+),
+
+opacity:
+adaptiveTextOpacity,
+
+lineHeight:
+
+(
+text?.lineHeight || 1.7
+)
+
+*
+
+(
+isHero
+? refinement?.verticalFlow || 1.04
+: 1
+),
+
+fontSize:
+text?.bioSize || 15,
+
+marginTop:
+rhythm.bioSpacing,
+
+marginBottom:0,
+
+fontFamily:
+text?.fontFamily ||
+finalTheme?.fonts?.bio ||
+"Inter"
+
+}}
+>
+
+{profile?.bio}
+
+</p>
+
+)}
+
+<TrustSignalBar
+signals={trustSignals}
+/>
 
 </div>
 
