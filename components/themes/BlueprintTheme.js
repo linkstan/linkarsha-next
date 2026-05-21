@@ -128,6 +128,7 @@ textAlign:"center"
 >
 
 <div
+className="hero-title"
 style={{
 fontSize:"clamp(44px,9vw,92px)",
 
@@ -257,6 +258,7 @@ objectFit:"cover"
 {profile.bio && (
 
 <div
+className="subtitle"
 style={{
 maxWidth:620,
 
