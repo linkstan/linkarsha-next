@@ -265,7 +265,7 @@ e.currentTarget.style.transform =
 `
 scale(${cinematicCTA?.scale || 1})
 translateY(-${
-interaction?.hoverLift || 0
+(interaction?.hoverLift || 0) * .55
 }px)
 ${getTransform({
 
@@ -302,7 +302,7 @@ e.currentTarget.style.transform =
 `
 scale(${cinematicCTA?.scale || 1})
 translateY(-${
-interaction?.hoverLift || 0
+(interaction?.hoverLift || 0) * .55
 }px)
 ${getTransform({
 
@@ -320,6 +320,8 @@ style={{
 
 display:"block",
 
+maxWidth:"100%",
+
 minHeight:
 
 cinematicCTA?.minHeight
@@ -328,12 +330,12 @@ cinematicCTA?.minHeight
 
 (
 isHeroBlock
-? 220
+? 180
 
 : isFeature
-? 170
+? 138
 
-: undefined
+: 64
 ),
 
 padding:getPadding({
@@ -348,7 +350,7 @@ buttons
 }),
 
 marginTop:
-appearance?.text?.buttonSpacing || 18,
+appearance?.text?.buttonSpacing || 14,
 
 textDecoration:"none",
 
@@ -372,7 +374,7 @@ index * 0.08 * staggerIntensity
 transition:
 `
 all ${
-interaction?.motionSmoothness || .32
+interaction?.motionSmoothness || .26
 }s cubic-bezier(.22,1,.36,1)
 `,
 
@@ -381,7 +383,7 @@ transform:
 scale(${cinematicCTA?.scale || 1})
 ${hovered
 ? `translateY(-${
-interaction?.hoverLift || 0
+(interaction?.hoverLift || 0) * .55
 }px)`
 : "translateY(0px)"
 }
@@ -472,7 +474,7 @@ theme?.fonts?.buttons || "Inter",
 fontWeight:
 
 isHeroBlock
-? 900
+? 800
 
 : emphasis === "primary"
 ? 800
@@ -500,7 +502,7 @@ buttons
 
 }),
 
-letterSpacing:"-.02em",
+letterSpacing:"-.015em",
 
 boxShadow:
 getShadow({
@@ -509,7 +511,7 @@ variant,
 isHeroBlock,
 
 surfaceDepth:
-surfaceDepth
+(surfaceDepth * .78)
 *
 (
 cinematicCTA?.shadowIntensity || 1
@@ -546,8 +548,13 @@ buttons={buttons}
 style={{
 
 display:"flex",
+
+width:"100%",
+
 flexDirection:"column",
-alignItems:"center",
+
+alignItems:"flex-start",
+
 justifyContent:"center",
 
 position:"relative",
