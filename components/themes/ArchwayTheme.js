@@ -199,6 +199,9 @@ color:"#444"
 <img
 src={`/icons/${platform}.png`}
 style={{width:18,height:18}}
+onError={(e)=>{
+e.currentTarget.src="/icons/other.png"
+}}
 />
 
 <span>@{username}</span>
