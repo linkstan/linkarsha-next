@@ -970,6 +970,7 @@ gap:
 
 isHero
 
+? (
 (
 isMobile
 ? cinematicSpacing.heroGap * .72
@@ -977,6 +978,7 @@ isMobile
 )
 *
 hierarchy.spacingScale
+)
 
 : isSplit
 
