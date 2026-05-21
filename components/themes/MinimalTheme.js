@@ -136,6 +136,7 @@ fontWeight:500
 {profile?.bio && (
 
 <div
+className="subtitle"
 style={{
 marginTop:24,
 
