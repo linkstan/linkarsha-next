@@ -152,7 +152,7 @@ alignItems:"end"
 
 <h1
 style={{
-fontSize:"clamp(64px,11vw,148px)",
+fontSize:"clamp(52px,9vw,118px)",
 
 lineHeight:.88,
 
