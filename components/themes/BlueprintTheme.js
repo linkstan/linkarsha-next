@@ -314,7 +314,7 @@ style={{
 
 position:"relative",
 
-minHeight:180,
+minHeight:150,
 
 padding:"28px",
 
@@ -397,7 +397,7 @@ marginBottom:24
 
 <div
 style={{
-fontSize:28,
+fontSize:24,
 
 lineHeight:1.05,
 
