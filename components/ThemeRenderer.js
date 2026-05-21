@@ -970,7 +970,11 @@ gap:
 
 isHero
 
-? cinematicSpacing.heroGap
+(
+isMobile
+? cinematicSpacing.heroGap * .72
+: cinematicSpacing.heroGap
+)
 *
 hierarchy.spacingScale
 
@@ -1084,7 +1088,11 @@ isDarkBackground
 
 borderRadius:
 isCard
-? 48
+? (
+isMobile
+? 34
+: 48
+)
 : 0,
 
 boxShadow:
@@ -1135,14 +1143,17 @@ isCard
 
 ? (
 isMobile
-? "38px 24px"
+? "30px 20px"
 : "70px 55px"
 )
 
 : "0",
 
-paddingLeft:24,
-paddingRight:24,
+paddingLeft:
+isMobile ? 18 : 24,
+
+paddingRight:
+isMobile ? 18 : 24,
 
 margin:"0 auto",
 
