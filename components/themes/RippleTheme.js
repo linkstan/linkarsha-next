@@ -39,7 +39,7 @@ color:"#2b1d1d"
 style={{
 position:"relative",
 
-height:420,
+height:360,
 
 overflow:"hidden"
 }}
@@ -126,7 +126,7 @@ borderTopRightRadius:"55% 100%"
 style={{
 position:"relative",
 
-marginTop:-90,
+marginTop:-70,
 
 padding:"0 24px 100px",
 
