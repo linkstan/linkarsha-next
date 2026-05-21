@@ -241,3 +241,121 @@ body{
     env(safe-area-inset-top)
   );
 }
+/* ================================================= */
+/* RESPONSIVE TYPOGRAPHY SYSTEM */
+/* ================================================= */
+
+:root{
+
+  --hero-title:
+  clamp(42px, 8vw, 96px);
+
+  --section-title:
+  clamp(28px, 5vw, 64px);
+
+  --card-title:
+  clamp(22px, 4vw, 42px);
+
+  --body-text:
+  clamp(15px, 2vw, 18px);
+
+  --caption-text:
+  clamp(12px, 1.4vw, 14px);
+
+}
+
+/* ================================================= */
+/* GLOBAL TITLE STABILITY */
+/* ================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+  margin:0;
+
+  line-height:.96;
+
+  letter-spacing:-0.04em;
+
+  text-wrap:balance;
+
+}
+
+/* ================================================= */
+/* MOBILE HERO CONTAINMENT */
+/* ================================================= */
+
+.hero-title{
+
+  font-size:
+  var(--hero-title);
+
+  max-width:100%;
+
+  overflow-wrap:break-word;
+
+  word-break:break-word;
+
+}
+
+/* ================================================= */
+/* RESPONSIVE EDITOR HEADINGS */
+/* ================================================= */
+
+.editor-title{
+
+  font-size:
+  clamp(38px, 8vw, 72px);
+
+  line-height:.92;
+
+  letter-spacing:-0.05em;
+
+}
+
+/* ================================================= */
+/* RESPONSIVE SUBTITLE SYSTEM */
+/* ================================================= */
+
+.subtitle,
+.bio,
+.description{
+
+  font-size:
+  var(--body-text);
+
+  line-height:1.6;
+
+}
+
+/* ================================================= */
+/* MOBILE TYPOGRAPHY REFINEMENT */
+/* ================================================= */
+
+@media(max-width:768px){
+
+  h1{
+    line-height:1;
+  }
+
+  .hero-title{
+
+    font-size:
+    clamp(38px, 11vw, 64px);
+
+    line-height:.94;
+
+  }
+
+  .editor-title{
+
+    font-size:
+    clamp(32px, 10vw, 54px);
+
+  }
+
+}
