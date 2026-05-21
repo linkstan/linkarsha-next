@@ -114,7 +114,7 @@ Luxury Creative Studio
 style={{
 position:"relative",
 
-fontSize:"clamp(56px,10vw,118px)",
+fontSize:"clamp(48px,8vw,92px)",
 
 lineHeight:.88,
 
