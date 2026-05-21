@@ -29,6 +29,7 @@ minHeight:"100vh"
 {/* TITLE */}
 
 <div
+className="hero-title"
 style={{
 fontFamily:"Playfair Display",
 fontSize:36,
@@ -76,6 +77,7 @@ objectFit:"cover"
 {profile.bio && (
 
 <div
+className="subtitle"
 style={{
 background:"#e9e1d8",
 width:"100%",
@@ -86,8 +88,7 @@ fontFamily:"Inter",
 letterSpacing:1,
 color:"#6c645d"
 }}
->
-{profile.bio}
+>{profile.bio}
 </div>
 
 )}
