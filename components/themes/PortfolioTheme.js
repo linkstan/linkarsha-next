@@ -151,6 +151,7 @@ alignItems:"end"
 {/* NAME */}
 
 <h1
+className="hero-title"
 style={{
 fontSize:"clamp(52px,9vw,118px)",
 
@@ -193,6 +194,7 @@ fontWeight:600
 {appearance?.header?.subtitle && (
 
 <div
+className="subtitle"
 style={{
 marginTop:34,
 
@@ -217,6 +219,7 @@ fontWeight:500
 {profile.bio && (
 
 <div
+className="subtitle"
 style={{
 marginTop:28,
 
@@ -228,8 +231,7 @@ lineHeight:1.9,
 
 opacity:.66
 }}
->
-{profile.bio}
+>{profile.bio}
 </div>
 
 )}
