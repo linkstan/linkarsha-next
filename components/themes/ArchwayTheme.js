@@ -89,6 +89,7 @@ textAlign:"center"
 >
 
 <div
+className="hero-title"
 style={{
 fontFamily:"Playfair Display",
 fontSize:34,
@@ -221,6 +222,7 @@ e.currentTarget.src="/icons/other.png"
 {profile.bio && (
 
 <div
+className="subtitle"
 style={{
 marginTop:26,
 fontStyle:"italic",
