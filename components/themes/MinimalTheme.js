@@ -65,6 +65,7 @@ boxShadow:
 {/* NAME */}
 
 <div
+className="hero-title"
 style={{
 
 fontSize:"clamp(40px,9vw,76px)",
@@ -110,6 +111,7 @@ fontWeight:600
 {header?.subtitle && (
 
 <div
+className="subtitle"
 style={{
 marginTop:28,
 
