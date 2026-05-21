@@ -902,7 +902,7 @@ maxWidth:
 isMobile
 
 ? (
-text?.contentWidthMobile || 520
+text?.contentWidthMobile || 480
 )
 
 : isEditorial
@@ -1152,10 +1152,10 @@ isMobile
 : "0",
 
 paddingLeft:
-isMobile ? 18 : 24,
+isMobile ? 16 : 24,
 
 paddingRight:
-isMobile ? 18 : 24,
+isMobile ? 16 : 24,
 
 margin:"0 auto",
 
@@ -1173,7 +1173,7 @@ cinematicSpacing.heroTopSpacing
 ||
 heroPreset?.topSpacingMobile
 ||
-80
+64
 )
 
 : (
