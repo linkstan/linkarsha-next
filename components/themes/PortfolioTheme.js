@@ -105,7 +105,7 @@ maxWidth:1280,
 
 margin:"0 auto",
 
-padding:"110px 24px 120px"
+padding:"clamp(90px,10vw,140px) 24px var(--space-4xl)"
 }}
 >
 
@@ -138,7 +138,7 @@ display:"grid",
 gridTemplateColumns:
 "repeat(auto-fit,minmax(320px,1fr))",
 
-gap:54,
+gap:"clamp(36px,6vw,72px)",
 
 alignItems:"end"
 }}
@@ -452,7 +452,7 @@ opacity:.4
 
 <div
 style={{
-marginTop:120
+marginTop:"var(--space-4xl)"
 }}
 >
 
@@ -479,7 +479,7 @@ display:"grid",
 gridTemplateColumns:
 "repeat(auto-fit,minmax(260px,1fr))",
 
-gap:24
+gap:"var(--space-lg)"
 }}
 >
 
