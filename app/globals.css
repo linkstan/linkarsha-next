@@ -480,3 +480,85 @@ h6{
   }
 
 }
+/* ================================================= */
+/* GLOBAL MOBILE CTA REFINEMENT */
+/* ================================================= */
+
+@media(max-width:768px){
+
+  a{
+
+    -webkit-tap-highlight-color:
+    transparent;
+
+  }
+
+  /* CTA CARD STABILITY */
+
+  .cta-card{
+
+    border-radius:24px !important;
+
+    min-height:auto !important;
+
+  }
+
+  /* MOBILE BUTTON DENSITY */
+
+  .cta-button{
+
+    padding:
+    18px 18px !important;
+
+    min-height:unset !important;
+
+  }
+
+  /* MOBILE HERO PANELS */
+
+  .hero-panel{
+
+    border-radius:28px !important;
+
+    padding:24px !important;
+
+  }
+
+  /* MOBILE CONTENT WIDTH */
+
+  .mobile-content{
+
+    width:100% !important;
+
+    max-width:100% !important;
+
+  }
+
+  /* MOBILE GRID STABILITY */
+
+  .mobile-grid{
+
+    grid-template-columns:
+    1fr !important;
+
+  }
+
+  /* MOBILE CARD BREATHING */
+
+  .mobile-card{
+
+    padding:22px !important;
+
+  }
+
+  /* MOBILE SAFE TEXT */
+
+  .mobile-text{
+
+    word-break:break-word;
+
+    overflow-wrap:break-word;
+
+  }
+
+}
