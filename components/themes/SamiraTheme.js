@@ -42,7 +42,7 @@ color:"#2d2424"
 style={{
 position:"relative",
 
-padding:"110px 24px 170px",
+padding:"clamp(100px,12vw,160px) 24px var(--space-4xl)",
 
 overflow:"hidden"
 }}
@@ -116,7 +116,7 @@ letterSpacing:"-.08em",
 
 fontWeight:700,
 
-margin:"24px auto 20px",
+margin:"var(--space-lg) auto var(--space-md)",
 
 maxWidth:760
 }}
@@ -146,7 +146,7 @@ fontWeight:600
 style={{
 maxWidth:700,
 
-margin:"38px auto 0",
+margin:"var(--space-xl) auto 0",
 
 fontSize:"clamp(18px,3vw,26px)",
 
@@ -171,9 +171,9 @@ opacity:.76
 style={{
 position:"relative",
 
-marginTop:-90,
+marginTop:"calc(var(--space-3xl) * -1)",
 
-padding:"0 24px 120px",
+padding:"0 24px var(--space-4xl)",
 
 zIndex:4
 }}
@@ -255,9 +255,9 @@ style={{
 display:"flex",
 flexDirection:"column",
 
-gap:18,
+gap:"var(--space-md)",
 
-marginTop:42
+marginTop:"var(--space-xl)"
 }}
 >
 
