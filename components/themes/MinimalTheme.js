@@ -25,7 +25,7 @@ display:"flex",
 flexDirection:"column",
 alignItems:"center",
 
-padding:"92px 24px 140px",
+padding:"var(--space-3xl) 24px var(--space-4xl)",
 
 fontFamily:"Inter, sans-serif",
 color:"#111111"
@@ -164,8 +164,8 @@ style={{
 width:72,
 height:1,
 background:"rgba(0,0,0,.08)",
-marginTop:54,
-marginBottom:-18
+marginTop:"var(--space-2xl)",
+marginBottom:"calc(var(--space-lg) * -1)"
 }}
 />
 
@@ -180,9 +180,9 @@ maxWidth:640,
 display:"flex",
 flexDirection:"column",
 
-gap:22,
+gap:"var(--space-lg)",
 
-marginTop:84
+marginTop:"var(--space-3xl)"
 }}
 >
 
@@ -316,7 +316,7 @@ display:"flex",
 flexWrap:"wrap",
 justifyContent:"center",
 gap:14,
-marginTop:58
+marginTop:"var(--space-2xl)"
 }}
 >
 
