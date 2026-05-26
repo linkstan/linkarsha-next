@@ -39,7 +39,7 @@ color:"#2b1d1d"
 style={{
 position:"relative",
 
-height:360,
+height:"clamp(300px,48vw,420px)",
 
 overflow:"hidden"
 }}
@@ -126,9 +126,9 @@ borderTopRightRadius:"55% 100%"
 style={{
 position:"relative",
 
-marginTop:-70,
+marginTop:"calc(var(--space-2xl) * -1)",
 
-padding:"0 24px 100px",
+padding:"0 24px var(--space-4xl)",
 
 zIndex:5
 }}
@@ -222,7 +222,7 @@ lineHeight:.92,
 
 letterSpacing:"-.07em",
 
-margin:"26px 0 12px",
+margin:"var(--space-lg) 0 var(--space-sm)",
 
 fontWeight:700,
 
@@ -286,7 +286,7 @@ gridTemplateColumns:
 
 gap:18,
 
-marginTop:54
+marginTop:"var(--space-2xl)"
 }}
 >
 
