@@ -248,6 +248,7 @@ justifyContent:"flex-end"
 >
 
 <div
+className="hero-panel mobile-card"
 style={{
 width:"100%",
 maxWidth:420,
@@ -351,6 +352,7 @@ gap:16
 {featuredLinks.map((block,index)=>(
 
 <a
+className="cta-card cta-button"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
@@ -473,6 +475,7 @@ Selected Destinations
 </div>
 
 <div
+className="mobile-grid"
 style={{
 display:"grid",
 
@@ -486,6 +489,7 @@ gap:"var(--space-lg)"
 {secondaryLinks.map((block,index)=>(
 
 <a
+className="cta-card mobile-card"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
