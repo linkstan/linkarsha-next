@@ -137,6 +137,7 @@ zIndex:5
 {/* PROFILE CARD */}
 
 <div
+className="hero-panel mobile-card"
 style={{
 maxWidth:820,
 
@@ -278,6 +279,7 @@ opacity:.72
 {/* SOCIAL GRID */}
 
 <div
+className="mobile-grid"
 style={{
 display:"grid",
 
@@ -297,6 +299,7 @@ marginTop:"var(--space-2xl)"
 usernames?.map((username,i)=>(
 
 <a
+className="cta-card mobile-card"
 key={platform+i}
 
 href={buildSocialUrl(platform,username)}
