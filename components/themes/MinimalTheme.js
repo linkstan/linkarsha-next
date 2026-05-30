@@ -189,6 +189,7 @@ marginTop:"var(--space-3xl)"
 {blocks.map((block,index)=>(
 
 <a
+className="cta-card cta-button"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
