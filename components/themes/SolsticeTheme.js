@@ -265,6 +265,7 @@ gap:28
 {extraLinks.map((block,index)=>(
 
 <a
+className="cta-card mobile-card"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
