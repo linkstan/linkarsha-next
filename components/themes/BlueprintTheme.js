@@ -304,6 +304,7 @@ gap:24
 return(
 
 <a
+className="cta-card mobile-card"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
