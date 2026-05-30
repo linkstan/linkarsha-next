@@ -180,6 +180,7 @@ zIndex:4
 >
 
 <div
+className="hero-panel mobile-card"
 style={{
 maxWidth:760,
 
@@ -264,6 +265,7 @@ marginTop:"var(--space-xl)"
 {primaryLinks.map((block,index)=>(
 
 <a
+className="cta-card cta-button"
 key={block.id}
 
 href={block?.data_json?.url || "#"}
